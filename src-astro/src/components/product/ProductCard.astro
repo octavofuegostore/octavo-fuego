@@ -1,0 +1,58 @@
+---
+import { cn } from '@/lib/utils';
+
+interface Props {
+  nombre: string;
+  etnia: string;
+  precio: number;
+  imagen: string;
+  slug: string;
+  href?: string;
+  class?: string;
+}
+
+const { nombre, etnia, precio, imagen, slug, href = `#`, class: className } = Astro.props;
+
+const formattedPrice = new Intl.NumberFormat('es-CO', {
+  style: 'currency',
+  currency: 'COP',
+  minimumFractionDigits: 0,
+}).format(precio);
+---
+
+<div class={cn("group border border-humo hover:border-tabacco transition-all duration-300", className)}>
+  <a href={href} class="block">
+    <!-- Image -->
+    <div class="aspect-square bg-humo/30 overflow-hidden">
+      <img 
+        src={imagen} 
+        alt={nombre}
+        class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+    
+    <!-- Content -->
+    <div class="p-6">
+      <p class="text-ceniza text-xs uppercase tracking-widest mb-2">{etnia}</p>
+      <h3 class="font-display text-lg font-semibold mb-2">{nombre}</h3>
+      <div class="flex items-center justify-between">
+        <span class="text-tabacco font-semibold">{formattedPrice}</span>
+        <span class="text-sm text-ceniza opacity-0 group-hover:opacity-100 transition-opacity">
+          Ver →
+        </span>
+      </div>
+    </div>
+  </a>
+  
+  <!-- Add to Cart Button -->
+  <div class="px-6 pb-6">
+    <button 
+      class="w-full bg-tabacco text-white py-3 text-sm font-medium hover:bg-tabacco/90 transition-colors"
+      data-product-id={slug}
+      aria-label={`Añadir ${nombre} al carrito`}
+    >
+      Añadir
+    </button>
+  </div>
+</div>

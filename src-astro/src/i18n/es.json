@@ -1,0 +1,115 @@
+{
+  "common": {
+    "brand": "Octavo Fuego",
+    "tagline": "Enciende tu Octavo Fuego"
+  },
+  "nav": {
+    "tienda": "Tienda",
+    "blog": "Blog",
+    "nosotros": "Nosotros",
+    "contacto": "Contacto",
+    "carrito": "Carrito",
+    "verTodos": "Ver todos",
+    "rape": "Rapé",
+    "sananga": "Sananga",
+    "kuripes": "Kuripes",
+    "accesorios": "Accesorios"
+  },
+  "home": {
+    "hero": {
+      "title": "Octavo Fuego",
+      "subtitle": "Rapé do Acre · Sananga · Kuripe",
+      "cta": "Descubrir la Medicina"
+    },
+    "quiz": {
+      "title": "¿Cuál es tu intención hoy?",
+      "subtitle": "Deja que la planta te guíe",
+      "claridad": "Claridad mental",
+      "energia": "Energía y focus",
+      "limpieza": "Limpieza profunda",
+      "relajacion": "Relajación y paz"
+    },
+    "productos": {
+      "title": "Nuestra Medicina",
+      "subtitle": "Rapé do Acre · Sananga · Kuripes",
+      "verProducto": "Ver producto",
+      "verTodos": "Ver todos"
+    },
+    "trust": {
+      "autenticidad": "Origen Certificado",
+      "autenticidadDesc": "Directo del Acre, Brasil",
+      "origen": "Cultivo Sostenible",
+      "origenDesc": "Comunidades tradicionales",
+      "pureza": "Empacado al Vacío",
+      "purezaDesc": "Máxima frescura garantizada"
+    },
+    "newsletter": {
+      "title": "Únete a la comunidad",
+      "subtitle": "Recibe guías y novedades ancestrales",
+      "placeholder": "tu@email.com",
+      "cta": "Suscribirme"
+    }
+  },
+  "product": {
+    "cantidad": "Cantidad",
+    "añadirCarrito": "Añadir al Carrito",
+    "verDetalles": "Ver detalles completos",
+    "descripcion": "Descripción",
+    "usoCeremonial": "Uso Ceremonial",
+    "laEtnia": "La Etnia",
+    "productosRelacionados": "Productos relacionados"
+  },
+  "cart": {
+    "titulo": "Tu Carrito",
+    "vacío": "Tu carrito está vacío",
+    "subtotal": "Subtotal",
+    "envio": "Envío",
+    "envioGratis": "Gratis",
+    "total": "Total",
+    "irCheckout": "Ir al Checkout",
+    "vaciar": "Vaciar carrito",
+    "continuarComprando": "Continuar comprando"
+  },
+  "checkout": {
+    "info": "Información",
+    "envio": "Envío",
+    "pago": "Pago",
+    "listo": "¡Listo!",
+    "email": "Email",
+    "nombre": "Nombre completo",
+    "telefono": "Teléfono",
+    "direccion": "Dirección",
+    "ciudad": "Ciudad",
+    "continuar": "Continuar",
+    "volver": "Volver",
+    "pagar": "Pagar ahora",
+    "metodoPago": "Método de pago",
+    "transferencia": "Transferencia bancaria",
+    "pse": "PSE",
+    "tarjeta": "Tarjeta de crédito"
+  },
+  "footer": {
+    "productos": "Productos",
+    "nosotros": "Nosotros",
+    "ayuda": "Ayuda",
+    "conecta": "Conecta",
+    "faq": "Preguntas frecuentes",
+    "envios": "Envíos",
+    "terminos": "Términos",
+    "privacidad": "Privacidad",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "copyright": "© 2026 Octavo Fuego. Todos los derechos reservados.",
+    "disclaimer": "Nuestros productos se venden como inciensos ceremoniales. El uso es responsabilidad de quien adquiere."
+  },
+  "whatsapp": {
+    "tooltip": "¿Necesitas ayuda?"
+  },
+  "404": {
+    "titulo": "Página no encontrada",
+    "mensaje": "La página que buscas no existe.",
+    "cta": "Volver al inicio"
+  }
+}

@@ -1,0 +1,194 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { useTranslations } from '../i18n';
+
+const t = useTranslations('es');
+---
+
+<Layout title="Octavo Fuego" locale="es">
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <!-- Background with subtle texture -->
+    <div class="absolute inset-0 bg-[url('/noise.svg')] opacity-5"></div>
+    
+    <!-- Hero Content -->
+    <div class="text-center px-6 relative z-10">
+      <!-- Logo/Brand -->
+      <h1 class="font-display text-6xl md:text-8xl lg:text-9xl font-bold mb-6 tracking-tight">
+        {t.home.hero.title}
+      </h1>
+      
+      <!-- Tagline -->
+      <p class="text-ceniza text-lg md:text-xl tracking-widest uppercase mb-12">
+        {t.home.hero.subtitle}
+      </p>
+      
+      <!-- CTA -->
+      <a 
+        href="#productos"
+        class="inline-block bg-tabacco text-white px-8 py-4 text-lg font-medium tracking-wide hover:bg-tabacco/90 transition-colors"
+      >
+        {t.home.hero.cta} →
+      </a>
+      
+      <!-- Scroll indicator -->
+      <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
+        <span class="text-ceniza text-sm">↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Badges -->
+  <section class="py-16 border-y border-humo">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Autenticidad -->
+        <div class="text-center">
+          <div class="text-4xl mb-4">🔐</div>
+          <h3 class="text-lg font-display font-semibold mb-2">{t.home.trust.autenticidad}</h3>
+          <p class="text-ceniza text-sm">{t.home.trust.autenticidadDesc}</p>
+        </div>
+        
+        <!-- Origen Verdeado -->
+        <div class="text-center">
+          <div class="text-4xl mb-4">🌿</div>
+          <h3 class="text-lg font-display font-semibold mb-2">{t.home.trust.origen}</h3>
+          <p class="text-ceniza text-sm">{t.home.trust.origenDesc}</p>
+        </div>
+        
+        <!-- Pureza Ritual -->
+        <div class="text-center">
+          <div class="text-4xl mb-4">💧</div>
+          <h3 class="text-lg font-display font-semibold mb-2">{t.home.trust.pureza}</h3>
+          <p class="text-ceniza text-sm">{t.home.trust.purezaDesc}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos Section -->
+  <section id="productos" class="py-24 px-6">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">{t.home.productos.title}</h2>
+        <p class="text-ceniza tracking-widest uppercase">{t.home.productos.subtitle}</p>
+      </div>
+      
+      <!-- Product Grid (placeholder) -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[1, 2, 3].map((i) => (
+          <div class="border border-humo p-0 hover:border-tabacco transition-colors group">
+            <div class="aspect-square bg-humo/50 flex items-center justify-center">
+              <span class="text-ceniza/50 text-6xl">🌿</span>
+            </div>
+            <div class="p-6">
+              <p class="text-ceniza text-sm uppercase tracking-wider mb-2">Etnia</p>
+              <h3 class="font-display text-xl font-semibold mb-2">Producto {i}</h3>
+              <p class="text-ceniza text-sm mb-4">Descripción breve del producto</p>
+              <div class="flex items-center justify-between">
+                <span class="text-tabacco font-semibold">$75.000 COP</span>
+                <a href="#" class="text-sm text-ceniza hover:text-tabacco transition-colors">
+                  {t.home.productos.verProducto} →
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href="/tienda" class="inline-block border border-tabacco text-tabacco px-8 py-4 hover:bg-tabacco hover:text-white transition-colors">
+          {t.home.productos.verTodos}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quiz Section -->
+  <section class="py-24 bg-humo/30">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">{t.home.quiz.title}</h2>
+      <p class="text-ceniza mb-12">{t.home.quiz.subtitle}</p>
+      
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <button class="border border-humo p-8 hover:border-tabacco hover:bg-tabacco/10 transition-all group">
+          <span class="text-4xl mb-4 block">🌿</span>
+          <span class="text-sm">{t.home.quiz.claridad}</span>
+        </button>
+        <button class="border border-humo p-8 hover:border-tabacco hover:bg-tabacco/10 transition-all group">
+          <span class="text-4xl mb-4 block">🔥</span>
+          <span class="text-sm">{t.home.quiz.energia}</span>
+        </button>
+        <button class="border border-humo p-8 hover:border-tabacco hover:bg-tabacco/10 transition-all group">
+          <span class="text-4xl mb-4 block">👁</span>
+          <span class="text-sm">{t.home.quiz.limpieza}</span>
+        </button>
+        <button class="border border-humo p-8 hover:border-tabacco hover:bg-tabacco/10 transition-all group">
+          <span class="text-4xl mb-4 block">💧</span>
+          <span class="text-sm">{t.home.quiz.relajacion}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-16 border-t border-humo">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-12 mb-12">
+        <!-- Productos -->
+        <div>
+          <h4 class="font-semibold mb-4">{t.footer.productos}</h4>
+          <ul class="space-y-2 text-ceniza text-sm">
+            <li><a href="/tienda/rape" class="hover:text-tabacco transition-colors">{t.nav.rape}</a></li>
+            <li><a href="/tienda/sananga" class="hover:text-tabacco transition-colors">{t.nav.sananga}</a></li>
+            <li><a href="/tienda/kuripes" class="hover:text-tabacco transition-colors">{t.nav.kuripes}</a></li>
+            <li><a href="/tienda/accesorios" class="hover:text-tabacco transition-colors">{t.nav.accesorios}</a></li>
+          </ul>
+        </div>
+        
+        <!-- Nosotros -->
+        <div>
+          <h4 class="font-semibold mb-4">{t.footer.nosotros}</h4>
+          <ul class="space-y-2 text-ceniza text-sm">
+            <li><a href="/nosotros" class="hover:text-tabacco transition-colors">{t.nav.nosotros}</a></li>
+            <li><a href="/blog" class="hover:text-tabacco transition-colors">{t.nav.blog}</a></li>
+            <li><a href="/contacto" class="hover:text-tabacco transition-colors">{t.nav.contacto}</a></li>
+          </ul>
+        </div>
+        
+        <!-- Ayuda -->
+        <div>
+          <h4 class="font-semibold mb-4">{t.footer.ayuda}</h4>
+          <ul class="space-y-2 text-ceniza text-sm">
+            <li><a href="/faq" class="hover:text-tabacco transition-colors">{t.footer.faq}</a></li>
+            <li><a href="/envios" class="hover:text-tabacco transition-colors">{t.footer.envios}</a></li>
+            <li><a href="/terminos" class="hover:text-tabacco transition-colors">{t.footer.terminos}</a></li>
+            <li><a href="/privacidad" class="hover:text-tabacco transition-colors">{t.footer.privacidad}</a></li>
+          </ul>
+        </div>
+        
+        <!-- Conecta -->
+        <div>
+          <h4 class="font-semibold mb-4">{t.footer.conecta}</h4>
+          <div class="flex gap-4">
+            <a href="#" class="text-ceniza hover:text-tabacco transition-colors" aria-label="Instagram">
+              <span class="text-xl">📷</span>
+            </a>
+            <a href="#" class="text-ceniza hover:text-tabacco transition-colors" aria-label="Facebook">
+              <span class="text-xl">📘</span>
+            </a>
+            <a href="#" class="text-ceniza hover:text-tabacco transition-colors" aria-label="WhatsApp">
+              <span class="text-xl">💬</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Copyright -->
+      <div class="pt-8 border-t border-humo text-center">
+        <p class="text-ceniza text-sm mb-2">{t.footer.copyright}</p>
+        <p class="text-ceniza/50 text-xs">{t.footer.disclaimer}</p>
+      </div>
+    </div>
+  </footer>
+</Layout>

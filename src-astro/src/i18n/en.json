@@ -1,0 +1,115 @@
+{
+  "common": {
+    "brand": "Octavo Fuego",
+    "tagline": "Ignite your Eighth Fire"
+  },
+  "nav": {
+    "tienda": "Shop",
+    "blog": "Blog",
+    "nosotros": "About",
+    "contacto": "Contact",
+    "carrito": "Cart",
+    "verTodos": "View all",
+    "rape": "Rapé",
+    "sananga": "Sananga",
+    "kuripes": "Kuripes",
+    "accesorios": "Accessories"
+  },
+  "home": {
+    "hero": {
+      "title": "Octavo Fuego",
+      "subtitle": "Rapé do Acre · Sananga · Kuripe",
+      "cta": "Discover the Medicine"
+    },
+    "quiz": {
+      "title": "What is your intention today?",
+      "subtitle": "Let the plant guide you",
+      "claridad": "Mental clarity",
+      "energia": "Energy and focus",
+      "limpieza": "Deep cleansing",
+      "relajacion": "Relaxation and peace"
+    },
+    "productos": {
+      "title": "Our Medicine",
+      "subtitle": "Rapé do Acre · Sananga · Kuripes",
+      "verProducto": "View product",
+      "verTodos": "View all"
+    },
+    "trust": {
+      "autenticidad": "Certified Origin",
+      "autenticidadDesc": "Direct from Acre, Brazil",
+      "origen": "Sustainable Cultivation",
+      "origenDesc": "Traditional communities",
+      "pureza": "Vacuum Packed",
+      "purezaDesc": "Maximum freshness guaranteed"
+    },
+    "newsletter": {
+      "title": "Join the community",
+      "subtitle": "Receive guides and ancestral news",
+      "placeholder": "your@email.com",
+      "cta": "Subscribe"
+    }
+  },
+  "product": {
+    "cantidad": "Quantity",
+    "añadirCarrito": "Add to Cart",
+    "verDetalles": "View full details",
+    "descripcion": "Description",
+    "usoCeremonial": "Ceremonial Use",
+    "laEtnia": "The Ethnicity",
+    "productosRelacionados": "Related products"
+  },
+  "cart": {
+    "titulo": "Your Cart",
+    "vacío": "Your cart is empty",
+    "subtotal": "Subtotal",
+    "envio": "Shipping",
+    "envioGratis": "Free",
+    "total": "Total",
+    "irCheckout": "Proceed to Checkout",
+    "vaciar": "Empty cart",
+    "continuarComprando": "Continue shopping"
+  },
+  "checkout": {
+    "info": "Information",
+    "envio": "Shipping",
+    "pago": "Payment",
+    "listo": "Done!",
+    "email": "Email",
+    "nombre": "Full name",
+    "telefono": "Phone",
+    "direccion": "Address",
+    "ciudad": "City",
+    "continuar": "Continue",
+    "volver": "Back",
+    "pagar": "Pay now",
+    "metodoPago": "Payment method",
+    "transferencia": "Bank transfer",
+    "pse": "PSE",
+    "tarjeta": "Credit card"
+  },
+  "footer": {
+    "productos": "Products",
+    "nosotros": "About",
+    "ayuda": "Help",
+    "conecta": "Connect",
+    "faq": "FAQ",
+    "envios": "Shipping",
+    "terminos": "Terms",
+    "privacidad": "Privacy",
+    "instagram": "Instagram",
+    "facebook": "Facebook",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "copyright": "© 2026 Octavo Fuego. All rights reserved.",
+    "disclaimer": "Our products are sold as ceremonial incense. Use is the responsibility of the acquirer."
+  },
+  "whatsapp": {
+    "tooltip": "Need help?"
+  },
+  "404": {
+    "titulo": "Page not found",
+    "mensaje": "The page you are looking for does not exist.",
+    "cta": "Back to home"
+  }
+}
