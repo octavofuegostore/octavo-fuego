@@ -2,7 +2,9 @@
 
 ## Project Identity
 - **Repository**: Octavo Fuego — Rapé do Acre
+- **Repo URL**: `https://github.com/octavofuegostore/octavo-fuego`
 - **Active directory**: `/Users/calderonjosue_/clientes/activos/octavo-fuego/`
+- **Git Author**: Josue Calderon - Navio Azul `<luisjosue1205@gmail.com>`
 - **Deploy**: Vercel (pendiente)
 
 ## Stack
@@ -132,8 +134,9 @@ playwright       # e2e
 
 ## Git Conventions
 - Commit format: `[octavo-fuego] <description>`
-- Main branch: `main`
-- No remote configured yet
+- Branch strategy: `main` (producción) ← `develop` (desarrollo) ← `feature/*`
+- Remote: `origin` → `https://github.com/octavofuegostore/octavo-fuego`
+- Author: Josue Calderon - Navio Azul `<luisjosue1205@gmail.com>`
 
 ## Engram
 - Project: `octavo-fuego`
