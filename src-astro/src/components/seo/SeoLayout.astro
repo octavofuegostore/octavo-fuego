@@ -1,16 +1,11 @@
 ---
-import '../styles/global.css';
-import Navbar from '@/components/Navbar.astro';
-import Footer from '@/components/Footer.astro';
-import { FloatingWhatsApp } from '@/components/ui/FloatingWhatsApp';
-import OrganizationJsonLd from '@/components/seo/OrganizationJsonLd.astro';
-
 interface Props {
   title?: string;
   description?: string;
   locale?: 'es' | 'en' | 'pt';
   ogImage?: string;
   ogType?: 'website' | 'product';
+  canonicalUrl?: string;
 }
 
 const {
@@ -18,11 +13,12 @@ const {
   description = 'Rapé do Acre, Sananga y Kuripes. Medicinas ancestrales amazónicas con propósito.',
   locale = 'es',
   ogImage = '/images/og-default.jpg',
-  ogType = 'website'
+  ogType = 'website',
+  canonicalUrl
 } = Astro.props;
 
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
-const canonicalUrl = new URL(Astro.url.pathname, 'https://octavofuego.com').href;
+const canonical = canonicalUrl || new URL(Astro.url.pathname, 'https://octavofuego.com').href;
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
 ---
 
@@ -34,14 +30,14 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <meta name="description" content={description} />
     
     <!-- Canonical URL -->
-    <link rel="canonical" href={canonicalUrl} />
+    <link rel="canonical" href={canonical} />
     
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />
-    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="Octavo Fuego" />
     <meta property="og:locale" content={locale === 'es' ? 'es_CO' : locale === 'en' ? 'en_US' : 'pt_BR'} />
     
@@ -56,16 +52,8 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
     <title>{fullTitle}</title>
-    
-    <!-- Organization Schema -->
-    <OrganizationJsonLd />
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-black">
-    <Navbar />
-    <main class="flex-1">
-      <slot />
-    </main>
-    <Footer />
-    <FloatingWhatsApp client:load />
+  <body class="min-h-screen flex flex-col bg-black text-white">
+    <slot />
   </body>
 </html>

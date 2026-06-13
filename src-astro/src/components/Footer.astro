@@ -1,48 +1,49 @@
 ---
 import { useTranslations } from '@/i18n';
+import { Mail, MessageCircle } from 'lucide-react';
 
 const t = useTranslations('es');
 ---
 
-<footer class="bg-humo border-t border-humo/50">
+<footer class="bg-[var(--humo)] text-white">
   <div class="max-w-7xl mx-auto px-6 md:px-12 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
       <!-- Logo + Tagline -->
       <div class="lg:col-span-1">
-        <a href="/" class="font-display text-2xl font-bold mb-4 block">
+        <a href="/" class="font-display text-2xl font-bold mb-4 block text-white">
           {t.common.brand}
         </a>
-        <p class="text-ceniza text-sm mb-6">
+        <p class="text-gray-400 text-sm mb-6">
           {t.common.tagline}
         </p>
-        <p class="text-ceniza/60 text-xs max-w-xs">
+        <p class="text-gray-500 text-xs max-w-xs">
           {t.footer.disclaimer}
         </p>
       </div>
 
       <!-- Tienda Links -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6">
+        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
           {t.footer.productos}
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href="/tienda/rape" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/tienda/rape" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.rape}
             </a>
           </li>
           <li>
-            <a href="/tienda/sananga" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/tienda/sananga" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.sananga}
             </a>
           </li>
           <li>
-            <a href="/tienda/kuripes" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/tienda/kuripes" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.kuripes}
             </a>
           </li>
           <li>
-            <a href="/tienda/accesorios" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/tienda/accesorios" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.accesorios}
             </a>
           </li>
@@ -51,32 +52,32 @@ const t = useTranslations('es');
 
       <!-- Información Links -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6">
+        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
           {t.footer.ayuda}
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href="/nosotros" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/nosotros" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.nosotros}
             </a>
           </li>
           <li>
-            <a href="/blog" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/blog" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.blog}
             </a>
           </li>
           <li>
-            <a href="/contacto" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/contacto" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.nav.contacto}
             </a>
           </li>
           <li>
-            <a href="/faq" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/faq" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.footer.faq}
             </a>
           </li>
           <li>
-            <a href="/envios" class="text-ceniza text-sm hover:text-tabacco transition-colors">
+            <a href="/envios" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors">
               {t.footer.envios}
             </a>
           </li>
@@ -85,18 +86,20 @@ const t = useTranslations('es');
 
       <!-- Contacto + Social -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6">
+        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
           {t.footer.conecta}
         </h4>
         <ul class="space-y-3 mb-6">
           <li>
-            <a href="mailto:hola@octavofuego.com" class="text-ceniza text-sm hover:text-tabacco transition-colors flex items-center gap-2">
-              <span>📧</span> hola@octavofuego.com
+            <a href="mailto:hola@octavofuego.com" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors flex items-center gap-2">
+              <Mail class="w-4 h-4" />
+              hola@octavofuego.com
             </a>
           </li>
           <li>
-            <a href="https://wa.me/573001234567" target="_blank" rel="noopener" class="text-ceniza text-sm hover:text-tabacco transition-colors flex items-center gap-2">
-              <span>💬</span> WhatsApp
+            <a href="https://wa.me/573001234567" target="_blank" rel="noopener" class="text-gray-400 text-sm hover:text-[var(--verde-botanico)] transition-colors flex items-center gap-2">
+              <MessageCircle class="w-4 h-4" />
+              WhatsApp
             </a>
           </li>
         </ul>
@@ -107,7 +110,7 @@ const t = useTranslations('es');
             href="https://instagram.com/octavofuego" 
             target="_blank" 
             rel="noopener" 
-            class="text-ceniza hover:text-tabacco transition-colors"
+            class="text-gray-400 hover:text-[var(--verde-botanico)] transition-colors"
             aria-label="Instagram"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -118,7 +121,7 @@ const t = useTranslations('es');
             href="https://facebook.com/octavofuego" 
             target="_blank" 
             rel="noopener" 
-            class="text-ceniza hover:text-tabacco transition-colors"
+            class="text-[var(--ceniza)] hover:text-[var(--verde-botanico)] transition-colors"
             aria-label="Facebook"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -129,7 +132,7 @@ const t = useTranslations('es');
             href="https://wa.me/573001234567" 
             target="_blank" 
             rel="noopener" 
-            class="text-ceniza hover:text-tabacco transition-colors"
+            class="text-[var(--ceniza)] hover:text-[var(--verde-botanico)] transition-colors"
             aria-label="WhatsApp"
           >
             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -141,16 +144,16 @@ const t = useTranslations('es');
     </div>
 
     <!-- Bottom Bar -->
-    <div class="pt-8 border-t border-humo/50">
+    <div class="pt-8 border-t border-gray-700">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-ceniza/60 text-xs">
+        <p class="text-gray-500 text-xs">
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href="/terminos" class="text-ceniza/60 text-xs hover:text-tabacco transition-colors">
+          <a href="/terminos" class="text-gray-500 text-xs hover:text-[var(--verde-botanico)] transition-colors">
             {t.footer.terminos}
           </a>
-          <a href="/privacidad" class="text-ceniza/60 text-xs hover:text-tabacco transition-colors">
+          <a href="/privacidad" class="text-gray-500 text-xs hover:text-[var(--verde-botanico)] transition-colors">
             {t.footer.privacidad}
           </a>
         </div>

@@ -1,5 +1,4 @@
 import { atom } from 'nanostores';
-import { useStore } from '@nanostores/react';
 
 export interface CartItem {
   id: string;

@@ -1,276 +1,194 @@
 # DESIGN: Octavo Fuego Ecommerce MVP
 
-## Technical Approach
+## Fuentes de Inspiración
 
-Nuevo proyecto ecommerce: Astro 6.x frontend + Medusa.js 2.x backend headless. Nanostores para estado del carrito con persistencia en localStorage. Integración Bold para pagos. UI con TailwindCSS + shadcn/ui adaptada al branding "Minimalist Sacred".
+### 1. WakingHerbs.com (https://www.wakingherbs.com)
+Referencia principal para estética "botanical/ethnobotanical shop".
 
----
+**Navbar (MEGA-MENU):**
+- Selectores de moneda ($ € £) - **NO usar** (solo COP)
+- "€30.91 left to free shipping" - **NO usar** (intrusivo)
+- Mega-menu organizado con RAPÉ TRIBES por letras (A-K, M-Z)
+- Logo centrado
+- Links en minúsculas: about, blog, FAQ's, contact us, Log in
+- **ADOPTAR**: Mega-menu por tribus, estructura limpia
 
-## Architecture Decisions
+**Hero:**
+- Imagen izquierda (NO derecha como tenemos ahora)
+- Texto a la derecha
+- Título serif grande
+- Subtítulo descriptivo
+- CTA button
+- **ADOPTAR CON EDICIÓN**: Imagen a la izquierda
 
-### Decision 1: Astro 6.x vs Next.js
+**Footer:**
+- Logo + tagline: "Together we gather nature's most beautiful gifts."
+- 4-5 columnas de links
+- Badges de trust (Reviews.io, Comodo)
+- Payment methods icons
+- Newsletter input
+- Social links (Facebook, Instagram)
+- **ADOPTAR**: Badges de trust, estructura de columnas
 
-| Option | Tradeoff | Decision |
-|--------|----------|----------|
-| Astro 6.x | Zero JS default, mejor SEO, SSG nativo | ✅ Elegido |
-| Next.js 14 | React requerido, más complejo para este caso | ❌ Descartado |
+**Product Page:**
+- Precio muy grande y prominente
+- Tabs simples (underline, no bordes)
+- Imagen grande clickeable
+- **ADOPTAR**: Precio más grande
 
-**Rationale**: Astro es más ligero y SEO-friendly. Para un ecommerce de contenido con mucho texto, es ideal.
-
-### Decision 2: Medusa.js vs Shopify Hydrogen
-
-| Option | Tradeoff | Decision |
-|--------|----------|----------|
-| Medusa.js 2.x | Open source, customizable, sin comisiones de platform | ✅ Elegido |
-| Shopify Hydrogen | Dependencia de Shopify, comisiones mensuales | ❌ Descartado |
-
-**Rationale**: Menos costos, control total del checkout, integración más directa con Bold.
-
-### Decision 3: Nanostores vs Context API
-
-| Option | Tradeoff | Decision |
-|--------|----------|----------|
-| Nanostores | Framework-agnostic, ~1.5KB, sync localStorage | ✅ Elegido |
-| Zustand | Más popular pero orientado a React | Alternativa |
-| Context API | Solo React, más código | ❌ Descartado |
-
-**Rationale**: Tamaño mínimo, funciona con Astro islands, fácil de usar.
-
-### Decision 4: Bold Checkout Widget vs API directa
-
-| Option | Tradeoff | Decision |
-|--------|----------|----------|
-| Bold Checkout Widget | Rápido de integrar, menos control | ✅ Elegido para MVP |
-| Bold API directa | Más control pero más tiempo de desarrollo | Post-MVP |
-
-**Rationale**: Velocidad de implementación. El widget es suficiente para el MVP.
-
-### Decision 5: CMS para Blog/Contenido
-
-| Option | Tradeoff | Decision |
-|--------|----------|----------|
-| **Keystatic** | Git-based, gratis, integrable con Astro Content Collections | ✅ Elegido |
-| Sanity | Headless, $99/mes, más features | Alternativa Post-MVP |
-| TinaCMS | Git-based, mejor UX para editores | Descartado |
-
-**Rationale**: 
-- Ecommerce (productos) → Medusa.js ya maneja esto
-- Blog/Contenido → Keystatic con Astro Content Collections
-- Keystatic es gratis, simple, y se integra perfectamente con Astro
-- Navío Azul lo recomienda como default para este tipo de proyectos
-
-**Rationale**: Ecommerce ya lo maneja Medusa.js. Solo necesitamos CMS para blog/posts y páginas de contenido. Keystatic es suficiente y económico.
+### 2. Airbnb Design System
+Ya integrado en el sistema actual:
+- 3-layer shadow system
+- White-first design
+- Photography-first
+- Generous whitespace
 
 ---
 
-## Data Flow
+## 1. Visual Theme & Atmosphere
 
-```
-                    ┌─────────────────────────────────────────────────────┐
-                    │                    NAVEGADOR                        │
-                    │                                                     │
-    Usuario ───────►│  ┌─────────┐    ┌─────────┐    ┌─────────┐      │
-                    │  │  Astro   │───►│ Medusa  │───►│  Bold   │      │
-                    │  │   SSR    │    │   API   │    │ Checkout│      │
-                    │  └────┬─────┘    └─────────┘    └─────────┘      │
-                    │       │                                          │
-                    │       ▼                                          │
-                    │  ┌─────────┐                                    │
-                    │  │NanoStores│◄──── localStorage                 │
-                    │  └─────────┘                                    │
-                    └─────────────────────────────────────────────────────┘
+Inspirado en Waking Herbs + Airbnb: Marketplace botánico cálido con estética de herboristería premium. Fondo blanco puro donde los productos son protagonistas.
 
-Flujo Checkout:
-1. Usuario añade producto → Nanostores actualiza → localStorage persiste
-2. Usuario inicia checkout → Redirect a Bold Checkout Widget
-3. Bold procesa pago (PSE/Tarjeta/Nequi)
-4. Bold webhook → Medusa actualiza orden → Página de éxito
-```
+**Filosofía:** "Medicina ancestral para el alma moderna" — cada producto debe sentirse como un descubrimiento sagrado, no una transacción.
 
 ---
 
-## File Structure
+## 2. Color Palette & Roles
 
+### Brand Colors (Minimalist Sacred)
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--white` | #ffffff | Fondo principal, cards |
+| `--negro` | #000000 | Headings principales |
+| `--near-black` | #222222 | Texto body (cálido) |
+| `--tabaco` | #8B4513 | Acento ocasional |
+| `--ceniza` | #7b8084 | Textos secundarios, metadata |
+| `--humo` | #2A2A2A | Footer, elementos oscuros |
+| `--papel` | #F5F5F0 | Secciones contrastadas |
+| `--verde-botanico` | #6d5e4d | Acento principal |
+
+### Semantic Colors
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--whatsapp` | #25D366 | Botón WhatsApp |
+| `--success` | #22C55E | Estados éxito |
+| `--error` | #EF4444 | Estados error |
+| `--warning` | #F59E0B | Estados warning |
+
+---
+
+## 3. Typography Rules
+
+### Font Families
+- **Display/Headings**: `Playfair Display`, serif — elegancia ancestral
+- **Body/UI**: `Inter`, sans-serif — legibilidad moderna
+
+### Hierarchy
+| Role | Font | Size | Weight | Line Height | Letter Spacing |
+|------|------|------|--------|-------------|----------------|
+| H1 (Hero) | Playfair | 56px | 700 | 1.1 | -0.02em |
+| H2 (Section) | Playfair | 40px | 700 | 1.2 | -0.02em |
+| H3 (Card) | Playfair | 24px | 600 | 1.3 | -0.01em |
+| H4 (Product) | Inter | 18px | 600 | 1.4 | -0.44px |
+| H5 (Meta) | Inter | 12px | 500 | 1.5 | 0.05em |
+| Body | Inter | 16px | 400 | 1.6 | normal |
+
+---
+
+## 4. Component Specifications
+
+### Navbar (WAKING HERBS STYLE)
+**Estructura:**
+- Top bar: (sin selectores de moneda - solo COP)
+- Logo: Centrado
+- Mega-menu RAPÉ:
+  - RAPÉ TRIBES A-K (Apurina, Arara, Huitoto, Kamanagua, etc.)
+  - RAPÉ TRIBES M-Z (Nukini, Piaroa, Shawandawa, etc.)
+  - HOME MADE BLENDS
+  - amasing rapes
+  - Master Rapé Collection
+  - MAPACHO FREE
+- Links: about, blog, FAQ's, contacto (minúsculas)
+- Cart icon a la derecha
+
+**Lo que NO usamos:**
+- ❌ Selectores $ € £
+- ❌ "left to free shipping"
+- ❌ Mayúsculas en links
+
+### Hero Section (EDITADO)
+**Layout: IMAGEN IZQUIERDA (como Waking Herbs, NO derecha)**
 ```
-octavo-fuego/
-├── astro.config.mjs              # Astro config + integrations
-├── keystatic.config.ts          # Keystatic CMS config
-├── tailwind.config.js            # Tailwind + custom colors
-├── src/
-│   ├── content/
-│   │   ├── blog/                    # Keystatic/Astro Content Collections
-│   │   │   ├── guia-rape-principiantes.md
-│   │   │   ├── historia-rape.md
-│   │   │   └── ...
-│   │   └── pages/                  # Páginas de contenido
-│   │       ├── profecia.md
-│   │       └── sobre-nosotros.md
-│   ├── components/
-│   │   ├── ui/
-│   │   │   ├── Button.astro           # Primary/Ghost/Disabled
-│   │   │   ├── Card.astro             # Product card
-│   │   │   ├── Input.astro            # Form input
-│   │   │   ├── Badge.astro            # Trust badges
-│   │   │   ├── Modal.tsx               # Quick View (React island)
-│   │   │   ├── Tabs.tsx                # PDP tabs (React island)
-│   │   │   └── Toast.tsx               # Notifications (React island)
-│   │   ├── layout/
-│   │   │   ├── Navbar.astro            # Fixed navbar + dropdown
-│   │   │   ├── Footer.astro           # 4-column footer
-│   │   │   └── Container.astro        # Max-width wrapper
-│   │   ├── product/
-│   │   │   ├── ProductCard.astro      # Grid card
-│   │   │   ├── ProductGrid.astro      # PLP grid
-│   │   │   ├── ProductGallery.astro   # PDP image gallery
-│   │   │   └── QuickView.tsx          # Modal quick view
-│   │   ├── cart/
-│   │   │   ├── CartDrawer.tsx         # Slide-out cart (React island)
-│   │   │   ├── CartItem.astro         # Item in cart
-│   │   │   └── CartCounter.astro      # Navbar counter
-│   │   ├── checkout/
-│   │   │   ├── CheckoutForm.tsx        # 4-step form
-│   │   │   └── OrderSummary.astro      # Sidebar summary
-│   │   ├── quiz/
-│   │   │   └── QuizSection.tsx        # "¿Cuál es tu intención?" (React)
-│   │   ├── seo/
-│   │   │   ├── JsonLd.astro           # Base schema component
-│   │   │   ├── OrganizationSchema.astro
-│   │   │   ├── ProductSchema.astro
-│   │   │   └── BreadcrumbSchema.astro
-│   │   └── FloatingWhatsApp.tsx      # WA button (already created)
-│   │
-│   ├── layouts/
-│   │   ├── Layout.astro               # Base layout + head
-│   │   ├── ProductLayout.astro       # PDP layout
-│   │   └── CheckoutLayout.astro      # Checkout layout
-│   │
-│   ├── pages/
-│   │   ├── index.astro               # Homepage
-│   │   ├── tienda/
-│   │   │   └── index.astro          # PLP
-│   │   ├── producto/
-│   │   │   └── [slug].astro         # PDP
-│   │   ├── carrito/
-│   │   │   └── index.astro          # Cart page
-│   │   ├── checkout/
-│   │   │   ├── index.astro          # Checkout
-│   │   │   └── success.astro       # Order confirmation
-│   │   ├── nosotros/
-│   │   │   └── index.astro          # About page
-│   │   └── contacto/
-│   │       └── index.astro          # Contact page
-│   │
-│   ├── stores/
-│   │   └── cartStore.ts             # Nanostores cart state
-│   │
-│   ├── i18n/
-│   │   ├── es.json                  # Español (default)
-│   │   ├── en.json                  # English
-│   │   └── pt.json                  # Português
-│   │
-│   ├── utils/
-│   │   ├── i18n.ts                 # Translation helpers
-│   │   ├── formatCurrency.ts        # COP formatter
-│   │   └── bold.ts                 # Bold checkout helpers
-│   │
-│   └── styles/
-│       └── global.css              # Tailwind + custom properties
-│
-├── medusa/                          # Medusa.js backend (separate)
-│   ├── src/
-│   │   ├── api/
-│   │   │   └── routes/
-│   │   │       └── bold/
-│   │   │           └── webhook.ts  # Bold webhook handler
-│   │   └── models/
-│   │       └── product.ts
-│   └── medusa-config.js
-│
-└── public/
-    ├── images/
-    │   └── productos/              # Product images (downloaded)
-    └── fonts/                      # Playfair Display, Inter
+[Imagen 50%] | [Texto 50%]
+  Grande         H1 Título
+  Bobinsana      Subtítulo
+                 CTA button
+```
+
+### Medicine Card (Airbnb Style)
+- Background: #ffffff
+- Radius: 20px
+- Shadow: 3-layer Airbnb system
+- Image: 1:1 ratio
+
+### Footer (WAKING HERBS STYLE)
+- Logo + tagline: "Juntxs recolectamos los regalos más bellos de la naturaleza."
+- 4 columnas:
+  1. Productos (Rapé, Sananga, Kuripes)
+  2. Información (Nosotros, Blog, FAQ, Contacto)
+  3. Cuenta (Mi cuenta, Pedidos)
+  4. Legal (Términos, Privacidad)
+- Badges: Trust (reviews), Security (SSL)
+- Payment icons
+- Newsletter input
+- Social: Facebook, Instagram
+
+---
+
+## 5. Shadow System (3-Layer Airbnb)
+
+```css
+--shadow-card:
+  rgba(0,0,0,0.02) 0px 0px 0px 1px,
+  rgba(0,0,0,0.04) 0px 2px 6px,
+  rgba(0,0,0,0.1) 0px 4px 8px;
 ```
 
 ---
 
-## Key Interfaces
+## 6. Border Radius
 
-### CartItem (Nanostores)
-
-```typescript
-interface CartItem {
-  id: string;              // Product ID from Medusa
-  variantId: string;        // Variant ID
-  nombre: string;
-  nombreEn: string;
-  nombrePt: string;
-  etnia: string;
-  precio: number;          // COP
-  cantidad: number;
-  imagen: string;         // URL
-  slug: string;
-}
-```
-
-### Product (from Medusa)
-
-```typescript
-interface Product {
-  id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  variants: Variant[];
-  metadata: {
-    etnia: string;
-    tipo: 'rape' | 'sananga' | 'kuripe' | 'accesorio';
-  };
-}
-
-interface Variant {
-  id: string;
-  title: string;           // "10g", "30ml", etc.
-  prices: { amount: number; currency: 'cop' }[];
-  inventory: number;
-}
-```
-
-### Translation Structure
-
-```typescript
-interface Translations {
-  [key: string]: {
-    [locale: string]: string
-  }
-}
-
-// Usage: t('home.hero.title', 'es') → "Enciende tu Octavo Fuego"
-```
+| Element | Radius |
+|---------|--------|
+| Buttons | 8px |
+| Cards | 20px |
+| Badges | 14px |
+| Pills | 20px |
 
 ---
 
-## Testing Strategy
+## 7. Responsive Breakpoints
 
-| Layer | What | How |
-|-------|------|-----|
-| Unit | Helpers: formatCurrency, i18n | Vitest |
-| Unit | CartStore: add/remove/update | Vitest |
-| Integration | API routes: /tienda, /producto/[slug] | Playwright |
-| E2E | Checkout flow completo | Playwright |
-| E2E | Quiz interaction | Playwright |
-| Visual | Product cards, navbar, modals | Screenshot diff |
+| Name | Width | Columns |
+|------|-------|---------|
+| Mobile | <640px | 1 |
+| Tablet | 640-1024px | 2 |
+| Desktop | 1024-1280px | 3-4 |
 
 ---
 
-## Open Questions
+## 8. To-Do (Próximos Cambios)
 
-- [ ] ¿Usar Medusa.js con datos mock para MVP o conectar desde el inicio?
-- [ ] ¿Bold webhook necesita autenticación adicional?
-- [ ] ¿Productos físicos o digitales (para calcular envío)?
+### Implementar después
+- [ ] Mega-menu navbar estilo Waking Herbs
+- [ ] Hero con imagen a la izquierda
+- [ ] Footer estilo Waking Herbs con badges
+- [ ] Precio más grande en PDP
 
 ---
 
-## Next Step
+## 9. Design Files Reference
 
-Ready for sdd-tasks: crear breakdown de tareas de implementación.
+**Imágenes de productos:**
+- Rape: `/images/productos/rape/bobinsana-rape-2.webp`
+- Kuripes: `/images/productos/kuripes/Hauxhaux_Kuripe_001_B.jpg`

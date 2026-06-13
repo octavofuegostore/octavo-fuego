@@ -9,7 +9,7 @@
   --color-black: #000000;
   --color-white: #FFFFFF;
   --color-tabacco: #8B4513;
-  --color-ceniza: #C0C0C0;
+  --color-ceniza: #7b8084;
   --color-humo: #2A2A2A;
   --color-papel: #F5F5F0;
   
@@ -23,7 +23,7 @@
   --font-display: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
   
-  /* Spacing */
+  /* Spacing (base 8px) */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
   --spacing-3: 1rem;
@@ -34,36 +34,64 @@
   --spacing-16: 6rem;
   --spacing-24: 8rem;
   
-  /* Border Radius - Cuadrado (minimalista) */
+  /* Border Radius - Airbnb Style */
+  --radius-button: 8px;
+  --radius-card: 20px;
+  --radius-badge: 14px;
+  --radius-pill: 20px;
   --radius: 0;
 }
 
-/* Theme Override for Shadcn - Dark Minimalist Sacred */
+/* Theme Override for Shadcn - White First Minimalist Sacred */
 :root {
-  --background: var(--color-black);
-  --foreground: var(--color-white);
-  --card: var(--color-humo);
-  --card-foreground: var(--color-white);
-  --popover: var(--color-humo);
-  --popover-foreground: var(--color-white);
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+  --card: var(--color-white);
+  --card-foreground: var(--color-black);
+  --popover: var(--color-white);
+  --popover-foreground: var(--color-black);
   --primary: var(--color-tabacco);
   --primary-foreground: var(--color-white);
-  --secondary: var(--color-humo);
-  --secondary-foreground: var(--color-ceniza);
-  --muted: var(--color-humo);
-  --muted-foreground: var(--color-ceniza);
+  --secondary: var(--color-papel);
+  --secondary-foreground: var(--color-black);
+  --muted: var(--color-papel);
+  --muted-foreground: #666666;
   --accent: var(--color-tabacco);
   --accent-foreground: var(--color-white);
   --destructive: var(--color-error);
   --destructive-foreground: var(--color-white);
-  --border: var(--color-humo);
-  --input: var(--color-humo);
+  --border: #E5E5E5;
+  --input: var(--color-white);
   --ring: var(--color-tabacco);
+  
+  /* Design Tokens - Airbnb Style */
+  --verde-botanico: #6d5e4d;
+  --near-black: #222222;
+  --ceniza: #7b8084;
+  
+  /* Shadow System - 3 Layer */
+  --shadow-card:
+    rgba(0,0,0,0.02) 0px 0px 0px 1px,
+    rgba(0,0,0,0.04) 0px 2px 6px,
+    rgba(0,0,0,0.1) 0px 4px 8px;
+  --shadow-hover: rgba(0,0,0,0.08) 0px 4px 12px;
+  
+  /* Spacing Tokens (base 8px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
 }
 
 /* Selection */
 ::selection {
-  background-color: var(--color-tabacco);
+  background-color: var(--verde-botanico);
   color: var(--color-white);
 }
 
@@ -74,15 +102,15 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-humo);
+  background: var(--color-papel);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-tabacco);
+  background: #CCCCCC;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-ceniza);
+  background: var(--verde-botanico);
 }
 
 /* Base Styles */
@@ -99,8 +127,8 @@
   }
   
   body {
-    background-color: var(--color-black);
-    color: var(--color-white);
+    background-color: var(--color-white);
+    color: var(--near-black);
     line-height: 1.6;
   }
 }

@@ -1,0 +1,53 @@
+---
+interface Props {
+  categories: Array<{
+    name: string;
+    value: string;
+    count: number;
+  }>;
+  currentFilter: string;
+  baseUrl?: string;
+}
+
+const { categories, currentFilter, baseUrl = '/tienda' } = Astro.props;
+
+function getPageUrl(filter: string) {
+  const params = new URLSearchParams();
+  if (filter && filter !== 'all') params.set('filter', filter);
+  const queryString = params.toString();
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
+}
+---
+
+<div class="flex overflow-x-auto pb-2 gap-3 scrollbar-hide snap-x snap-mandatory">
+  {categories.map((cat) => (
+    <a
+      href={getPageUrl(cat.value)}
+      class:list={[
+        "flex-shrink-0 px-5 py-2.5 text-sm font-medium rounded-[var(--radius-pill)] transition-all duration-200 snap-start",
+        cat.value === currentFilter
+          ? "bg-[var(--verde-botanico)] text-white shadow-sm"
+          : "bg-white text-[var(--ceniza)] border border-gray-200 hover:border-[var(--verde-botanico)] hover:text-[var(--verde-botanico)]"
+      ]}
+      data-filter={cat.value}
+    >
+      {cat.name}
+      <span class:list={[
+        "ml-1.5",
+        cat.value === currentFilter ? "text-white/70" : "text-gray-400"
+      ]}>
+        ({cat.count})
+      </span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

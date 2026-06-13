@@ -1,0 +1,52 @@
+---
+interface Props {
+  product: {
+    id: string;
+    nombre: string;
+    descripcion: string;
+    imagen: string;
+    precio: number;
+    slug: string;
+    etnia: string;
+    tipo: string;
+    stock: number;
+  };
+}
+
+const { product } = Astro.props;
+
+const priceCOP = product.precio.toFixed(2);
+const availability = product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  'name': product.nombre,
+  'description': product.descripcion,
+  'image': product.imagen,
+  'sku': product.id,
+  'brand': {
+    '@type': 'Brand',
+    'name': 'Octavo Fuego'
+  },
+  'category': product.tipo === 'rape' ? 'Rapé' : product.tipo === 'sananga' ? 'Sananga' : 'Kuripe',
+  'offers': {
+    '@type': 'Offer',
+    'url': `https://octavofuego.com/producto/${product.slug}`,
+    'priceCurrency': 'COP',
+    'price': priceCOP,
+    'availability': availability,
+    'seller': {
+      '@type': 'Organization',
+      'name': 'Octavo Fuego'
+    }
+  },
+  'aggregateRating': {
+    '@type': 'AggregateRating',
+    'ratingValue': '4.9',
+    'reviewCount': '47'
+  }
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

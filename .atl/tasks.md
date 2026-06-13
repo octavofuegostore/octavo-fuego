@@ -12,14 +12,14 @@
 
 ## Phase 2: Design System
 
-- [ ] 2.1 Configure Tailwind with custom color tokens
-- [ ] 2.2 Create base Button component (Tabaco primary, ghost secondary)
-- [ ] 2.3 Create Card component (Humo background, Tabaco hover border)
-- [ ] 2.4 Create Input component (border-bottom only style)
-- [ ] 2.5 Create Badge component (trust badges, labels)
-- [ ] 2.6 Create Modal/Dialog component (Quick View)
-- [ ] 2.7 Create Tabs component (PDP: Descripción, Uso, Etnia)
-- [ ] 2.8 Create Dropdown component (Navbar)
+- [x] 2.1 Configure Tailwind with custom color tokens
+- [x] 2.2 Create base Button component (Tabaco primary, ghost secondary)
+- [x] 2.3 Create Card component (Humo background, Tabaco hover border)
+- [x] 2.4 Create Input component (border-bottom only style)
+- [x] 2.5 Create Badge component (trust badges, labels)
+- [x] 2.6 Create Modal/Dialog component (Quick View)
+- [x] 2.7 Create Tabs component (PDP: Descripción, Uso, Etnia)
+- [x] 2.8 Create Dropdown component (Navbar)
 
 ## Phase 3: i18n Infrastructure
 
@@ -31,10 +31,10 @@
 
 ## Phase 4: Layout Components
 
-- [ ] 4.1 Create base Layout.astro with SEO meta tags
-- [ ] 4.2 Create Navbar with dropdown (Tienda ▾ → Rapé, Sananga, Kuripes, Accesorios)
-- [ ] 4.3 Create Footer (4 columns: Productos, Nosotros, Ayuda, Conecta)
-- [ ] 4.4 Integrate FloatingWhatsApp component (green, animated, direct WA link)
+- [x] 4.1 Create base Layout.astro with SEO meta tags
+- [x] 4.2 Create Navbar with dropdown (Tienda ▾ → Rapé, Sananga, Kuripes, Accesorios)
+- [x] 4.3 Create Footer (4 columns: Productos, Nosotros, Ayuda, Conecta)
+- [x] 4.4 Integrate FloatingWhatsApp component (green, animated, direct WA link)
 - [ ] 4.5 Add ViewTransitions for page navigation
 
 ## Phase 5: Homepage
@@ -48,38 +48,38 @@
 
 ## Phase 6: Product Pages
 
-- [ ] 6.1 PLP: Product Listing Page with filters (Etnia, Tipo, Precio)
-- [ ] 6.2 PLP: Product card component (image, etnia, price, quick-add)
-- [ ] 6.3 PLP: Pagination
-- [ ] 6.4 PDP: Product Detail Page with image gallery
-- [ ] 6.5 PDP: Tabs (Descripción, Uso Ceremonial, La Etnia)
-- [ ] 6.6 PDP: Quantity selector + Add to Cart
+- [x] 6.1 PLP: Product Listing Page with filters (Etnia, Tipo, Precio)
+- [x] 6.2 PLP: Product card component (image, etnia, price, quick-add)
+- [x] 6.3 PLP: Pagination
+- [x] 6.4 PDP: Product Detail Page with image gallery
+- [x] 6.5 PDP: Tabs (Descripción, Uso Ceremonial, La Etnia)
+- [x] 6.6 PDP: Quantity selector + Add to Cart
 - [ ] 6.7 Quick View modal (from PLP)
 - [ ] 6.8 Related products section
 
 ## Phase 7: Cart & Checkout
 
-- [ ] 7.1 Create `src/store/cartStore.ts` with Nanostores
-- [ ] 7.2 Create CartDrawer (slide-out from right, from Pipod)
-- [ ] 7.3 Create Cart page (full cart view)
-- [ ] 7.4 Create Checkout page (4 steps: Info, Envío, Pago, Listo)
+- [x] 7.1 Create `src/store/cartStore.ts` with Nanostores
+- [x] 7.2 Create CartDrawer (slide-out from right, from Pipod)
+- [x] 7.3 Create Cart page (full cart view)
+- [x] 7.4 Create Checkout page (4 steps: Info, Envío, Pago, Listo)
 - [ ] 7.5 Integrate Bold Payment Gateway (PSE, Nequi, Tarjetas)
 - [ ] 7.6 Checkout success page with WhatsApp CTA
 
 ## Phase 8: SEO & Schema
 
-- [ ] 8.1 Create JsonLdSchema.astro component (from Pipod)
-- [ ] 8.2 Create LocalBusinessSchema.astro (Organization, contact)
-- [ ] 8.3 Create ProductSchema.astro (offers, availability)
-- [ ] 8.4 Create BreadcrumbSchema.astro
-- [ ] 8.5 Add sitemap.xml and robots.txt
-- [ ] 8.6 Add Open Graph and Twitter Card meta tags
+- [x] 8.1 Create JsonLdSchema.astro component (from Pipod)
+- [x] 8.2 Create LocalBusinessSchema.astro (Organization, contact)
+- [x] 8.3 Create ProductSchema.astro (offers, availability)
+- [x] 8.4 Create BreadcrumbSchema.astro
+- [x] 8.5 Add sitemap.xml and robots.txt
+- [x] 8.6 Add Open Graph and Twitter Card meta tags
 
 ## Phase 9: Blog (Post-MVP)
 
-- [ ] 9.1 Set up MDX for blog posts
-- [ ] 9.2 Create blog listing page
-- [ ] 9.3 Create blog post template
+- [x] 9.1 Set up MDX for blog posts
+- [x] 9.2 Create blog listing page
+- [x] 9.3 Create blog post template
 - [ ] 9.4 Add first 5 SEO posts (from editorial calendar)
 
 ## Phase 10: Testing & Polish

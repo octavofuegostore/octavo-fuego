@@ -12,10 +12,10 @@ const categories = [
 ];
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 bg-black/80 backdrop-blur-md border-b border-humo">
+<header class="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 bg-white border-b border-gray-100">
   <nav class="max-w-7xl mx-auto h-full px-6 md:px-12 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="font-display text-xl md:text-2xl font-bold tracking-tight">
+    <a href="/" class="font-display text-xl md:text-2xl font-bold tracking-tight text-[var(--near-black)]">
       {t.common.brand}
     </a>
 
@@ -24,7 +24,7 @@ const categories = [
       <!-- Tienda with Dropdown -->
       <div class="relative group">
         <button 
-          class="flex items-center gap-1 text-sm font-medium text-white/80 hover:text-white transition-colors"
+          class="flex items-center gap-1 text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors"
           aria-expanded="false"
           aria-haspopup="true"
         >
@@ -36,19 +36,19 @@ const categories = [
         
         <!-- Dropdown Menu -->
         <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-          <div class="bg-humo border border-humo/50 shadow-xl py-2 min-w-[160px]">
+          <div class="bg-white border border-gray-200 shadow-[var(--shadow-hover)] py-2 min-w-[160px] rounded-[var(--radius-card)]">
             {categories.map((cat) => (
               <a 
                 href={cat.href}
-                class="block px-4 py-2 text-sm text-white/70 hover:text-white hover:bg-tabacco/20 transition-colors"
+                class="block px-4 py-2 text-sm text-[var(--ceniza)] hover:text-[var(--near-black)] hover:bg-gray-50 transition-colors"
               >
                 {cat.name}
               </a>
             ))}
-            <div class="border-t border-humo/50 mt-2 pt-2">
+            <div class="border-t border-gray-100 mt-2 pt-2">
               <a 
                 href="/tienda"
-                class="block px-4 py-2 text-sm text-tabacco hover:text-white transition-colors"
+                class="block px-4 py-2 text-sm text-[var(--verde-botanico)] hover:text-[var(--near-black)] transition-colors"
               >
                 {t.nav.verTodos}
               </a>
@@ -57,31 +57,31 @@ const categories = [
         </div>
       </div>
 
-      <a href="/blog" class="text-sm font-medium text-white/80 hover:text-white transition-colors">
+      <a href="/blog" class="text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         {t.nav.blog}
       </a>
-      <a href="/nosotros" class="text-sm font-medium text-white/80 hover:text-white transition-colors">
+      <a href="/nosotros" class="text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         {t.nav.nosotros}
       </a>
-      <a href="/contacto" class="text-sm font-medium text-white/80 hover:text-white transition-colors">
+      <a href="/contacto" class="text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         {t.nav.contacto}
       </a>
     </div>
 
     <!-- Right side: Cart -->
     <div class="flex items-center gap-4">
-      <a href="/carrito" class="relative p-2 text-white/80 hover:text-white transition-colors">
+      <a href="/carrito" class="relative p-2 text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
         <!-- Cart count badge (hidden when 0) -->
-        <span class="absolute -top-1 -right-1 w-5 h-5 bg-tabacco text-white text-xs flex items-center justify-center hidden">
+        <span class="absolute -top-1 -right-1 w-5 h-5 bg-[var(--verde-botanico)] text-white text-xs flex items-center justify-center hidden">
           0
         </span>
       </a>
 
       <!-- Mobile menu button -->
-      <button class="md:hidden p-2 text-white/80 hover:text-white" aria-label="Menu">
+      <button class="md:hidden p-2 text-[var(--ceniza)] hover:text-[var(--near-black)]" aria-label="Menu">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>

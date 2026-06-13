@@ -1,0 +1,172 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/i18n';
+import { formatCOP } from '@/stores/cartStore';
+import { CartStore } from '@/components/cart/CartStore';
+
+const t = useTranslations('es');
+---
+
+<Layout title="Carrito" description="Tu carrito de compras">
+  <CartStore client:load />
+  
+  <section class="py-16 md:py-24">
+    <div class="max-w-4xl mx-auto px-6 md:px-12">
+      <!-- Header -->
+      <div class="text-center mb-12">
+        <h1 class="font-display text-4xl md:text-5xl font-bold mb-4">
+          Tu Carrito
+        </h1>
+        <p class="text-ceniza text-lg">
+          Revisa tus productos antes de proceder al pago
+        </p>
+      </div>
+
+      <!-- Cart Items Container -->
+      <div id="cart-container" class="space-y-6 mb-12">
+        <!-- Items loaded via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="empty-state" class="hidden text-center py-16">
+        <div class="mb-8">
+          <svg class="w-24 h-24 mx-auto text-humo" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <p class="text-ceniza text-xl mb-6">Tu carrito está vacío</p>
+        <Button variant="secondary" onclick="window.location.href='/tienda'">
+          Explorar productos
+        </Button>
+      </div>
+
+      <!-- Cart Summary -->
+      <div id="cart-summary" class="hidden border-t border-humo pt-8">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-8">
+          <!-- Summary -->
+          <div class="w-full md:w-1/2 space-y-4">
+            <div class="flex justify-between items-center">
+              <span class="text-ceniza">Subtotal</span>
+              <span id="subtotal" class="font-semibold">$0</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-ceniza">Envío</span>
+              <span class="text-success">Gratis</span>
+            </div>
+            <div class="flex justify-between items-center pt-4 border-t border-humo">
+              <span class="font-semibold text-lg">Total</span>
+              <span id="total" class="font-display text-2xl font-bold text-tabacco">$0</span>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="w-full md:w-1/2 flex flex-col gap-4">
+            <Button size="lg" class="w-full" onclick="window.location.href='/checkout'">
+              Proceder al Pago
+            </Button>
+            <Button variant="ghost" class="w-full" onclick="window.location.href='/tienda'">
+              Continuar Comprando
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { cartItems, cartTotal, removeFromCart, updateQuantity, formatCOP } from '@/stores/cartStore';
+  import type { CartItem } from '@/stores/cartStore';
+
+  function renderCart() {
+    const container = document.getElementById('cart-container');
+    const emptyState = document.getElementById('empty-state');
+    const cartSummary = document.getElementById('cart-summary');
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+
+    if (!container || !emptyState || !cartSummary || !subtotalEl || !totalEl) return;
+
+    const items = cartItems.get();
+
+    if (items.length === 0) {
+      container.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      cartSummary.classList.add('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    cartSummary.classList.remove('hidden');
+
+    container.innerHTML = items.map((item: CartItem) => `
+      <div class="flex flex-col sm:flex-row gap-6 p-6 bg-humo/20 border border-humo/30" data-variant-id="${item.variantId}">
+        <!-- Image -->
+        <div class="w-full sm:w-32 h-32 bg-humo/50 flex-shrink-0">
+          <img src="${item.imagen}" alt="${item.nombre}" class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Details -->
+        <div class="flex-1 min-w-0">
+          <div class="flex justify-between items-start gap-4">
+            <div>
+              <p class="text-ceniza text-xs uppercase tracking-widest mb-1">${item.etnia}</p>
+              <h3 class="font-display text-lg font-semibold mb-2">${item.nombre}</h3>
+              <p class="text-tabacco font-semibold">${formatCOP(item.precio)}</p>
+            </div>
+            <button onclick="removeItem('${item.variantId}')" class="text-ceniza hover:text-error transition-colors p-2" aria-label="Eliminar producto">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Quantity Controls -->
+          <div class="flex items-center gap-4 mt-4">
+            <div class="flex items-center border border-humo">
+              <button onclick="decreaseQty('${item.variantId}', ${item.cantidad})" class="w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors" aria-label="Reducir cantidad">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                </svg>
+              </button>
+              <span id="qty-${item.variantId}" class="w-12 text-center">${item.cantidad}</span>
+              <button onclick="increaseQty('${item.variantId}', ${item.cantidad})" class="w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors" aria-label="Aumentar cantidad">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+              </button>
+            </div>
+            <span class="text-ceniza text-sm">Subtotal: <span id="item-total-${item.variantId}">${formatCOP(item.precio * item.cantidad)}</span></span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    const total = cartTotal.get();
+    subtotalEl.textContent = formatCOP(total);
+    totalEl.textContent = formatCOP(total);
+  }
+
+  function removeItem(variantId: string) {
+    removeFromCart(variantId);
+    renderCart();
+  }
+
+  function increaseQty(variantId: string, currentQty: number) {
+    updateQuantity(variantId, currentQty + 1);
+    renderCart();
+  }
+
+  function decreaseQty(variantId: string, currentQty: number) {
+    updateQuantity(variantId, currentQty - 1);
+    renderCart();
+  }
+
+  (window as any).removeItem = removeItem;
+  (window as any).increaseQty = increaseQty;
+  (window as any).decreaseQty = decreaseQty;
+
+  cartItems.subscribe(renderCart);
+  renderCart();
+</script>

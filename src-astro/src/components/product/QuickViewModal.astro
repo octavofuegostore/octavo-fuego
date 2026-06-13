@@ -1,0 +1,122 @@
+---
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+
+interface Props {
+  product: {
+    slug: string;
+    nombre: string;
+    etnia: string;
+    precio: number;
+    imagen: string;
+    descripcion?: string;
+  };
+}
+
+const { product } = Astro.props;
+
+const formattedPrice = new Intl.NumberFormat('es-CO', {
+  style: 'currency',
+  currency: 'COP',
+  minimumFractionDigits: 0,
+}).format(product.precio);
+---
+
+<Dialog id={`quickview-${product.slug}`}>
+  <DialogContent className="max-w-3xl p-0 gap-0 bg-humo border-humo">
+    <div class="grid md:grid-cols-2">
+      <!-- Image -->
+      <div class="aspect-square md:aspect-auto">
+        <img 
+          src={product.imagen} 
+          alt={product.nombre}
+          class="w-full h-full object-cover"
+          transition:name={`product-image-${product.slug}`}
+        />
+      </div>
+
+      <!-- Content -->
+      <div class="p-6 md:p-8 flex flex-col">
+        <p class="text-ceniza text-xs uppercase tracking-widest mb-2">{product.etnia}</p>
+        <h2 class="font-display text-2xl font-semibold mb-4" transition:name={`product-title-${product.slug}`}>
+          {product.nombre}
+        </h2>
+        <p class="text-tabacco text-2xl font-semibold mb-6">{formattedPrice}</p>
+        
+        {product.descripcion && (
+          <p class="text-ceniza text-sm mb-6 line-clamp-3">{product.descripcion}</p>
+        )}
+
+        <!-- Quantity -->
+        <div class="mb-6">
+          <label class="block text-sm mb-2">Cantidad</label>
+          <div class="flex items-center border border-humo w-fit">
+            <button 
+              class="qty-btn w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors"
+              data-action="decrease"
+              data-product={product.slug}
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+              </svg>
+            </button>
+            <span 
+              id={`qty-${product.slug}`}
+              class="w-12 text-center"
+            >1</span>
+            <button 
+              class="qty-btn w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors"
+              data-action="increase"
+              data-product={product.slug}
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-auto space-y-3">
+          <Button 
+            className="w-full" 
+            size="lg"
+            data-add-to-cart={product.slug}
+          >
+            Añadir al Carrito
+          </Button>
+          <Button variant="secondary" className="w-full" onclick={`document.getElementById('quickview-${product.slug}-close').click()`}>
+            Ver más detalles
+          </Button>
+        </div>
+      </div>
+    </div>
+  </DialogContent>
+</Dialog>
+
+<script>
+  document.querySelectorAll('[data-add-to-cart]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const slug = (e.target as HTMLElement).dataset.addToCart;
+      const qty = parseInt(document.getElementById(`qty-${slug}`)?.textContent || '1');
+      const qtyInput = document.querySelector(`[data-qty-input="${slug}"]`);
+      
+      const productData = {
+        id: slug,
+        variantId: `${slug}-default`,
+        nombre: document.querySelector(`[data-product-name="${slug}"]`)?.textContent || '',
+        etnia: document.querySelector(`[data-product-etnia="${slug}"]`)?.textContent || '',
+        precio: parseInt(document.querySelector(`[data-product-price="${slug}"]`)?.textContent?.replace(/\D/g, '') || '0'),
+        cantidad: qty,
+        imagen: document.querySelector(`[data-product-image="${slug}"]`)?.src || '',
+        slug: slug,
+        tipo: 'rape' as const
+      };
+
+      import('@/stores/cartStore').then(({ addToCart }) => {
+        addToCart(productData);
+        document.getElementById(`quickview-${slug}-close`)?.click();
+      });
+    });
+  });
+</script>
