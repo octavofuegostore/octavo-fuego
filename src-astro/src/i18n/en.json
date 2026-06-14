@@ -5,11 +5,14 @@
   },
   "nav": {
     "tienda": "Shop",
+    "catalogo": "Catalog",
+    "profecia": "Prophecy",
     "blog": "Blog",
     "nosotros": "About",
     "contacto": "Contact",
     "carrito": "Cart",
     "verTodos": "View all",
+    "verCatalogo": "View Full Catalog",
     "rape": "Rapé",
     "sananga": "Sananga",
     "kuripes": "Kuripes",
@@ -111,5 +114,40 @@
     "titulo": "Page not found",
     "mensaje": "The page you are looking for does not exist.",
     "cta": "Back to home"
+  },
+  "catalogo": {
+    "title": "Rapé Catalog",
+    "subtitle": "Amazonian Ancestral Medicine",
+    "quickRef": "Quick Reference Table",
+    "varieties": "Sacred Medicine Varieties",
+    "intentMap": "Intent Map",
+    "intensity": "Intensity Profile and Olfactory Notes",
+    "glossary": "Glossary of Ancestral Alchemy",
+    "generalNote": "General Note: All rapés are used in ceremonies. The key distinction between varieties lies in their orientation: some have greater benefit in physical health and matter cleansing, while others act with more force on the spiritual and energetic plane.",
+    "details": "View details",
+    "buyWhatsApp": "Buy via WhatsApp",
+    "wholesale": "Wholesale",
+    "contactUs": "Contact us",
+    "pricing": {
+      "quantity": "Quantity",
+      "price": "Price",
+      "from": "From",
+      "contact": "Contact us",
+      "wholesaleLabel": "Wholesale (500g+)"
+    }
+  },
+  "profecia": {
+    "title": "The Prophecy of the Seven Fires",
+    "description": "The teachings of the seven prophets who came to the Anishinabe people, known as the Seven Fires of the Ojibway.",
+    "cta": "Read the Prophecy",
+    "teaserTitle": "The Eighth Fire",
+    "teaser": "Discover the prophecy of the Seven Fires and the promise of the Eighth and Final Fire — an eternal Fire of peace, love, brotherhood and sisterhood."
+  },
+  "intentions": {
+    "claridadMental": "Mental Clarity and Meditation",
+    "resetEnergetico": "Energetic Reset",
+    "bienestarFisico": "Physical and Respiratory Well-being",
+    "proteccion": "Protection and Shield",
+    "conexionEspiritual": "Deep Spiritual Connection"
   }
 }

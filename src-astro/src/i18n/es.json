@@ -5,11 +5,14 @@
   },
   "nav": {
     "tienda": "Tienda",
+    "catalogo": "Catálogo",
+    "profecia": "Profecía",
     "blog": "Blog",
     "nosotros": "Nosotros",
     "contacto": "Contacto",
     "carrito": "Carrito",
     "verTodos": "Ver todos",
+    "verCatalogo": "Ver todo el Catálogo",
     "rape": "Rapé",
     "sananga": "Sananga",
     "kuripes": "Kuripes",
@@ -111,5 +114,40 @@
     "titulo": "Página no encontrada",
     "mensaje": "La página que buscas no existe.",
     "cta": "Volver al inicio"
+  },
+  "catalogo": {
+    "title": "Catálogo de Rapé",
+    "subtitle": "Medicina Ancestral Amazónica",
+    "quickRef": "Tabla de Referencia Rápida",
+    "varieties": "Variedades de la Medicina",
+    "intentMap": "Mapa de Intenciones",
+    "intensity": "Perfil de Intensidad y Notas Olfativas",
+    "glossary": "Glosario de Alquimia Ancestral",
+    "generalNote": "Nota general: Todos los rapés son utilizados en ceremonias. La distinción clave entre variedades radica en su orientación: algunas tienen mayor beneficio en la salud física y limpieza de la materia, mientras que otras actúan con más fuerza en el plano espiritual y energético.",
+    "details": "Ver detalles",
+    "buyWhatsApp": "Comprar via WhatsApp",
+    "wholesale": "Mayorista",
+    "contactUs": "Contáctanos",
+    "pricing": {
+      "quantity": "Cantidad",
+      "price": "Precio",
+      "from": "Desde",
+      "contact": "Contáctanos",
+      "wholesaleLabel": "Mayorista (500g+)"
+    }
+  },
+  "profecia": {
+    "title": "La Profecía de los Siete Fuegos",
+    "description": "Las enseñanzas de los siete profetas que vinieron al pueblo Anishinabe, conocidas como los Siete Fuegos de los Ojibway.",
+    "cta": "Leer la Profecía",
+    "teaserTitle": "El Octavo Fuego",
+    "teaser": "Descubre la profecía de los Siete Fuegos y la promesa del Octavo y Final Fuego — un Fuego eterno de paz, amor, hermandad y fraternidad."
+  },
+  "intentions": {
+    "claridadMental": "Claridad Mental y Meditación",
+    "resetEnergetico": "Reset Energético",
+    "bienestarFisico": "Bienestar Físico y Respiratorio",
+    "proteccion": "Protección y Escudo",
+    "conexionEspiritual": "Conexión Espiritual Profunda"
   }
 }

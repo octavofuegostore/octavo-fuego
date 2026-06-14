@@ -1,0 +1,110 @@
+---
+/**
+ * IntentMap — 5 intention cards from source HTML "Mapa de Intenciones"
+ * All copy is WORD-FOR-WORD from Octavofuego_Catalogo_ESP.html
+ *
+ * @source ESP.html Intent Map section | ENG.html Intent Map section | PT.html Intent Map section
+ */
+
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n';
+import { products } from '@/data/products';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const baseUrl = `/${locale}`;
+
+// Intent map data from source HTML (word-for-word copy)
+const intentCards = [
+  {
+    intent: t.intentions.claridadMental,
+    medicineName: 'Vena de Pajé',
+    /** @source ESP.html intent-card 1 — intent-details p */
+    description: {
+      es: 'Recomendado para despejar el ruido mental, facilitar el enfoque y profundizar en prácticas introspectivas o meditativas.',
+      en: 'Recommended for clearing mental noise, facilitating focus and deepening introspective or meditative practices.',
+      pt: 'Recomendado para limpar o ruído mental, facilitar o foco e aprofundar práticas introspectivas ou meditativas.',
+    },
+    slug: 'vena-de-paje',
+  },
+  {
+    intent: t.intentions.resetEnergetico,
+    medicineName: 'Tisunú',
+    /** @source ESP.html intent-card 2 — intent-details p */
+    description: {
+      es: 'Ideal para procesos de limpieza profunda, renovación de la carga vibratoria y fortalecimiento de la conexión con la naturaleza.',
+      en: 'Ideal for deep cleansing processes, renewal of vibrational charge and strengthening the connection with nature.',
+      pt: 'Ideal para processos de limpeza profunda, renovação da carga vibratória e fortalecimento da conexão com a natureza.',
+    },
+    slug: 'tisunu',
+  },
+  {
+    intent: t.intentions.bienestarFisico,
+    medicineName: 'Pixurí, Cumarú de Cheiro o Vena de Pajé',
+    /** @source ESP.html intent-card 3 — intent-details p */
+    description: {
+      es: 'Actúan sobre el cuerpo físico despejando las vías respiratorias y aliviando tensiones cefálicas.',
+      en: 'Act on the physical body by clearing the respiratory tract and relieving headaches.',
+      pt: 'Atuam sobre o corpo físico desobstruindo as vias respiratórias e aliviando tensões cefálicas.',
+    },
+    slug: 'pixuri',
+  },
+  {
+    intent: t.intentions.proteccion,
+    medicineName: 'Cumarú de Cheiro',
+    /** @source ESP.html intent-card 4 — intent-details p */
+    description: {
+      es: 'Fortalece el plexo solar y actúa como un resguardo ante entornos de energías densas o pesadas.',
+      en: 'Strengthens the solar plexus and acts as a shield against dense or heavy energy environments.',
+      pt: 'Fortalece o plexo solar e atua como um resguardo contra ambientes de energias densas ou pesadas.',
+    },
+    slug: 'cumaru-de-cheiro',
+  },
+  {
+    intent: t.intentions.conexionEspiritual,
+    medicineName: 'Pariká',
+    /** @source ESP.html intent-card 5 — intent-details p */
+    description: {
+      es: 'La herramienta esencial para el trabajo ceremonial, la búsqueda de visión y el equilibrio de la tierra interior.',
+      en: 'The essential tool for ceremonial work, vision seeking and balancing the inner earth.',
+      pt: 'A ferramenta essencial para o trabalho cerimonial, a busca de visão e o equilíbrio da terra interior.',
+    },
+    slug: 'parika',
+  },
+];
+---
+
+<section class="py-16 md:py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--verde-botanico)] border-b border-gray-200 pb-3 mb-10 block">
+      {t.catalogo.intentMap}
+    </span>
+
+    <div class="grid gap-px bg-gray-200 border border-gray-200">
+      {intentCards.map((card) => (
+        <a
+          href={`${baseUrl}/catalogo/rape/${card.slug}`}
+          class="group bg-white p-8 md:p-10 grid md:grid-cols-[300px_1fr] gap-6 md:gap-10 items-start hover:bg-[var(--papel)] transition-colors duration-200"
+        >
+          <div>
+            <h3 class="font-display text-xl md:text-2xl font-semibold text-[var(--near-black)] group-hover:text-[var(--verde-botanico)] transition-colors">
+              {card.intent}
+            </h3>
+          </div>
+          <div>
+            <span class="text-xs uppercase tracking-[0.12em] font-semibold text-[var(--verde-botanico)] block mb-2">
+              {card.medicineName}
+            </span>
+            <p class="text-[var(--ceniza)] text-sm md:text-base leading-relaxed">
+              {card.description[locale]}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

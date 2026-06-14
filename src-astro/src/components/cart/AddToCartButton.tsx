@@ -12,7 +12,7 @@ interface AddToCartButtonProps {
     nombreEn?: string;
     nombrePt?: string;
     etnia: string;
-    tipo: 'rape' | 'sananga' | 'kuripe' | 'accesorio';
+    tipo: 'rape';
     precio: number;
     imagen: string;
     slug: string;

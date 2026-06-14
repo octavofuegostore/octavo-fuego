@@ -8,7 +8,7 @@ interface FloatingWhatsAppProps {
 }
 
 export function FloatingWhatsApp({ 
-  phoneNumber = "573001234567",
+  phoneNumber = "573172137932",
   message = "Hola, me gustaría obtener más información sobre sus productos."
 }: FloatingWhatsAppProps) {
   const t = useTranslations('es');

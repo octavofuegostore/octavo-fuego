@@ -1,117 +1,125 @@
 # Octavo Fuego - Implementation Tasks
 
 ## Project Status
-- ✅ Phase 1: Project Setup (Astro, Tailwind, shadcn/ui, Nanostores)
-- 🔄 Phase 2: Design System - IN PROGRESS
-- ✅ Phase 3: i18n Infrastructure (es/en/pt JSON files)
-- 🔄 Phase 4: Layout Components - IN PROGRESS
+- ✅ Phase 1: Project Setup (Astro 6, TailwindCSS 4, shadcn/ui, Nanostores)
+- ✅ Phase 2: Design System Components
+- ✅ Phase 3: i18n Infrastructure (es/en/pt)
+- ✅ Phase 4: Layout Components (Navbar, Footer, FloatingWhatsApp)
+- ✅ Phase 5: Homepage (Hero, Profecía, Quiz, Products, Trust Badges)
+- ✅ Phase 6: Product Pages (PLP, PDP, Category Pages)
+- ✅ Phase 7: Cart & Checkout (CartStore, CartDrawer, Checkout)
+- ✅ Phase 8: SEO & Schema (JsonLd, Sitemap, Robots, OG Tags)
+- 🔄 Phase 9: Blog (Posts exist, needs integration testing)
+- 🔄 Phase 10: Testing & Polish (IN PROGRESS)
 
 ---
 
-## Phase 2: Design System Components
+## Phase 1: Project Setup ✅
+- [x] 1.1 Initialize Astro 6.x project
+- [x] 1.2 Configure TailwindCSS 4.x with custom colors
+- [x] 1.3 Install shadcn/ui + Radix UI
+- [x] 1.4 Set up Nanostores for cart state
+- [x] 1.5 Configure Astro i18n (ES/EN/PT routes)
 
-### 2.1 Button Component
-- [x] **button.tsx** - Customized shadcn button with Octavo Fuego styling
-  - Primary: bg-tabacco (#8B4513), text-white, px-6 py-3
-  - Secondary/Ghost: border-tabacco, text-tabacco, transparent bg
-  - Disabled: opacity-50, cursor-not-allowed
-  - Hover: scale-[1.02] transition
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/ui/button.tsx`
+## Phase 2: Design System ✅
+- [x] 2.1 Button component (Tabaco primary, ghost secondary)
+- [x] 2.2 Card component (Humo background, Tabaco hover)
+- [x] 2.3 Input component (border-bottom style)
+- [x] 2.4 Badge component (trust badges, labels)
+- [x] 2.5 Modal/Dialog component
+- [x] 2.6 Tabs component (PDP: Descripción, Uso, Etnia)
+- [x] 2.7 Dropdown component (Navbar)
 
-### 2.2 Card Component
-- [x] **card.tsx** - Customized with Tabaco accent options
-  - Border: 1px solid #2A2A2A (smoke)
-  - Hover: border → #8B4513 (tabacco), shadow
-  - Radio: 0 (no border-radius - cuadrado)
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/ui/card.tsx`
+## Phase 3: i18n Infrastructure ✅
+- [x] 3.1 Spanish translations (es.json)
+- [x] 3.2 English translations (en.json)
+- [x] 3.3 Portuguese translations (pt.json)
+- [x] 3.4 i18n helper functions
+- [x] 3.5 Language switcher component (LanguageSwitcher.astro)
 
-### 2.3 ProductCard Component
-- [x] **ProductCard.astro** - Product grid card with:
-  - Product image with hover scale effect
-  - Etnia label (uppercase, ceniza)
-  - Product name (Playfair Display)
-  - Price in COP format
-  - "Añadir" button (tabacco bg)
-  - "Ver →" appears on hover
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/product/ProductCard.astro`
+## Phase 4: Layout Components ✅
+- [x] 4.1 Layout.astro with SEO meta tags
+- [x] 4.2 Navbar with dropdown (5 rapés + Profecía, Blog, Nosotros, Contacto)
+- [x] 4.3 Footer (4 columns, locale-aware)
+- [x] 4.4 FloatingWhatsApp (pure Astro, 0KB JS) ✨ UPDATED
+- [x] 4.5 Language switcher in Navbar
 
----
+## Phase 5: Homepage ✅
+- [x] 5.1 Hero section (Logo, tagline, CTA)
+- [x] 5.2 Profecía section (storytelling excerpt)
+- [x] 5.3 Quiz "¿Cuál es tu intención hoy?" (5 options)
+- [x] 5.4 Productos Destacados grid
+- [x] 5.5 Trust Badges section
+- [x] 5.6 Newsletter signup section
 
-## Phase 4: Layout Components
+## Phase 6: Product Pages ✅
+- [x] 6.1 PLP: Product Listing Page with filters
+- [x] 6.2 PLP: Product card component
+- [x] 6.3 PLP: Category pages (Rapé, Sananga, Kuripe)
+- [x] 6.4 PDP: Product Detail Page with image gallery
+- [x] 6.5 PDP: Tabs (Descripción, Uso Ceremonial, La Etnia)
+- [x] 6.6 PDP: Price buttons (selectable 10g, 20g, 30g)
+- [x] 6.7 Breadcrumb navigation (Inicio / Catálogo / Rapé / Product) ✨ FIXED
 
-### 4.1 Navbar
-- [x] **Navbar.astro** - Fixed header with:
-  - Height: 80px (desktop), 64px (mobile)
-  - Background: transparent → black/80 on scroll with backdrop blur
-  - Logo (Octavo Fuego)
-  - Desktop: Tienda dropdown (click-triggered), Blog, Nosotros, Contacto
-  - Dropdown shows: Rapé, Sananga, Kuripes, Accesorios + "Ver todos"
-  - Mobile: Hamburger menu
-  - Cart icon with count badge
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/Navbar.astro`
+## Phase 7: Cart & Checkout ✅
+- [x] 7.1 cartStore.ts with Nanostores
+- [x] 7.2 CartDrawer (slide-out from right)
+- [x] 7.3 Cart page (full cart view)
+- [x] 7.4 Checkout page (4 steps: Info, Envío, Pago, Listo)
 
-### 4.2 Footer
-- [x] **Footer.astro** - 4-column layout:
-  - Column 1: Logo + tagline + disclaimer
-  - Column 2: Tienda links (Rapé, Sananga, Kuripes, Accesorios)
-  - Column 3: Información links (Nosotros, Blog, Contacto, FAQ, Envíos)
-  - Column 4: Contacto + Social icons (Instagram, Facebook, WhatsApp)
-  - Bottom: Copyright + Términos/Privacidad links
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/Footer.astro`
+## Phase 8: SEO & Schema ✅
+- [x] 8.1 OrganizationJsonLd.astro
+- [x] 8.2 ProductSchema.astro
+- [x] 8.3 BreadcrumbSchema.astro
+- [x] 8.4 sitemap.xml and robots.txt
+- [x] 8.5 Open Graph and Twitter Card meta tags
 
-### 4.3 FloatingWhatsApp
-- [x] **FloatingWhatsApp.tsx** - WhatsApp floating button:
-  - Position: fixed, bottom-6, right-6
-  - Color: #25D366 (whatsapp green)
-  - Ring animation: ping every 8s (CSS animate-ping)
-  - Single button with WhatsApp icon
-  - Tooltip on hover: "¿Necesitas ayuda?"
-  - Opens WhatsApp with pre-filled message
-- Status: ✅ COMPLETE
-- File: `src-astro/src/components/ui/FloatingWhatsApp.tsx`
+## Phase 9: Blog 🔄
+- [x] 9.1 MDX setup for blog posts
+- [x] 9.2 Blog listing page
+- [x] 9.3 Blog post template
+- [ ] 9.4 First 5 SEO posts (from editorial calendar)
 
----
-
-## Next Recommended Tasks
-
-### Phase 5: Cart & State Management
-- [ ] Create `cartStore.ts` with Nanostores
-- [ ] Implement CartDrawer.tsx (slide-out cart)
-- [ ] Create CartItem.astro component
-- [ ] Add CartCounter to Navbar
-
-### Phase 6: Pages
-- [ ] Update `Layout.astro` to include Navbar, Footer, FloatingWhatsApp
-- [ ] Create `TiendaPage.astro` (product listing)
-- [ ] Create `ProductPage.astro` (product detail)
-- [ ] Create `CartPage.astro`
-
-### Phase 7: Checkout
-- [ ] Create checkout flow
-- [ ] Integrate Bold Checkout widget
+## Phase 10: Testing & Polish 🔄
+- [ ] 10.1 Test responsive design (mobile-first)
+- [ ] 10.2 Test cart persistence (localStorage)
+- [ ] 10.3 Test i18n language switching
+- [x] 10.4 WhatsApp floating button (pure Astro, 0KB JS)
+- [ ] 10.5 Verify Core Web Vitals (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- [ ] 10.6 Accessibility audit (WCAG AA)
 
 ---
 
-## Files Created/Modified
+## Recent Updates
 
-### Created
-- `src-astro/src/components/Navbar.astro`
-- `src-astro/src/components/Footer.astro`
-- `src-astro/src/components/ui/FloatingWhatsApp.tsx`
-- `tasks.md` (this file)
+### FloatingWhatsApp Conversion (2026-06-13)
+- Converted from React (.tsx) to pure Astro (.astro)
+- 0KB JavaScript in bundle
+- Fixed "Cannot read properties of undefined (reading 'call')" error
+- Identical visual appearance
 
-### Modified
-- `src-astro/src/components/ui/button.tsx` - Custom variants for Octavo Fuego
-- `src-astro/src/components/ui/card.tsx` - Removed border-radius, added tabacco hover
-- `src-astro/src/components/product/ProductCard.astro` - Added "Añadir" button
+### Breadcrumb Fix (2026-06-13)
+- Updated product pages to show: Inicio / Catálogo / Rapé / [Product]
+- Added Rapé category link between Catálogo and product name
 
 ---
 
-## Deviations from Spec
+## Dependencies
 
-None. All components implemented according to ui-spec.md and design.md.
+```
+Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 5 → Phase 6 → Phase 7 → Phase 8 → Phase 10
+                                                              ↓
+                                                           Phase 9
+```
+
+## Priority Order
+
+1. ~~Setup + Design System (1, 2)~~ ✅
+2. ~~Layout + Navbar + WhatsApp (4)~~ ✅
+3. ~~Homepage with Quiz (5)~~ ✅
+4. ~~Product pages (6)~~ ✅
+5. ~~Cart + Checkout (7)~~ ✅
+6. ~~i18n (3)~~ ✅
+7. ~~SEO (8)~~ ✅
+8. Blog integration (9)
+9. Testing & Polish (10)

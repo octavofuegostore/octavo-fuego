@@ -7,7 +7,7 @@ export interface CartItem {
   nombreEn: string;
   nombrePt: string;
   etnia: string;
-  tipo: 'rape' | 'sananga' | 'kuripe' | 'accesorio';
+  tipo: 'rape';
   precio: number; // COP
   cantidad: number;
   imagen: string;
@@ -16,9 +16,30 @@ export interface CartItem {
 
 const isBrowser = typeof window !== 'undefined';
 
-const initialCart: CartItem[] = isBrowser 
-  ? JSON.parse(localStorage.getItem('octavo-cart') || '[]') 
+/**
+ * Legacy tipo values that are no longer valid.
+ * If found in localStorage, filter them out with a console.warn.
+ */
+const VALID_TIPOS = new Set(['rape']);
+
+function filterLegacyItems(items: CartItem[]): CartItem[] {
+  return items.filter((item) => {
+    if (!VALID_TIPOS.has(item.tipo)) {
+      console.warn(
+        `[cartStore] Removing legacy item "${item.nombre}" with invalid tipo="${item.tipo}". ` +
+        `Only "rape" products are supported now.`
+      );
+      return false;
+    }
+    return true;
+  });
+}
+
+const rawInitialCart: CartItem[] = isBrowser
+  ? JSON.parse(localStorage.getItem('octavo-cart') || '[]')
   : [];
+
+const initialCart = filterLegacyItems(rawInitialCart);
 
 export const cartItems = atom<CartItem[]>(initialCart);
 

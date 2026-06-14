@@ -5,11 +5,14 @@
   },
   "nav": {
     "tienda": "Loja",
+    "catalogo": "Catálogo",
+    "profecia": "Profecia",
     "blog": "Blog",
     "nosotros": "Sobre",
     "contacto": "Contato",
     "carrito": "Carrinho",
     "verTodos": "Ver todos",
+    "verCatalogo": "Ver Catálogo Completo",
     "rape": "Rapé",
     "sananga": "Sananga",
     "kuripes": "Kuripes",
@@ -111,5 +114,40 @@
     "titulo": "Página não encontrada",
     "mensaje": "A página que você procura não existe.",
     "cta": "Voltar ao início"
+  },
+  "catalogo": {
+    "title": "Catálogo de Rapé",
+    "subtitle": "Medicina Ancestral Amazônica",
+    "quickRef": "Tabela de Referência Rápida",
+    "varieties": "Variedades da Medicina",
+    "intentMap": "Mapa de Intenções",
+    "intensity": "Perfil de Intensidade e Notas Olfativas",
+    "glossary": "Glossário da Alquimia Ancestral",
+    "generalNote": "Nota geral: Todos os rapés são utilizados em cerimônias. A distinção fundamental reside na sua orientação: alguns têm maior benefício na saúde física, enquanto outros atuam com mais força no plano espiritual e energético.",
+    "details": "Ver detalhes",
+    "buyWhatsApp": "Comprar via WhatsApp",
+    "wholesale": "Atacado",
+    "contactUs": "Fale conosco",
+    "pricing": {
+      "quantity": "Quantidade",
+      "price": "Preço",
+      "from": "A partir de",
+      "contact": "Fale conosco",
+      "wholesaleLabel": "Atacado (500g+)"
+    }
+  },
+  "profecia": {
+    "title": "A Profecia dos Sete Fogos",
+    "description": "Os ensinamentos dos sete profetas que vieram ao povo Anishinabe, conhecidos como os Sete Fogos dos Ojibway.",
+    "cta": "Ler a Profecia",
+    "teaserTitle": "O Oitavo Fogo",
+    "teaser": "Descubra a profecia dos Sete Fogos e a promessa do Oitavo e Final Fogo — um Fogo eterno de paz, amor, irmandade e fraternidade."
+  },
+  "intentions": {
+    "claridadMental": "Clareza Mental e Meditação",
+    "resetEnergetico": "Reset Energético",
+    "bienestarFisico": "Bem-estar Físico e Respiratório",
+    "proteccion": "Proteção e Escudo",
+    "conexionEspiritual": "Conexão Espiritual Profunda"
   }
 }

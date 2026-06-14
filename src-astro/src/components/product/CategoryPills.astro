@@ -9,7 +9,7 @@ interface Props {
   baseUrl?: string;
 }
 
-const { categories, currentFilter, baseUrl = '/tienda' } = Astro.props;
+const { categories, currentFilter, baseUrl = '/es/catalogo' } = Astro.props;
 
 function getPageUrl(filter: string) {
   const params = new URLSearchParams();

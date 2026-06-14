@@ -1,0 +1,125 @@
+---
+/**
+ * ProphecyContent — Full prophecy rendering component
+ * Renders: ignition → header → 7 fires → interlude → highlight → closing → final question
+ *
+ * @source ProfeciaOctavoFuego-ESPANOL.html | Eighthfire-prophecy-en.html | Oitavofogo-profecia-pt.html
+ */
+
+import type { Locale } from '@/i18n';
+import type { Prophecy } from '@/data/prophecy';
+
+interface Props {
+  prophecy: Prophecy;
+  locale: Locale;
+}
+
+const { prophecy, locale } = Astro.props;
+
+const ignition = prophecy.ignition;
+const header = prophecy.header;
+const fires = prophecy.fires;
+const introParagraphs = prophecy.introParagraphs[locale];
+const interludeParagraphs = prophecy.narrativeInterlude[locale];
+const highlightText = prophecy.highlight[locale];
+const closingParagraphs = prophecy.closingParagraphs[locale];
+const finalQuestion = prophecy.finalQuestion;
+
+// Fires 1-6 before interlude, Fire 7 after interlude
+const firesBefore = fires.filter((f) => f.id <= 6);
+const fireAfter = fires.find((f) => f.id === 7);
+---
+
+<article class="max-w-[800px] mx-auto px-6 py-16 md:py-24">
+  <!-- Ignition Block -->
+  <div class="mb-20 md:mb-28 p-12 md:p-16 bg-white border-2 border-[var(--verde-botanico)] relative text-center shadow-sm">
+    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white px-6 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--verde-botanico)] font-bold whitespace-nowrap">
+      {ignition.label[locale]}
+    </span>
+    <blockquote class="font-display text-2xl md:text-[1.75rem] leading-relaxed text-[var(--near-black)] italic font-normal">
+      {ignition.quote[locale]}
+    </blockquote>
+  </div>
+
+  <!-- Header -->
+  <header class="mb-16 md:mb-20">
+    <h1 class="font-display text-4xl md:text-5xl font-semibold tracking-tight text-[var(--near-black)] mb-5 leading-tight">
+      {header.title[locale]}
+    </h1>
+    <p class="text-lg md:text-xl text-[var(--ceniza)] max-w-[680px] font-light leading-relaxed">
+      {header.intro[locale]}
+    </p>
+  </header>
+
+  <!-- Main prophecy content -->
+  <main>
+    <!-- Section Label -->
+    <span class="section-label text-xs uppercase tracking-[0.25em] text-[var(--verde-botanico)] mb-12 block font-bold border-b-2 border-gray-200 pb-4">
+      {prophecy.sectionLabel[locale]}
+    </span>
+
+    <!-- Intro paragraphs -->
+    <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
+      {introParagraphs.map((p: string) => (
+        <p class="mb-7 text-justify">{p}</p>
+      ))}
+    </div>
+
+    <!-- Fires 1-6 -->
+    {firesBefore.map((fire) => (
+      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--verde-botanico)]">
+        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--verde-botanico)] tracking-tight">
+          {fire.title[locale]}
+        </h2>
+        <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
+          {fire.paragraphs[locale].map((p: string) => (
+            <p class="mb-4 text-justify">{p}</p>
+          ))}
+        </div>
+      </div>
+    ))}
+
+    <!-- Narrative Interlude -->
+    <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
+      {interludeParagraphs.map((p: string) => (
+        <p class="mb-7 text-justify">{p}</p>
+      ))}
+    </div>
+
+    <!-- Fire 7 -->
+    {fireAfter && (
+      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--verde-botanico)]">
+        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--verde-botanico)] tracking-tight">
+          {fireAfter.title[locale]}
+        </h2>
+        <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
+          {fireAfter.paragraphs[locale].map((p: string) => (
+            <p class="mb-4 text-justify">{p}</p>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Highlight Paragraph -->
+    <div class="my-14 text-xl md:text-[1.3rem] font-display italic text-[var(--near-black)] text-center border-y-2 border-gray-200 py-10 px-5 leading-[1.6] font-normal">
+      {highlightText}
+    </div>
+
+    <!-- Closing Reflection -->
+    <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
+      {closingParagraphs.map((p: string) => (
+        <p class="mb-7 text-justify">{p}</p>
+      ))}
+    </div>
+
+    <!-- Final Question Block -->
+    <div class="mt-20 border-2 border-dashed border-[var(--verde-botanico)] p-12 md:p-16 text-center">
+      <span class="block mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--verde-botanico)] font-bold">
+        {finalQuestion.label[locale]}
+      </span>
+      <p class="font-display text-2xl md:text-[1.5rem] leading-relaxed text-[var(--near-black)] font-medium">
+        {finalQuestion.question[locale]}
+      </p>
+    </div>
+  </main>
+</article>

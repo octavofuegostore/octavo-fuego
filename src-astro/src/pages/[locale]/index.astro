@@ -1,0 +1,195 @@
+---
+/**
+ * Locale-aware homepage — renders at /, /en, /pt
+ * Preserves Hero + Trust Badges, REPLACES quiz with real intention categories,
+ * adds ProphecyTeaser, updates product links to /catalogo
+ *
+ * @source src/pages/index.astro (existing) + Octavofuego_Catalogo_ESP (1).html (intentions)
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import ProphecyTeaser from '@/components/prophecy/ProphecyTeaser.astro';
+import { prophecy } from '@/data/prophecy';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n';
+import { Shield, Leaf, Droplets } from 'lucide-react';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+    { params: { locale: 'pt' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const locale_ = locale as Locale;
+const t = useTranslations(locale_);
+const baseUrl = `/${locale_}`;
+
+// 5 real intention categories from source HTML (word-for-word)
+const intentions = [
+  {
+    key: 'claridadMental',
+    medicineName: 'Vena de Pajé',
+    slug: 'vena-de-paje',
+    icon: 'eye',
+  },
+  {
+    key: 'resetEnergetico',
+    medicineName: 'Tisunú',
+    slug: 'tisunu',
+    icon: 'zap',
+  },
+  {
+    key: 'bienestarFisico',
+    medicineName: 'Pixurí, Cumarú de Cheiro o Vena de Pajé',
+    slug: 'pixuri',
+    icon: 'heart',
+  },
+  {
+    key: 'proteccion',
+    medicineName: 'Cumarú de Cheiro',
+    slug: 'cumaru-de-cheiro',
+    icon: 'shield',
+  },
+  {
+    key: 'conexionEspiritual',
+    medicineName: 'Pariká',
+    slug: 'parika',
+    icon: 'sparkles',
+  },
+];
+
+// Icon SVGs
+const icons: Record<string, string> = {
+  eye: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>',
+  zap: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>',
+  heart: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>',
+  shield: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
+  sparkles: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>',
+};
+---
+
+<Layout title="Octavo Fuego" locale={locale_}>
+  <!-- Hero Section -->
+  <section class="min-h-screen flex items-center justify-center bg-white relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-24 grid lg:grid-cols-2 gap-16 items-center">
+      <!-- Hero Content -->
+      <div>
+        <h1 class="font-display text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-[var(--near-black)] leading-tight">
+          {t.home.hero.title}
+        </h1>
+        
+        <p class="text-[var(--ceniza)] text-lg md:text-xl tracking-wide mb-12 max-w-lg">
+          {t.home.hero.subtitle}
+        </p>
+        
+        <a 
+          href={`${baseUrl}/catalogo`}
+          class="inline-block bg-[var(--near-black)] text-white px-8 py-4 text-lg font-medium tracking-wide hover:bg-[var(--verde-botanico)] transition-colors rounded-[var(--radius-button)]"
+        >
+          {t.home.hero.cta} →
+        </a>
+      </div>
+      
+      <!-- Hero Image -->
+      <div class="relative">
+        <div class="aspect-square bg-[var(--papel)] rounded-[var(--radius-card)] overflow-hidden shadow-[var(--shadow-card)]">
+          <img 
+            src="/images/productos/rape/bobinsana-rape-2.webp" 
+            alt="Rapé do Acre"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 animate-bounce">
+      <span class="text-[var(--ceniza)] text-sm">↓</span>
+    </div>
+  </section>
+
+  <!-- Trust Badges -->
+  <section class="py-16 bg-[var(--papel)] border-y border-gray-100">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Autenticidad -->
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-[var(--shadow-card)] mb-4">
+            <Shield class="w-7 h-7 text-[var(--verde-botanico)]" />
+          </div>
+          <h3 class="text-lg font-display font-semibold mb-2 text-[var(--near-black)]">{t.home.trust.autenticidad}</h3>
+          <p class="text-[var(--ceniza)] text-sm">{t.home.trust.autenticidadDesc}</p>
+        </div>
+        
+        <!-- Origen Verdeado -->
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-[var(--shadow-card)] mb-4">
+            <Leaf class="w-7 h-7 text-[var(--verde-botanico)]" />
+          </div>
+          <h3 class="text-lg font-display font-semibold mb-2 text-[var(--near-black)]">{t.home.trust.origen}</h3>
+          <p class="text-[var(--ceniza)] text-sm">{t.home.trust.origenDesc}</p>
+        </div>
+        
+        <!-- Pureza Ritual -->
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white shadow-[var(--shadow-card)] mb-4">
+            <Droplets class="w-7 h-7 text-[var(--verde-botanico)]" />
+          </div>
+          <h3 class="text-lg font-display font-semibold mb-2 text-[var(--near-black)]">{t.home.trust.pureza}</h3>
+          <p class="text-[var(--ceniza)] text-sm">{t.home.trust.purezaDesc}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Prophecy Teaser (replaces quiz section) -->
+  <ProphecyTeaser prophecy={prophecy} locale={locale_} />
+
+  <!-- Intention Categories (replaces quiz section) -->
+  <section class="py-24 bg-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 text-[var(--near-black)]">
+        {t.home.quiz.title}
+      </h2>
+      <p class="text-[var(--ceniza)] mb-12">{t.home.quiz.subtitle}</p>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {intentions.map((intent) => (
+          <a
+            href={`${baseUrl}/catalogo/rape/${intent.slug}`}
+            class="group border border-gray-200 p-6 hover:border-[var(--verde-botanico)] hover:bg-[var(--papel)] transition-all rounded-[var(--radius-card)] shadow-[var(--shadow-card)] text-left"
+          >
+            <span class="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-[var(--papel)] group-hover:bg-white transition-colors">
+              <Fragment set:html={icons[intent.icon]} />
+            </span>
+            <span class="text-sm font-semibold text-[var(--near-black)] block mb-1">
+              {t.intentions[intent.key as keyof typeof t.intentions]}
+            </span>
+            <span class="text-xs text-[var(--verde-botanico)] block">
+              {intent.medicineName}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos Section -->
+  <section id="productos" class="py-24 px-6 bg-[var(--papel)]">
+    <div class="max-w-6xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="font-display text-4xl md:text-5xl font-bold mb-4 text-[var(--near-black)]">{t.home.productos.title}</h2>
+        <p class="text-[var(--ceniza)] tracking-widest uppercase">{t.home.productos.subtitle}</p>
+      </div>
+      
+      <div class="text-center mt-12">
+        <a href={`${baseUrl}/catalogo`} class="inline-block border border-[var(--verde-botanico)] text-[var(--verde-botanico)] px-8 py-4 hover:bg-[var(--verde-botanico)] hover:text-white transition-colors rounded-[var(--radius-button)]">
+          {t.home.productos.verTodos} →
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

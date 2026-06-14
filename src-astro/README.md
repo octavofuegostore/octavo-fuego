@@ -1,43 +1,102 @@
-# Astro Starter Kit: Minimal
+# Octavo Fuego - Ecommerce de Medicinas Ancestrales
 
-```sh
-npm create astro@latest -- --template minimal
+Tienda online de rapé amazónico, sananga y kuripes. Catálogo minimalista con catálogo WhatsApp-first.
+
+## 🚀 Tech Stack
+
+- **Framework**: [Astro 6](https://astro.build/) - 100% estático, 0KB JS en páginas principales
+- **Styling**: [TailwindCSS 4](https://tailwindcss.com/) con design tokens personalizados
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/) + Radix UI
+- **State**: [Nanostores](https://github.com/nanostores/nanostores) para carrito
+- **i18n**: 3 idiomas (Español, Inglés, Portugués)
+- **Deploy**: [Vercel](https://vercel.com/) con dominio `octavofuego.com`
+
+## 📁 Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
+src-astro/
 ├── src/
+│   ├── components/
+│   │   ├── Navbar.astro          # Header con dropdown de 5 rapés
+│   │   ├── Footer.astro          # Footer locale-aware
+│   │   ├── LanguageSwitcher.astro # Selector de idioma ES/EN/PT
+│   │   ├── product/
+│   │   │   ├── ProductCard.astro  # Tarjeta de producto
+│   │   │   └── PricingTable.astro # Botones de precio seleccionables
+│   │   ├── catalogo/
+│   │   │   └── IntentMap.astro    # Mapa de intenciones
+│   │   ├── prophecy/
+│   │   │   └── ProphecyContent.astro # Contenido profético
+│   │   └── ui/
+│   │       ├── FloatingWhatsApp.astro # Botón WhatsApp (0KB JS)
+│   │       ├── button.tsx         # Componente Button
+│   │       └── card.tsx           # Componente Card
+│   ├── data/
+│   │   ├── products.ts            # 5 rapés × 3 idiomas
+│   │   ├── prophecy.ts            # Profecía × 3 idiomas
+│   │   └── glossary.ts            # Glosario × 3 idiomas
+│   ├── i18n/
+│   │   ├── index.ts               # Tipos y funciones i18n
+│   │   ├── es.json                # Español
+│   │   ├── en.json                # Inglés
+│   │   └── pt.json                # Portugués
+│   ├── layouts/
+│   │   └── Layout.astro           # Layout principal
 │   └── pages/
-│       └── index.astro
+│       ├── [locale]/
+│       │   ├── index.astro        # Homepage
+│       │   ├── profecia.astro     # Profecía completa
+│       │   └── catalogo/
+│       │       ├── index.astro    # Catálogo principal
+│       │       └── rape/
+│       │           ├── index.astro # Categoría Rapé
+│       │           └── [product].astro # Detalle de producto
+│       └── carrito/
+│           └── index.astro        # Carrito de compras
+├── public/
+│   └── images/
+│       └── products/              # Imágenes de productos
 └── package.json
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## 🛠️ Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command | Action |
+|---------|--------|
+| `npm install` | Instala dependencias |
+| `npm run dev` | Inicia servidor local en `localhost:4321` |
+| `npm run build` | Genera sitio de producción en `./dist/` |
+| `npm run preview` | Previsualiza el build localmente |
 
-Any static assets, like images, can be placed in the `public/` directory.
+## 🌐 i18n
 
-## 🧞 Commands
+El sitio soporta 3 idiomas:
+- `/es/` - Español (por defecto)
+- `/en/` - Inglés
+- `/pt/` - Portugués
 
-All commands are run from the root of the project, from a terminal:
+El language switcher está en el Navbar y preserva la página actual al cambiar idioma.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 📱 WhatsApp Commerce
 
-## 👀 Want to learn more?
+El modelo de negocio es WhatsApp-first:
+- Los precios se muestran como botones seleccionables (10g, 20g, 30g)
+- Al hacer clic en "Consultar por WhatsApp", se abre WhatsApp con mensaje pre-llenado
+- Incluye: nombre del producto + peso + precio
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 🎨 Design System
+
+- **Colores**: Negro, Blanco, Tabaco (#8B4513), Ceniza, Humo, Papel
+- **Tipografía**: Playfair Display (títulos), Inter (cuerpo)
+- **Estilo**: Minimalista sacred - blanco primero, sombras Airbnb
+- **Componentes**: shadcn/ui con personalización Octavo Fuego
+
+## 🚀 Deploy
+
+El proyecto se despliega automáticamente en Vercel al hacer push a `main`.
+
+**Dominio**: `www.octavofuego.com` (propagando via Vercel)
+
+## 📝 Licencia
+
+Propiedad de Octavo Fuego. Todos los derechos reservados.

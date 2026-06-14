@@ -132,3 +132,23 @@
     line-height: 1.6;
   }
 }
+
+/* Section label — used across catalog and prophecy sections */
+.section-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--verde-botanico);
+  margin-bottom: 32px;
+  display: block;
+  font-weight: 700;
+  border-bottom: 2px solid var(--border, #E5E5E5);
+  padding-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .section-label {
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+  }
+}

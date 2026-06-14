@@ -1,0 +1,136 @@
+---
+/**
+ * PricingTable — Selectable price buttons for rapé products
+ * Renders 3 quantity buttons (10g, 20g, 30g) + wholesale row.
+ * Interactive selection is handled via vanilla JS at the page level.
+ *
+ * @source PricingTable — Design Decision: Prices as SELECTABLE BUTTONS
+ */
+
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n';
+import { WhatsAppButton } from '@/components/whatsapp/WhatsAppButton';
+
+interface PriceGram {
+  cantidad: number;
+  precio: number;
+  label: string;
+}
+
+interface Props {
+  pricing: PriceGram[];
+  wholesale: {
+    enabled: boolean;
+    minGrams: number;
+    pricePerGram: number;
+  };
+  locale: Locale;
+  productName: string;
+}
+
+const { pricing, wholesale, locale, productName } = Astro.props;
+const t = useTranslations(locale);
+
+function formatCOP(value: number): string {
+  return new Intl.NumberFormat('es-CO').format(value);
+}
+---
+
+<div class="space-y-4">
+  <!-- Label -->
+  <p class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)]">
+    {t.catalogo.pricing.quantity}
+  </p>
+
+  <!-- Price buttons grid -->
+  <div class="grid grid-cols-3 gap-3" id="pricing-buttons">
+    {pricing.map((p, i) => (
+      <button
+        class:list={[
+          "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200",
+          "hover:border-[var(--verde-botanico)] hover:bg-[var(--papel)]",
+          i === 0
+            ? "border-[var(--verde-botanico)] bg-[var(--verde-botanico)] text-white"
+            : "border-gray-200 bg-white text-[var(--near-black)]",
+        ]}
+        data-grams={p.cantidad}
+        data-price={p.precio}
+        aria-label={`${p.label} — $${formatCOP(p.precio)} COP`}
+      >
+        <span class="block text-2xl font-display font-bold">{p.label}</span>
+        <span class="block text-sm mt-1 opacity-80">
+          ${formatCOP(p.precio)} COP
+        </span>
+      </button>
+    ))}
+  </div>
+
+  <!-- WhatsApp buy button (shown below grid) -->
+  <div id="whatsapp-buy-container" class="pt-2">
+    <WhatsAppButton
+      productName={productName}
+      variant="buy"
+      quantity={pricing[0].cantidad}
+      price={pricing[0].precio}
+      className="w-full"
+    />
+  </div>
+
+  <!-- Wholesale row -->
+  {wholesale.enabled && (
+    <div class="border-t border-gray-200 pt-4 mt-4 flex items-center justify-between">
+      <div>
+        <p class="text-sm font-semibold text-[var(--near-black)]">
+          {t.catalogo.pricing.wholesaleLabel}
+        </p>
+        <p class="text-xs text-[var(--ceniza)]">
+          ${formatCOP(wholesale.pricePerGram)} COP/gramo
+        </p>
+      </div>
+      <WhatsAppButton
+        productName={productName}
+        variant="wholesale"
+        className="text-xs px-4 py-2"
+      />
+    </div>
+  )}
+</div>
+
+<script>
+  // Interactive pricing selection
+  document.addEventListener('astro:page-load', () => {
+    const buttons = document.querySelectorAll('.pricing-btn');
+    const container = document.getElementById('whatsapp-buy-container');
+    
+    if (!buttons.length || !container) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Update selected state
+        buttons.forEach((b) => {
+          b.classList.remove('border-[var(--verde-botanico)]', 'bg-[var(--verde-botanico)]', 'text-white');
+          b.classList.add('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
+        });
+        btn.classList.add('border-[var(--verde-botanico)]', 'bg-[var(--verde-botanico)]', 'text-white');
+        btn.classList.remove('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
+
+        // Update WhatsApp link
+        const grams = btn.getAttribute('data-grams');
+        const price = btn.getAttribute('data-price');
+        const productName = container.getAttribute('data-product-name');
+        
+        // Rebuild the WhatsApp button with new values
+        if (grams && price && productName) {
+          const formatted = new Intl.NumberFormat('es-CO').format(parseInt(price));
+          const message = `Hola! Quiero comprar ${productName} - ${grams}g - Precio: $${formatted} COP`;
+          const whatsappUrl = `https://wa.me/573172137932?text=${encodeURIComponent(message)}`;
+          
+          const link = container.querySelector('a');
+          if (link) {
+            link.href = whatsappUrl;
+          }
+        }
+      });
+    });
+  });
+</script>

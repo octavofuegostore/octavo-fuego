@@ -1,0 +1,40 @@
+---
+/**
+ * Glossary — 6 ancestral alchemy terms from source HTML
+ * All descriptions are WORD-FOR-WORD from Octavofuego_Catalogo_ESP.html
+ *
+ * @source ESP.html "Glosario de Alquimia Ancestral" | ENG.html same | PT.html same
+ */
+
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n';
+import { glossary } from '@/data/glossary';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="py-16 md:py-24 bg-[#fafafa]">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--verde-botanico)] border-b border-gray-200 pb-3 mb-10 block">
+      {t.catalogo.glossary}
+    </span>
+
+    <div class="grid gap-8 md:grid-cols-2">
+      {glossary.map((term) => (
+        <div class="border-b border-gray-200 pb-6">
+          <dt class="font-display text-xl md:text-2xl text-[var(--verde-botanico)] mb-3 font-semibold">
+            {term.termDisplay[locale]}
+          </dt>
+          <dd class="text-[var(--ceniza)] text-sm md:text-base leading-relaxed">
+            {term.description[locale]}
+          </dd>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

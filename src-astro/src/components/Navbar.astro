@@ -1,62 +1,67 @@
 ---
 import { useTranslations } from '@/i18n';
-import { Button } from './ui/button';
+import type { Locale } from '@/i18n';
+import { products } from '@/data/products';
+import LanguageSwitcher from './LanguageSwitcher.astro';
 
-const t = useTranslations('es');
+interface Props {
+  locale?: Locale;
+}
 
-const categories = [
-  { name: t.nav.rape, href: '/tienda/rape' },
-  { name: t.nav.sananga, href: '/tienda/sananga' },
-  { name: t.nav.kuripes, href: '/tienda/kuripes' },
-  { name: t.nav.accesorios, href: '/tienda/accesorios' },
-];
+const { locale = 'es' } = Astro.props;
+const t = useTranslations(locale);
+const baseUrl = `/${locale}`;
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 h-16 md:h-20 bg-white border-b border-gray-100">
   <nav class="max-w-7xl mx-auto h-full px-6 md:px-12 flex items-center justify-between">
     <!-- Logo -->
-    <a href="/" class="font-display text-xl md:text-2xl font-bold tracking-tight text-[var(--near-black)]">
+    <a href={baseUrl} class="font-display text-xl md:text-2xl font-bold tracking-tight text-[var(--near-black)]">
       {t.common.brand}
     </a>
 
     <!-- Desktop Navigation -->
     <div class="hidden md:flex items-center gap-8">
-      <!-- Tienda with Dropdown -->
+      <!-- Catálogo Dropdown -->
       <div class="relative group">
-        <button 
+        <button
           class="flex items-center gap-1 text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors"
           aria-expanded="false"
           aria-haspopup="true"
         >
-          {t.nav.tienda}
+          {t.nav.catalogo}
           <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        
-        <!-- Dropdown Menu -->
+
         <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
-          <div class="bg-white border border-gray-200 shadow-[var(--shadow-hover)] py-2 min-w-[160px] rounded-[var(--radius-card)]">
-            {categories.map((cat) => (
-              <a 
-                href={cat.href}
-                class="block px-4 py-2 text-sm text-[var(--ceniza)] hover:text-[var(--near-black)] hover:bg-gray-50 transition-colors"
-              >
-                {cat.name}
-              </a>
-            ))}
+          <div class="bg-white border border-gray-200 shadow-[var(--shadow-hover)] py-2 min-w-[200px] rounded-[var(--radius-card)]">
+            {products
+              .sort((a, b) => a.varietyOrder - b.varietyOrder)
+              .map((product) => (
+                <a
+                  href={`${baseUrl}/catalogo/rape/${product.slug}`}
+                  class="block px-4 py-2 text-sm text-[var(--ceniza)] hover:text-[var(--near-black)] hover:bg-gray-50 transition-colors"
+                >
+                  {product.nombre[locale]}
+                </a>
+              ))}
             <div class="border-t border-gray-100 mt-2 pt-2">
-              <a 
-                href="/tienda"
+              <a
+                href={`${baseUrl}/catalogo`}
                 class="block px-4 py-2 text-sm text-[var(--verde-botanico)] hover:text-[var(--near-black)] transition-colors"
               >
-                {t.nav.verTodos}
+                {t.nav.verCatalogo}
               </a>
             </div>
           </div>
         </div>
       </div>
 
+      <a href={`${baseUrl}/profecia`} class="text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
+        {t.nav.profecia}
+      </a>
       <a href="/blog" class="text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         {t.nav.blog}
       </a>
@@ -68,13 +73,14 @@ const categories = [
       </a>
     </div>
 
-    <!-- Right side: Cart -->
-    <div class="flex items-center gap-4">
+    <!-- Right side: Language + Cart -->
+    <div class="flex items-center gap-3">
+      <LanguageSwitcher locale={locale} />
+
       <a href="/carrito" class="relative p-2 text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
-        <!-- Cart count badge (hidden when 0) -->
         <span class="absolute -top-1 -right-1 w-5 h-5 bg-[var(--verde-botanico)] text-white text-xs flex items-center justify-center hidden">
           0
         </span>
@@ -90,5 +96,4 @@ const categories = [
   </nav>
 </header>
 
-<!-- Spacer for fixed header -->
 <div class="h-16 md:h-20"></div>

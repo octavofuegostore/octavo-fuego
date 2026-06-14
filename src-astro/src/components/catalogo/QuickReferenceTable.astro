@@ -1,0 +1,63 @@
+---
+/**
+ * QuickReferenceTable — 5-row reference table from source HTML
+ * All copy is WORD-FOR-WORD from Octavofuego_Catalogo_ESP.html
+ *
+ * @source ESP.html "Tabla de Referencia Rápida" | ENG.html "Quick Reference Table" | PT.html "Tabela de Referência Rápida"
+ */
+
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n';
+import { products } from '@/data/products';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Build table rows from product data
+const rows = products
+  .sort((a, b) => a.varietyOrder - b.varietyOrder)
+  .map((p) => ({
+    name: p.nombre[locale],
+    enfoque: p.enfoque[locale],
+    uso: p.usoRecomendado[locale],
+  }));
+---
+
+<section class="py-16 md:py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-6 md:px-12">
+    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--verde-botanico)] border-b border-gray-200 pb-3 mb-10 block">
+      {t.catalogo.quickRef}
+    </span>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr>
+            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
+              {locale === 'es' ? 'Variedad' : locale === 'en' ? 'Variety' : 'Variedade'}
+            </th>
+            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
+              {locale === 'es' ? 'Enfoque Principal' : locale === 'en' ? 'Main Focus' : 'Foco Principal'}
+            </th>
+            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
+              {locale === 'es' ? 'Uso Recomendado' : locale === 'en' ? 'Recommended Use' : 'Uso Recomendado'}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr class="border-b border-gray-200 hover:bg-[var(--papel)] transition-colors">
+              <td class="py-5 px-4 font-semibold">{row.name}</td>
+              <td class="py-5 px-4 text-[var(--ceniza)]">{row.enfoque}</td>
+              <td class="py-5 px-4 text-[var(--ceniza)]">{row.uso}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

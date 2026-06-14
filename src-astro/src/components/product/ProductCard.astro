@@ -1,33 +1,59 @@
 ---
 import { cn } from '@/lib/utils';
+import type { Locale } from '@/i18n';
 
-interface Props {
-  nombre: string;
-  etnia: string;
+interface PricingTier {
+  cantidad: number;
   precio: number;
-  imagen: string;
-  slug: string;
-  href?: string;
-  class?: string;
-  showQuickView?: boolean;
+  label: string;
 }
 
-const { nombre, etnia, precio, imagen, slug, href = `#`, class: className, showQuickView = true } = Astro.props;
+interface Props {
+  slug: string;
+  nombre: string;
+  enfoque: string;
+  imagen: string;
+  locale?: Locale;
+  pricing?: PricingTier[];
+  class?: string;
+}
 
-const formattedPrice = new Intl.NumberFormat('es-CO', {
-  style: 'currency',
-  currency: 'COP',
-  minimumFractionDigits: 0,
-}).format(precio);
+const {
+  slug,
+  nombre,
+  enfoque,
+  imagen,
+  locale = 'es',
+  pricing = [
+    { cantidad: 10, precio: 35000, label: '10g' },
+    { cantidad: 20, precio: 70000, label: '20g' },
+    { cantidad: 30, precio: 100000, label: '30g' },
+  ],
+  class: className,
+} = Astro.props;
+
+const productName = nombre;
+
+const formatCOP = (amount: number) =>
+  new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+  }).format(amount);
+
+const defaultTier = pricing[1] || pricing[0];
+const whatsappMessage = `Hola! Quiero comprar ${productName} - ${defaultTier.cantidad}g - Precio: $${formatCOP(defaultTier.precio)} COP`;
+const whatsappUrl = `https://wa.me/573172137932?text=${encodeURIComponent(whatsappMessage)}`;
+const baseUrl = `/${locale}`;
 ---
 
 <div class={cn("group bg-white rounded-[var(--radius-card)] shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-hover)] hover:-translate-y-1 transition-all duration-200", className)}>
-  <a href={href} class="block">
+  <a href={`${baseUrl}/catalogo/rape/${slug}`} class="block">
     <!-- Image -->
     <div class="aspect-square bg-gray-50 rounded-t-[var(--radius-card)] overflow-hidden">
       <img 
         src={imagen} 
-        alt={nombre}
+        alt={productName}
         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
         transition:name={`product-image-${slug}`}
@@ -36,10 +62,19 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
     
     <!-- Content -->
     <div class="p-6">
-      <p class="text-ceniza text-xs uppercase tracking-widest mb-2">{etnia}</p>
-      <h3 class="font-display text-lg font-semibold mb-2 text-[var(--near-black)]" transition:name={`product-title-${slug}`}>{nombre}</h3>
+      <p class="text-ceniza text-xs uppercase tracking-widest mb-2">{enfoque}</p>
+      <h3 class="font-display text-lg font-semibold mb-3 text-[var(--near-black)]" transition:name={`product-title-${slug}`}>{productName}</h3>
+      
+      <!-- Pricing Tiers -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        {pricing.map((tier) => (
+          <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 text-xs font-medium text-[var(--near-black)] rounded-full">
+            {tier.label} — {formatCOP(tier.precio)}
+          </span>
+        ))}
+      </div>
+
       <div class="flex items-center justify-between">
-        <span class="text-[var(--verde-botanico)] font-semibold">{formattedPrice}</span>
         <span class="text-sm text-ceniza opacity-0 group-hover:opacity-100 transition-opacity">
           Ver →
         </span>
@@ -47,27 +82,19 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
     </div>
   </a>
   
-  <!-- Action Buttons - Appears on hover -->
-  <div class="px-6 pb-6 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-    {showQuickView && (
-      <button 
-        class="flex-1 bg-gray-100 text-[var(--near-black)] py-3 text-sm font-medium hover:bg-gray-200 transition-colors rounded-[var(--radius-button)] quick-view-btn"
-        data-slug={slug}
-        data-nombre={nombre}
-        data-etnia={etnia}
-        data-precio={precio}
-        data-imagen={imagen}
-        aria-label={`Vista rápida de ${nombre}`}
-      >
-        Vista rápida
-      </button>
-    )}
-    <button 
-      class="flex-1 bg-[var(--near-black)] text-white py-3 text-sm font-medium hover:bg-[var(--verde-botanico)] transition-colors rounded-[var(--radius-button)]"
-      data-product-id={slug}
-      aria-label={`Añadir ${nombre} al carrito`}
+  <!-- WhatsApp CTA Button - Appears on hover -->
+  <div class="px-6 pb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+    <a
+      href={whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex items-center justify-center gap-2 w-full bg-whatsapp text-white py-3 text-sm font-semibold hover:opacity-90 transition-all rounded-[var(--radius-button)]"
+      aria-label={`Comprar ${productName} via WhatsApp`}
     >
-      Añadir
-    </button>
+      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+      Comprar via WhatsApp
+    </a>
   </div>
 </div>

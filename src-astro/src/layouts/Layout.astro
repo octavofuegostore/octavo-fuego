@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
-import { FloatingWhatsApp } from '@/components/ui/FloatingWhatsApp';
+import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import OrganizationJsonLd from '@/components/seo/OrganizationJsonLd.astro';
 
 interface Props {
@@ -61,11 +61,11 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <OrganizationJsonLd />
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black">
-    <Navbar />
+    <Navbar locale={locale} />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
-    <FloatingWhatsApp client:load />
+    <Footer locale={locale} />
+    <FloatingWhatsApp />
   </body>
 </html>

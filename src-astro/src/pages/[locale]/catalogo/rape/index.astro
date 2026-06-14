@@ -1,0 +1,108 @@
+---
+/**
+ * Rapé category listing — renders at /catalogo/rape × 3 locales
+ * Lists all 5 rapé varieties with ProductCard
+ *
+ * @source Octavofuego_Catalogo_ESP (1).html
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import ProductCard from '@/components/product/ProductCard.astro';
+import { products } from '@/data/products';
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es', category: 'rape' } },
+    { params: { locale: 'en', category: 'rape' } },
+    { params: { locale: 'pt', category: 'rape' } },
+  ];
+}
+
+const { locale, category } = Astro.params;
+const locale_ = locale as Locale;
+const t = useTranslations(locale_);
+const baseUrl = `/${locale_}`;
+
+const categoryTitle = locale_ === 'es' ? 'Rapé' : locale_ === 'en' ? 'Rapé' : 'Rapé';
+const categoryDescription = locale_ === 'es'
+  ? 'Cinco variedades sagradas de rapé amazónico, cada una con propiedades y usos ceremoniales únicos.'
+  : locale_ === 'en'
+  ? 'Five sacred Amazonian rapé varieties, each with unique properties and ceremonial uses.'
+  : 'Cinco variedades sagradas de rapé amazônico, cada uma com propriedades e usos cerimoniais únicos.';
+---
+
+<Layout
+  title={`${categoryTitle} | ${t.catalogo.title}`}
+  description={categoryDescription}
+  locale={locale_}
+>
+  <!-- Header -->
+  <section class="pt-24 md:pt-32 pb-12 md:pb-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <!-- Breadcrumb -->
+      <nav class="mb-8 text-sm">
+        <ol class="flex items-center gap-2 text-[var(--ceniza)]">
+          <li>
+            <a href={baseUrl} class="hover:text-[var(--verde-botanico)] transition-colors">
+              {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a href={`${baseUrl}/catalogo`} class="hover:text-[var(--verde-botanico)] transition-colors">
+              {t.nav.catalogo}
+            </a>
+          </li>
+          <li>/</li>
+          <li class="text-[var(--near-black)]">{categoryTitle}</li>
+        </ol>
+      </nav>
+
+      <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--verde-botanico)] font-semibold block mb-4">
+        {t.catalogo.subtitle}
+      </span>
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--near-black)] mb-6">
+        {categoryTitle}
+      </h1>
+      <p class="text-[var(--ceniza)] text-lg md:text-xl max-w-[700px] font-light italic leading-relaxed">
+        {categoryDescription}
+      </p>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {products
+          .sort((a, b) => a.varietyOrder - b.varietyOrder)
+          .map((product) => (
+            <ProductCard
+              slug={product.slug}
+              varietyOrder={product.varietyOrder}
+              nombre={product.nombre[locale_]}
+              enfoque={product.enfoque[locale_]}
+              usoRecomendado={product.usoRecomendado[locale_]}
+              imagen={product.imagenes[0]}
+              pricing={product.pricing}
+              locale={locale_}
+              href={`${baseUrl}/catalogo/rape/${product.slug}`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- General Note -->
+  <section class="py-12 md:py-16 bg-[var(--papel)]">
+    <div class="max-w-3xl mx-auto px-6 md:px-12 text-center">
+      <p class="text-[var(--ceniza)] italic text-base md:text-lg leading-relaxed">
+        <strong>{locale_ === 'es' ? 'Nota general:' : locale_ === 'en' ? 'General note:' : 'Nota geral:'}</strong>{' '}
+        {t.catalogo.generalNote}
+      </p>
+    </div>
+  </section>
+</Layout>
