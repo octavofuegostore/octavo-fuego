@@ -135,6 +135,11 @@ playwright       # e2e
 ## Git Conventions
 - Commit format: `[octavo-fuego] <description>`
 - Branch strategy: `main` (producción) ← `develop` (desarrollo) ← `feature/*`
+- **Git Workflow** (OBLIGATORIO):
+  1. Trabajar en LOCAL (`develop` o `feature/*`)
+  2. Push a `origin/develop` SIEMPRE
+  3. **Merge a `main` SOLO cuando el usuario autorice explícitamente**
+  4. Nunca mergear a `main` sin autorización, sin importar la urgencia
 - Remote: `origin` → `https://github.com/octavofuegostore/octavo-fuego`
 - Author: Josue Calderon - Navio Azul `<luisjosue1205@gmail.com>`
 
