@@ -134,6 +134,13 @@
       "from": "Desde",
       "contact": "Contáctanos",
       "wholesaleLabel": "Mayorista (500g+)"
+    },
+    "varietyLabel": "Variedad {order}",
+    "categoryLabel": "Categoría:",
+    "intensityLabels": {
+      "strength": "Fuerza",
+      "aroma": "Aroma",
+      "level": "Nivel"
     }
   },
   "profecia": {

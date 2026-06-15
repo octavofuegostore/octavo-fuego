@@ -134,6 +134,13 @@
       "from": "A partir de",
       "contact": "Fale conosco",
       "wholesaleLabel": "Atacado (500g+)"
+    },
+    "varietyLabel": "Variedade {order}",
+    "categoryLabel": "Categoria:",
+    "intensityLabels": {
+      "strength": "Força",
+      "aroma": "Aroma",
+      "level": "Nível"
     }
   },
   "profecia": {

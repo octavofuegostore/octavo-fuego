@@ -1,7 +1,7 @@
 ---
 /**
- * QuickReferenceTable — 5-row reference table from source HTML
- * All copy is WORD-FOR-WORD from Octavofuego_Catalogo_ESP.html
+ * QuickReferenceTable — Card-based reference for 5 rapé varieties
+ * Replaced HTML table with modern card grid layout
  *
  * @source ESP.html "Tabla de Referencia Rápida" | ENG.html "Quick Reference Table" | PT.html "Tabela de Referência Rápida"
  */
@@ -17,13 +17,14 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-// Build table rows from product data
+// Build card rows from product data
 const rows = products
   .sort((a, b) => a.varietyOrder - b.varietyOrder)
   .map((p) => ({
     name: p.nombre[locale],
     enfoque: p.enfoque[locale],
     uso: p.usoRecomendado[locale],
+    varietyOrder: p.varietyOrder,
   }));
 ---
 
@@ -33,31 +34,31 @@ const rows = products
       {t.tienda.quickRef}
     </span>
 
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Variedad' : locale === 'en' ? 'Variety' : 'Variedade'}
-            </th>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Enfoque Principal' : locale === 'en' ? 'Main Focus' : 'Foco Principal'}
-            </th>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Uso Recomendado' : locale === 'en' ? 'Recommended Use' : 'Uso Recomendado'}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr class="border-b border-gray-200 hover:bg-[var(--papel)] transition-colors">
-              <td class="py-5 px-4 font-semibold">{row.name}</td>
-              <td class="py-5 px-4 text-[var(--ceniza)]">{row.enfoque}</td>
-              <td class="py-5 px-4 text-[var(--ceniza)]">{row.uso}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {rows.map((row) => (
+        <div class="border border-gray-200 rounded-[var(--radius-card)] p-6 hover:shadow-[var(--shadow-hover)] hover:border-[var(--verde-botanico)] transition-all duration-200 bg-white">
+          <div class="flex items-start justify-between mb-4">
+            <h3 class="font-display text-lg font-semibold text-[var(--near-black)]">{row.name}</h3>
+            <span class="text-[0.65rem] uppercase tracking-wider text-[var(--verde-botanico)] font-bold bg-[var(--verde-botanico)]/5 px-2 py-1 rounded-full">
+              #{row.varietyOrder}
+            </span>
+          </div>
+          <div class="space-y-3">
+            <div>
+              <span class="text-[0.65rem] uppercase tracking-[0.12em] font-semibold text-[var(--ceniza)] block mb-1">
+                {locale === 'es' ? 'Enfoque Principal' : locale === 'en' ? 'Main Focus' : 'Foco Principal'}
+              </span>
+              <p class="text-sm text-[var(--near-black)]">{row.enfoque}</p>
+            </div>
+            <div>
+              <span class="text-[0.65rem] uppercase tracking-[0.12em] font-semibold text-[var(--ceniza)] block mb-1">
+                {locale === 'es' ? 'Uso Recomendado' : locale === 'en' ? 'Recommended Use' : 'Uso Recomendado'}
+              </span>
+              <p class="text-sm text-[var(--near-black)]">{row.uso}</p>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>

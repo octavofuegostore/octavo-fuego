@@ -1,6 +1,6 @@
 # Octavo Fuego - Ecommerce de Medicinas Ancestrales
 
-Tienda online de rapé amazónico, sananga y kuripes. Catálogo minimalista con catálogo WhatsApp-first.
+Tienda online de rapé amazónico, sananga y kuripes. Tienda minimalista con catálogo WhatsApp-first.
 
 ## 🚀 Tech Stack
 
@@ -23,8 +23,11 @@ src-astro/
 │   │   ├── product/
 │   │   │   ├── ProductCard.astro  # Tarjeta de producto
 │   │   │   └── PricingTable.astro # Botones de precio seleccionables
-│   │   ├── catalogo/
-│   │   │   └── IntentMap.astro    # Mapa de intenciones
+│   │   ├── tienda/
+│   │   │   ├── IntentMap.astro    # Mapa de intenciones
+│   │   │   ├── IntensityProfile.astro # Perfil de intensidad
+│   │   │   ├── QuickReferenceTable.astro # Tabla de referencia
+│   │   │   └── Glossary.astro    # Glosario
 │   │   ├── prophecy/
 │   │   │   └── ProphecyContent.astro # Contenido profético
 │   │   └── ui/
@@ -46,8 +49,8 @@ src-astro/
 │       ├── [locale]/
 │       │   ├── index.astro        # Homepage
 │       │   ├── profecia.astro     # Profecía completa
-│       │   └── catalogo/
-│       │       ├── index.astro    # Catálogo principal
+│       │   └── tienda/
+│       │       ├── index.astro    # Tienda principal
 │       │       └── rape/
 │       │           ├── index.astro # Categoría Rapé
 │       │           └── [product].astro # Detalle de producto

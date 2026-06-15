@@ -134,6 +134,13 @@
       "from": "From",
       "contact": "Contact us",
       "wholesaleLabel": "Wholesale (500g+)"
+    },
+    "varietyLabel": "Variety {order}",
+    "categoryLabel": "Category:",
+    "intensityLabels": {
+      "strength": "Strength",
+      "aroma": "Aroma",
+      "level": "Level"
     }
   },
   "profecia": {

@@ -37,7 +37,21 @@ const baseUrl = `/${locale_}`;
 >
   <!-- Header -->
   <section class="pt-24 md:pt-32 pb-12 md:pb-16 bg-white">
-    <div class="max-w-6xl mx-auto px-6 md:px-12 text-center">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <!-- Breadcrumb -->
+      <nav class="mb-8 text-sm">
+        <ol class="flex items-center gap-2 text-[var(--ceniza)]">
+          <li>
+            <a href={baseUrl} class="hover:text-[var(--verde-botanico)] transition-colors">
+              {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
+            </a>
+          </li>
+          <li>/</li>
+          <li class="text-[var(--near-black)]">{t.nav.tienda}</li>
+        </ol>
+      </nav>
+
+      <div class="text-center">
       <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--verde-botanico)] font-semibold block mb-4">
         {t.tienda.subtitle}
       </span>

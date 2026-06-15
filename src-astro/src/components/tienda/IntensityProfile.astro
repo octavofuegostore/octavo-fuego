@@ -1,7 +1,7 @@
 ---
 /**
- * IntensityProfile — 5-row intensity/olfactory table from source HTML
- * All copy is WORD-FOR-WORD from Octavofuego_Catalogo_ESP.html
+ * IntensityProfile — Visual meter bars for rapé intensity/olfactory profiles
+ * Replaced HTML table with visual progress bars for each metric
  *
  * @source ESP.html "Perfil de Intensidad y Notas Olfativas" | ENG.html same | PT.html same
  */
@@ -17,7 +17,16 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-// Build intensity rows from product data, sorted by HTML source order
+// Intensity levels mapped to meter percentage
+const intensityLevels: Record<string, number> = {
+  'Muy Alta': 95, 'Very High': 95, 'Muito Alta': 95,
+  'Alta': 80, 'High': 80, 'Alta': 80,
+  'Media / Alta': 70, 'Medium / High': 70, 'Média / Alta': 70,
+  'Media': 55, 'Medium': 55, 'Média': 55,
+  'Media / Suave': 40, 'Medium / Soft': 40, 'Média / Suave': 40,
+};
+
+// Build intensity rows from product data
 const rows = products
   .sort((a, b) => a.varietyOrder - b.varietyOrder)
   .map((p) => ({
@@ -25,6 +34,7 @@ const rows = products
     fuerza: p.intensidad.fuerza[locale],
     aroma: p.intensidad.aroma[locale],
     nivel: p.intensidad.nivel[locale],
+    fuerzaLevel: intensityLevels[p.intensidad.fuerza[locale]] || 50,
   }));
 ---
 
@@ -34,35 +44,48 @@ const rows = products
       {t.tienda.intensity}
     </span>
 
-    <div class="overflow-x-auto">
-      <table class="w-full text-sm">
-        <thead>
-          <tr>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Variedad' : locale === 'en' ? 'Variety' : 'Variedade'}
-            </th>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Fuerza Sensorial' : locale === 'en' ? 'Sensory Strength' : 'Força Sensorial'}
-            </th>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Perfil Aromático' : locale === 'en' ? 'Aromatic Profile' : 'Perfil Aromático'}
-            </th>
-            <th class="text-left py-3 px-4 text-[var(--ceniza)] border-b-2 border-[var(--near-black)] uppercase tracking-[0.1em] font-semibold">
-              {locale === 'es' ? 'Nivel Sugerido' : locale === 'en' ? 'Suggested Level' : 'Nível Sugerido'}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row) => (
-            <tr class="border-b border-gray-200 hover:bg-[var(--papel)] transition-colors">
-              <td class="py-5 px-4 font-semibold">{row.name}</td>
-              <td class="py-5 px-4 text-[var(--ceniza)]">{row.fuerza}</td>
-              <td class="py-5 px-4 text-[var(--ceniza)]">{row.aroma}</td>
-              <td class="py-5 px-4 text-[var(--ceniza)]">{row.nivel}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div class="space-y-8">
+      {rows.map((row) => (
+        <div class="border border-gray-200 rounded-[var(--radius-card)] p-6 hover:shadow-[var(--shadow-hover)] transition-all duration-200">
+          <div class="flex items-center justify-between mb-5">
+            <h3 class="font-display text-lg font-semibold text-[var(--near-black)]">{row.name}</h3>
+            <span class="text-xs text-[var(--verde-botanico)] font-semibold bg-[var(--verde-botanico)]/5 px-3 py-1 rounded-full">
+              {row.nivel}
+            </span>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Sensory Strength meter -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[0.7rem] uppercase tracking-[0.1em] font-semibold text-[var(--ceniza)]">
+                  {locale === 'es' ? 'Fuerza Sensorial' : locale === 'en' ? 'Sensory Strength' : 'Força Sensorial'}
+                </span>
+                <span class="text-xs text-[var(--near-black)] font-medium">{row.fuerza}</span>
+              </div>
+              <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                <div
+                  class="h-full rounded-full transition-all duration-700"
+                  style={`width: ${row.fuerzaLevel}%; background: linear-gradient(90deg, var(--verde-botanico), #2d6b4f)`}
+                ></div>
+              </div>
+            </div>
+
+            <!-- Aromatic Profile -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="text-[0.7rem] uppercase tracking-[0.1em] font-semibold text-[var(--ceniza)]">
+                  {locale === 'es' ? 'Perfil Aromático' : locale === 'en' ? 'Aromatic Profile' : 'Perfil Aromático'}
+                </span>
+                <span class="text-xs text-[var(--near-black)] font-medium italic">{row.aroma}</span>
+              </div>
+              <div class="text-sm text-[var(--ceniza)] leading-relaxed">
+                {row.aroma}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </section>

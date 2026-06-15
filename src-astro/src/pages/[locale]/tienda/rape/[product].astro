@@ -57,13 +57,13 @@ const highlight = product.highlight[locale_];
           <li>/</li>
           <li>
             <a href={`${baseUrl}/tienda`} class="hover:text-[var(--verde-botanico)] transition-colors">
-              {locale_ === 'es' ? 'Catálogo' : locale_ === 'en' ? 'Catalog' : 'Catálogo'}
+              {t.nav.tienda}
             </a>
           </li>
           <li>/</li>
           <li>
             <a href={`${baseUrl}/tienda/rape`} class="hover:text-[var(--verde-botanico)] transition-colors">
-              {locale_ === 'es' ? 'Rapé' : locale_ === 'en' ? 'Rapé' : 'Rapé'}
+              {t.nav.rape}
             </a>
           </li>
           <li>/</li>
@@ -74,7 +74,7 @@ const highlight = product.highlight[locale_];
       <!-- Product Header -->
       <div class="mb-10">
         <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[var(--verde-botanico)] font-bold block mb-3">
-          {locale_ === 'es' ? `Variedad 0${product.varietyOrder}` : locale_ === 'en' ? `Variety 0${product.varietyOrder}` : `Variedade 0${product.varietyOrder}`}
+          {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
         </span>
         <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-[var(--near-black)] mb-4">
           {product.nombre[locale_]}
@@ -93,7 +93,7 @@ const highlight = product.highlight[locale_];
 
       <!-- Full Description -->
       <div class="mb-10">
-        <p class="text-[var(--near-black)] text-base md:text-[1.05rem] leading-[1.8] text-justify">
+        <p class="text-[var(--near-black)] text-base md:text-[1.05rem] leading-[1.8] text-left">
           {description}
         </p>
       </div>
@@ -123,19 +123,19 @@ const highlight = product.highlight[locale_];
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div class="bg-[var(--papel)] p-4 rounded-lg">
             <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {locale_ === 'es' ? 'Fuerza' : locale_ === 'en' ? 'Strength' : 'Força'}
+              {t.tienda.intensityLabels.strength}
             </span>
             <span class="font-semibold text-[var(--near-black)]">{product.intensidad.fuerza[locale_]}</span>
           </div>
           <div class="bg-[var(--papel)] p-4 rounded-lg">
             <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {locale_ === 'es' ? 'Aroma' : locale_ === 'en' ? 'Aroma' : 'Aroma'}
+              {t.tienda.intensityLabels.aroma}
             </span>
             <span class="font-semibold text-[var(--near-black)]">{product.intensidad.aroma[locale_]}</span>
           </div>
           <div class="bg-[var(--papel)] p-4 rounded-lg">
             <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {locale_ === 'es' ? 'Nivel' : locale_ === 'en' ? 'Level' : 'Nível'}
+              {t.tienda.intensityLabels.level}
             </span>
             <span class="font-semibold text-[var(--near-black)]">{product.intensidad.nivel[locale_]}</span>
           </div>
@@ -145,7 +145,7 @@ const highlight = product.highlight[locale_];
       <!-- Intent Map Badge -->
       <div class="border-t border-gray-200 pt-6">
         <p class="text-sm text-[var(--ceniza)]">
-          {locale_ === 'es' ? 'Categoría:' : locale_ === 'en' ? 'Category:' : 'Categoria:'}{' '}
+          {t.tienda.categoryLabel}{' '}
           <span class="text-[var(--verde-botanico)] font-semibold">
             {product.intentMap}
           </span>

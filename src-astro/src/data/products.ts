@@ -58,7 +58,14 @@ const WHOLESALE = {
   pricePerGram: 1300,
 };
 
+// TODO: Replace with actual product images for each variety
+// Currently using placeholder until product photoshoot is complete
 const PLACEHOLDER_IMAGE = '/images/productos/rape/bobinsana-rape-2.webp';
+const IMAGE_TISUNU = '/images/productos/rape/tisunu.webp';
+const IMAGE_PIXURI = '/images/productos/rape/pixuri.webp';
+const IMAGE_PARIKA = '/images/productos/rape/parika.webp';
+const IMAGE_CUMARU = '/images/productos/rape/cumaru-de-cheiro.webp';
+const IMAGE_VENA = '/images/productos/rape/vena-de-paje.webp';
 
 // ─── Products ───────────────────────────────────────────────────────────────
 
@@ -121,7 +128,8 @@ export const products: Product[] = [
     intentMap: 'reset-energetico',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
-    imagenes: [PLACEHOLDER_IMAGE],
+    // TODO: Replace IMAGE_TISUNU with actual product image
+    imagenes: [IMAGE_TISUNU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
       es: 'Tisunú — rapé con la fuerza del árbol más poderoso de la selva. Limpieza energética profunda y purificación del aura.',
@@ -188,7 +196,8 @@ export const products: Product[] = [
     intentMap: 'bienestar-fisico',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
-    imagenes: [PLACEHOLDER_IMAGE],
+    // TODO: Replace IMAGE_PIXURI with actual product image
+    imagenes: [IMAGE_PIXURI],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
       es: 'Pixurí — rapé medicinal con aroma profundo, propiedades antisépticas y analgésicas. Ideal para uso diario y vías respiratorias.',
@@ -255,7 +264,8 @@ export const products: Product[] = [
     intentMap: 'conexion-espiritual',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
-    imagenes: [PLACEHOLDER_IMAGE],
+    // TODO: Replace IMAGE_PARIKA with actual product image
+    imagenes: [IMAGE_PARIKA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
       es: 'Pariká — rapé ceremonial de conexión espiritual profunda. Tradición Kaxinawá, purificación energética y apertura de caminos.',
@@ -322,7 +332,8 @@ export const products: Product[] = [
     intentMap: 'proteccion',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
-    imagenes: [PLACEHOLDER_IMAGE],
+    // TODO: Replace IMAGE_CUMARU with actual product image
+    imagenes: [IMAGE_CUMARU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
       es: 'Cumarú de Cheiro — rapé de protección ancestral y escudo energético. Limpieza respiratoria y fortalecimiento del plexo solar.',
@@ -389,7 +400,8 @@ export const products: Product[] = [
     intentMap: 'claridad-mental',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
-    imagenes: [PLACEHOLDER_IMAGE],
+    // TODO: Replace IMAGE_VENA with actual product image
+    imagenes: [IMAGE_VENA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
       es: 'Vena de Pajé — medicina para despertar la percepción y profundizar la meditación. Descalcificación pineal y limpieza de canales energéticos.',

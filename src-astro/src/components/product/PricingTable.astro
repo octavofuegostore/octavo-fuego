@@ -34,6 +34,13 @@ const t = useTranslations(locale);
 function formatCOP(value: number): string {
   return new Intl.NumberFormat('es-CO').format(value);
 }
+
+// Compute price per gram for each tier
+const pricingWithGrams = pricing.map((p) => ({
+  ...p,
+  pricePerGram: Math.round(p.precio / p.cantidad),
+  isBestValue: p.cantidad === Math.max(...pricing.map((x) => x.cantidad)),
+}));
 ---
 
 <div class="space-y-4">
@@ -44,10 +51,10 @@ function formatCOP(value: number): string {
 
   <!-- Price buttons grid -->
   <div class="grid grid-cols-3 gap-3" id="pricing-buttons">
-    {pricing.map((p, i) => (
+    {pricingWithGrams.map((p, i) => (
       <button
         class:list={[
-          "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200",
+          "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200 relative",
           "hover:border-[var(--verde-botanico)] hover:bg-[var(--papel)]",
           i === 0
             ? "border-[var(--verde-botanico)] bg-[var(--verde-botanico)] text-white"
@@ -57,9 +64,17 @@ function formatCOP(value: number): string {
         data-price={p.precio}
         aria-label={`${p.label} — $${formatCOP(p.precio)} COP`}
       >
+        {p.isBestValue && (
+          <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-amber-500 text-white text-[0.6rem] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full whitespace-nowrap">
+            Best value
+          </span>
+        )}
         <span class="block text-2xl font-display font-bold">{p.label}</span>
         <span class="block text-sm mt-1 opacity-80">
           ${formatCOP(p.precio)} COP
+        </span>
+        <span class="block text-[0.65rem] mt-1 opacity-60">
+          ${formatCOP(p.pricePerGram)} COP/g
         </span>
       </button>
     ))}
