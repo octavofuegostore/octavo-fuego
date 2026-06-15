@@ -1,117 +1,90 @@
-# Octavo Fuego - Rapé do Acre
+# Octavo Fuego — Rapé do Acre
+
 ## Ecommerce de Medicinas Ancestrales
 
----
-
-**Estado**: 🟡 En desarrollo  
-**Fecha inicio**: Abril 2026  
-**Tipo**: Ecommerce + Marca  
-**Stack**: Astro.js + Vite + TailwindCSS
+**Estado**: 🟢 En desarrollo (95% core completo)
+**Stack**: Astro 6.1.3 · TailwindCSS 4 · shadcn/ui · Nanostores
+**Dominio**: [www.octavofuego.com](https://www.octavofuego.com) (Vercel)
+**Modelo**: WhatsApp Commerce + Carrito digital
 
 ---
 
-## 📋 Resumen del Proyecto
+## Stack Tecnológico
 
-Octavo Fuego es una marca de medicinas ancestrales amazónicas (Rapé do Acre, Sananga, Sangre de Drago) con un modelo ecommerce premium. Se diferencia por:
-
-- **Storytelling único**: La Profecía del Octavo Fuego
-- **Posicionamiento**: Premium-accesible ($7.500-13.000 COP/gr)
-- **Educación**: Libro "Sagrada Ciencia" + ebooks gratuitos
-- **Comunidad**: Enfoque en el tabaco como puente de comunicación
+| Capa | Tecnología |
+|------|-----------|
+| Framework | Astro 6.1.3 (SSG estático, 0KB JS en páginas core) |
+| UI | TailwindCSS 4 + shadcn/ui + Radix UI |
+| Estado | Nanostores (carrito con persistencia localStorage) |
+| i18n | 3 idiomas (ES/EN/PT) con `[locale]` params |
+| Deploy | Vercel (automático desde `main`) |
+| SEO | Schema markup, sitemap, OG tags, robots.txt |
 
 ---
 
-## 📁 Estructura del Proyecto
+## Estado del Proyecto
 
 ```
-octavo-fuego/
-│
-├── 01-estrategia/           ← Investigación y planificación
-│   ├── octavo-fuego-master-document.md
-│   ├── octavo-fuego-business-plan.md
-│   ├── octavo-fuego-business-exploration.md
-│   ├── octavofuego_analisis_competitivo.md
-│   └── octavo-fuego-master-document.pdf
-│
-├── 02-diseno/               ← Diseño UI/UX y copy
-│   ├── wireframes/
-│   │   └── octavo-fuego-wireframes.md
-│   └── octavo-fuego-copy.md
-│
-├── 03-desarrollo/           ← Especificaciones técnicas
-│   └── octavo-fuego-web-specs.md
-│
-├── 04-marketing/            ← Estrategia de crecimiento
-│   └── seo/
-│       └── octavo-fuego-seo-blog-strategy.md
-│
-├── 05-entrega/              ← Documentación final (vacío)
-│
-├── assets/                  ← Recursos del proyecto (vacío)
-│   ├── logo/
-│   ├── fotos/
-│   └── fuentes/
-│
-└── README.md                ← Este archivo
+Fase 1: Estrategia    ██████████ 100% ✅
+Fase 2: Diseño        ██████████ 100% ✅
+Fase 3: Desarrollo    █████████░  95% ✅  ← Estamos aquí
+Fase 4: Marketing     ██████░░░░  60% 🔄
+Fase 5: Testing       ███░░░░░░░  30% 🔄
+Fase 6: Lanzamiento   ██░░░░░░░░  10% ⏳
 ```
 
----
+### ✅ Completado
+- 5 rapés con descripciones verbatim en 3 idiomas
+- Layout completo (Navbar, Footer, FloatingWhatsApp puro Astro)
+- i18n funcional con LanguageSwitcher
+- Catálogo con categorías + breadcrumb corregido
+- Homepage con hero, profecía, intenciones, productos
+- Carrito + Checkout (4 pasos)
+- SEO completo (Schema, sitemap, OG, robots)
+- Blog con 4 posts
+- FloatingWhatsApp convertido a Astro puro (0KB JS)
 
-## 🎯 Próximos Pasos
-
-### Fase 1: Estrategia (Completado ✅)
-- [x] Documento maestro con storytelling
-- [x] Business plan para inversores
-- [x] Análisis competitivo
-- [x] Estrategia SEO y blog
-
-### Fase 2: Diseño (En progreso 🟡)
-- [x] Wireframes de todas las páginas
-- [x] Copy completo del sitio
-- [ ] Mockups de alta fidelidad
-- [ ] Design system visual
-
-### Fase 3: Desarrollo (Pendiente ⏳)
-- [ ] Setup de Astro.js
-- [ ] Desarrollo de páginas core
-- [ ] Integración ecommerce
-- [ ] Testing y optimización
-
-### Fase 4: Lanzamiento (Pendiente ⏳)
-- [ ] Contenido inicial del blog
-- [ ] Configuración de analytics
-- [ ] Campaña de lanzamiento
-- [ ] Prospección B2B
+### 🔄 En progreso
+- WhatsAppButton.tsx → .astro (migración pendiente)
+- Imágenes reales de productos
+- Blog posts adicionales
+- Testing y optimización CWV
 
 ---
 
-## 📊 Métricas de Éxito
+## Productos
 
-| Métrica | Objetivo Mes 6 | Objetivo Mes 12 |
-|---------|----------------|-----------------|
-| Ventas mensuales | $12M COP | $28M COP |
-| Tráfico orgánico | 500 visitas/mes | 5.000 visitas/mes |
-| Clientes B2B | 10 tiendas | 30 tiendas |
-| Email list | 1.000 | 5.000 |
+5 variedades de Rapé do Acre (precios unificados):
 
----
+| # | Rapé | Etnia | Intención |
+|---|------|-------|-----------|
+| 1 | Tisunú | Yawanawá | Energético — Reset Energético |
+| 2 | Pixurí | Nukini | Medicinal — Bienestar Físico |
+| 3 | Pariká | Kaxinawá | Espiritual — Conexión Espiritual |
+| 4 | Cumarú de Cheiro | Yawanawá | Mixto — Protección |
+| 5 | Vena de Pajé | Shanenawa | Mixto — Claridad Mental |
 
-## 📞 Contacto del Proyecto
-
-**Responsable**: Edison  
-**Email**: [Por definir]  
-**WhatsApp**: [Por definir]  
-**Instagram**: @octavofuego (reservar)
+**Precios**: 10g $35.000 · 20g $70.000 · 30g $100.000 · Wholesale 500g+ $1.300/g
 
 ---
 
-## 📝 Notas
+## Convenciones Git
 
-- La Profecía del Octavo Fuego es el núcleo del storytelling
-- Precio estratégico: entre HAUX ($6.500/gr) y Ancestrina ($9.000-18.000/gr)
-- Proveedor principal: Francisquiño (Acre, Brasil) - contacto en curso
-- Lanzamiento previsto: Mes 3-4
+1. **Trabajar en LOCAL** (`develop` o `feature/*`)
+2. **Push a `origin/develop` SIEMPRE**
+3. **Merge a `main` SOLO con autorización explícita**
 
 ---
 
-*Última actualización: Abril 2026*
+## Archivos Importantes
+
+| Archivo | Propósito |
+|---------|-----------|
+| `PENDIENTES.md` | Estado completo del proyecto |
+| `AGENTS.md` | Instrucciones para AI agents |
+| `tasks.md` | Task tracking detallado |
+| `src-astro/README.md` | Documentación técnica del código |
+
+---
+
+*Última actualización: Junio 13, 2026*
