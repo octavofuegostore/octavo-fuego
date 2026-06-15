@@ -8,7 +8,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => !page.includes('/checkout/') && !page.includes('/tienda'),
+      filter: (page) => !page.includes('/checkout/'),
       changefreq: 'weekly',
       priority: 0.7,
       lastmod: new Date(),
@@ -23,14 +23,13 @@ export default defineConfig({
   },
   redirects: {
     '/': '/es/',
-    '/tienda': '/es/catalogo',
-    '/catalogo': '/es/catalogo',
-    '/catalogo/rape': '/es/catalogo/rape',
-    '/catalogo/tisunu': '/es/catalogo/rape/tisunu',
-    '/catalogo/pixuri': '/es/catalogo/rape/pixuri',
-    '/catalogo/parika': '/es/catalogo/rape/parika',
-    '/catalogo/cumaru-de-cheiro': '/es/catalogo/rape/cumaru-de-cheiro',
-    '/catalogo/vena-de-paje': '/es/catalogo/rape/vena-de-paje',
+    '/catalogo': '/es/tienda',
+    '/catalogo/rape': '/es/tienda/rape',
+    '/catalogo/tisunu': '/es/tienda/rape/tisunu',
+    '/catalogo/pixuri': '/es/tienda/rape/pixuri',
+    '/catalogo/parika': '/es/tienda/rape/parika',
+    '/catalogo/cumaru-de-cheiro': '/es/tienda/rape/cumaru-de-cheiro',
+    '/catalogo/vena-de-paje': '/es/tienda/rape/vena-de-paje',
     '/profecia': '/es/profecia',
   },
 });

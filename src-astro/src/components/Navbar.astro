@@ -29,7 +29,7 @@ const baseUrl = `/${locale}`;
           aria-expanded="false"
           aria-haspopup="true"
         >
-          {t.nav.catalogo}
+          {t.nav.tienda}
           <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
@@ -41,7 +41,7 @@ const baseUrl = `/${locale}`;
               .sort((a, b) => a.varietyOrder - b.varietyOrder)
               .map((product) => (
                 <a
-                  href={`${baseUrl}/catalogo/rape/${product.slug}`}
+                  href={`${baseUrl}/tienda/rape/${product.slug}`}
                   class="block px-4 py-2 text-sm text-[var(--ceniza)] hover:text-[var(--near-black)] hover:bg-gray-50 transition-colors"
                 >
                   {product.nombre[locale]}
@@ -49,10 +49,10 @@ const baseUrl = `/${locale}`;
               ))}
             <div class="border-t border-gray-100 mt-2 pt-2">
               <a
-                href={`${baseUrl}/catalogo`}
+                href={`${baseUrl}/tienda`}
                 class="block px-4 py-2 text-sm text-[var(--verde-botanico)] hover:text-[var(--near-black)] transition-colors"
               >
-                {t.nav.verCatalogo}
+                {t.nav.verTienda}
               </a>
             </div>
           </div>

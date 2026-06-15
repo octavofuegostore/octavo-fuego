@@ -2,7 +2,7 @@
 /**
  * Locale-aware homepage — renders at /, /en, /pt
  * Preserves Hero + Trust Badges, REPLACES quiz with real intention categories,
- * adds ProphecyTeaser, updates product links to /catalogo
+ * adds ProphecyTeaser, updates product links to /tienda
  *
  * @source src/pages/index.astro (existing) + Octavofuego_Catalogo_ESP (1).html (intentions)
  */
@@ -86,7 +86,7 @@ const icons: Record<string, string> = {
         </p>
         
         <a 
-          href={`${baseUrl}/catalogo`}
+          href={`${baseUrl}/tienda`}
           class="inline-block bg-[var(--near-black)] text-white px-8 py-4 text-lg font-medium tracking-wide hover:bg-[var(--verde-botanico)] transition-colors rounded-[var(--radius-button)]"
         >
           {t.home.hero.cta} →
@@ -159,7 +159,7 @@ const icons: Record<string, string> = {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {intentions.map((intent) => (
           <a
-            href={`${baseUrl}/catalogo/rape/${intent.slug}`}
+            href={`${baseUrl}/tienda/rape/${intent.slug}`}
             class="group border border-gray-200 p-6 hover:border-[var(--verde-botanico)] hover:bg-[var(--papel)] transition-all rounded-[var(--radius-card)] shadow-[var(--shadow-card)] text-left"
           >
             <span class="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-[var(--papel)] group-hover:bg-white transition-colors">
@@ -186,7 +186,7 @@ const icons: Record<string, string> = {
       </div>
       
       <div class="text-center mt-12">
-        <a href={`${baseUrl}/catalogo`} class="inline-block border border-[var(--verde-botanico)] text-[var(--verde-botanico)] px-8 py-4 hover:bg-[var(--verde-botanico)] hover:text-white transition-colors rounded-[var(--radius-button)]">
+        <a href={`${baseUrl}/tienda`} class="inline-block border border-[var(--verde-botanico)] text-[var(--verde-botanico)] px-8 py-4 hover:bg-[var(--verde-botanico)] hover:text-white transition-colors rounded-[var(--radius-button)]">
           {t.home.productos.verTodos} →
         </a>
       </div>

@@ -135,7 +135,7 @@ export function CheckoutForm() {
     return (
       <div class="text-center py-12">
         <p class="text-ceniza mb-4">Tu carrito está vacío</p>
-        <Button onClick={() => window.location.href='/es/catalogo'}>Ir al catálogo</Button>
+        <Button onClick={() => window.location.href='/es/tienda'}>Ir al catálogo</Button>
       </div>
     );
   }
@@ -364,7 +364,7 @@ export function CheckoutForm() {
               </svg>
               Confirmar por WhatsApp
             </Button>
-            <Button variant="secondary" onClick={() => window.location.href='/es/catalogo'}>
+            <Button variant="secondary" onClick={() => window.location.href='/es/tienda'}>
               Continuar comprando
             </Button>
           </div>

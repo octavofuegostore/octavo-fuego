@@ -1,6 +1,6 @@
 ---
 /**
- * Product detail page — renders at /catalogo/rape/[slug] × 3 locales = 15 paths
+ * Product detail page — renders at /tienda/rape/[slug] × 3 locales = 15 paths
  * Uses: PricingTable (SELECTABLE BUTTONS), WhatsAppButton
  *
  * @source Octavofuego_Catalogo_ESP (1).html — variety items
@@ -56,13 +56,13 @@ const highlight = product.highlight[locale_];
           </li>
           <li>/</li>
           <li>
-            <a href={`${baseUrl}/catalogo`} class="hover:text-[var(--verde-botanico)] transition-colors">
+            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--verde-botanico)] transition-colors">
               {locale_ === 'es' ? 'Catálogo' : locale_ === 'en' ? 'Catalog' : 'Catálogo'}
             </a>
           </li>
           <li>/</li>
           <li>
-            <a href={`${baseUrl}/catalogo/rape`} class="hover:text-[var(--verde-botanico)] transition-colors">
+            <a href={`${baseUrl}/tienda/rape`} class="hover:text-[var(--verde-botanico)] transition-colors">
               {locale_ === 'es' ? 'Rapé' : locale_ === 'en' ? 'Rapé' : 'Rapé'}
             </a>
           </li>
@@ -118,7 +118,7 @@ const highlight = product.highlight[locale_];
       <!-- Intensity Profile (single product) -->
       <div class="mb-12">
         <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
-          {t.catalogo.intensity}
+          {t.tienda.intensity}
         </h2>
         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div class="bg-[var(--papel)] p-4 rounded-lg">

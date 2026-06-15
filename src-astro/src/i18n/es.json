@@ -5,14 +5,14 @@
   },
   "nav": {
     "tienda": "Tienda",
-    "catalogo": "Catálogo",
+    "tienda": "Catálogo",
     "profecia": "Profecía",
     "blog": "Blog",
     "nosotros": "Nosotros",
     "contacto": "Contacto",
     "carrito": "Carrito",
     "verTodos": "Ver todos",
-    "verCatalogo": "Ver todo el Catálogo",
+    "verTienda": "Ver todo el Catálogo",
     "rape": "Rapé",
     "sananga": "Sananga",
     "kuripes": "Kuripes",
@@ -115,7 +115,7 @@
     "mensaje": "La página que buscas no existe.",
     "cta": "Volver al inicio"
   },
-  "catalogo": {
+  "tienda": {
     "title": "Catálogo de Rapé",
     "subtitle": "Medicina Ancestral Amazónica",
     "quickRef": "Tabla de Referencia Rápida",

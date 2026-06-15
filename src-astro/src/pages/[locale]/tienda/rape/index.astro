@@ -1,6 +1,6 @@
 ---
 /**
- * Rapé category listing — renders at /catalogo/rape × 3 locales
+ * Rapé category listing — renders at /tienda/rape × 3 locales
  * Lists all 5 rapé varieties with ProductCard
  *
  * @source Octavofuego_Catalogo_ESP (1).html
@@ -34,7 +34,7 @@ const categoryDescription = locale_ === 'es'
 ---
 
 <Layout
-  title={`${categoryTitle} | ${t.catalogo.title}`}
+  title={`${categoryTitle} | ${t.tienda.title}`}
   description={categoryDescription}
   locale={locale_}
 >
@@ -51,8 +51,8 @@ const categoryDescription = locale_ === 'es'
           </li>
           <li>/</li>
           <li>
-            <a href={`${baseUrl}/catalogo`} class="hover:text-[var(--verde-botanico)] transition-colors">
-              {t.nav.catalogo}
+            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--verde-botanico)] transition-colors">
+              {t.nav.tienda}
             </a>
           </li>
           <li>/</li>
@@ -61,7 +61,7 @@ const categoryDescription = locale_ === 'es'
       </nav>
 
       <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--verde-botanico)] font-semibold block mb-4">
-        {t.catalogo.subtitle}
+        {t.tienda.subtitle}
       </span>
       <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--near-black)] mb-6">
         {categoryTitle}
@@ -88,7 +88,7 @@ const categoryDescription = locale_ === 'es'
               imagen={product.imagenes[0]}
               pricing={product.pricing}
               locale={locale_}
-              href={`${baseUrl}/catalogo/rape/${product.slug}`}
+              href={`${baseUrl}/tienda/rape/${product.slug}`}
             />
           ))
         }
@@ -101,7 +101,7 @@ const categoryDescription = locale_ === 'es'
     <div class="max-w-3xl mx-auto px-6 md:px-12 text-center">
       <p class="text-[var(--ceniza)] italic text-base md:text-lg leading-relaxed">
         <strong>{locale_ === 'es' ? 'Nota general:' : locale_ === 'en' ? 'General note:' : 'Nota geral:'}</strong>{' '}
-        {t.catalogo.generalNote}
+        {t.tienda.generalNote}
       </p>
     </div>
   </section>
