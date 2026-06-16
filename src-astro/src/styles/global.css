@@ -67,6 +67,7 @@
   /* Design Tokens - Airbnb Style */
   /* Base color: Tabaco (renamed from --color-action-primary - semantically incorrect) */
   --tabaco-base: #6d5e4d;
+  --color-footer-bg: #3D2E22;
   --near-black: #222222;
   --ceniza: #7b8084;
 

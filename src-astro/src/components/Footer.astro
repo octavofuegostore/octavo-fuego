@@ -12,7 +12,7 @@ const t = useTranslations(locale);
 const baseUrl = `/${locale}`;
 ---
 
-<footer class="bg-[var(--humo)] text-white">
+<footer class="bg-[var(--color-footer-bg)] text-white">
   <div class="max-w-7xl mx-auto px-6 md:px-12 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
       <!-- Logo + Tagline -->
@@ -20,10 +20,10 @@ const baseUrl = `/${locale}`;
         <a href="/" class="font-display text-2xl font-bold mb-4 block text-white">
           {t.common.brand}
         </a>
-        <p class="text-gray-400 text-sm mb-6">
+        <p class="text-[var(--color-text-on-dark)] text-sm mb-6">
           {t.common.tagline}
         </p>
-        <p class="text-gray-500 text-xs max-w-xs">
+        <p class="text-[var(--color-text-on-dark)]/70 text-xs max-w-xs">
           {t.footer.disclaimer}
         </p>
       </div>
@@ -35,12 +35,12 @@ const baseUrl = `/${locale}`;
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href={`${baseUrl}/tienda`} class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={`${baseUrl}/tienda`} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.tienda}
             </a>
           </li>
           <li>
-            <a href={`${baseUrl}/profecia`} class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={`${baseUrl}/profecia`} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               Profecía
             </a>
           </li>
@@ -54,27 +54,27 @@ const baseUrl = `/${locale}`;
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href="/nosotros" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href="/nosotros" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.nosotros}
             </a>
           </li>
           <li>
-            <a href="/blog" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href="/blog" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.blog}
             </a>
           </li>
           <li>
-            <a href="/contacto" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href="/contacto" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.contacto}
             </a>
           </li>
           <li>
-            <a href="/faq" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href="/faq" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.footer.faq}
             </a>
           </li>
           <li>
-            <a href="/envios" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href="/envios" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.footer.envios}
             </a>
           </li>
@@ -88,26 +88,26 @@ const baseUrl = `/${locale}`;
         </h4>
         <ul class="space-y-3 mb-6">
           <li>
-            <a href="mailto:hola@octavofuego.com" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors flex items-center gap-2">
+            <a href="mailto:hola@octavofuego.com" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors flex items-center gap-2">
               <Icon name="solar:letter-bold-duotone" class="w-7 h-7 shrink-0" />
               hola@octavofuego.com
             </a>
           </li>
           <li>
-            <a href="https://wa.me/573172137932" target="_blank" rel="noopener" class="text-gray-400 text-sm hover:text-[var(--color-action-primary)] transition-colors flex items-center gap-2">
+            <a href="https://wa.me/573172137932" target="_blank" rel="noopener" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors flex items-center gap-2">
               <Icon name="solar:chat-round-bold-duotone" class="w-7 h-7 shrink-0" />
               WhatsApp
             </a>
           </li>
-          <li class="flex items-center gap-2 text-gray-400 text-sm">
+          <li class="flex items-center gap-2 text-[var(--color-text-on-dark)] text-sm">
             <Icon name="solar:map-point-bold-duotone" class="w-7 h-7 shrink-0" />
             <span>{t.footer.direccionFabrica}</span>
           </li>
-          <li class="flex items-center gap-2 text-gray-400 text-sm">
+          <li class="flex items-center gap-2 text-[var(--color-text-on-dark)] text-sm">
             <Icon name="solar:leaf-bold-duotone" class="w-7 h-7 shrink-0" />
             <span>{t.footer.confianzaFooter}</span>
           </li>
-          <li class="text-gray-500 text-xs">{t.footer.enviosZona}</li>
+          <li class="text-[var(--color-text-on-dark)]/70 text-xs">{t.footer.enviosZona}</li>
         </ul>
         
         <!-- Social Icons -->
@@ -116,7 +116,7 @@ const baseUrl = `/${locale}`;
             href="https://instagram.com/octavofuego" 
             target="_blank" 
             rel="noopener" 
-            class="text-gray-400 hover:text-[var(--color-action-primary)] transition-colors"
+            class="text-[var(--color-text-on-dark)] hover:text-white transition-colors"
             aria-label="Ir a Instagram"
           >
             <Icon name="ph:instagram-logo-duotone" class="w-7 h-7" />
@@ -125,7 +125,7 @@ const baseUrl = `/${locale}`;
             href="https://facebook.com/octavofuego" 
             target="_blank" 
             rel="noopener" 
-            class="text-gray-400 hover:text-[var(--color-action-primary)] transition-colors"
+            class="text-[var(--color-text-on-dark)] hover:text-white transition-colors"
             aria-label="Ir a Facebook"
           >
             <Icon name="ph:facebook-logo-duotone" class="w-7 h-7" />
@@ -134,7 +134,7 @@ const baseUrl = `/${locale}`;
             href="https://wa.me/573172137932" 
             target="_blank" 
             rel="noopener" 
-            class="text-gray-400 hover:text-[var(--color-action-primary)] transition-colors"
+            class="text-[var(--color-text-on-dark)] hover:text-white transition-colors"
             aria-label="Ir a WhatsApp"
           >
             <Icon name="ph:whatsapp-logo-duotone" class="w-7 h-7" />
@@ -144,16 +144,16 @@ const baseUrl = `/${locale}`;
     </div>
 
     <!-- Bottom Bar -->
-    <div class="pt-8 border-t border-gray-700">
+    <div class="pt-8 border-t border-white/10">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-gray-500 text-xs">
+        <p class="text-[var(--color-text-on-dark)]/70 text-xs">
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href="/terminos" class="text-gray-500 text-xs hover:text-[var(--color-action-primary)] transition-colors">
+          <a href="/terminos" class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
             {t.footer.terminos}
           </a>
-          <a href="/privacidad" class="text-gray-500 text-xs hover:text-[var(--color-action-primary)] transition-colors">
+          <a href="/privacidad" class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
             {t.footer.privacidad}
           </a>
         </div>
