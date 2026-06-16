@@ -300,6 +300,18 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 - Monorepo dual-domain + `.com.br` + B2B automatizado
 - Manifiesto completo (ARCHITECTURE.md §1-9)
 
+### Por hacer (urgente)
+- Imágenes reales de los 5 rapés
+- Google Search Console + indexación
+- Core Web Vitals optimizados (LCP < 2.5s)
+
+### Post-lanzamiento
+- Campaña redes sociales
+- Prospección B2B
+- Email marketing
+- Sistema de reseñas
+- Blog semanal
+
 ---
 
 ## 10. Links

@@ -272,7 +272,14 @@
 - [ ] Hreflang cross-domain (CO ↔ BR)
 - [ ] B2B: flujo de aprobación automatizado (tax_id, company_name)
 - [ ] Pasarelas locales: Pix + Boleto via Stripe Brasil
-- [ ] CI/CD: GitHub Actions + 2 proyectos Vercel
+- [ ] **GitHub Actions:** `.github/workflows/check-builds.yml` — validar ambos apps antes de merge
+  - Job `build-colombia` con env vars CO
+  - Job `build-brasil` con env vars BR
+  - Secrets: `MEDUSA_PROD_URL`
+- [ ] **Vercel Proyecto 1 (Colombia):** Root `apps/colombia`, dominio `octavofuego.com`
+- [ ] **Vercel Proyecto 2 (Brasil):** Root `apps/brasil`, dominio `octavofogo.com.br`
+- [ ] Servidor MedusaJS v2 desplegado (`api.octavofuego.com`)
+- [ ] Variables de entorno consolidadas en `.env.example` para ambos apps
 
 > **ANTI-PATRÓN:** No activar esta fase antes de validar que el mercado BR responde al rapé. El flujo de caja real debe pagar la infraestructura.
 
