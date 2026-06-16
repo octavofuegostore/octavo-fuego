@@ -94,10 +94,18 @@ npm run preview  # preview production build
 ### Styling
 - TailwindCSS 4.x utility classes
 - Custom CSS variables in `:root` of global.css
-- **Colors**: white (#ffffff), negro (#000), near-black (#222), tabaco (#8B4513), ceniza (#7b8084), humo (#2A2A2A), papel (#F5F5F0), verde-botanico (#6d5e4d)
+- **Colors**: Usar tokens funcionales (`--color-action-primary`, `--color-surface-*`, etc.) en nuevo código. Legacy tokens (`--verde-botanico`, `--humo`, `--papel`) siguen funcionando pero están deprecated.
 - Shadows: 3-layer Airbnb system (--shadow-card, --shadow-hover)
 - Border radius: 0px default, 8px buttons, 20px cards, 14px badges
 - Fonts: Playfair Display (display), Inter (body)
+
+### Semantic Colors
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--whatsapp` | #25D366 | Botón WhatsApp |
+| `--success` | #22C55E | Estados éxito |
+| `--error` | #EF4444 | Estados error |
+| `--warning` | #F59E0B | Estados warning |
 
 ### Icon System (OBLIGATORIO)
 - **NUNCA usar `lucide-react`** — tiene bug SSR en Astro (no forwardea `class` prop)
@@ -135,20 +143,50 @@ npm run preview  # preview production build
 - **Filosofía**: "Medicina ancestral para el alma moderna"
 
 ### Color Palette (CSS Variables)
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `--white` | #ffffff | Fondo principal, cards |
-| `--negro` | #000000 | Headings principales |
-| `--near-black` | #222222 | Texto body (cálido) |
-| `--tabaco` | #8B4513 | Acento ocasional |
-| `--ceniza` | #7b8084 | Textos secundarios, metadata |
-| `--humo` | #2A2A2A | Footer, elementos oscuros |
-| `--papel` | #F5F5F0 | Secciones contrastadas |
-| `--verde-botanico` | #6d5e4d | Acento principal, CTAs |
-| `--whatsapp` | #25D366 | Botón WhatsApp |
-| `--success` | #22C55E | Estados éxito |
-| `--error` | #EF4444 | Estados error |
-| `--warning` | #F59E0B | Estados warning |
+| Token | Hex | Uso | Status |
+|-------|-----|-----|--------|
+| `--white` | #ffffff | Fondo principal | ✅ |
+| `--negro` | #000000 | Headings | ✅ |
+| `--near-black` | #222222 | Texto body | ✅ |
+| `--tabaco` | #8B4513 | Acento ocasional | ✅ |
+| `--ceniza` | #7b8084 | Textos secundarios | ✅ |
+| `--humo` | #2A2A2A | Footer | ✅ → usar `--color-surface-dark` |
+| `--papel` | #F5F5F0 | Secciones contrastadas | ✅ → usar `--color-surface-warm` |
+| `--verde-botanico` | #6d5e4d | Acento principal | ⚠️ **DEPRECATED** |
+
+### Functional Token System (Híbrido)
+```css
+/* Base semánticamente correcto */
+--tabaco-base: #6d5e4d;
+
+/* Alias backwards-compatible */
+--verde-botanico: var(--tabaco-base); /* @deprecated */
+
+/* Action tokens (para nuevo código) */
+--color-action-primary: var(--tabaco-base);
+--color-action-hover: #5a4d3f;
+--color-action-subtle: #C4956A;
+
+/* Surface tokens */
+--color-surface-base: #ffffff;
+--color-surface-warm: #F2EFE8;
+--color-surface-dark: #2A2A2A;
+
+/* Text tokens */
+--color-text-primary: #1C1410;
+--color-text-secondary: #8C8680;
+--color-text-on-action: #F2EFE8;
+--color-text-on-dark: #F2EFE8;
+
+/* Border tokens */
+--color-border-default: #C4956A;
+--color-border-subtle: #E8E0D5;
+```
+
+**Migration path:**
+1. `--verde-botanico` sigue funcionando (alias)
+2. Nuevo código usa `--color-action-primary`
+3. Post-launch: find-replace `--verde-botanico` → `--color-action-primary`
 
 ## Testing
 ```bash

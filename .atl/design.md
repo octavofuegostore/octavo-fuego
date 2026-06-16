@@ -55,17 +55,60 @@ Inspirado en Waking Herbs + Airbnb: Marketplace botánico cálido con estética 
 
 ## 2. Color Palette & Roles
 
-### Brand Colors (Minimalist Sacred)
-| Token | Hex | Uso |
-|-------|-----|-----|
-| `--white` | #ffffff | Fondo principal, cards |
-| `--negro` | #000000 | Headings principales |
-| `--near-black` | #222222 | Texto body (cálido) |
-| `--tabaco` | #8B4513 | Acento ocasional |
-| `--ceniza` | #7b8084 | Textos secundarios, metadata |
-| `--humo` | #2A2A2A | Footer, elementos oscuros |
-| `--papel` | #F5F5F0 | Secciones contrastadas |
-| `--verde-botanico` | #6d5e4d | Acento principal |
+### Color Palette & Roles
+
+#### Migration: Descriptive → Functional (Híbrido)
+
+| Token Anterior | Token Nuevo | Valor | Notas |
+|---------------|-------------|-------|-------|
+| `--verde-botanico` | `--tabaco-base` | `#6d5e4d` | **Rename semántico** — "verde" era mentira |
+| — | `--color-action-primary` | `var(--tabaco-base)` | **Functional** — botón CTA, accents |
+| — | `--color-action-hover` | `#5a4d3f` | **Functional** — hover de primary |
+| — | `--color-action-subtle` | `#C4956A` | **Functional** — borders accent |
+| `--color-humo` | `--color-surface-dark` | `#2A2A2A` | Renombrado funcional |
+| `--color-papel` | `--color-surface-warm` | `#F5F5F0` | Renombrado funcional |
+
+#### Sistema Híbrido (Backwards Compatible)
+```css
+--tabaco-base: #6d5e4d;                    /* Base real — único nombre correcto */
+--verde-botanico: var(--tabaco-base);     /* @deprecated alias — mantener 0 breaking changes */
+--color-action-primary: var(--tabaco-base); /* Functional — usar en nuevo código */
+```
+
+#### Tokens Funcionales Completos
+```css
+/* Superficie */
+--color-surface-base: #ffffff;
+--color-surface-warm: #F2EFE8;
+--color-surface-dark: #2A2A2A;
+
+/* Texto */
+--color-text-primary: #1C1410;      /* Headings */
+--color-text-secondary: #8C8680;    /* Meta, subtitles */
+--color-text-on-action: #F2EFE8;    /* Sobre action-primary */
+--color-text-on-dark: #F2EFE8;      /* Sobre superficies oscuras */
+
+/* Borde */
+--color-border-default: #C4956A;
+--color-border-subtle: #E8E0D5;
+```
+
+### Migration Path
+1. **Fase 1** (ahora): Rename semántico + aliases — 0 breaking changes ✅
+2. **Fase 2** (post-launch): Find-replace `--verde-botanico` → `--color-action-primary` en componentes
+3. **Fase 3** (post-launch): Eliminar `--verde-botanico` alias cuando todos los usages estén migrados
+
+### Brand Colors (Legacy — mantener暂时的)
+| Token | Hex | Uso | Status |
+|-------|-----|-----|--------|
+| `--white` | #ffffff | Fondo principal, cards | ✅ |
+| `--negro` | #000000 | Headings principales | ✅ |
+| `--near-black` | #222222 | Texto body (cálido) | ✅ |
+| `--tabaco` | #8B4513 | Acento ocasional | ✅ |
+| `--ceniza` | #7b8084 | Textos secundarios, metadata | ✅ |
+| `--humo` | #2A2A2A | Footer, elementos oscuros | ✅ → usar `--color-surface-dark` |
+| `--papel` | #F5F5F0 | Secciones contrastadas | ✅ → usar `--color-surface-warm` |
+| `--verde-botanico` | #6d5e4d | Acento principal | ⚠️ **DEPRECATED** — usar `--color-action-primary` o `--tabaco-base` |
 
 ### Icon System
 - **Librería**: `astro-icon` + `@iconify-json/solar` (Solar Bold-Duotone) + `@iconify-json/ph` (Phosphor Duotone)

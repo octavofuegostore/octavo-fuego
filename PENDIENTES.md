@@ -184,6 +184,32 @@ WhatsApp:   ph:whatsapp-logo-duotone
 
 ---
 
+## 🎨 Design System — Color Tokens (Híbrido)
+
+### Sistema Migrado (Junio 15, 2026)
+```
+verde-botanico (#6d5e4d) → tabacco-base (#6d5e4d)     [rename semántico]
+verde-botanico          → color-action-primary         [functional token]
+
+tokens funcionales disponibles:
+- --color-action-primary: var(--tabacco-base)
+- --color-action-hover: #5a4d3f
+- --color-action-subtle: #C4956A
+- --color-surface-base: #ffffff
+- --color-surface-warm: #F2EFE8
+- --color-surface-dark: #2A2A2A
+- --color-text-primary: #1C1410
+- --color-text-secondary: #8C8680
+```
+
+### Migration Path
+1. ✅ `--verde-botanico` → `--tabacco-base` (rename semántico)
+2. ✅ Alias `--verde-botanico: var(--tabacco-base)` (0 breaking changes)
+3. ⏳ Post-launch: find-replace `--verde-botanico` → `--color-action-primary` en componentes
+4. ⏳ Post-launch: eliminar alias deprecated
+
+---
+
 ## 📁 Estructura del Proyecto
 
 ```
