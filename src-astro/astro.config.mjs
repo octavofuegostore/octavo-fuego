@@ -24,6 +24,9 @@ export default defineConfig({
           // Homepage Confianza
           'shield-bold-duotone',
           'cloud-waterdrop-bold-duotone',
+          // Homepage Confianza (solid variants - max contrast)
+          'shield-bold',
+          'cloud-waterdrop-bold',
           // Homepage Intenciones
           'eye-bold-duotone',
           'lightning-bold-duotone',
