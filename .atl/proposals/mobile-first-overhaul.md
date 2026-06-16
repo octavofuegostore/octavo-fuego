@@ -13,7 +13,7 @@
 ### In Scope
 
 - **Phase 1 — Critical Fixes (4):** Hamburger menu JS + mobile drawer, WhatsApp CTA always-visible on touch, safe-area-inset for FloatingWhatsApp + navbar + body, navbar icon collision with logo on ≤375px
-- **Phase 2 — Touch & Input UX (6):** `touch-action: manipulation` global, `-webkit-tap-highlight-color: transparent`, 44×44px touch targets (footer icons, checkout selects, qty buttons, cart delete), `overscroll-behavior` on cart/checkout, anti-zoom iOS (`text-base md:text-sm` per component — not global)
+- **Phase 2 — Touch & Input UX (6→9):** `touch-action: manipulation` global, `-webkit-tap-highlight-color: transparent`, 44×44px touch targets (footer icons, checkout selects, qty buttons, cart delete, QuickViewModal qty, CartDrawer qty/close/delete), `overscroll-behavior` on cart/checkout, anti-zoom iOS (`text-base md:text-sm` per component — not global), trust badges text overflow on iPhone SE, intention cards gap on narrow viewports
 - **Phase 3 — Layout & Navigation (8):** Cart badge nanostores binding, hardcoded URL → locale-aware redirects, PricingTable responsive grid (3→2→1) + sticky weight column, sticky checkout nav buttons, cart image sizing, snap-scroll on product grids, `flex-col sm:flex-row` in headers/action bars
 - **Phase 4 — Polish & Consistency (8):** Blog dark-theme removal (→ light theme), text-justify → text-left on mobile, px→rem spacing audit, blog hero gradient reduction, `scrollbar-gutter: stable`, cart drawer body lock, `<dialog>` modal responsive (full-width mobile), `data-breakpoint` CSS-first breakpoint detection on `<html>`
 
@@ -72,6 +72,9 @@
 | 5f | Cart drawer qty buttons 44×44px | `CartDrawer.tsx` | 149–166 | `w-8 h-8` → `w-11 h-11 min-w-[44px] min-h-[44px]` | 1-line CSS | Pattern 4 |
 | 5g | Cart drawer delete button 44×44px | `CartDrawer.tsx` | 168–173 | `p-2` → `p-3 min-w-[44px] min-h-[44px]` | 1-line CSS | Pattern 4 |
 | 5h | Cart drawer close button 44×44px | `CartDrawer.tsx` | 33–38 | `p-2` → `p-3 min-w-[44px] min-h-[44px]` | 1-line CSS | Pattern 4 |
+| 5i | QuickViewModal qty buttons 44×44px | `QuickViewModal.astro` | 54, 67 | `w-10 h-10` → `w-11 h-11 min-w-[44px] min-h-[44px]` | 1-line CSS | Pattern 4 |
+| 5j | Trust badges overflow ≤375px | `index.astro` | 123, 132, 141 | Trust badge H3s: `text-lg` → `text-base sm:text-lg` (prevents text overflow on iPhone SE) | 3-line CSS | New (2026-06-16 audit) |
+| 5k | Intention cards gap ≤375px | `index.astro` | 159 | Intention grid: `gap-4` → `gap-3 sm:gap-4` (prevents card squeezing on narrow screens) | 1-line CSS | New (2026-06-16 audit) |
 | 6 | Hardcoded URL → locale-aware redirects | `carrito/index.astro` | 39, 65, 68 | Replace hardcoded `/es/tienda` paths with JS that reads `window.location.pathname` first segment as locale | JS needed | New (locale-aware) |
 | 7 | `touch-action: manipulation` global | `global.css` | ~148 | Add `touch-action: manipulation` inside `body { ... }` block | 1-line CSS | Pattern 8: touch-action |
 | 8 | `-webkit-tap-highlight-color: transparent` | `global.css` | ~148 | Add `-webkit-tap-highlight-color: transparent` inside `body { ... }` | 1-line CSS | Pattern 8-related |
@@ -131,8 +134,10 @@
 | `src/components/Footer.astro` | 59–80, 83–101 | Touch targets (social + contact icons) |
 | `src/components/product/PricingTable.astro` | 53–73 | Responsive grid + sticky weight column |
 | `src/components/prophecy/ProphecyContent.astro` | 64, 76, 85, 95, 111 | Text-justify → text-left |
-| `src/components/cart/CartDrawer.tsx` | 33–38, 149–173 | Touch targets (close, qty, delete) |
+| `src/components/cart/CartDrawer.tsx` | 33–38, 149–173 | Touch targets (close, qty, delete) — optimizado para futuro uso (actualmente huérfano) |
+| `src/components/product/QuickViewModal.astro` | 54, 67 | Touch targets (qty buttons) |
 | `src/components/checkout/CheckoutForm.tsx` | 144, 223, 339, 374–394 | Theme, select target, sticky nav |
+| `src/pages/[locale]/index.astro` | 123, 132, 141, 159 | Trust badges overflow, intention cards gap |
 | `src/components/ui/input.tsx` | 9 | Verify `text-base` is present |
 | `src/layouts/Layout.astro` | `<head>`, 87 | `data-breakpoint` script, safe-area body padding |
 | `src/pages/carrito/index.astro` | 39, 65, 68, 104–107, 118, 128, 134 | Locale redirects, image sizing, touch targets |
