@@ -84,6 +84,9 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <!-- Organization Schema -->
     <OrganizationJsonLd />
 
+    <!-- Page-specific head slot (structured data, scripts, etc.) -->
+    <slot name="head" />
+
     <!-- CSS-first breakpoint detection -->
     <script>
       document.addEventListener('astro:after-swap', () => {

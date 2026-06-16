@@ -12,8 +12,75 @@ const schema = {
   'knowsAbout': [
     { '@type': 'Thing', 'name': 'Rapé', 'description': 'Tabaco ceremonial amazónico en polvo' },
     { '@type': 'Thing', 'name': 'Sananga', 'description': 'Gotas oftálmicas medicinales amazónicas' },
-    { '@type': 'Thing', 'name': 'Kuripes', 'description': 'Aplicador ceremonial artesanal' }
+    { '@type': 'Thing', 'name': 'Kuripes', 'description': 'Aplicador ceremonial artesanal' },
+    { '@type': 'Thing', 'name': 'Tabaco', 'description': 'Tabaco de cuerda y savia, base de las mezclas ceremoniales' },
+    { '@type': 'Thing', 'name': 'Medicina ancestral', 'description': 'Prácticas curativas tradicionales de la Amazonia' }
   ],
+  'hasOfferCatalog': {
+    '@type': 'OfferCatalog',
+    'name': 'Rapé do Acre',
+    'itemListElement': [
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Tisunú',
+          'description': 'Rapé energético del árbol más poderoso de la selva',
+          'url': 'https://octavofuego.com/es/tienda/rape/tisunu'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Pixurí',
+          'description': 'Rapé medicinal con propiedades antisépticas y analgésicas',
+          'url': 'https://octavofuego.com/es/tienda/rape/pixuri'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Pariká',
+          'description': 'Rapé ceremonial de conexión espiritual profunda — tradición Kaxinawá',
+          'url': 'https://octavofuego.com/es/tienda/rape/parika'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Cumarú de Cheiro',
+          'description': 'Rapé de protección ancestral y limpieza respiratoria',
+          'url': 'https://octavofuego.com/es/tienda/rape/cumaru-de-cheiro'
+        }
+      },
+      {
+        '@type': 'Offer',
+        'itemOffered': {
+          '@type': 'Product',
+          'name': 'Vena de Pajé',
+          'description': 'Rapé para claridad mental, meditación y descalcificación pineal',
+          'url': 'https://octavofuego.com/es/tienda/rape/vena-de-paje'
+        }
+      }
+    ]
+  },
+  'potentialAction': {
+    '@type': 'CommunicateAction',
+    'name': 'Consultar por WhatsApp',
+    'target': {
+      '@type': 'EntryPoint',
+      'urlTemplate': 'https://wa.me/573172137932?text=Hola%2C+quiero+informaci%C3%B3n+sobre+sus+productos',
+      'actionPlatform': 'http://schema.org/WhatsApp'
+    },
+    'instrument': {
+      '@type': 'SoftwareApplication',
+      'name': 'WhatsApp',
+      'url': 'https://www.whatsapp.com/'
+    }
+  },
   'contactPoint': {
     '@type': 'ContactPoint',
     'telephone': '+573172137932',
