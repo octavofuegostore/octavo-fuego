@@ -187,6 +187,25 @@ function renderMarkdown(content: string): string {
 ---
 
 <Layout title={post.title} description={post.excerpt}>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    'headline': post.title,
+    'description': post.excerpt,
+    'image': post.coverImage,
+    'datePublished': post.publishedAt,
+    'dateModified': post.publishedAt,
+    'author': {
+      '@type': 'Organization',
+      'name': post.author,
+      'url': 'https://octavofuego.com'
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'Octavo Fuego',
+      'url': 'https://octavofuego.com'
+    }
+  })} />
   <article>
     <!-- Hero Image -->
     <div class="relative h-[40vh] md:h-[50vh] overflow-hidden">

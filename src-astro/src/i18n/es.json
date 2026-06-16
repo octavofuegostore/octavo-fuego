@@ -38,6 +38,7 @@
       "verTodos": "Ver todos"
     },
     "trust": {
+      "sectionTitle": "Confianza",
       "autenticidad": "Origen Certificado",
       "autenticidadDesc": "Directo de Acre, Brasil",
       "origen": "Cultivo Sostenible",
