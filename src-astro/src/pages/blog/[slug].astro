@@ -221,7 +221,7 @@ function renderMarkdown(content: string): string {
         loading="eager"
         decoding="async"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent"></div>
       <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12">
         <div class="max-w-4xl mx-auto">
           <Badge variant="secondary" className="mb-4">
@@ -258,10 +258,10 @@ function renderMarkdown(content: string): string {
       </p>
 
       <!-- Article Content -->
-      <div class="prose prose-invert max-w-none" set:html={renderMarkdown(post.content)} />
+      <div class="prose max-w-none" set:html={renderMarkdown(post.content)} />
 
       <!-- Share / CTA -->
-      <div class="mt-12 pt-8 border-t border-humo">
+      <div class="mt-12 pt-8 border-t border-gray-200">
         <p class="text-ceniza mb-4">¿Te resultó útil este artículo?</p>
         <a 
           href="https://wa.me/573172137932?text=Hola,%20me%20interesa%20saber%20más%20sobre%20sus%20productos"
@@ -275,7 +275,7 @@ function renderMarkdown(content: string): string {
 
     <!-- Related Posts -->
     {post.relatedPosts && post.relatedPosts.length > 0 && (
-      <section class="bg-humo/20 py-12">
+      <section class="bg-papel/50 py-12">
         <div class="max-w-7xl mx-auto px-6 md:px-12">
           <h2 class="font-display text-2xl font-bold mb-8">Artículos relacionados</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">

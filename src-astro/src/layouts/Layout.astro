@@ -83,6 +83,20 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     
     <!-- Organization Schema -->
     <OrganizationJsonLd />
+
+    <!-- CSS-first breakpoint detection -->
+    <script>
+      document.addEventListener('astro:after-swap', () => {
+        const setBreakpoint = () => {
+          const w = window.innerWidth;
+          if (w >= 1024) document.documentElement.dataset.breakpoint = 'lg';
+          else if (w >= 768) document.documentElement.dataset.breakpoint = 'md';
+          else document.documentElement.dataset.breakpoint = 'sm';
+        };
+        setBreakpoint();
+        window.addEventListener('resize', setBreakpoint);
+      });
+    </script>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black" style="padding-bottom: env(safe-area-inset-bottom,0px)">
     <Navbar locale={locale} />

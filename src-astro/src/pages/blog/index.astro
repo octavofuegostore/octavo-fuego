@@ -77,7 +77,7 @@ function getCategoryLabel(category: string) {
       <!-- Featured Post -->
       {allPosts[0] && (
         <a href={`/blog/${allPosts[0].slug}`} class="block mb-12 group">
-          <article class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-humo/20 border border-humo hover:border-tabacco transition-colors">
+          <article class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
             <div class="aspect-video md:aspect-auto overflow-hidden">
               <img 
                 src={allPosts[0].coverImage} 
@@ -109,7 +109,7 @@ function getCategoryLabel(category: string) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {allPosts.slice(1).map((post) => (
           <a href={`/blog/${post.slug}`} class="group">
-            <article class="h-full bg-humo/20 border border-humo hover:border-tabacco transition-colors">
+            <article class="h-full bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
               <div class="aspect-video overflow-hidden">
                 <img 
                   src={post.coverImage} 

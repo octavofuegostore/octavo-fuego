@@ -141,7 +141,7 @@ export function CheckoutForm() {
   }
 
   return (
-    <div class="bg-humo/20 border border-humo/30 p-6 md:p-8">
+    <div class="bg-papel/50 border border-gray-200 p-6 md:p-8">
       {/* Step 1: Contact Information */}
       {currentStep === 1 && (
         <div class="space-y-6">
@@ -334,9 +334,9 @@ export function CheckoutForm() {
           </div>
           <h2 class="font-display text-2xl font-semibold mb-4">¡Pedido confirmado!</h2>
           <p class="text-ceniza mb-6">
-            Tu pedido ha sido recibido. Te enviamos un correo a <strong class="text-white">{contactInfo.email}</strong> con los detalles.
+            Tu pedido ha sido recibido. Te enviamos un correo a <strong class="text-[var(--near-black)]">{contactInfo.email}</strong> con los detalles.
           </p>
-          <div class="bg-humo/20 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
+          <div class="bg-papel/50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
             <h3 class="font-semibold mb-4">Resumen del pedido</h3>
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
