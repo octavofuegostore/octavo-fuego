@@ -8,11 +8,11 @@ const schema = {
   'url': 'https://octavofuego.com',
   'logo': 'https://octavofuego.com/images/octavofuego-logo.png',
   'email': 'hola@octavofuego.com',
-  'foundingDate': '2025',
+  'foundingDate': '2026',
   'knowsAbout': [
-    { '@type': 'Thing', 'name': 'Rapé' },
-    { '@type': 'Thing', 'name': 'Sananga' },
-    { '@type': 'Thing', 'name': 'Kuripes' }
+    { '@type': 'Thing', 'name': 'Rapé', 'description': 'Tabaco ceremonial amazónico en polvo' },
+    { '@type': 'Thing', 'name': 'Sananga', 'description': 'Gotas oftálmicas medicinales amazónicas' },
+    { '@type': 'Thing', 'name': 'Kuripes', 'description': 'Aplicador ceremonial artesanal' }
   ],
   'contactPoint': {
     '@type': 'ContactPoint',
@@ -20,21 +20,14 @@ const schema = {
     'contactType': 'customer service',
     'availableLanguage': ['Spanish', 'English', 'Portuguese']
   },
-  'address': {
-    '@type': 'PostalAddress',
-    'streetAddress': 'Travessa Francisco Severiano 106',
-    'addressLocality': 'Cruzeiro do Sul',
-    'addressRegion': 'AC',
-    'postalCode': '69980000',
-    'addressCountry': 'BR'
-  },
   'areaServed': [
     { '@type': 'Country', 'name': 'Colombia' },
     { '@type': 'Country', 'name': 'Brazil' }
   ],
   'sameAs': [
     'https://www.instagram.com/octavofuego',
-    'https://www.facebook.com/octavofuego'
+    'https://www.facebook.com/octavofuego',
+    'https://wa.me/573172137932'
   ]
 };
 ---
