@@ -61,7 +61,7 @@ const fireAfter = fires.find((f) => f.id === 7);
     <!-- Intro paragraphs -->
     <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
       {introParagraphs.map((p: string) => (
-        <p class="mb-7 text-justify">{p}</p>
+        <p class="mb-7 text-left md:text-justify">{p}</p>
       ))}
     </div>
 
@@ -73,7 +73,7 @@ const fireAfter = fires.find((f) => f.id === 7);
         </h2>
         <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
           {fire.paragraphs[locale].map((p: string) => (
-            <p class="mb-4 text-justify">{p}</p>
+            <p class="mb-4 text-left md:text-justify">{p}</p>
           ))}
         </div>
       </div>
@@ -82,7 +82,7 @@ const fireAfter = fires.find((f) => f.id === 7);
     <!-- Narrative Interlude -->
     <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
       {interludeParagraphs.map((p: string) => (
-        <p class="mb-7 text-justify">{p}</p>
+        <p class="mb-7 text-left md:text-justify">{p}</p>
       ))}
     </div>
 
@@ -94,7 +94,7 @@ const fireAfter = fires.find((f) => f.id === 7);
         </h2>
         <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
           {fireAfter.paragraphs[locale].map((p: string) => (
-            <p class="mb-4 text-justify">{p}</p>
+            <p class="mb-4 text-left md:text-justify">{p}</p>
           ))}
         </div>
       </div>
@@ -108,7 +108,7 @@ const fireAfter = fires.find((f) => f.id === 7);
     <!-- Closing Reflection -->
     <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
       {closingParagraphs.map((p: string) => (
-        <p class="mb-7 text-justify">{p}</p>
+        <p class="mb-7 text-left md:text-justify">{p}</p>
       ))}
     </div>
 

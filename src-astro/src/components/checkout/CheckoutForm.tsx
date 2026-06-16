@@ -373,7 +373,8 @@ export function CheckoutForm() {
 
       {/* Navigation Buttons */}
       {currentStep !== 4 && (
-        <div class="flex justify-between mt-8 pt-6 border-t border-humo/30">
+        <div class="sticky bottom-0 bg-white pt-4 border-t border-humo/30">
+          <div class="flex justify-between">
           <Button
             variant="ghost"
             onClick={handleBack}
@@ -390,6 +391,7 @@ export function CheckoutForm() {
               'Continuar →'
             )}
           </Button>
+        </div>
         </div>
       )}
     </div>

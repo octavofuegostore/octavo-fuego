@@ -103,7 +103,7 @@ const t = useTranslations('es');
     container.innerHTML = items.map((item: CartItem) => `
       <div class="flex flex-col sm:flex-row gap-6 p-6 bg-humo/20 border border-humo/30" data-variant-id="${item.variantId}">
         <!-- Image -->
-        <div class="w-full sm:w-32 h-32 bg-humo/50 flex-shrink-0">
+        <div class="w-20 sm:w-32 h-32 bg-humo/50 flex-shrink-0">
           <img src="${item.imagen}" alt="${item.nombre}" class="w-full h-full object-cover" />
         </div>
 
