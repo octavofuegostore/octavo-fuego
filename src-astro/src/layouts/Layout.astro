@@ -84,7 +84,7 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <!-- Organization Schema -->
     <OrganizationJsonLd />
   </head>
-  <body class="min-h-screen flex flex-col bg-white text-black">
+  <body class="min-h-screen flex flex-col bg-white text-black" style="padding-bottom: env(safe-area-inset-bottom,0px)">
     <Navbar locale={locale} />
     <main class="flex-1">
       <slot />
