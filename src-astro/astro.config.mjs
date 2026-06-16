@@ -16,6 +16,11 @@ export default defineConfig({
           'chat-round-bold-duotone',
           'map-point-bold-duotone',
           'leaf-bold-duotone',
+          // Footer (solid variants - max contrast)
+          'letter-bold',
+          'chat-round-bold',
+          'map-point-bold',
+          'leaf-bold',
           // Homepage Confianza
           'shield-bold-duotone',
           'cloud-waterdrop-bold-duotone',
@@ -36,6 +41,10 @@ export default defineConfig({
           'instagram-logo-duotone',
           'facebook-logo-duotone',
           'whatsapp-logo-duotone',
+          // Footer (solid variants - max contrast)
+          'instagram-logo-fill',
+          'facebook-logo-fill',
+          'whatsapp-logo-fill',
         ],
       },
     }),
