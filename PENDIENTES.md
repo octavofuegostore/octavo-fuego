@@ -15,8 +15,9 @@
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 95% | 🔄 Casi listo |
 | 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
-| 05 Testing & Polish | ████░░░░░░ 30% | 🔄 Pendiente |
+| 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
+| 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado |
 
 ---
 
@@ -100,6 +101,39 @@
 - [ ] og:image social card real (1200×630 — actualmente usa logo.png)
 - [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
 
+### 3.7 Monorepo + Medusa SSR ⏳ (ARCHITECTURE.md §2-3)
+- [ ] Setup `pnpm workspaces` — `pnpm-workspace.yaml` (`apps/*`, `packages/*`)
+- [ ] Crear `apps/colombia` — migrar proyecto actual
+- [ ] Crear `apps/brasil` — desde template Astro SSR
+- [ ] Crear `packages/core` — componentes UI, stores y librerías compartidas
+- [ ] Configurar `astro.config.mjs` con `output: 'server'` + `adapter: node({ mode: 'standalone' })`
+- [ ] Cache headers `stale-while-revalidate` en páginas de catálogo
+- [ ] Deploy MedusaJS v2 backend (`api.octavofuego.com`)
+
+### 3.8 Carrito + API Routes ⏳ (ARCHITECTURE.md §4-5)
+- [ ] Nano Stores cart (`packages/core/src/stores/cart.ts`) — `cartStore` atom
+- [ ] `initCart()` con cookies — `packages/core/src/lib/cart.ts`
+- [ ] Leer y persistir `cart_id` cookie en `Layout.astro` (HttpOnly, secure)
+- [ ] Aislamiento de carritos por dominio (`PUBLIC_MEDUSA_REGION_ID`)
+- [ ] `POST /api/cart/add` — proxy a Medusa (variant_id + quantity)
+- [ ] `DELETE /api/cart/remove` — proxy a Medusa (line_id)
+
+### 3.9 Checkout + Pasarelas Regionales ⏳ (ARCHITECTURE.md §6)
+- [ ] `POST /api/checkout/create-payment` — Payment Collections Medusa v2
+  - Shipping address → Add shipping method → Create payment sessions → Set provider
+- [ ] `POST /api/checkout/complete` — `cart.complete()` → order
+- [ ] `POST /api/webhooks/stripe` — Pix/Boleto asíncrono (Brasil)
+- [ ] Variables de entorno por dominio:
+  - Colombia: `PUBLIC_PAYMENT_PROVIDER=wompi`
+  - Brasil: `PUBLIC_PAYMENT_PROVIDER=stripe` + `STRIPE_PRIVATE_KEY` + `STRIPE_WEBHOOK_SECRET`
+
+### 3.10 B2B Mayorista ⏳ (ARCHITECTURE.md §7)
+- [ ] `POST /api/auth/login` — cookie segura con `medusa_token` (HttpOnly) + `customer_group` flag
+- [ ] `POST /api/b2b/register` — metadata `tax_id`, `company_name`, `b2b_status: pending`
+- [ ] Webhook de notificación al admin en registro B2B
+- [ ] Portal `/mayorista/estado.astro` — pending / approved / rejected
+- [ ] Precios mayoristas desbloqueados por grupo de cliente en Medusa
+
 ---
 
 ## 📈 Fase 4 — Marketing & SEO 🔄
@@ -144,6 +178,17 @@
 #### 🟢 Bajo Esfuerzo
 - [ ] **Geo keywords** — investigar si hay búsquedas tipo "comprar rapé Bogotá/Colombia" y agregar en metadata
 
+### SEO Cross-Domain ⏳ (ARCHITECTURE.md §1, §3)
+- [ ] Hreflang cross-domain dinámicos: `es-CO` ↔ `pt-BR` ↔ `en` (x-default)
+  - Variables de entorno: `PUBLIC_DOMAIN_CO`, `PUBLIC_DOMAIN_BR`
+  - Rutas unificadas: `/p/[product-slug]` en ambos dominios
+- [ ] Redirecciones 301:
+  - `octavofuego.com.co` → `octavofuego.com`
+  - `octavofogo.com` → `octavofogo.com.br`
+- [ ] Adquirir dominios: `octavofogo.com.br`, `octavofuego.com.co`
+- [ ] Configurar DNS para apuntar a Vercel
+- [ ] URLs de producto unificadas: `/p/[slug]` (mismo slug en CO y BR)
+
 ---
 
 ## 🧪 Fase 5 — Testing & Polish ⏳
@@ -175,6 +220,25 @@
 - [ ] Email marketing setup
 - [ ] Sistema de reseñas
 - [ ] Blog semanal
+
+---
+
+## 🏗️ Fase 7 — CI/CD & Monorepo Deployment ⏳ (ARCHITECTURE.md §8-9)
+
+### GitHub Actions
+- [ ] Workflow `.github/workflows/check-builds.yml` — validar ambos apps antes de merge
+  - Job `build-colombia` con env vars CO
+  - Job `build-brasil` con env vars BR
+- [ ] Secrets de GitHub: `MEDUSA_PROD_URL`
+
+### Vercel — 2 Proyectos
+- [ ] **Proyecto 1 (Colombia):** Root `apps/colombia`, dominio `octavofuego.com`
+- [ ] **Proyecto 2 (Brasil):** Root `apps/brasil`, dominio `octavofogo.com.br`
+- [ ] Environment variables por proyecto (ver `ARCHITECTURE.md §9`)
+
+### Infraestructura
+- [ ] Servidor MedusaJS v2 desplegado (`api.octavofuego.com`)
+- [ ] Variables de entorno consolidadas en `.env.example` para ambos apps
 
 ---
 
@@ -279,8 +343,10 @@ tokens funcionales disponibles:
 
 ```
 octavo-fuego/
+├── ARCHITECTURE.md            ← Manifiesto de ingeniería (monorepo + Medusa SSR)
 ├── PENDIENTES.md              ← Este archivo
 ├── AGENTS.md                  ← Instrucciones para AI agents
+├── PROYECTO.md                ← Single source of truth
 ├── tasks.md                   ← Task tracking detallado
 ├── README.md                  ← Documentación general
 ├── src-astro/                 ← Astro project root

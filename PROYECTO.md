@@ -279,6 +279,7 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 | 04 Marketing/SEO | 80% | 🔄 En progreso |
 | 05 Testing & Polish | 30% | ⏳ Pendiente |
 | 06 Lanzamiento | 10% | ⏳ Pendiente |
+| 07 Monorepo + Medusa | 0% | ⏳ Planificado |
 
 ### Por hacer (urgente)
 - Imágenes reales de los 5 rapés
@@ -309,6 +310,7 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 | Documento | Propósito |
 |-----------|-----------|
 | `PROYECTO.md` | **← Este archivo** — Documento maestro |
+| `ARCHITECTURE.md` | Manifiesto de ingeniería (monorepo + Medusa SSR) |
 | `README.md` | Overview rápido |
 | `PENDIENTES.md` | Estado detallado + design system extendido |
 | `AGENTS.md` | Instrucciones para AI agents |
@@ -330,6 +332,7 @@ La memoria del proyecto persiste entre sesiones vía **Engram**. Buscar estas `t
 | `architecture/trust-badges-section-dark-background` | Trust Badges con fondo tabaco medio |
 | `bug/solid-icons-replace-duotone-in-footer` | Duotone → sólido para máximo contraste |
 | `debt/brl-currency-schema-coupling` | Deuda: si se agrega BRL → actualizar schema al mismo tiempo |
+| `architecture/manifesto-v1` | Manifiesto de ingeniería — monorepo, Medusa SSR, B2B, CI/CD |
 | `config/updated-md-docs-with-dark-sections` | Documentación actualizada post dark sections |
 | `decision/sdd-proposal-footer-bg-tabaco-created` | SDD proposal para footer redesign |
 | `sdd/footer-bg-tabaco/proposal` | Propuesta formal SDD |
