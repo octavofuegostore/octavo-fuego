@@ -244,12 +244,33 @@
 - [x] WhatsApp Commerce integrado
 - [x] Schemas JSON-LD (100% cobertura)
 - [x] SEO on-page (hreflang, sitemap, OG)
-- [ ] **Página "Nosotros"** — historia, sourcing, misión
-- [ ] **Google Looker Studio** — dashboard consolidado
+- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4)
 - [ ] **Microsoft Clarity** — heatmaps, session recordings (gratis)
 - [ ] Google Search Console + indexación
-- [ ] Página "Nosotros" — historia, sourcing, equipo
 - [ ] Subcarpetas `/es/` y `/pt/` sembrando autoridad desde día 1
+
+#### Optimización Mobile-First 📱 (condición de salida a producción)
+> 70%+ del tráfico en Colombia es mobile. Patrones extraídos del SDD explore de dashboardplan (optimizado para iPhone/iPad).
+
+##### 🔴 Críticos (bugs iOS/Safari)
+- [ ] **Anti-zoom en inputs** — `text-base md:text-sm` en todos los form fields (iOS hace zoom si font-size < 16px)
+- [ ] **Hamburger Sheet navigation ≤768px** — vanilla JS toggle + CSS `transform: translateX()`. Sin React island.
+- [ ] **Eliminar 300ms tap delay** — `touch-action: manipulation` en `a, button, [role="button"]` en `global.css`
+
+##### 🟡 UX Mobile-First
+- [ ] **Snap-scroll horizontal en product cards** — `flex overflow-x-auto snap-x md:grid md:grid-cols-N` con `min-w-[280px] snap-center`
+- [ ] **Touch targets ≥44px** (Apple HIG) — `min-w-[44px] min-h-[44px]` en iconos, botones cerrar, nav links
+- [ ] **Headers stacking** — `flex-col sm:flex-row sm:items-center sm:justify-between` en todas las action bars
+- [ ] **Modales full-width mobile** — `w-full sm:max-w-lg sm:rounded-lg` (usar `<dialog>` nativo, no React)
+- [ ] **PricingTable scrollable** — `overflow-x-auto` wrapper en mobile para tabla de 10g/20g/30g
+- [ ] **Hero + Trust Badges** — textos no se desbordan en viewports ≤375px (iPhone SE)
+- [ ] **Footer responsive** — 4 columnas (desktop) → 2 columnas (tablet) → stacked (mobile)
+- [ ] **Carrito drawer** — full-screen en mobile (`w-full h-full`)
+- [ ] **Tipografía responsive** — Playfair Display headings con `clamp()` (ej: `clamp(1.5rem, 4vw, 2.5rem)`)
+- [ ] **Breakpoint detection CSS-first** — `data-breakpoint` attribute en `<html>` via script inline (sin React `useEffect`)
+
+> **80% de estos patrones es CSS/Tailwind puro** — sin dependencias. Solo Sheet nav y breakpoint detection requieren JS vanilla (~15 líneas cada uno).
 
 ### 7.2 Centralización Automatizada 🤖 (cuando WhatsApp colapse)
 > **Stack:** Monodominio `octavofuego.com` + Medusa Cloud (Railway/Hosted) + Astro SSR
