@@ -1,5 +1,7 @@
 # Octavo Fuego — Rapé do Acre
 
+## 📖 [PROYECTO.md](PROYECTO.md) ← Documento maestro del proyecto
+
 ## Ecommerce de Medicinas Ancestrales
 
 **Estado**: 🟢 En desarrollo (95% core completo)
