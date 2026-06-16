@@ -104,10 +104,11 @@ const baseUrl = `/${locale_}`;
         {t.tienda.varieties}
       </span>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="flex overflow-x-auto snap-x gap-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-8">
         {products
           .sort((a, b) => a.varietyOrder - b.varietyOrder)
           .map((product) => (
+            <div class="min-w-[280px] snap-center flex-shrink-0 md:min-w-0">
             <ProductCard
               slug={product.slug}
               varietyOrder={product.varietyOrder}
@@ -119,6 +120,7 @@ const baseUrl = `/${locale_}`;
               locale={locale_}
               href={`${baseUrl}/tienda/rape/${product.slug}`}
             />
+            </div>
           ))
         }
       </div>

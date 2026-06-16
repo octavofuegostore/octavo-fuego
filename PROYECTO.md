@@ -193,16 +193,54 @@ Ritmo visual del homepage: `white → tabaco medio → cream → white → cream
 
 ---
 
-## 7. SEO
+## 7. SEO (Auditado + Corregido — Junio 15, 2026)
 
-| Feature | Estado |
-|---------|--------|
-| Schema markup (Organization, Product, Breadcrumb) | ✅ |
-| Sitemap.xml | ✅ |
-| Robots.txt | ✅ |
-| Open Graph + Twitter Cards | ✅ |
-| Google Search Console | ⏳ Pendiente |
-| Core Web Vitals optimizados | ⏳ Pendiente |
+### Schema Coverage: 100%
+
+| Schema | Páginas | Cantidad |
+|--------|---------|----------|
+| Organization | Todas (global) | 1 |
+| Product | PDP rapé | 15 (5 productos × 3 locales) |
+| BreadcrumbList | PDP rapé | 15 (5 productos × 3 locales) |
+| BlogPosting (Article) | Blog posts | 4 |
+| ItemList | `/tienda/rape/` + `/tienda/` | 6 (2 páginas × 3 locales) |
+
+### Schema Details
+
+**ProductJsonLd:**
+- `@id` cross-referenced con Breadcrumb
+- `mainEntityOfPage` → URL canónica del PDP
+- `itemCondition`: `https://schema.org/NewCondition`
+- `additionalProperty`: peso (10g/20g/30g), etnia, intención
+- `priceValidUntil`: +1 año desde hoy
+- `seller.@id` → OrganizationJsonLd
+- `priceCurrency`: `COP` (único para todos los locales)
+
+**OrganizationJsonLd:**
+- `logo` → `/logo.png`
+- `foundingDate`: `2026-03-28`
+- `knowsAbout` con `description` (rapé, sananga, medicinas ancestrales)
+- `sameAs`: Instagram, Facebook, WhatsApp
+- `address`: ciudad/estado/país (sin calle, no verificable)
+
+**ItemList:**
+- `numberOfItems`: 5 (los 5 rapés)
+- Cada item con `position`, `url`, `image`
+- `priceCurrency`: `COP`
+
+### SEO Técnico
+- Hreflang tags ES/EN/PT (corregido — antes faltaban)
+- og:image → `/logo.png` (corregido — antes roto)
+- Heading hierarchy corregida
+- Img width/height en todas las imágenes
+- Sitemap.xml + robots.txt
+- 404 page personalizada
+
+### Pendiente
+- Google Search Console + verificación de indexación
+- Core Web Vitals optimizados (LCP < 2.5s)
+- Imágenes reales de productos (placeholder actual: bobinsana-rape-2.webp)
+- og:image social card real (1200×630)
 
 ---
 
@@ -238,9 +276,29 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 | 01 Estrategia | 100% | ✅ Completado |
 | 02 Diseño | 100% | ✅ Completado |
 | 03 Desarrollo (Core) | 95% | 🔄 Casi listo |
-| 04 Marketing/SEO | 60% | 🔄 En progreso |
+| 04 Marketing/SEO | 80% | 🔄 En progreso |
 | 05 Testing & Polish | 30% | ⏳ Pendiente |
 | 06 Lanzamiento | 10% | ⏳ Pendiente |
+| 07 Arquitectura Progresiva | 0% | ⏳ Del MVP al Manifiesto (3 fases) |
+
+### Arquitectura Progresiva (ARCHITECTURE.md §0)
+
+```
+[MVP de Acero] ──➔ [Centralización] ──➔ [Escala Élite]
+   semanas              meses               trimestres
+```
+
+#### 7.1 MVP de Acero — Ya en marcha
+- Astro SSG + JSON estático + WhatsApp checkout
+- Validar demanda Colombia + Brasil. Facturar.
+
+#### 7.2 Centralización — Cuando WhatsApp colapse
+- Monodominio + Medusa Cloud + Astro SSR
+- Automatizar pagos B2C en CO y BR
+
+#### 7.3 Escala Élite — Cuando Brasil justifique inversión
+- Monorepo dual-domain + `.com.br` + B2B automatizado
+- Manifiesto completo (ARCHITECTURE.md §1-9)
 
 ### Por hacer (urgente)
 - Imágenes reales de los 5 rapés
@@ -271,6 +329,7 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 | Documento | Propósito |
 |-----------|-----------|
 | `PROYECTO.md` | **← Este archivo** — Documento maestro |
+| `ARCHITECTURE.md` | Manifiesto de ingeniería (monorepo + Medusa SSR) |
 | `README.md` | Overview rápido |
 | `PENDIENTES.md` | Estado detallado + design system extendido |
 | `AGENTS.md` | Instrucciones para AI agents |
@@ -291,6 +350,8 @@ La memoria del proyecto persiste entre sesiones vía **Engram**. Buscar estas `t
 | `architecture/footer-design` | Footer redesign — Option B sólido tabaco-dark |
 | `architecture/trust-badges-section-dark-background` | Trust Badges con fondo tabaco medio |
 | `bug/solid-icons-replace-duotone-in-footer` | Duotone → sólido para máximo contraste |
+| `debt/brl-currency-schema-coupling` | Deuda: si se agrega BRL → actualizar schema al mismo tiempo |
+| `architecture/manifesto-v1` | Manifiesto de ingeniería — monorepo, Medusa SSR, B2B, CI/CD |
 | `config/updated-md-docs-with-dark-sections` | Documentación actualizada post dark sections |
 | `decision/sdd-proposal-footer-bg-tabaco-created` | SDD proposal para footer redesign |
 | `sdd/footer-bg-tabaco/proposal` | Propuesta formal SDD |
@@ -306,4 +367,5 @@ mem_get_observation(id: <ID>)  ← contenido completo
 ---
 
 *Documento maestro generado: Junio 15, 2026*
-*Último commit en main: `f24e304`*
+*Última actualización: Junio 15, 2026*
+*Último commit en main: `44ec78d`*

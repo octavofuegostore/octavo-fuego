@@ -50,12 +50,13 @@ const pricingWithGrams = pricing.map((p) => ({
   </p>
 
   <!-- Price buttons grid -->
-  <div class="grid grid-cols-3 gap-3" id="pricing-buttons">
+  <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="pricing-buttons">
     {pricingWithGrams.map((p, i) => (
       <button
         class:list={[
           "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200 relative",
           "hover:border-[var(--color-action-primary)] hover:bg-[var(--papel)]",
+          "sm:sticky sm:left-0 sm:z-10 sm:bg-white",
           i === 0
             ? "border-[var(--color-action-primary)] bg-[var(--color-action-primary)] text-white"
             : "border-gray-200 bg-white text-[var(--near-black)]",

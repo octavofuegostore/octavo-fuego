@@ -141,7 +141,7 @@ export function CheckoutForm() {
   }
 
   return (
-    <div class="bg-humo/20 border border-humo/30 p-6 md:p-8">
+    <div class="bg-papel/50 border border-gray-200 p-6 md:p-8">
       {/* Step 1: Contact Information */}
       {currentStep === 1 && (
         <div class="space-y-6">
@@ -220,7 +220,7 @@ export function CheckoutForm() {
               <select
                 value={shippingInfo.departamento}
                 onChange={(e) => setShippingInfo({ ...shippingInfo, departamento: e.target.value })}
-                className={`w-full h-8 px-2 bg-transparent border rounded-lg text-sm ${errors.departamento ? 'border-error' : 'border-humo'}`}
+                className={`w-full h-11 px-2 bg-transparent border rounded-lg text-base md:text-sm transition-colors outline-none focus:border-tabacco ${errors.departamento ? 'border-error' : 'border-humo'}`}
               >
                 <option value="">Seleccionar...</option>
                 {departamentosColombia.map((dept) => (
@@ -238,7 +238,7 @@ export function CheckoutForm() {
               onChange={(e) => setShippingInfo({ ...shippingInfo, notas: e.target.value })}
               placeholder="Indicaciones para la entrega..."
               rows={3}
-              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-sm resize-none focus:border-tabacco focus:outline-none"
+              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-base md:text-sm resize-none focus:border-tabacco focus:outline-none"
             />
           </div>
         </div>
@@ -334,9 +334,9 @@ export function CheckoutForm() {
           </div>
           <h2 class="font-display text-2xl font-semibold mb-4">¡Pedido confirmado!</h2>
           <p class="text-ceniza mb-6">
-            Tu pedido ha sido recibido. Te enviamos un correo a <strong class="text-white">{contactInfo.email}</strong> con los detalles.
+            Tu pedido ha sido recibido. Te enviamos un correo a <strong class="text-[var(--near-black)]">{contactInfo.email}</strong> con los detalles.
           </p>
-          <div class="bg-humo/20 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
+          <div class="bg-papel/50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
             <h3 class="font-semibold mb-4">Resumen del pedido</h3>
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
@@ -373,7 +373,8 @@ export function CheckoutForm() {
 
       {/* Navigation Buttons */}
       {currentStep !== 4 && (
-        <div class="flex justify-between mt-8 pt-6 border-t border-humo/30">
+        <div class="sticky bottom-0 bg-white pt-4 border-t border-humo/30">
+          <div class="flex justify-between">
           <Button
             variant="ghost"
             onClick={handleBack}
@@ -390,6 +391,7 @@ export function CheckoutForm() {
               'Continuar →'
             )}
           </Button>
+        </div>
         </div>
       )}
     </div>

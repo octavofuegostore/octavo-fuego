@@ -14,9 +14,10 @@
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 95% | 🔄 Casi listo |
-| 04 Marketing/SEO | ████████░░ 60% | 🔄 En progreso |
-| 05 Testing & Polish | ████░░░░░░ 30% | 🔄 Pendiente |
+| 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
+| 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
+| 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
 
@@ -37,6 +38,47 @@
 - [x] Design system visual (colores, tipografía, componentes)
 - [x] Tono y voz definido: "Maestro-Contador de Historias"
 - [x] Estética: Minimalist Sacred (blanco + sombras Airbnb)
+
+---
+
+## 🔥 Prioridades Inmediatas — Pre-Lanzamiento (Top 10)
+
+> Análisis completo: [`.atl/analisis-critico-pendientes.md`](src-astro/.atl/analisis-critico-pendientes.md)
+> Principio rector: "Shippear rápido > elegancia técnica sin facturación." — §7 ARCHITECTURE.md
+> Esfuerzo total Top 10: ~21 horas | No hacer: Medusa, monorepo, cross-domain (§7.2-§7.3 post-lanzamiento)
+
+| # | Tarea | Esfuerzo | Impacto | Dónde |
+|---|-------|----------|---------|-------|
+| 1 | **Precio/g visible en PDPs** + copy "20g por el precio que otros cobran por 10" | 1h | 🔥🔥🔥🔥🔥 | → §4 SEO Gaps |
+| 2 | **Mobile-First Phase 1** (hamburger nav ROTO, anti-zoom, safe-area, navbar collision) | 2h | 🔥🔥🔥🔥🔥 | → §7.1 |
+| 3 | **Google Search Console** + verificar que Google indexó las 34 páginas | 30min | 🔥🔥🔥🔥 | → §4 SEO |
+| 4 | **Imágenes reales de los 5 rapés** (placeholder bobinsana → producto real) | 3h | 🔥🔥🔥🔥 | → §3.6 |
+| 5 | **og:image social card (1200×630)** | 1h | 🔥🔥🔥🔥 | → §3.6 |
+| 6 | **H1 + meta descriptions alineadas** con arquitectura SEO (5 PDPs + homepage + landing B2B) | 2h | 🔥🔥🔥🔥 | → §4 + §3.10.1 |
+| 7 | **Landing B2B: 5 fixes críticos** (eliminar "y Brasil", H1, keywords, 4to pilar precio, hreflang) | 2h | 🔥🔥🔥🔥 | → §3.10.1 |
+| 8 | **3 páginas informacionales** (/es/que-es-el-rape/, /es/como-usar-el-rape/, /es/rape-do-acre-origen/) | 6h | 🔥🔥🔥 | → §4 SEO Gaps |
+| 9 | **Microsoft Clarity** — heatmaps + session recordings (GRATIS, 5 min setup) | 5min | 🔥🔥🔥 | → §5 Testing |
+| 10 | **Mobile-First Phase 2** (touch targets 44px, tap delay, snap-scroll) | 1.5h | 🔥🔥🔥 | → §7.1 |
+
+### Menciones de honor
+| # | Tarea | Esfuerzo | Dónde |
+|---|-------|----------|-------|
+| 11 | IndexNow Protocol (acelerar indexación Bing/Yandex) | 30min | → §4 SEO Pipod |
+| 12 | Design system find-replace `--verde-botanico` → `--color-action-primary` | 30min | → §Design System |
+| 13 | FAQPage Schema en las 5 PDPs | 2h | → §4 SEO Pipod |
+| 14 | Página "Nosotros" | 3h | → §3.6 |
+| 15 | hreflang cruzados CO↔EN | 1h | → §4 SEO Gaps |
+| 16 | "Consejos o Pajé" — artículo #1 | 2h | → §Blog |
+
+### Tareas detectadas que NO estaban en PENDIENTES.md
+| # | Tarea | Prioridad |
+|---|-------|-----------|
+| 🆕 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 🔴 Alta |
+| 🆕 | **404 audit** — arquitectura SEO §10 prioridad 1 (arreglar 404s de páginas de producto) | 🔴 Alta |
+| 🆕 | **Velocidad en 3G colombiano** — 70%+ tráfico mobile en Colombia no es 5G. Medir con throttling. | 🟡 Media |
+
+### Consolidación de secciones duplicadas
+> Las secciones §3.7-§3.10, §4 SEO Cross-Domain se consolidan en §7.2 y §7.3 (canonicals). Cada tarea original está referenciada. No se pierde detalle.
 
 ---
 
@@ -66,25 +108,78 @@
 
 ### 3.4 Páginas ✅
 - [x] Homepage (Hero, Profecía, Quiz, Productos, Trust Badges)
-- [x] Catálogo principal (`/catalogo`)
-- [x] Categoría Rapé (`/catalogo/rape/`)
-- [x] Detalle de producto (`/catalogo/rape/[product]`)
+- [x] Catálogo principal (`/es/tienda/` — migrate from `/catalogo/` ✅)
+- [x] Categoría Rapé (`/es/tienda/rape/`)
+- [x] Detalle de producto (`/es/tienda/rape/[product]`)
 - [x] Profecía completa (`/profecia`)
 - [x] Carrito de compras (`/carrito`)
 - [x] Checkout (`/checkout`)
 - [x] Blog listing + 4 posts
 
-### 3.5 SEO ✅
-- [x] OrganizationJsonLd.astro
-- [x] ProductSchema.astro
-- [x] BreadcrumbSchema.astro
+### 3.5 SEO ✅ (Audit + Fixes completados Junio 15, 2026)
+
+#### Schemas (100% cobertura)
+- [x] OrganizationJsonLd — logo, foundingDate 2026, knowsAbout+desc, sameAs +WhatsApp, address (ciudad/estado)
+- [x] ProductJsonLd (×15) — @id, mainEntityOfPage, itemCondition NewCondition, additionalProperty, priceValidUntil, seller @id
+- [x] BreadcrumbJsonLd (×15) — @id cross-referenced with Product
+- [x] BlogPosting (×4) — Article schema en todos los posts del blog
+- [x] ItemList (×6) — categoría rapé + catálogo principal en 3 locales
+
+#### SEO Técnico
+- [x] Hreflang tags para ES/EN/PT (antes faltaban)
+- [x] og:image → logo.png (antes roto)
+- [x] AggregateRating falso eliminado
+- [x] Heading hierarchy corregida
+- [x] Img width/height attributes agregados
+- [x] Product images → placeholder bobinsana
+- [x] Dead code removido: SeoLayout.astro, BaseSeo.astro
 - [x] Sitemap + robots.txt
 - [x] Open Graph + Twitter Cards
 
 ### 3.6 Por Hacer 🔄
-- [ ] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
-- [ ] Imágenes reales de los 5 rapés (placeholder actual)
+- [x] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
+- [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
+- [ ] og:image social card real (1200×630 — actualmente usa logo.png)
 - [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
+- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+
+### 3.7 Monorepo + Medusa SSR ⏳ → Ver §7.2 Centralización
+> **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El stack Medusa requiere facturación validada ("cuando WhatsApp colapse") y no es prioritario para el MVP. Las tareas detalladas de monorepo se preservan en §7.2 ### Monorepo Setup.
+
+### 3.8 Carrito + API Routes ⏳ → Ver §7.2 Centralización
+> **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El carrito actual en localStorage + nanostores funciona para el MVP. Las tareas detalladas se preservan en §7.2 ### Carrito + API Routes.
+
+### 3.9 Checkout + Pasarelas Regionales ⏳ → Ver §7.2 Centralización
+> **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El checkout actual via WhatsApp funciona para el MVP. Las tareas detalladas se preservan en §7.2 ### Checkout + Pasarelas.
+
+### 3.10 B2B Mayorista ⏳ (ARCHITECTURE.md §7)
+
+#### 3.10.1 Landing Page — `/es/mayoristas/` ([ver página](https://www.octavofuego.com/es/mayoristas/))
+> Audit: Junio 16, 2026 — [`.atl/b2b-mayoristas-landing-audit.md`](.atl/b2b-mayoristas-landing-audit.md) | [Revisión completa](.atl/b2b-mayoristas-revision-completa.md) | Veredicto inicial: 9/10 → post-revisión: 14 mejoras pendientes
+
+##### 🔴 Críticos
+- [ ] **Eliminar "y Brasil" de meta description** — viola regla de oro §2 (hub CO solo habla a Colombia)
+- [ ] **Agregar 4to pilar: Precio de Origen Sin Intermediarios** — la ventaja competitiva central (46% más barato) no se comunica en ninguna parte de la landing
+- [ ] **H1 alineado con arquitectura SEO** → "Distribución Institucional de Rapé do Acre para Facilitadores y Distribuidores en Colombia"
+- [ ] **Keywords alineadas** — 8 keywords del doc (4 primarias + 4 secundarias) vs 6 actuales (2 mal, 4 faltan)
+- [ ] **Activar hreflang** — landing indexable sin hreflang cruzados CO↔EN↔BR
+- [ ] **CTA más visible** — bloque destacado a mitad de página (posterior a "Variedades")
+
+##### 🟡 Medios
+- [ ] **Eliminar "Sananga" de meta** — se menciona en description pero NUNCA en el body (contenido fantasma)
+- [ ] **FAQ Colombia solo operación CO** — actualmente mezcla pagos CO (transferencia) y BR (Pix) en misma página. El hub BR maneja su propia info.
+- [ ] **Elevar Kuripes a sección propia** — actualmente es una nota al pie. La arquitectura §3.1 lo define como categoría.
+- [ ] **FAQ tiempo urgente** — opción `URGENTE` en formulario para priorizar <12h (retiros programados)
+- [ ] **Mínimo flexible 250g** — "prueba piloto B2B" para clientes retail que escalan a mayorista
+
+##### 🟢 Bajos
+- [ ] **Title alineado** → "Rapé por Mayor Colombia — Distribuidor Rapé do Acre | Octavo Fuego"
+- [ ] **Mover `astro.config.mjs`** de la página pública → `README.md` interno
+- [ ] **Schema.org WholesaleStore** — JSON-LD en `<head>` con `currenciesAccepted`, `areaServed`, `hasOfferCatalog`
+- [ ] **Cobertura geográfica explícita** — el body no dice explícitamente que "territorio nacional" = Colombia
+
+#### 3.10.2 Backend B2B → Ver §7.3 Escala Élite
+> **Nota:** Todas las tareas de esta sección están consolidadas en §7.3 Escala Élite (B2B automatizado). El flujo B2B actual via formulario de contacto + approval manual funciona para el MVP.
 
 ---
 
@@ -96,12 +191,75 @@
 - [ ] Categorías y tags en blog
 - [ ] Newsletter signup funcional
 
+### Blog — Estrategia "Consejos o Pajé" 📹
+> Fuente: [`.atl/estrategia-contenido-consejos-o-paje.md`](src-astro/.atl/estrategia-contenido-consejos-o-paje.md)
+
+- [ ] **Crear sección "Consejos o Pajé"** — blog de curaduría de videos de YouTube (chamanes, taitas, antropólogos)
+- [ ] **Template de entrada:** video embebido (EMBED, no descarga) + resumen editorial (NO transcripción) + H2/H3 + blockquote + CTA sutil al catálogo
+- [ ] **Artículo #1** — primer video curado con la estructura del template
+- [ ] **Calendario editorial** — 1 entrada semanal para mantener dwell time y frescura de contenido
+- [ ] **Keywords cola larga target:** "cómo soplar rapé noche", "significado ceniza Tisunú", "diferencia medicina Acre tabaco", "dosis rapé primera vez"
+
 ### SEO
-- [x] Meta tags + Schema markup
+- [x] Meta tags + Schema markup (100% cobertura — Organization, Product, Breadcrumb, BlogPosting, ItemList)
+- [x] Hreflang tags ES/EN/PT
 - [x] Sitemap generado
+- [x] Auditoría SEO completa (5 críticos + 4 warnings corregidos)
+- [ ] og:image social card (1200×630 — actualmente usa logo.png)
+- [ ] Imágenes reales de productos para SEO
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado
 - [ ] Indexación verificada
+- [ ] Internal linking en blog (verificar que los 4 posts enlazan a productos/tienda)
+- [ ] Keyword frontier analysis con datos reales de Search Console
+- [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4 + métricas de negocio)
+
+### SEO — Gaps vs Arquitectura SEO Transnacional 🔴
+> Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](src-astro/.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
+
+#### 🔴 Alto Impacto (Semana 1-3)
+- [ ] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs
+- [ ] **Crear `/es/que-es-el-rape/`** — página informacional (qué es, para qué sirve, efectos)
+- [ ] **Crear `/es/como-usar-el-rape/`** — página informacional (cómo aplicar, kuripe, ceremonial)
+- [ ] **Crear `/es/rape-do-acre-origen/`** — página informacional (Brasil vs Colombia, empaque vacío)
+- [ ] **Categoría Kuripe + 2 productos** — `/es/tienda/kuripe/`, kuripe-clasico, kuripe-doble
+- [x] **URLs: decidir `/catalogo/` vs `/tienda/`** — ✅ YA MIGRADO. Código usa `/tienda/` en todos los componentes. Solo quedan 7 redirects legacy en `astro.config.mjs`. Ver [`.atl/plan-migracion-urls.md`](src-astro/.atl/plan-migracion-urls.md)
+
+#### 🟡 Medio Impacto (Semana 3 - Mes 2)
+- [ ] **hreflang cruzados** — activar en Layout para todas las páginas indexadas (CO ↔ EN ↔ BR)
+- [ ] **Hub EN** — `/en/` con catálogo completo en inglés (7 productos + wholesale)
+- [ ] **Hub BR** — adquirir `octavofogo.com.br` + `/loja/` en portugués
+- [ ] **Landing B2B** — corregir keywords (8 del doc) + H1 recomendado
+- [ ] **Meta descriptions** — verificar que todas las páginas usan las del doc (con precio $3.500/g)
+
+#### 🟢 Bajo Esfuerzo / Mes 3+
+- [ ] **Blog** — 10 keywords cola larga ya definidas, 1 artículo semanal
+- [ ] **Directivas SEO verify** — auditar robots/hreflang/sitemap en todas las páginas actuales
+- [ ] **Login mayoristas** — `/es/mayoristas/portal/` (privado, noindex)
+
+### SEO — Features a importar de Pipod (astroecoomerce)
+
+#### 🔴 Alto Impacto
+- [ ] **IndexNow Protocol** — acelerar indexación en Bing/Yandex para 3 locales
+  - `src/pages/api/index-now.ts` (port directo)
+  - `public/<key>.txt`
+  - `vercel.json` cron job
+- [ ] **FAQPage Schema** — rich snippets en las 5 PDPs
+  - Port `FAQPageSchema.astro` de pipod
+  - FAQs por producto: qué es, cómo se usa, etnia, cantidad
+- [ ] **SEO Score Tracking** — métrica cuantificable en PROYECTO.md
+  - Categorías: Content Quality, Technical SEO, Structured Data, Performance, Sitemap/Crawl
+
+#### 🟡 Medio Impacto
+- [ ] **@graph Pattern en homepage** — un solo `<script>` con Organization + WebPage + ItemList
+  - Referencia: `ServicePageSchema.astro` en pipod (6 entidades en @graph)
+- [ ] **OrganizationJsonLd enriquecido** — `hasOfferCatalog` (5 rapés), `knowsAbout` keywords, `potentialAction` WhatsApp
+
+#### 🟢 Bajo Esfuerzo
+- [ ] **Geo keywords** — investigar si hay búsquedas tipo "comprar rapé Bogotá/Colombia" y agregar en metadata
+
+### SEO Cross-Domain ⏳ → Ver §7.3 Escala Élite
+> **Nota:** Todas las tareas de esta sección están consolidadas en §7.3 Escala Élite (### Cross-Domain SEO). Requiere dominio `octavofogo.com.br` adquirido + DNS + Vercel multi-proyecto. No es prioritario hasta validar demanda BR.
 
 ---
 
@@ -116,6 +274,7 @@
 - [ ] Loading states
 - [ ] Accesibilidad WCAG AA
 - [ ] Core Web Vitals (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- [ ] **Microsoft Clarity** — heatmaps, session recordings, rage clicks (gratis)
 
 ---
 
@@ -134,6 +293,124 @@
 - [ ] Email marketing setup
 - [ ] Sistema de reseñas
 - [ ] Blog semanal
+
+---
+
+## 🏗️ Fase 7 — Arquitectura Progresiva (del MVP al Manifiesto) ⏳
+
+> **Principio rector:** El manifiesto (`ARCHITECTURE.md`) es el plano del edificio de 20 pisos — referencia arquitectónica a largo plazo, NO lista de tareas para el sprint actual. Shippear rápido > elegancia técnica sin facturación.
+
+```
+[MVP de Acero] ──➔ [Centralización] ──➔ [Escala Élite]
+   semanas              meses                 trimestres
+```
+
+### 7.1 MVP de Acero 🚀 (salida en semanas)
+> **Stack:** Astro SSG (`output: 'static'`) + JSON estático + WhatsApp checkout
+> **Objetivo:** Facturar. Validar demanda en Colombia y Brasil.
+
+- [x] Astro 6.1.3 con 3 locales (ES/EN/PT)
+- [x] 5 productos con precios COP
+- [x] WhatsApp Commerce integrado
+- [x] Schemas JSON-LD (100% cobertura)
+- [x] SEO on-page (hreflang, sitemap, OG)
+- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4)
+- [ ] **Microsoft Clarity** — heatmaps, session recordings (gratis)
+- [ ] Google Search Console + indexación
+- [ ] Subcarpetas `/es/` y `/pt/` sembrando autoridad desde día 1
+
+#### Optimización Mobile-First 📱 (condición de salida a producción)
+> 70%+ del tráfico en Colombia es mobile. Patrones extraídos del SDD explore de dashboardplan (optimizado para iPhone/iPad).
+
+##### 🔴 Críticos (bugs iOS/Safari) — ✅ 3/3 completados (SDD Phase 1-2)
+- [x] **Anti-zoom en inputs** — `text-base md:text-sm` en todos los form fields
+- [x] **Hamburger Sheet navigation ≤768px** — vanilla JS toggle + `transform: translateX()`, body scroll lock, locale-aware links
+- [x] **Eliminar 300ms tap delay** — `touch-action: manipulation` en global.css
+
+##### 🟡 UX Mobile-First — ✅ 9/10 completados (SDD Phase 2-4)
+- [x] **Snap-scroll horizontal en product cards** — `flex overflow-x-auto snap-x md:grid md:grid-cols-N` en tienda + PDP
+- [x] **Touch targets ≥44px** — iconos footer, qty buttons, nav links, cart, QuickViewModal, social icons
+- [x] **Headers stacking** — `flex-col sm:flex-row` en action bars + QuickReferenceTable + IntensityProfile
+- [x] **Modales full-width mobile** — `<dialog>` nativo con `w-full sm:max-w-lg sm:rounded-lg`
+- [x] **PricingTable responsive** — `grid-cols-2 sm:grid-cols-3` con collapse progresivo
+- [x] **Hero + Trust Badges** — `text-base sm:text-lg` en ≤375px
+- [x] **Footer responsive** — 4→2→1 columnas (ya estaba)
+- [x] **Carrito drawer** — CSS optimizado, componente futuro-gated (SDD Fix #23)
+- [ ] **Tipografía responsive con `clamp()`** — reemplazar `text-5xl md:text-6xl` por `clamp()` en headings (SDD usó breakpoints fijos, `clamp()` es más fluido). ~5 líneas.
+- [x] **Breakpoint detection CSS-first** — `data-breakpoint` en `<html>` via inline script
+
+> **28/28 fixes aplicados (SDD mobile-first-overhaul, 4 commits).** Ver `openspec/changes/mobile-first-overhaul/` para detalle. Quedan tareas de validación mobile que requieren device real o setup externo:
+
+| # | Tarea | Prioridad |
+|---|-------|-----------|
+| 📱 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 🔴 Alta |
+| 📱 | **Velocidad en 3G colombiano** — medir con throttling (DevTools), 70%+ tráfico no es 5G | 🟡 Media |
+| 🎨 | **Footer icons mobile** — revertir `w-11 h-11` → `w-7 h-7` (íconos se ven muy grandes, el `p-2` ya da 44px de touch target) | 🟡 Media |
+
+### 7.2 Centralización Automatizada 🤖 (cuando WhatsApp colapse)
+> **Stack:** Monodominio `octavofuego.com` + Medusa Cloud (Railway/Hosted) + Astro SSR
+> **Objetivo:** Automatizar pagos B2C en CO y BR desde un solo sitio.
+> **Contexto:** Esta sección consolida §3.7 (Monorepo), §3.8 (Carrito), §3.9 (Checkout). No es prioritario para el MVP de Acero — se activa cuando WhatsApp sea el cuello de botella.
+
+- [ ] **Medusa Core:** Montar 1 instancia MedusaJS v2 (managed — no sufrir con Linux)
+- [ ] **SSR Migration:** Migrar Astro a `output: 'server'` + `adapter: node({ mode: 'standalone' })`
+- [ ] **Inventario real:** Stock control en Medusa
+- [ ] **Cache:** `stale-while-revalidate` en páginas de catálogo
+
+#### Monorepo Setup (was §3.7)
+- [ ] Setup `pnpm workspaces` — `pnpm-workspace.yaml` (`apps/*`, `packages/*`)
+- [ ] Crear `apps/colombia` — migrar proyecto actual
+- [ ] Crear `apps/brasil` — desde template Astro SSR
+- [ ] Crear `packages/core` — componentes UI, stores y librerías compartidas
+- [ ] Deploy MedusaJS v2 backend (`api.octavofuego.com`)
+
+#### Carrito + API Routes (was §3.8)
+- [ ] Nano Stores cart (`packages/core/src/stores/cart.ts`) — `cartStore` atom
+- [ ] `initCart()` con cookies — `packages/core/src/lib/cart.ts`
+- [ ] Leer y persistir `cart_id` cookie en `Layout.astro` (HttpOnly, secure)
+- [ ] Aislamiento de carritos por dominio (`PUBLIC_MEDUSA_REGION_ID`)
+- [ ] `POST /api/cart/add` — proxy a Medusa (variant_id + quantity)
+- [ ] `DELETE /api/cart/remove` — proxy a Medusa (line_id)
+
+#### Checkout + Pasarelas Regionales (was §3.9)
+- [ ] `POST /api/checkout/create-payment` — Payment Collections Medusa v2 (Shipping → Method → Session → Provider)
+- [ ] `POST /api/checkout/complete` — `cart.complete()` → order
+- [ ] `POST /api/webhooks/stripe` — Pix/Boleto asíncrono (Brasil)
+- [ ] Variables de entorno por dominio: CO → `wompi`, BR → `stripe` + `STRIPE_PRIVATE_KEY` + `STRIPE_WEBHOOK_SECRET`
+- [ ] Wompi CO + Stripe BR (mismo dominio, region_id condicional)
+
+### 7.3 Escala Élite 🌎 (cuando Brasil justifique inversión)
+> **Stack:** Monorepo dual-domain + `.com.br` + B2B automatizado
+> **Objetivo:** Identidad local agresiva en Brasil. Mayoristas internacionales.
+> **Contexto:** Esta sección consolida §4 SEO Cross-Domain + §3.10.2 (Backend B2B). No activar antes de validar que BR responde. El flujo de caja real debe pagar la infraestructura.
+
+#### Infraestructura Dual-Domain (Core)
+- [ ] Separar en monorepo (`apps/colombia`, `apps/brasil`, `packages/core`)
+- [ ] Dominio `octavofogo.com.br` → producción local BRL
+- [ ] Hreflang cross-domain (CO ↔ BR)
+- [ ] **GitHub Actions:** `.github/workflows/check-builds.yml` — validar ambos apps antes de merge (jobs CO + BR, secrets `MEDUSA_PROD_URL`)
+- [ ] **Vercel Proyecto 1 (Colombia):** Root `apps/colombia`, dominio `octavofuego.com`
+- [ ] **Vercel Proyecto 2 (Brasil):** Root `apps/brasil`, dominio `octavofogo.com.br`
+- [ ] Servidor MedusaJS v2 desplegado (`api.octavofuego.com`)
+- [ ] Variables de entorno consolidadas en `.env.example` para ambos apps
+
+#### Cross-Domain SEO (was §4 SEO Cross-Domain)
+- [ ] Hreflang cross-domain dinámicos: `es-CO` ↔ `pt-BR` ↔ `en` (x-default) con `PUBLIC_DOMAIN_CO`, `PUBLIC_DOMAIN_BR`
+- [ ] Rutas unificadas: `/p/[product-slug]` en ambos dominios
+- [ ] Redirecciones 301: `octavofuego.com.co` → `octavofuego.com`, `octavofogo.com` → `octavofogo.com.br`
+- [ ] Adquirir dominios: `octavofogo.com.br`, `octavofuego.com.co`
+- [ ] Configurar DNS para apuntar a Vercel
+
+#### B2B Automatizado (was §3.10.2)
+- [ ] `POST /api/auth/login` — cookie segura con `medusa_token` (HttpOnly) + `customer_group` flag
+- [ ] `POST /api/b2b/register` — metadata `tax_id`, `company_name`, `b2b_status: pending`
+- [ ] Webhook de notificación al admin en registro B2B
+- [ ] Portal `/mayorista/estado.astro` — pending / approved / rejected
+- [ ] Precios mayoristas desbloqueados por grupo de cliente en Medusa
+- [ ] Pasarelas locales: Pix + Boleto via Stripe Brasil
+
+> **ANTI-PATRÓN:** No activar esta fase antes de validar que el mercado BR responde al rapé. El flujo de caja real debe pagar la infraestructura.
 
 ---
 
@@ -226,12 +503,22 @@ tokens funcionales disponibles:
 
 ---
 
+## 🔗 Deuda Técnica
+
+| Deuda | Riesgo | Regla |
+|-------|--------|-------|
+| BRL pricing → schema coupling | Medio | Si se agrega pricing en BRL (mercado brasileño), actualizar `priceCurrency` en **ItemList** (2 páginas) + **ProductJsonLd** (1 componente) **en el mismo commit** — no después |
+
+---
+
 ## 📁 Estructura del Proyecto
 
 ```
 octavo-fuego/
+├── ARCHITECTURE.md            ← Manifiesto de ingeniería (monorepo + Medusa SSR)
 ├── PENDIENTES.md              ← Este archivo
 ├── AGENTS.md                  ← Instrucciones para AI agents
+├── PROYECTO.md                ← Single source of truth
 ├── tasks.md                   ← Task tracking detallado
 ├── README.md                  ← Documentación general
 ├── src-astro/                 ← Astro project root
@@ -259,15 +546,20 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
-| Jun 15 | `f24e304` | `main` | Trust Badges bg to --color-action-hover for visual hierarchy |
-| Jun 15 | `8355265` | `main` | Dark tobacco background for Trust Badges section |
-| Jun 15 | `38acc01` | `main` | Update tagline to Rapé de Acre, Amazonía brasileira |
-| Jun 15 | `065ff98` | `main` | Replace duotone icons with solid variants for max contrast |
-| Jun 15 | `9671908` | `main` | Icon color text-white for max contrast on dark background |
-| Jun 15 | `db89858` | `main` | Migrate: --verde-botanico → --color-action-primary (76 occurrences) |
-| Jun 15 | `ea6a845` | `main` | Doc updates |
-| Jun 15 | `95ae024` | `main` | Design tokens: --tabaco-base, --color-action-primary, --color-footer-bg |
-| Jun 15 | `aadaea9` | `main` | Migrate all site icons to Solar Bold-Duotone |
+| Jun 15 | `44ec78d` | `main` | feat(seo): add ItemList schema to category pages, restore Organization address |
+| Jun 15 | `8f17307` | `main` | fix(seo): OrganizationJsonLd — foundingDate 2026, knowsAbout desc, sameAs +WhatsApp |
+| Jun 15 | `ba610f8` | `main` | fix(seo): improve JSON-LD schemas — @id, cross-refs, dates ISO |
+| Jun 15 | `4a2ae13` | `main` | fix(seo): remove dead code, heading hierarchy, article schema, img dimensions |
+| Jun 15 | `bbfcf32` | `main` | fix(seo): hreflang tags, schema import, fake rating removal, og-image |
+| Jun 15 | `1966698` | `main` | docs: link PROYECTO, README, AGENTS with Engram topic keys |
+| Jun 15 | `e2b8f26` | `main` | docs: create PROYECTO.md - single source of truth |
+| Jun 15 | `fea5d43` | `main` | docs: update PENDIENTES, AGENTS, design.md - dark sections + icon system |
+| Jun 15 | `f24e304` | `main` | fix(home): Trust Badges bg to --color-action-hover for visual hierarchy |
+| Jun 15 | `8355265` | `main` | feat(home): dark tobacco background for Trust Badges section |
+| Jun 15 | `38acc01` | `main` | feat(brand): update tagline to Rapé de Acre, Amazonía brasileira |
+| Jun 15 | `065ff98` | `main` | fix(footer): replace duotone icons with solid variants for max contrast |
+| Jun 15 | `9671908` | `main` | fix(footer): icon color text-white for max contrast on dark background |
+| Jun 15 | `db89858` | `main` | migrate: --verde-botanico → --color-action-primary (76 occurrences, 18 files) |
 
 ---
 

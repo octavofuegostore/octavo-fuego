@@ -52,7 +52,7 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
           <label class="block text-sm mb-2">Cantidad</label>
           <div class="flex items-center border border-humo w-fit">
             <button 
-              class="qty-btn w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors"
+              class="qty-btn w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-humo transition-colors"
               data-action="decrease"
               data-product={product.slug}
             >
@@ -65,7 +65,7 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
               class="w-12 text-center"
             >1</span>
             <button 
-              class="qty-btn w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors"
+              class="qty-btn w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-humo transition-colors"
               data-action="increase"
               data-product={product.slug}
             >
