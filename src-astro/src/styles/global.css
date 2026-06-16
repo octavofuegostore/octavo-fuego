@@ -65,9 +65,8 @@
   --ring: var(--color-tabacco);
   
   /* Design Tokens - Airbnb Style */
-  /* Base color: Tabaco (previously "verde-botanico" - semantically incorrect) */
+  /* Base color: Tabaco (renamed from --color-action-primary - semantically incorrect) */
   --tabaco-base: #6d5e4d;
-  --verde-botanico: var(--tabaco-base); /* @deprecated: use --tabaco-base or --color-action-primary */
   --near-black: #222222;
   --ceniza: #7b8084;
 
@@ -109,7 +108,7 @@
 
 /* Selection */
 ::selection {
-  background-color: var(--verde-botanico);
+  background-color: var(--color-action-primary);
   color: var(--color-white);
 }
 
@@ -128,7 +127,7 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--verde-botanico);
+  background: var(--color-action-primary);
 }
 
 /* Base Styles */
@@ -156,7 +155,7 @@
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  color: var(--verde-botanico);
+  color: var(--color-action-primary);
   margin-bottom: 32px;
   display: block;
   font-weight: 700;

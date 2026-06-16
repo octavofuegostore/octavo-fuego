@@ -63,13 +63,13 @@ const filteredProducts = currentFilter === 'all'
       <nav class="mb-8 text-sm">
         <ol class="flex items-center gap-2 text-[var(--ceniza)]">
           <li>
-            <a href={baseUrl} class="hover:text-[var(--verde-botanico)] transition-colors">
+            <a href={baseUrl} class="hover:text-[var(--color-action-primary)] transition-colors">
               {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
             </a>
           </li>
           <li>/</li>
           <li>
-            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--verde-botanico)] transition-colors">
+            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.tienda}
             </a>
           </li>
@@ -78,7 +78,7 @@ const filteredProducts = currentFilter === 'all'
         </ol>
       </nav>
 
-      <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--verde-botanico)] font-semibold block mb-4">
+      <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--color-action-primary)] font-semibold block mb-4">
         {t.tienda.subtitle}
       </span>
       <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-[var(--near-black)] mb-6">

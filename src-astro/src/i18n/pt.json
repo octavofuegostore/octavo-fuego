@@ -98,8 +98,8 @@
     "faq": "FAQ",
     "envios": "Envios",
     "enviosZona": "Envios para Colômbia e Brasil",
-    "direccionTienda": "Cra. 54b #175-30, Bogotá",
-    "direccionFabrica": "Travessa Francisco Severiano 106, Várzea, CEP 69980-000, Cruzeiro do Sul, AC",
+    "confianzaFooter": "Direto da Amazônia, com propósito",
+    "direccionFabrica": "Travessa Francisco Severiano 106, Cruzeiro do Sul, AC",
     "terminos": "Termos",
     "privacidad": "Privacidade",
     "instagram": "Instagram",
@@ -151,6 +151,10 @@
     "cta": "Ler a Profecia",
     "teaserTitle": "O Oitavo Fogo",
     "teaser": "Descubra a profecia dos Sete Fogos e a promessa do Oitavo e Final Fogo — um Fogo eterno de paz, amor, irmandade e fraternidade."
+  },
+  "testimonials": {
+    "title": "O que nossos clientes dizem",
+    "verified": "Compra verificada"
   },
   "intentions": {
     "claridadMental": "Clareza Mental e Meditação",

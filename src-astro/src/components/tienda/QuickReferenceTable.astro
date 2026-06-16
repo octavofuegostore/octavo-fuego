@@ -30,16 +30,16 @@ const rows = products
 
 <section class="py-16 md:py-24 bg-white">
   <div class="max-w-6xl mx-auto px-6 md:px-12">
-    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--verde-botanico)] border-b border-gray-200 pb-3 mb-10 block">
+    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-action-primary)] border-b border-gray-200 pb-3 mb-10 block">
       {t.tienda.quickRef}
     </span>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {rows.map((row) => (
-        <div class="border border-gray-200 rounded-[var(--radius-card)] p-6 hover:shadow-[var(--shadow-hover)] hover:border-[var(--verde-botanico)] transition-all duration-200 bg-white">
+        <div class="border border-gray-200 rounded-[var(--radius-card)] p-6 hover:shadow-[var(--shadow-hover)] hover:border-[var(--color-action-primary)] transition-all duration-200 bg-white">
           <div class="flex items-start justify-between mb-4">
             <h3 class="font-display text-lg font-semibold text-[var(--near-black)]">{row.name}</h3>
-            <span class="text-[0.65rem] uppercase tracking-wider text-[var(--verde-botanico)] font-bold bg-[var(--verde-botanico)]/5 px-2 py-1 rounded-full">
+            <span class="text-[0.65rem] uppercase tracking-wider text-[var(--color-action-primary)] font-bold bg-[var(--color-action-primary)]/5 px-2 py-1 rounded-full">
               #{row.varietyOrder}
             </span>
           </div>

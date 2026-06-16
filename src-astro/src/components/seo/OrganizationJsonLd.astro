@@ -12,22 +12,14 @@ const schema = {
     'contactType': 'customer service',
     'availableLanguage': ['Spanish', 'English', 'Portuguese']
   },
-  'address': [
-    {
-      '@type': 'PostalAddress',
-      'streetAddress': 'Cra. 54b #175-30',
-      'addressLocality': 'Bogotá',
-      'addressCountry': 'CO'
-    },
-    {
-      '@type': 'PostalAddress',
-      'streetAddress': 'Travessa Francisco Severiano 106',
-      'addressLocality': 'Cruzeiro do Sul',
-      'addressRegion': 'AC',
-      'postalCode': '69980000',
-      'addressCountry': 'BR'
-    }
-  ],
+  'address': {
+    '@type': 'PostalAddress',
+    'streetAddress': 'Travessa Francisco Severiano 106',
+    'addressLocality': 'Cruzeiro do Sul',
+    'addressRegion': 'AC',
+    'postalCode': '69980000',
+    'addressCountry': 'BR'
+  },
   'areaServed': [
     { '@type': 'Country', 'name': 'Colombia' },
     { '@type': 'Country', 'name': 'Brazil' }

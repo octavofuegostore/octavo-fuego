@@ -98,8 +98,8 @@
     "faq": "FAQ",
     "envios": "Shipping",
     "enviosZona": "Shipping to Colombia and Brazil",
-    "direccionTienda": "Cra. 54b #175-30, Bogotá",
-    "direccionFabrica": "Travessa Francisco Severiano 106, Várzea, CEP 69980-000, Cruzeiro do Sul, AC",
+    "confianzaFooter": "Direct from the Amazon, with purpose",
+    "direccionFabrica": "Travessa Francisco Severiano 106, Cruzeiro do Sul, AC",
     "terminos": "Terms",
     "privacidad": "Privacy",
     "instagram": "Instagram",
@@ -151,6 +151,10 @@
     "cta": "Read the Prophecy",
     "teaserTitle": "The Eighth Fire",
     "teaser": "Discover the prophecy of the Seven Fires and the promise of the Eighth and Final Fire — an eternal Fire of peace, love, brotherhood and sisterhood."
+  },
+  "testimonials": {
+    "title": "What our clients say",
+    "verified": "Verified purchase"
   },
   "intentions": {
     "claridadMental": "Mental Clarity and Meditation",

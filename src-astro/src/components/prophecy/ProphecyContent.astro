@@ -32,8 +32,8 @@ const fireAfter = fires.find((f) => f.id === 7);
 
 <article class="max-w-[800px] mx-auto px-6 py-16 md:py-24">
   <!-- Ignition Block -->
-  <div class="mb-20 md:mb-28 p-12 md:p-16 bg-white border-2 border-[var(--verde-botanico)] relative text-center shadow-sm">
-    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white px-6 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--verde-botanico)] font-bold whitespace-nowrap">
+  <div class="mb-20 md:mb-28 p-12 md:p-16 bg-white border-2 border-[var(--color-action-primary)] relative text-center shadow-sm">
+    <span class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-white px-6 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--color-action-primary)] font-bold whitespace-nowrap">
       {ignition.label[locale]}
     </span>
     <blockquote class="font-display text-2xl md:text-[1.75rem] leading-relaxed text-[var(--near-black)] italic font-normal">
@@ -54,7 +54,7 @@ const fireAfter = fires.find((f) => f.id === 7);
   <!-- Main prophecy content -->
   <main>
     <!-- Section Label -->
-    <span class="section-label text-xs uppercase tracking-[0.25em] text-[var(--verde-botanico)] mb-12 block font-bold border-b-2 border-gray-200 pb-4">
+    <span class="section-label text-xs uppercase tracking-[0.25em] text-[var(--color-action-primary)] mb-12 block font-bold border-b-2 border-gray-200 pb-4">
       {prophecy.sectionLabel[locale]}
     </span>
 
@@ -67,8 +67,8 @@ const fireAfter = fires.find((f) => f.id === 7);
 
     <!-- Fires 1-6 -->
     {firesBefore.map((fire) => (
-      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--verde-botanico)]">
-        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--verde-botanico)] tracking-tight">
+      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--color-action-primary)]">
+        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--color-action-primary)] tracking-tight">
           {fire.title[locale]}
         </h2>
         <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
@@ -88,8 +88,8 @@ const fireAfter = fires.find((f) => f.id === 7);
 
     <!-- Fire 7 -->
     {fireAfter && (
-      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--verde-botanico)]">
-        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--verde-botanico)] tracking-tight">
+      <div class="mb-16 md:mb-18 py-2 pl-10 border-l-[3px] border-[var(--color-action-primary)]">
+        <h2 class="font-display text-2xl md:text-[1.65rem] mb-5 font-semibold text-[var(--color-action-primary)] tracking-tight">
           {fireAfter.title[locale]}
         </h2>
         <div class="text-base md:text-[1.05rem] text-[var(--near-black)] leading-[1.8]">
@@ -113,8 +113,8 @@ const fireAfter = fires.find((f) => f.id === 7);
     </div>
 
     <!-- Final Question Block -->
-    <div class="mt-20 border-2 border-dashed border-[var(--verde-botanico)] p-12 md:p-16 text-center">
-      <span class="block mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--verde-botanico)] font-bold">
+    <div class="mt-20 border-2 border-dashed border-[var(--color-action-primary)] p-12 md:p-16 text-center">
+      <span class="block mb-4 text-[0.7rem] uppercase tracking-[0.4em] text-[var(--color-action-primary)] font-bold">
         {finalQuestion.label[locale]}
       </span>
       <p class="font-display text-2xl md:text-[1.5rem] leading-relaxed text-[var(--near-black)] font-medium">

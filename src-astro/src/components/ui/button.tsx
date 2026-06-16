@@ -6,15 +6,15 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center border text-sm font-medium whitespace-nowrap transition-all duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-[var(--verde-botanico)] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 rounded-[var(--radius-button)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center border text-sm font-medium whitespace-nowrap transition-all duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-[var(--color-action-primary)] focus-visible:ring-offset-2 focus-visible:ring-offset-white disabled:pointer-events-none disabled:opacity-50 rounded-[var(--radius-button)] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
-        default: "bg-[var(--near-black)] text-white border-transparent hover:bg-[var(--verde-botanico)]",
-        secondary: "bg-transparent text-[var(--verde-botanico)] border-[var(--verde-botanico)] hover:bg-[var(--verde-botanico)] hover:text-white",
+        default: "bg-[var(--near-black)] text-white border-transparent hover:bg-[var(--color-action-primary)]",
+        secondary: "bg-transparent text-[var(--color-action-primary)] border-[var(--color-action-primary)] hover:bg-[var(--color-action-primary)] hover:text-white",
         ghost: "bg-transparent text-[var(--near-black)] border-transparent hover:bg-gray-100",
         destructive: "bg-error/10 text-error border-error hover:bg-error/20",
-        link: "text-[var(--verde-botanico)] underline-offset-4 hover:underline border-transparent bg-transparent",
+        link: "text-[var(--color-action-primary)] underline-offset-4 hover:underline border-transparent bg-transparent",
       },
       size: {
         default: "h-10 px-6 py-3 gap-2",

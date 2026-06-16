@@ -55,9 +55,9 @@ const pricingWithGrams = pricing.map((p) => ({
       <button
         class:list={[
           "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200 relative",
-          "hover:border-[var(--verde-botanico)] hover:bg-[var(--papel)]",
+          "hover:border-[var(--color-action-primary)] hover:bg-[var(--papel)]",
           i === 0
-            ? "border-[var(--verde-botanico)] bg-[var(--verde-botanico)] text-white"
+            ? "border-[var(--color-action-primary)] bg-[var(--color-action-primary)] text-white"
             : "border-gray-200 bg-white text-[var(--near-black)]",
         ]}
         data-grams={p.cantidad}
@@ -123,10 +123,10 @@ const pricingWithGrams = pricing.map((p) => ({
       btn.addEventListener('click', () => {
         // Update selected state
         buttons.forEach((b) => {
-          b.classList.remove('border-[var(--verde-botanico)]', 'bg-[var(--verde-botanico)]', 'text-white');
+          b.classList.remove('border-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]', 'text-white');
           b.classList.add('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
         });
-        btn.classList.add('border-[var(--verde-botanico)]', 'bg-[var(--verde-botanico)]', 'text-white');
+        btn.classList.add('border-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]', 'text-white');
         btn.classList.remove('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
 
         // Update WhatsApp link
