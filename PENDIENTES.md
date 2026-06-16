@@ -120,6 +120,29 @@
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado
 - [ ] Indexación verificada
+- [ ] Internal linking en blog (verificar que los 4 posts enlazan a productos/tienda)
+- [ ] Keyword frontier analysis con datos reales de Search Console
+
+### SEO — Features a importar de Pipod (astroecoomerce)
+
+#### 🔴 Alto Impacto
+- [ ] **IndexNow Protocol** — acelerar indexación en Bing/Yandex para 3 locales
+  - `src/pages/api/index-now.ts` (port directo)
+  - `public/<key>.txt`
+  - `vercel.json` cron job
+- [ ] **FAQPage Schema** — rich snippets en las 5 PDPs
+  - Port `FAQPageSchema.astro` de pipod
+  - FAQs por producto: qué es, cómo se usa, etnia, cantidad
+- [ ] **SEO Score Tracking** — métrica cuantificable en PROYECTO.md
+  - Categorías: Content Quality, Technical SEO, Structured Data, Performance, Sitemap/Crawl
+
+#### 🟡 Medio Impacto
+- [ ] **@graph Pattern en homepage** — un solo `<script>` con Organization + WebPage + ItemList
+  - Referencia: `ServicePageSchema.astro` en pipod (6 entidades en @graph)
+- [ ] **OrganizationJsonLd enriquecido** — `hasOfferCatalog` (5 rapés), `knowsAbout` keywords, `potentialAction` WhatsApp
+
+#### 🟢 Bajo Esfuerzo
+- [ ] **Geo keywords** — investigar si hay búsquedas tipo "comprar rapé Bogotá/Colombia" y agregar en metadata
 
 ---
 
