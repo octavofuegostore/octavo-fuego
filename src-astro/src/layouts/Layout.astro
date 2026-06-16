@@ -24,6 +24,19 @@ const {
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
 const canonicalUrl = new URL(Astro.url.pathname, 'https://octavofuego.com').href;
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
+
+// Hreflang: regex-based locale extraction to avoid substring corruption
+// (e.g., "beneficios", "principiantes" containing "en"/"pt")
+const pathname = Astro.url.pathname;
+const localeMatch = pathname.match(/^\/(es|en|pt)(\/.*)?$/i);
+const matchedLocale = localeMatch ? localeMatch[1] : 'es';
+const restPath = localeMatch ? (localeMatch[2] || '/') : (pathname || '/');
+
+const hreflangLocales = [
+  { tag: 'es-CO', urlPrefix: '' },           // default locale — no prefix
+  { tag: 'en-US', urlPrefix: '/en' },
+  { tag: 'pt-BR', urlPrefix: '/pt' },
+];
 ---
 
 <!DOCTYPE html>
@@ -36,29 +49,13 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Hreflang Tags -->
-    {locale === 'es' ? (
-      <>
-        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname}`} />
-        <link rel="alternate" hreflang="en" href={`https://octavofuego.com/en${Astro.url.pathname}`} />
-        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com/pt${Astro.url.pathname}`} />
-        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname}`} />
-      </>
-    ) : locale === 'en' ? (
-      <>
-        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '')}`} />
-        <link rel="alternate" hreflang="en" href={`https://octavofuego.com${Astro.url.pathname}`} />
-        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '/pt')}`} />
-        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '')}`} />
-      </>
-    ) : (
-      <>
-        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '')}`} />
-        <link rel="alternate" hreflang="en" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '/en')}`} />
-        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com${Astro.url.pathname}`} />
-        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '')}`} />
-      </>
-    )}
+    <!-- Hreflang Tags (region subtags: es-CO, en-US, pt-BR) -->
+    {
+      hreflangLocales.map(({ tag, urlPrefix }) => (
+        <link rel="alternate" hreflang={tag} href={`https://octavofuego.com${urlPrefix}${restPath}`} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${restPath}`} />
     
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
