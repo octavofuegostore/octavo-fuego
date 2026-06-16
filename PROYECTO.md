@@ -279,19 +279,26 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 | 04 Marketing/SEO | 80% | 🔄 En progreso |
 | 05 Testing & Polish | 30% | ⏳ Pendiente |
 | 06 Lanzamiento | 10% | ⏳ Pendiente |
-| 07 Monorepo + Medusa | 0% | ⏳ Planificado |
+| 07 Arquitectura Progresiva | 0% | ⏳ Del MVP al Manifiesto (3 fases) |
 
-### Por hacer (urgente)
-- Imágenes reales de los 5 rapés
-- Google Search Console + indexación
-- Core Web Vitals optimizados (LCP < 2.5s)
+### Arquitectura Progresiva (ARCHITECTURE.md §0)
 
-### Post-lanzamiento
-- Campaña redes sociales
-- Prospección B2B
-- Email marketing
-- Sistema de reseñas
-- Blog semanal
+```
+[MVP de Acero] ──➔ [Centralización] ──➔ [Escala Élite]
+   semanas              meses               trimestres
+```
+
+#### 7.1 MVP de Acero — Ya en marcha
+- Astro SSG + JSON estático + WhatsApp checkout
+- Validar demanda Colombia + Brasil. Facturar.
+
+#### 7.2 Centralización — Cuando WhatsApp colapse
+- Monodominio + Medusa Cloud + Astro SSR
+- Automatizar pagos B2C en CO y BR
+
+#### 7.3 Escala Élite — Cuando Brasil justifique inversión
+- Monorepo dual-domain + `.com.br` + B2B automatizado
+- Manifiesto completo (ARCHITECTURE.md §1-9)
 
 ---
 

@@ -17,7 +17,7 @@
 | 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
-| 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado |
+| 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
 
@@ -100,6 +100,7 @@
 - [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
 - [ ] og:image social card real (1200×630 — actualmente usa logo.png)
 - [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
+- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
 
 ### 3.7 Monorepo + Medusa SSR ⏳ (ARCHITECTURE.md §2-3)
 - [ ] Setup `pnpm workspaces` — `pnpm-workspace.yaml` (`apps/*`, `packages/*`)
@@ -156,6 +157,7 @@
 - [ ] Indexación verificada
 - [ ] Internal linking en blog (verificar que los 4 posts enlazan a productos/tienda)
 - [ ] Keyword frontier analysis con datos reales de Search Console
+- [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4 + métricas de negocio)
 
 ### SEO — Features a importar de Pipod (astroecoomerce)
 
@@ -202,6 +204,7 @@
 - [ ] Loading states
 - [ ] Accesibilidad WCAG AA
 - [ ] Core Web Vitals (LCP < 2.5s, FID < 100ms, CLS < 0.1)
+- [ ] **Microsoft Clarity** — heatmaps, session recordings, rage clicks (gratis)
 
 ---
 
@@ -223,22 +226,55 @@
 
 ---
 
-## 🏗️ Fase 7 — CI/CD & Monorepo Deployment ⏳ (ARCHITECTURE.md §8-9)
+## 🏗️ Fase 7 — Arquitectura Progresiva (del MVP al Manifiesto) ⏳
 
-### GitHub Actions
-- [ ] Workflow `.github/workflows/check-builds.yml` — validar ambos apps antes de merge
-  - Job `build-colombia` con env vars CO
-  - Job `build-brasil` con env vars BR
-- [ ] Secrets de GitHub: `MEDUSA_PROD_URL`
+> **Principio rector:** El manifiesto (`ARCHITECTURE.md`) es el plano del edificio de 20 pisos — referencia arquitectónica a largo plazo, NO lista de tareas para el sprint actual. Shippear rápido > elegancia técnica sin facturación.
 
-### Vercel — 2 Proyectos
-- [ ] **Proyecto 1 (Colombia):** Root `apps/colombia`, dominio `octavofuego.com`
-- [ ] **Proyecto 2 (Brasil):** Root `apps/brasil`, dominio `octavofogo.com.br`
-- [ ] Environment variables por proyecto (ver `ARCHITECTURE.md §9`)
+```
+[MVP de Acero] ──➔ [Centralización] ──➔ [Escala Élite]
+   semanas              meses                 trimestres
+```
 
-### Infraestructura
-- [ ] Servidor MedusaJS v2 desplegado (`api.octavofuego.com`)
-- [ ] Variables de entorno consolidadas en `.env.example` para ambos apps
+### 7.1 MVP de Acero 🚀 (salida en semanas)
+> **Stack:** Astro SSG (`output: 'static'`) + JSON estático + WhatsApp checkout
+> **Objetivo:** Facturar. Validar demanda en Colombia y Brasil.
+
+- [x] Astro 6.1.3 con 3 locales (ES/EN/PT)
+- [x] 5 productos con precios COP
+- [x] WhatsApp Commerce integrado
+- [x] Schemas JSON-LD (100% cobertura)
+- [x] SEO on-page (hreflang, sitemap, OG)
+- [ ] **Página "Nosotros"** — historia, sourcing, misión
+- [ ] **Google Looker Studio** — dashboard consolidado
+- [ ] **Microsoft Clarity** — heatmaps, session recordings (gratis)
+- [ ] Google Search Console + indexación
+- [ ] Página "Nosotros" — historia, sourcing, equipo
+- [ ] Subcarpetas `/es/` y `/pt/` sembrando autoridad desde día 1
+
+### 7.2 Centralización Automatizada 🤖 (cuando WhatsApp colapse)
+> **Stack:** Monodominio `octavofuego.com` + Medusa Cloud (Railway/Hosted) + Astro SSR
+> **Objetivo:** Automatizar pagos B2C en CO y BR desde un solo sitio.
+
+- [ ] Montar 1 instancia MedusaJS (managed — no sufrir con Linux)
+- [ ] Migrar Astro a `output: 'server'` + adapter node
+- [ ] Nano Stores cart con cookies (ver §3.8 para tareas detalladas)
+- [ ] Proxy API routes a Medusa (`/api/cart/*`, `/api/checkout/*`)
+- [ ] Wompi CO + Stripe BR (mismo dominio, region_id condicional)
+- [ ] Inventario real en Medusa (stock control)
+- [ ] **Fases 3.7–3.10** (30+ tareas) se activan acá
+
+### 7.3 Escala Élite 🌎 (cuando Brasil justifique inversión)
+> **Stack:** Monorepo dual-domain + `.com.br` + B2B automatizado
+> **Objetivo:** Identidad local agresiva en Brasil. Mayoristas internacionales.
+
+- [ ] Separar en monorepo (`apps/colombia`, `apps/brasil`, `packages/core`)
+- [ ] Dominio `octavofogo.com.br` → producción local BRL
+- [ ] Hreflang cross-domain (CO ↔ BR)
+- [ ] B2B: flujo de aprobación automatizado (tax_id, company_name)
+- [ ] Pasarelas locales: Pix + Boleto via Stripe Brasil
+- [ ] CI/CD: GitHub Actions + 2 proyectos Vercel
+
+> **ANTI-PATRÓN:** No activar esta fase antes de validar que el mercado BR responde al rapé. El flujo de caja real debe pagar la infraestructura.
 
 ---
 

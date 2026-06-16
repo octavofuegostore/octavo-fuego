@@ -10,6 +10,46 @@
 
 **Engram Topic Key:** `architecture/manifesto-v1`
 
+**Engram Topic Key:** `architecture/manifesto-v1`
+
+---
+
+## 📌 0. Ruta Progresiva — Las 3 Fases (LEER PRIMERO)
+
+> **Este documento es el plano del edificio de 20 pisos. No es una lista de tareas para el sprint actual.**
+
+La arquitectura headless multi-dominio con MedusaJS v2 es el estado final. Para llegar sin morir de sobreingeniería, el proyecto avanza en 3 fases de despliegue progresivo — cada una paga la siguiente con flujo de caja real.
+
+```
+[FASE 1: MVP de Acero] ──➔ [FASE 2: Centralización] ──➔ [FASE 3: Escala Élite]
+     semanas                       meses                       trimestres
+```
+
+### Fase 1: MVP de Acero 🚀
+- **Stack:** Astro SSG (`output: 'static'`) + JSON estático + WhatsApp checkout
+- **Objetivo:** Facturar. Validar demanda en Colombia y Brasil.
+- **Sin backend.** Sin base de datos. Sin Medusa.
+- El checkout es un link de WhatsApp dinámico: *"Hola, quiero comprar 2 Pariká y 1 Pixuri. Estoy en Bogotá."*
+- Subcarpetas `/es/` y `/pt/` bajo el mismo `.com` siembran autoridad SEO.
+
+### Fase 2: Centralización Automatizada 🤖
+- **Stack:** Monodominio `octavofuego.com` + Medusa Cloud + Astro SSR
+- **Disparador:** Las ventas por WhatsApp se vuelven inmanejables.
+- Una sola instancia de Medusa (Railway/Medusa Cloud). Un solo frontend.
+- Automatiza pagos B2C en CO y BR desde el mismo sitio. Stock real.
+- **Secciones del manifiesto activas:** §4 (Carrito), §5 (API Routes), §6 (Checkout).
+
+### Fase 3: Escala Élite 🌎 (El Manifiesto Completo)
+- **Stack:** Monorepo dual-domain + `octavofogo.com.br` + B2B automatizado
+- **Disparador:** El volumen mayorista internacional y la operación en Brasil justifican inversión.
+- Separación en `apps/colombia` y `apps/brasil`. Dominio `.com.br` con identidad local.
+- **Secciones del manifiesto activas:** §1 (Dominios), §2 (Monorepo), §3 (SEO cross-domain), §7 (B2B), §8 (CI/CD).
+
+> ⚠️ **ANTI-PATRÓN:** Montar Medusa, PostgreSQL, Redis y dos deploys en Vercel para vender 5 productos de rapé es sobreingeniería. El flujo de caja real paga la infraestructura — no al revés.
+
+### Regla de Oro
+**Shippea la Fase 1 ya. Dejá que el mercado valide el producto. Solo escalá la arquitectura cuando el negocio lo exija.** Las secciones 1-9 de este documento son la referencia para cuando llegue ese momento.
+
 ---
 
 ## 📑 1. Arquitectura de Dominios e Identidad Local
