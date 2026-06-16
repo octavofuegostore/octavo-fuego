@@ -36,7 +36,7 @@ const t = useTranslations('es');
           </svg>
         </div>
         <p class="text-ceniza text-xl mb-6">Tu carrito está vacío</p>
-        <Button variant="secondary" onclick="window.location.href='/es/tienda'">
+        <Button variant="secondary" id="btn-explorar-productos">
           Explorar productos
         </Button>
       </div>
@@ -65,7 +65,7 @@ const t = useTranslations('es');
             <Button size="lg" class="w-full" onclick="window.location.href='/checkout'">
               Proceder al Pago
             </Button>
-            <Button variant="ghost" class="w-full" onclick="window.location.href='/es/tienda'">
+            <Button variant="ghost" class="w-full" id="btn-continuar-comprando">
               Continuar Comprando
             </Button>
           </div>
@@ -115,7 +115,7 @@ const t = useTranslations('es');
               <h3 class="font-display text-lg font-semibold mb-2">${item.nombre}</h3>
               <p class="text-tabacco font-semibold">${formatCOP(item.precio)}</p>
             </div>
-            <button onclick="removeItem('${item.variantId}')" class="text-ceniza hover:text-error transition-colors p-2" aria-label="Eliminar producto">
+            <button onclick="removeItem('${item.variantId}')" class="text-ceniza hover:text-error transition-colors p-2 min-w-[44px] min-h-[44px]" aria-label="Eliminar producto">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
               </svg>
@@ -125,13 +125,13 @@ const t = useTranslations('es');
           <!-- Quantity Controls -->
           <div class="flex items-center gap-4 mt-4">
             <div class="flex items-center border border-humo">
-              <button onclick="decreaseQty('${item.variantId}', ${item.cantidad})" class="w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors" aria-label="Reducir cantidad">
+              <button onclick="decreaseQty('${item.variantId}', ${item.cantidad})" class="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-humo transition-colors" aria-label="Reducir cantidad">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                 </svg>
               </button>
               <span id="qty-${item.variantId}" class="w-12 text-center">${item.cantidad}</span>
-              <button onclick="increaseQty('${item.variantId}', ${item.cantidad})" class="w-10 h-10 flex items-center justify-center hover:bg-humo transition-colors" aria-label="Aumentar cantidad">
+              <button onclick="increaseQty('${item.variantId}', ${item.cantidad})" class="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-humo transition-colors" aria-label="Aumentar cantidad">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                 </svg>
@@ -169,4 +169,15 @@ const t = useTranslations('es');
 
   cartItems.subscribe(renderCart);
   renderCart();
+
+  // Locale-aware redirects — set up CTA links with current locale
+  const locale = window.location.pathname.split('/')[1];
+  const validLocales = ['es', 'en', 'pt'];
+  const currentLocale = validLocales.includes(locale) ? locale : 'es';
+  const tiendaUrl = `/${currentLocale}/tienda`;
+
+  const explorarBtn = document.getElementById('btn-explorar-productos');
+  const continuarBtn = document.getElementById('btn-continuar-comprando');
+  if (explorarBtn) explorarBtn.addEventListener('click', () => { window.location.href = tiendaUrl; });
+  if (continuarBtn) continuarBtn.addEventListener('click', () => { window.location.href = tiendaUrl; });
 </script>

@@ -148,6 +148,12 @@
     background-color: var(--color-white);
     color: var(--near-black);
     line-height: 1.6;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  html.overflow-hidden {
+    overscroll-behavior: none;
   }
 }
 

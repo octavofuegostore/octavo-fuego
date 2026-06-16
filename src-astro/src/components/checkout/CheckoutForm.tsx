@@ -220,7 +220,7 @@ export function CheckoutForm() {
               <select
                 value={shippingInfo.departamento}
                 onChange={(e) => setShippingInfo({ ...shippingInfo, departamento: e.target.value })}
-                className={`w-full h-8 px-2 bg-transparent border rounded-lg text-sm ${errors.departamento ? 'border-error' : 'border-humo'}`}
+                className={`w-full h-11 px-2 bg-transparent border rounded-lg text-base md:text-sm transition-colors outline-none focus:border-tabacco ${errors.departamento ? 'border-error' : 'border-humo'}`}
               >
                 <option value="">Seleccionar...</option>
                 {departamentosColombia.map((dept) => (
@@ -238,7 +238,7 @@ export function CheckoutForm() {
               onChange={(e) => setShippingInfo({ ...shippingInfo, notas: e.target.value })}
               placeholder="Indicaciones para la entrega..."
               rows={3}
-              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-sm resize-none focus:border-tabacco focus:outline-none"
+              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-base md:text-sm resize-none focus:border-tabacco focus:outline-none"
             />
           </div>
         </div>

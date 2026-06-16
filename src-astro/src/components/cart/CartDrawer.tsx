@@ -33,7 +33,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-ceniza hover:text-white transition-colors"
+            className="p-3 min-w-[44px] min-h-[44px] text-ceniza hover:text-white transition-colors"
             aria-label="Cerrar carrito"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +125,7 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
         <div className="flex items-center gap-2 mt-2">
           <button
             onClick={() => onUpdateQuantity(item.variantId, item.cantidad - 1)}
-            className="w-8 h-8 flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
             aria-label="Reducir cantidad"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,7 +135,7 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
           <span className="w-8 text-center text-sm">{item.cantidad}</span>
           <button
             onClick={() => onUpdateQuantity(item.variantId, item.cantidad + 1)}
-            className="w-8 h-8 flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
             aria-label="Aumentar cantidad"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +144,7 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
           </button>
           <button
             onClick={() => onRemove(item.variantId)}
-            className="ml-auto p-2 text-ceniza hover:text-error transition-colors"
+            className="ml-auto p-3 min-w-[44px] min-h-[44px] text-ceniza hover:text-error transition-colors"
             aria-label="Eliminar producto"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
