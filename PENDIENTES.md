@@ -181,6 +181,32 @@
 #### 3.10.2 Backend B2B → Ver §7.3 Escala Élite
 > **Nota:** Todas las tareas de esta sección están consolidadas en §7.3 Escala Élite (B2B automatizado). El flujo B2B actual via formulario de contacto + approval manual funciona para el MVP.
 
+### 3.11 Confianza — Privacidad + Presencia Google 🛡️
+> Fuente: Engram `privacidad-confianza` (obs #525)
+
+#### ✅ Completado (15 Jun 2026)
+- [x] **Privacidad — dirección Bogotá removida** del Footer.astro
+- [x] **confianzaFooter agregado** ("🌿 Directo de la Amazonía, con propósito") en Footer + i18n
+- [x] **OrganizationJsonLd address simplificado** — array[2] → objeto único (solo fábrica BR)
+- [x] **i18n keys** — eliminada `direccionTienda`, agregada `confianzaFooter` (es/en/pt)
+- [x] **Testimonials.astro** componente creado con 3 testimonios, estrellas, avatares, i18n
+
+#### 📋 Google Business Profile
+- [ ] Configurar como "Área de Servicio" (NO tienda física)
+- [ ] Nombre: "Octavo Fuego" — Categoría: Herbal Medicine / Wellness
+- [ ] Áreas: Colombia + Brasil — 1 solo perfil, sin dirección visible
+- [ ] Verificar dominio: octavofuego.com
+- [ ] Solicitar primeras 5 reseñas a clientes reales
+- [ ] Agregar link de reseña de Google en página de confirmación de compra
+
+#### 🔜 Mejoras Futuras
+- [ ] Reemplazar testimonios placeholder con quotes reales de clientes
+- [ ] Avatar opcional (foto real) en componente Testimonials
+- [ ] Ajustar confianzaFooter ("Hecho con propósito desde Acre, Brasil")
+- [ ] Trustpilot (cuando facture +$5M/mes)
+- [ ] Añadir productos: sananga, kuripe, accesorios
+- [ ] Fotos reales de los 5 rapés (reemplazar placeholder)
+
 ---
 
 ## 📈 Fase 4 — Marketing & SEO 🔄
