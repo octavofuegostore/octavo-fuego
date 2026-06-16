@@ -14,7 +14,7 @@
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 95% | 🔄 Casi listo |
-| 04 Marketing/SEO | ████████░░ 60% | 🔄 En progreso |
+| 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | 🔄 Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
 
@@ -74,16 +74,30 @@
 - [x] Checkout (`/checkout`)
 - [x] Blog listing + 4 posts
 
-### 3.5 SEO ✅
-- [x] OrganizationJsonLd.astro
-- [x] ProductSchema.astro
-- [x] BreadcrumbSchema.astro
+### 3.5 SEO ✅ (Audit + Fixes completados Junio 15, 2026)
+
+#### Schemas (100% cobertura)
+- [x] OrganizationJsonLd — logo, foundingDate 2026, knowsAbout+desc, sameAs +WhatsApp, address (ciudad/estado)
+- [x] ProductJsonLd (×15) — @id, mainEntityOfPage, itemCondition NewCondition, additionalProperty, priceValidUntil, seller @id
+- [x] BreadcrumbJsonLd (×15) — @id cross-referenced with Product
+- [x] BlogPosting (×4) — Article schema en todos los posts del blog
+- [x] ItemList (×6) — categoría rapé + catálogo principal en 3 locales
+
+#### SEO Técnico
+- [x] Hreflang tags para ES/EN/PT (antes faltaban)
+- [x] og:image → logo.png (antes roto)
+- [x] AggregateRating falso eliminado
+- [x] Heading hierarchy corregida
+- [x] Img width/height attributes agregados
+- [x] Product images → placeholder bobinsana
+- [x] Dead code removido: SeoLayout.astro, BaseSeo.astro
 - [x] Sitemap + robots.txt
 - [x] Open Graph + Twitter Cards
 
 ### 3.6 Por Hacer 🔄
-- [ ] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
-- [ ] Imágenes reales de los 5 rapés (placeholder actual)
+- [x] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
+- [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
+- [ ] og:image social card real (1200×630 — actualmente usa logo.png)
 - [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
 
 ---
@@ -97,8 +111,12 @@
 - [ ] Newsletter signup funcional
 
 ### SEO
-- [x] Meta tags + Schema markup
+- [x] Meta tags + Schema markup (100% cobertura — Organization, Product, Breadcrumb, BlogPosting, ItemList)
+- [x] Hreflang tags ES/EN/PT
 - [x] Sitemap generado
+- [x] Auditoría SEO completa (5 críticos + 4 warnings corregidos)
+- [ ] og:image social card (1200×630 — actualmente usa logo.png)
+- [ ] Imágenes reales de productos para SEO
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado
 - [ ] Indexación verificada
@@ -226,6 +244,14 @@ tokens funcionales disponibles:
 
 ---
 
+## 🔗 Deuda Técnica
+
+| Deuda | Riesgo | Regla |
+|-------|--------|-------|
+| BRL pricing → schema coupling | Medio | Si se agrega pricing en BRL (mercado brasileño), actualizar `priceCurrency` en **ItemList** (2 páginas) + **ProductJsonLd** (1 componente) **en el mismo commit** — no después |
+
+---
+
 ## 📁 Estructura del Proyecto
 
 ```
@@ -259,15 +285,20 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
-| Jun 15 | `f24e304` | `main` | Trust Badges bg to --color-action-hover for visual hierarchy |
-| Jun 15 | `8355265` | `main` | Dark tobacco background for Trust Badges section |
-| Jun 15 | `38acc01` | `main` | Update tagline to Rapé de Acre, Amazonía brasileira |
-| Jun 15 | `065ff98` | `main` | Replace duotone icons with solid variants for max contrast |
-| Jun 15 | `9671908` | `main` | Icon color text-white for max contrast on dark background |
-| Jun 15 | `db89858` | `main` | Migrate: --verde-botanico → --color-action-primary (76 occurrences) |
-| Jun 15 | `ea6a845` | `main` | Doc updates |
-| Jun 15 | `95ae024` | `main` | Design tokens: --tabaco-base, --color-action-primary, --color-footer-bg |
-| Jun 15 | `aadaea9` | `main` | Migrate all site icons to Solar Bold-Duotone |
+| Jun 15 | `44ec78d` | `main` | feat(seo): add ItemList schema to category pages, restore Organization address |
+| Jun 15 | `8f17307` | `main` | fix(seo): OrganizationJsonLd — foundingDate 2026, knowsAbout desc, sameAs +WhatsApp |
+| Jun 15 | `ba610f8` | `main` | fix(seo): improve JSON-LD schemas — @id, cross-refs, dates ISO |
+| Jun 15 | `4a2ae13` | `main` | fix(seo): remove dead code, heading hierarchy, article schema, img dimensions |
+| Jun 15 | `bbfcf32` | `main` | fix(seo): hreflang tags, schema import, fake rating removal, og-image |
+| Jun 15 | `1966698` | `main` | docs: link PROYECTO, README, AGENTS with Engram topic keys |
+| Jun 15 | `e2b8f26` | `main` | docs: create PROYECTO.md - single source of truth |
+| Jun 15 | `fea5d43` | `main` | docs: update PENDIENTES, AGENTS, design.md - dark sections + icon system |
+| Jun 15 | `f24e304` | `main` | fix(home): Trust Badges bg to --color-action-hover for visual hierarchy |
+| Jun 15 | `8355265` | `main` | feat(home): dark tobacco background for Trust Badges section |
+| Jun 15 | `38acc01` | `main` | feat(brand): update tagline to Rapé de Acre, Amazonía brasileira |
+| Jun 15 | `065ff98` | `main` | fix(footer): replace duotone icons with solid variants for max contrast |
+| Jun 15 | `9671908` | `main` | fix(footer): icon color text-white for max contrast on dark background |
+| Jun 15 | `db89858` | `main` | migrate: --verde-botanico → --color-action-primary (76 occurrences, 18 files) |
 
 ---
 

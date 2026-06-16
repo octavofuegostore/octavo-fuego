@@ -134,8 +134,10 @@ npm run preview  # preview production build
 - Helper: `src/i18n/index.ts` with `useTranslations()`, `t()`
 
 ### SEO
-- Schema markup via Astro components
+- Schema markup via Astro components: Organization, Product (×15), BreadcrumbList (×15), BlogPosting/Article (×4), ItemList (×6)
+- `priceCurrency`: `COP` — único para todos los locales. Si se agrega BRL, actualizar ItemList + ProductJsonLd en el mismo commit.
 - sitemap.xml, robots.txt via @astrojs/sitemap
+- Hreflang tags ES/EN/PT
 - OpenGraph + Twitter Card meta tags
 
 ## Design System
@@ -229,4 +231,5 @@ playwright       # e2e
 | `docs/proyecto-md` | PROYECTO.md single source of truth |
 | `architecture/footer-design` | Footer design decisions |
 | `architecture/trust-badges-section-dark-background` | Trust Badges design |
+| `debt/brl-currency-schema-coupling` | Deuda: si se agrega BRL → actualizar schema al mismo tiempo |
 | `sdd/footer-bg-tabaco/*` | SDD cycle completo |
