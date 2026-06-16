@@ -61,11 +61,11 @@ const WHOLESALE = {
 // TODO: Replace with actual product images for each variety
 // Currently using placeholder until product photoshoot is complete
 const PLACEHOLDER_IMAGE = '/images/productos/rape/bobinsana-rape-2.webp';
-const IMAGE_TISUNU = '/images/productos/rape/tisunu.webp';
-const IMAGE_PIXURI = '/images/productos/rape/pixuri.webp';
-const IMAGE_PARIKA = '/images/productos/rape/parika.webp';
-const IMAGE_CUMARU = '/images/productos/rape/cumaru-de-cheiro.webp';
-const IMAGE_VENA = '/images/productos/rape/vena-de-paje.webp';
+const IMAGE_TISUNU = PLACEHOLDER_IMAGE;
+const IMAGE_PIXURI = PLACEHOLDER_IMAGE;
+const IMAGE_PARIKA = PLACEHOLDER_IMAGE;
+const IMAGE_CUMARU = PLACEHOLDER_IMAGE;
+const IMAGE_VENA = PLACEHOLDER_IMAGE;
 
 // ─── Products ───────────────────────────────────────────────────────────────
 

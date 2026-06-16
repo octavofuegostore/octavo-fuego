@@ -17,7 +17,7 @@ const {
   title = 'Octavo Fuego',
   description = 'Rapé do Acre, Sananga y Kuripes. Medicinas ancestrales amazónicas con propósito.',
   locale = 'es',
-  ogImage = '/images/og-default.jpg',
+  ogImage = '/images/octavofuego-logo.png',
   ogType = 'website'
 } = Astro.props;
 
@@ -35,6 +35,30 @@ const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 
     
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Hreflang Tags -->
+    {locale === 'es' ? (
+      <>
+        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname}`} />
+        <link rel="alternate" hreflang="en" href={`https://octavofuego.com/en${Astro.url.pathname}`} />
+        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com/pt${Astro.url.pathname}`} />
+        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname}`} />
+      </>
+    ) : locale === 'en' ? (
+      <>
+        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '')}`} />
+        <link rel="alternate" hreflang="en" href={`https://octavofuego.com${Astro.url.pathname}`} />
+        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '/pt')}`} />
+        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname.replace('/en', '')}`} />
+      </>
+    ) : (
+      <>
+        <link rel="alternate" hreflang="es" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '')}`} />
+        <link rel="alternate" hreflang="en" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '/en')}`} />
+        <link rel="alternate" hreflang="pt" href={`https://octavofuego.com${Astro.url.pathname}`} />
+        <link rel="alternate" hreflang="x-default" href={`https://octavofuego.com${Astro.url.pathname.replace('/pt', '')}`} />
+      </>
+    )}
     
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
