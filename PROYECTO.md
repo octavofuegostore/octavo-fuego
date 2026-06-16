@@ -281,5 +281,29 @@ Tipos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 
 ---
 
+## 11. Memoria Persistente (Engram)
+
+La memoria del proyecto persiste entre sesiones vía **Engram**. Buscar estas `topic_key` para recuperar contexto:
+
+| Topic Key | Contenido |
+|-----------|-----------|
+| `docs/proyecto-md` | PROYECTO.md como single source of truth |
+| `architecture/footer-design` | Footer redesign — Option B sólido tabaco-dark |
+| `architecture/trust-badges-section-dark-background` | Trust Badges con fondo tabaco medio |
+| `bug/solid-icons-replace-duotone-in-footer` | Duotone → sólido para máximo contraste |
+| `config/updated-md-docs-with-dark-sections` | Documentación actualizada post dark sections |
+| `decision/sdd-proposal-footer-bg-tabaco-created` | SDD proposal para footer redesign |
+| `sdd/footer-bg-tabaco/proposal` | Propuesta formal SDD |
+| `sdd/footer-bg-tabaco/tasks` | Task breakdown SDD |
+| `sdd/footer-bg-tabaco/archive-report` | Verificación y cierre SDD |
+
+**Cómo recuperar contexto en una sesión nueva:**
+```
+mem_search(query: "docs/proyecto-md", project: "octavo-fuego")
+mem_get_observation(id: <ID>)  ← contenido completo
+```
+
+---
+
 *Documento maestro generado: Junio 15, 2026*
 *Último commit en main: `f24e304`*

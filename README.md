@@ -1,6 +1,7 @@
 # Octavo Fuego — Rapé do Acre
 
 ## 📖 [PROYECTO.md](PROYECTO.md) ← Documento maestro del proyecto
+## 🧠 Engram: `mem_search("docs/proyecto-md", project: "octavo-fuego")`
 
 ## Ecommerce de Medicinas Ancestrales
 

@@ -219,5 +219,14 @@ playwright       # e2e
 
 ## Engram
 - Project: `octavo-fuego`
+- **Documento maestro**: `PROYECTO.md` + `mem_search("docs/proyecto-md", project: "octavo-fuego")`
 - SDD artifacts persisted under topic keys: `sdd/octavo-fuego/*`
 - Skill registry cached in session
+
+### Key Topic Keys
+| Topic Key | What |
+|-----------|------|
+| `docs/proyecto-md` | PROYECTO.md single source of truth |
+| `architecture/footer-design` | Footer design decisions |
+| `architecture/trust-badges-section-dark-background` | Trust Badges design |
+| `sdd/footer-bg-tabaco/*` | SDD cycle completo |
