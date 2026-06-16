@@ -103,3 +103,49 @@ El proyecto se despliega automáticamente en Vercel al hacer push a `main`.
 ## 📝 Licencia
 
 Propiedad de Octavo Fuego. Todos los derechos reservados.
+
+## ⚙️ Configuración Técnica
+
+### `astro.config.mjs`
+
+```js
+import { defineConfig } from 'astro/config';
+import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
+import icon from 'astro-icon';
+
+export default defineConfig({
+  site: 'https://octavofuego.com',
+  integrations: [
+    react(),
+    icon({
+      include: {
+        solar: [ /* iconos bold-duotone + bold (dark sections) */ ],
+        ph:   [ /* phosphor duotone + fill (dark sections) */ ],
+      },
+    }),
+    sitemap({
+      filter: (page) => !page.includes('/checkout/'),
+      changefreq: 'weekly',
+      priority: 0.7,
+      lastmod: new Date(),
+    }),
+  ],
+  i18n: {
+    defaultLocale: 'es',
+    locales: ['es', 'en', 'pt'],
+    routing: { prefixDefaultLocale: false },
+  },
+  redirects: {
+    '/': '/es/',
+    '/catalogo': '/es/tienda',
+    // ... legacy redirects mapping old /catalogo/* → /es/tienda/*
+  },
+});
+```
+
+**Key decisions:**
+- `prefixDefaultLocale: false` → Spanish pages at root (`/tienda`), EN at `/en/tienda`, PT at `/pt/tienda`
+- Sitemap excludes `/checkout/` (noindex page)
+- Icons pre-bundled via `astro-icon` with Solar Bold + Phosphor sets
+- Redirects from legacy `/catalogo/*` → current `/es/tienda/*` paths

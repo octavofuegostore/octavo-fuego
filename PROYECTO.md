@@ -242,6 +242,23 @@ Ritmo visual del homepage: `white → tabaco medio → cream → white → cream
 - Imágenes reales de productos (placeholder actual: bobinsana-rape-2.webp)
 - og:image social card real (1200×630)
 
+### 7.1 SEO Score
+
+| Categoría | Puntaje (0-100) | Actualizado |
+|-----------|-----------------|-------------|
+| Content Quality | 75 | 2026-06-16 |
+| Technical SEO | 82 | 2026-06-16 |
+| Structured Data | 90 | 2026-06-16 |
+| Performance | 60 | 2026-06-16 |
+| Sitemap/Crawl | 85 | 2026-06-16 |
+
+> **Notas:**
+> - **Content Quality** (75): 4 blog posts + profecía + glosario. Falta contenido más profundo por intención (5 artículos planeados) y guías de uso por producto.
+> - **Technical SEO** (82): Hreflang corregido (CO/US/BR), og:image funcionando, heading hierarchy OK. Falta Core Web Vitals (LCP > 3s en mobile).
+> - **Structured Data** (90): Organization + Product + BreadcrumbList + BlogPosting + @graph Homepage + WholesaleStore. 6 schemas activos. Pendiente validación en Google Rich Results.
+> - **Performance** (60): Sin lazy loading en imágenes de blog, placeholder images sin optimización WebP/AVIF. LCP actual ~3.8s (target < 2.5s).
+> - **Sitemap/Crawl** (85): sitemap.xml con 3 locales + xhtml:link alternates. robots.txt configurado. Falta Google Search Console verification.
+
 ---
 
 ## 8. Git Workflow

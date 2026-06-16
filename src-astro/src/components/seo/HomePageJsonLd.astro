@@ -1,0 +1,82 @@
+---
+/**
+ * HomePageJsonLd — @graph JSON-LD for homepage
+ *
+ * Serves a single <script> with @graph containing:
+ *   - WebPage → mainEntity.@id references #organization
+ *   - ItemList with the 5 rapé products
+ *
+ * Import in src/pages/[locale]/index.astro and place in <head>.
+ * Works alongside the global OrganizationJsonLd (already in Layout.astro)
+ * which defines the @id: #organization node.
+ */
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': 'https://octavofuego.com/#webpage',
+      'url': 'https://octavofuego.com',
+      'name': 'Octavo Fuego — Rapé do Acre, Sananga y Kuripes',
+      'description': 'Medicinas ancestrales amazónicas con propósito. Rapé del Acre brasileño directo de comunidades indígenas.',
+      'inLanguage': ['es-CO', 'en-US', 'pt-BR'],
+      'isPartOf': {
+        '@type': 'WebSite',
+        '@id': 'https://octavofuego.com/#website',
+        'url': 'https://octavofuego.com',
+        'name': 'Octavo Fuego'
+      },
+      'mainEntity': {
+        '@type': 'Organization',
+        '@id': 'https://octavofuego.com/#organization'
+      }
+    },
+    {
+      '@type': 'ItemList',
+      '@id': 'https://octavofuego.com/#homepage-products',
+      'name': 'Rapé do Acre — listado completo',
+      'numberOfItems': 5,
+      'itemListElement': [
+        {
+          '@type': 'ListItem',
+          'position': 1,
+          'url': 'https://octavofuego.com/es/tienda/rape/tisunu',
+          'name': 'Tisunú — Rapé energético',
+          'image': 'https://octavofuego.com/images/productos/rape/bobinsana-rape-2.webp'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 2,
+          'url': 'https://octavofuego.com/es/tienda/rape/pixuri',
+          'name': 'Pixurí — Rapé medicinal',
+          'image': 'https://octavofuego.com/images/productos/rape/bobinsana-rape-2.webp'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 3,
+          'url': 'https://octavofuego.com/es/tienda/rape/parika',
+          'name': 'Pariká — Rapé espiritual',
+          'image': 'https://octavofuego.com/images/productos/rape/bobinsana-rape-2.webp'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 4,
+          'url': 'https://octavofuego.com/es/tienda/rape/cumaru-de-cheiro',
+          'name': 'Cumarú de Cheiro — Rapé de protección',
+          'image': 'https://octavofuego.com/images/productos/rape/bobinsana-rape-2.webp'
+        },
+        {
+          '@type': 'ListItem',
+          'position': 5,
+          'url': 'https://octavofuego.com/es/tienda/rape/vena-de-paje',
+          'name': 'Vena de Pajé — Rapé para meditación',
+          'image': 'https://octavofuego.com/images/productos/rape/bobinsana-rape-2.webp'
+        }
+      ]
+    }
+  ]
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
