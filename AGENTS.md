@@ -14,7 +14,7 @@
 - **Ecommerce**: Bold Payment Gateway (pendiente integración)
 - **CMS**: Keystatic (Git-based, Astro Content Collections)
 - **Backend**: Medusa.js 2.x (pendiente)
-- **Icons**: lucide-react
+- **Icons**: `astro-icon` + `@iconify-json/solar` (Solar Bold-Duotone) + `@iconify-json/ph` (Phosphor Duotone)
 - **Fonts**: Playfair Display (headings), Inter (body)
 
 ## Available Skills for This Project
@@ -94,10 +94,19 @@ npm run preview  # preview production build
 ### Styling
 - TailwindCSS 4.x utility classes
 - Custom CSS variables in `:root` of global.css
-- Colors: white, negro (#000), tabaco (#8B4513), ceniza (#7b8084), humo (#2A2A2A), papel (#F5F5F0), verde-botanico (#6d5e4d)
+- **Colors**: white (#ffffff), negro (#000), near-black (#222), tabaco (#8B4513), ceniza (#7b8084), humo (#2A2A2A), papel (#F5F5F0), verde-botanico (#6d5e4d)
 - Shadows: 3-layer Airbnb system (--shadow-card, --shadow-hover)
 - Border radius: 0px default, 8px buttons, 20px cards, 14px badges
 - Fonts: Playfair Display (display), Inter (body)
+
+### Icon System (OBLIGATORIO)
+- **NUNCA usar `lucide-react`** — tiene bug SSR en Astro (no forwardea `class` prop)
+- **SIEMPRE usar `astro-icon`** con Solar Bold-Duotone (`@iconify-json/solar`) o Phosphor Duotone (`@iconify-json/ph`)
+- Sintaxis: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-name-bold-duotone" class="w-7 h-7" />`
+- Iconos UI → Solar Bold-Duotone (letter, chat-round, map-point, leaf, shield, eye, lightning, heart, moon, star, etc.)
+- Logos sociales → Phosphor Duotone (instagram-logo, facebook-logo, whatsapp-logo)
+- **Solar NO tiene logos de marca ni droplet/spark/bag** — verificar antes de usar
+- Verificar nombres exactos en Iconify antes de implementar
 
 ### State
 - Nanostores for cart state
@@ -124,6 +133,22 @@ npm run preview  # preview production build
 - **Estética**: Minimalist Sacred — blanco puro, sombras sutiles, fotografía-first
 - **Inspiración**: Waking Herbs + Airbnb Design System
 - **Filosofía**: "Medicina ancestral para el alma moderna"
+
+### Color Palette (CSS Variables)
+| Token | Hex | Uso |
+|-------|-----|-----|
+| `--white` | #ffffff | Fondo principal, cards |
+| `--negro` | #000000 | Headings principales |
+| `--near-black` | #222222 | Texto body (cálido) |
+| `--tabaco` | #8B4513 | Acento ocasional |
+| `--ceniza` | #7b8084 | Textos secundarios, metadata |
+| `--humo` | #2A2A2A | Footer, elementos oscuros |
+| `--papel` | #F5F5F0 | Secciones contrastadas |
+| `--verde-botanico` | #6d5e4d | Acento principal, CTAs |
+| `--whatsapp` | #25D366 | Botón WhatsApp |
+| `--success` | #22C55E | Estados éxito |
+| `--error` | #EF4444 | Estados error |
+| `--warning` | #F59E0B | Estados warning |
 
 ## Testing
 ```bash

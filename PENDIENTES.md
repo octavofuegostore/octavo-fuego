@@ -143,7 +143,44 @@
 |-----|--------|-------|
 | FloatingWhatsApp runtime error | ✅ Fixed | Era React "call" — convertido a Astro puro |
 | Breadcrumb sin categoría | ✅ Fixed | Ahora: Inicio / Catálogo / Rapé / Producto |
-| WhatsAppButton.tsx → .astro | ⏳ Pendiente | Misma migración que FloatingWhatsApp |
+| WhatsAppButton.tsx → .astro | ✅ Fixed | Misma migración que FloatingWhatsApp |
+| Lucide React SSR bug (class prop) | ✅ Fixed | Astro no forwardeaba `class` a SVGs internos → iconos renderizaban a 14px. Solución: migrar TODOS los iconos a `astro-icon` + Solar Bold-Duotone |
+
+---
+
+## 🎨 Design System — Iconografía
+
+### Librerías de Iconos
+| Librería | Uso | Notas |
+|----------|-----|-------|
+| **Solar Bold-Duotone** | Iconos UI (Mail, Chat, Map, Leaf, Shield, etc.) | Efecto duotone con `currentColor` + opacity |
+| **Phosphor Duotone** | Logos sociales (Instagram, Facebook, WhatsApp) | Solar no tiene logos de marca |
+| **astro-icon** | Renderizado de iconos en Astro | Resuelve el bug SSR de `class` prop |
+
+### Iconos Disponibles (Solar Bold-Duotone)
+```
+Footer:         letter, chat-round, map-point, leaf
+Confianza:      shield, cloud-waterdrop, leaf
+Intenciones:    eye, lightning, heart, shield, moon
+Navbar:         hamburger-menu, alt-arrow-down, bag-2, global
+LanguageSwitch: global, alt-arrow-down
+Testimonials:   star
+```
+
+### Iconos NO disponibles en Solar (usar Phosphor Duotone)
+```
+Instagram:  ph:instagram-logo-duotone
+Facebook:   ph:facebook-logo-duotone
+WhatsApp:   ph:whatsapp-logo-duotone
+```
+
+### Errores comunes al buscar iconos en Solar
+| Buscado | Error | Corrección |
+|---------|-------|------------|
+| `droplet-bold-duotone` | No existe | `cloud-waterdrop-bold-duotone` |
+| `spark-bold-duotone` | No existe | `moon-bold-duotone` |
+| `star-stars-bold-duotone` | No existe | `star-bold-duotone` |
+| `bag-bold-duotone` | No existe | `bag-2-bold-duotone` |
 
 ---
 
@@ -180,6 +217,7 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
+| Jun 15 | `aadaea9` | `main`/`develop` | Migrate all site icons to Solar Bold-Duotone |
 | Jun 13 | `f05ec36` | `develop` | Git workflow rule (push develop, merge main solo con autorización) |
 | Jun 13 | `c3ca86e` | `main`/`develop` | SDD cycle: i18n, productos, WhatsApp commerce, breadcrumb fix |
 | Jun 13 | `cb7aca1` | `main` | Fix vercel.json location |
@@ -196,4 +234,4 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Junio 13, 2026*
+*Actualizado: Junio 15, 2026*

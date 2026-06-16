@@ -67,6 +67,14 @@ Inspirado en Waking Herbs + Airbnb: Marketplace botánico cálido con estética 
 | `--papel` | #F5F5F0 | Secciones contrastadas |
 | `--verde-botanico` | #6d5e4d | Acento principal |
 
+### Icon System
+- **Librería**: `astro-icon` + `@iconify-json/solar` (Solar Bold-Duotone) + `@iconify-json/ph` (Phosphor Duotone)
+- **Uso**: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-bold-duotone" class="w-7 h-7" />`
+- **Iconos UI**: Solar Bold-Duotone (letter, chat-round, map-point, leaf, shield, eye, lightning, heart, moon, star, etc.)
+- **Logos sociales**: Phosphor Duotone (instagram-logo, facebook-logo, whatsapp-logo)
+- **NO USAR**: `lucide-react` (bug SSR en Astro — no forwardea `class` prop)
+- **Solar NO tiene**: droplet, spark, bag, brand logos — verificar en Iconify antes de usar
+
 ### Semantic Colors
 | Token | Hex | Uso |
 |-------|-----|-----|
