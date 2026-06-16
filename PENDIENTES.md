@@ -153,25 +153,32 @@
 ### Librerías de Iconos
 | Librería | Uso | Notas |
 |----------|-----|-------|
-| **Solar Bold-Duotone** | Iconos UI (Mail, Chat, Map, Leaf, Shield, etc.) | Efecto duotone con `currentColor` + opacity |
-| **Phosphor Duotone** | Logos sociales (Instagram, Facebook, WhatsApp) | Solar no tiene logos de marca |
+| **Solar Bold** | Iconos UI en secciones oscuras (footer, trust badges) | 1 capa, `currentColor` 100% |
+| **Solar Bold-Duotone** | Iconos UI en secciones claras (hero, cards) | 2 capas con opacity |
+| **Phosphor Fill** | Logos sociales en secciones oscuras | 1 capa, `currentColor` 100% |
+| **Phosphor Duotone** | Logos sociales en secciones claras | 2 capas con opacity |
 | **astro-icon** | Renderizado de iconos en Astro | Resuelve el bug SSR de `class` prop |
 
-### Iconos Disponibles (Solar Bold-Duotone)
+### Iconos Disponibles (Solar Bold - para fondos oscuros)
 ```
-Footer:         letter, chat-round, map-point, leaf
-Confianza:      shield, cloud-waterdrop, leaf
-Intenciones:    eye, lightning, heart, shield, moon
-Navbar:         hamburger-menu, alt-arrow-down, bag-2, global
-LanguageSwitch: global, alt-arrow-down
-Testimonials:   star
+Footer:         letter-bold, chat-round-bold, map-point-bold, leaf-bold
+Trust Badges:   shield-bold, cloud-waterdrop-bold, leaf-bold
 ```
 
-### Iconos NO disponibles en Solar (usar Phosphor Duotone)
+### Iconos Disponibles (Solar Bold-Duotone - para fondos claros)
 ```
-Instagram:  ph:instagram-logo-duotone
-Facebook:   ph:facebook-logo-duotone
-WhatsApp:   ph:whatsapp-logo-duotone
+Confianza:      shield-bold-duotone, cloud-waterdrop-bold-duotone, leaf-bold-duotone
+Intenciones:    eye-bold-duotone, lightning-bold-duotone, heart-bold-duotone, moon-bold-duotone
+Navbar:         hamburger-menu-bold-duotone, alt-arrow-down-bold-duotone, bag-2-bold-duotone
+LanguageSwitch: global-bold-duotone, alt-arrow-down-bold-duotone
+Testimonials:   star-bold-duotone
+```
+
+### Iconos NO disponibles en Solar (usar Phosphor)
+```
+Instagram:  ph:instagram-logo-fill (oscuro) / ph:instagram-logo-duotone (claro)
+Facebook:   ph:facebook-logo-fill (oscuro) / ph:facebook-logo-duotone (claro)
+WhatsApp:   ph:whatsapp-logo-fill (oscuro) / ph:whatsapp-logo-duotone (claro)
 ```
 
 ### Errores comunes al buscar iconos en Solar
@@ -192,7 +199,8 @@ verde-botanico (#6d5e4d) → tabacco-base (#6d5e4d)     [rename semántico]
 verde-botanico          → color-action-primary         [functional token]
 
 tokens funcionales disponibles:
-- --color-action-primary: var(--tabacco-base)
+- --tabaco-base: #6d5e4d
+- --color-action-primary: var(--tabaco-base)
 - --color-action-hover: #5a4d3f
 - --color-action-subtle: #C4956A
 - --color-surface-base: #ffffff
@@ -200,11 +208,19 @@ tokens funcionales disponibles:
 - --color-surface-dark: #2A2A2A
 - --color-text-primary: #1C1410
 - --color-text-secondary: #8C8680
+- --color-text-on-dark: #F2EFE8
+- --color-footer-bg: #3D2E22        ← Fondo footer + secciones oscuras
 ```
 
+### Dark Sections (Junio 15, 2026)
+| Sección | Token | Hex | Iconos |
+|---------|-------|-----|--------|
+| Footer | `--color-footer-bg` | `#3D2E22` | sólidos white |
+| Trust Badges | `--color-action-hover` | `#5a4d3f` | sólidos white |
+
 ### Migration Path
-1. ✅ `--verde-botanico` → `--tabacco-base` (rename semántico)
-2. ✅ Alias `--verde-botanico: var(--tabacco-base)` (0 breaking changes)
+1. ✅ `--verde-botanico` → `--tabaco-base` (rename semántico)
+2. ✅ Alias `--verde-botanico: var(--tabaco-base)` (0 breaking changes)
 3. ⏳ Post-launch: find-replace `--verde-botanico` → `--color-action-primary` en componentes
 4. ⏳ Post-launch: eliminar alias deprecated
 
@@ -243,11 +259,15 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
-| Jun 15 | `aadaea9` | `main`/`develop` | Migrate all site icons to Solar Bold-Duotone |
-| Jun 13 | `f05ec36` | `develop` | Git workflow rule (push develop, merge main solo con autorización) |
-| Jun 13 | `c3ca86e` | `main`/`develop` | SDD cycle: i18n, productos, WhatsApp commerce, breadcrumb fix |
-| Jun 13 | `cb7aca1` | `main` | Fix vercel.json location |
-| Jun 13 | `e3caa60` | `main` | Update AGENTS.md with repo URL, branches |
+| Jun 15 | `f24e304` | `main` | Trust Badges bg to --color-action-hover for visual hierarchy |
+| Jun 15 | `8355265` | `main` | Dark tobacco background for Trust Badges section |
+| Jun 15 | `38acc01` | `main` | Update tagline to Rapé de Acre, Amazonía brasileira |
+| Jun 15 | `065ff98` | `main` | Replace duotone icons with solid variants for max contrast |
+| Jun 15 | `9671908` | `main` | Icon color text-white for max contrast on dark background |
+| Jun 15 | `db89858` | `main` | Migrate: --verde-botanico → --color-action-primary (76 occurrences) |
+| Jun 15 | `ea6a845` | `main` | Doc updates |
+| Jun 15 | `95ae024` | `main` | Design tokens: --tabaco-base, --color-action-primary, --color-footer-bg |
+| Jun 15 | `aadaea9` | `main` | Migrate all site icons to Solar Bold-Duotone |
 
 ---
 

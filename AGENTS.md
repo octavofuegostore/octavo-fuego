@@ -109,10 +109,18 @@ npm run preview  # preview production build
 
 ### Icon System (OBLIGATORIO)
 - **NUNCA usar `lucide-react`** — tiene bug SSR en Astro (no forwardea `class` prop)
-- **SIEMPRE usar `astro-icon`** con Solar Bold-Duotone (`@iconify-json/solar`) o Phosphor Duotone (`@iconify-json/ph`)
-- Sintaxis: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-name-bold-duotone" class="w-7 h-7" />`
-- Iconos UI → Solar Bold-Duotone (letter, chat-round, map-point, leaf, shield, eye, lightning, heart, moon, star, etc.)
-- Logos sociales → Phosphor Duotone (instagram-logo, facebook-logo, whatsapp-logo)
+- **SIEMPRE usar `astro-icon`** con Solar o Phosphor
+- Sintaxis: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-name-bold" class="w-7 h-7" />`
+
+**Fondo claro → DUOTONE:**
+- Iconos UI → Solar Bold-Duotone: `letter-bold-duotone`, `chat-round-bold-duotone`, `map-point-bold-duotone`, `shield-bold-duotone`, `cloud-waterdrop-bold-duotone`, `leaf-bold-duotone`, `eye-bold-duotone`, `lightning-bold-duotone`, `heart-bold-duotone`, `moon-bold-duotone`, `star-bold-duotone`
+- Logos sociales → Phosphor Duotone: `instagram-logo-duotone`, `facebook-logo-duotone`, `whatsapp-logo-duotone`
+
+**Fondo oscuro → SÓLIDO:**
+- Iconos UI → Solar Bold: `letter-bold`, `chat-round-bold`, `map-point-bold`, `leaf-bold`, `shield-bold`, `cloud-waterdrop-bold`
+- Logos sociales → Phosphor Fill: `instagram-logo-fill`, `facebook-logo-fill`, `whatsapp-logo-fill`
+- Todos con `text-white` (máximo contraste)
+
 - **Solar NO tiene logos de marca ni droplet/spark/bag** — verificar antes de usar
 - Verificar nombres exactos en Iconify antes de implementar
 
@@ -171,6 +179,9 @@ npm run preview  # preview production build
 --color-surface-base: #ffffff;
 --color-surface-warm: #F2EFE8;
 --color-surface-dark: #2A2A2A;
+
+/* Section backgrounds */
+--color-footer-bg: #3D2E22;           /* Footer + secciones oscuras */
 
 /* Text tokens */
 --color-text-primary: #1C1410;

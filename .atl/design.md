@@ -82,6 +82,9 @@ Inspirado en Waking Herbs + Airbnb: Marketplace botánico cálido con estética 
 --color-surface-warm: #F2EFE8;
 --color-surface-dark: #2A2A2A;
 
+/* Section backgrounds */
+--color-footer-bg: #3D2E22;          /* Footer, secciones oscuras */
+
 /* Texto */
 --color-text-primary: #1C1410;      /* Headings */
 --color-text-secondary: #8C8680;    /* Meta, subtitles */
@@ -111,12 +114,25 @@ Inspirado en Waking Herbs + Airbnb: Marketplace botánico cálido con estética 
 | `--verde-botanico` | #6d5e4d | Acento principal | ⚠️ **DEPRECATED** — usar `--color-action-primary` o `--tabaco-base` |
 
 ### Icon System
-- **Librería**: `astro-icon` + `@iconify-json/solar` (Solar Bold-Duotone) + `@iconify-json/ph` (Phosphor Duotone)
-- **Uso**: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-bold-duotone" class="w-7 h-7" />`
-- **Iconos UI**: Solar Bold-Duotone (letter, chat-round, map-point, leaf, shield, eye, lightning, heart, moon, star, etc.)
-- **Logos sociales**: Phosphor Duotone (instagram-logo, facebook-logo, whatsapp-logo)
+- **Librería**: `astro-icon` + `@iconify-json/solar` + `@iconify-json/ph`
+- **Uso**: `import { Icon } from 'astro-icon/components'` → `<Icon name="solar:icon-bold" class="w-7 h-7" />`
 - **NO USAR**: `lucide-react` (bug SSR en Astro — no forwardea `class` prop)
 - **Solar NO tiene**: droplet, spark, bag, brand logos — verificar en Iconify antes de usar
+
+**Fondos claros → DUOTONE:**
+- Iconos UI: Solar Bold-Duotone (letter, chat-round, map-point, shield, cloud-waterdrop, leaf, eye, lightning, heart, moon, star, etc.)
+- Logos sociales: Phosphor Duotone (instagram-logo, facebook-logo, whatsapp-logo)
+
+**Fondos oscuros → SÓLIDO:**
+- Iconos UI: Solar Bold (letter-bold, chat-round-bold, map-point-bold, leaf-bold, shield-bold, cloud-waterdrop-bold)
+- Logos sociales: Phosphor Fill (instagram-logo-fill, facebook-logo-fill, whatsapp-logo-fill)
+- Aplicar `text-white` para máximo contraste
+
+### Dark Sections (Junio 2026)
+| Sección | Background | Icon Color | Text |
+|---------|-----------|------------|------|
+| Footer | `--color-footer-bg` (#3D2E22) | white sólido | `--color-text-on-dark` |
+| Trust Badges | `--color-action-hover` (#5a4d3f) | white sólido | `--color-text-on-dark`/80 |
 
 ### Semantic Colors
 | Token | Hex | Uso |
