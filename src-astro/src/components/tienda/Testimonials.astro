@@ -1,0 +1,93 @@
+---
+import { useTranslations } from '@/i18n';
+import type { Locale } from '@/i18n';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+interface Testimonial {
+  quote: Record<string, string>;
+  author: string;
+  avatar?: string;
+  location: Record<string, string>;
+  rating: number;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    quote: {
+      es: "Un rapé excepcional. La pureza se siente desde el primer momento. Llegó rápido y bien empacado.",
+      en: "An exceptional rapé. You can feel the purity from the first moment. It arrived fast and well packed.",
+      pt: "Um rapé excepcional. A pureza se sente desde o primeiro momento. Chegou rápido e bem embalado."
+    },
+    author: "Mateo R.",
+    location: { es: "Bogotá, Colombia", en: "Bogotá, Colombia", pt: "Bogotá, Colômbia" },
+    rating: 5
+  },
+  {
+    quote: {
+      es: "Llegó rápido a Brasil. La calidad es incomparable con lo que encontraba antes. Recomendado.",
+      en: "It arrived fast in Brazil. The quality is incomparable to what I found before. Recommended.",
+      pt: "Chegou rápido no Brasil. A qualidade é incomparável com o que eu encontrava antes. Recomendado."
+    },
+    author: "Ana L.",
+    location: { es: "São Paulo, Brasil", en: "São Paulo, Brazil", pt: "São Paulo, Brasil" },
+    rating: 5
+  },
+  {
+    quote: {
+      es: "La conexión espiritual que buscaba. Ideal para meditación profunda y ceremonias.",
+      en: "The spiritual connection I was looking for. Ideal for deep meditation and ceremonies.",
+      pt: "A conexão espiritual que buscava. Ideal para meditação profunda e cerimônias."
+    },
+    author: "Carlos M.",
+    location: { es: "Medellín, Colombia", en: "Medellín, Colombia", pt: "Medellín, Colômbia" },
+    rating: 5
+  }
+];
+---
+
+<section class="mt-12 pt-8 border-t border-gray-200">
+  <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-6">
+    {t.testimonials.title}
+  </h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {testimonials.map((testimonial) => (
+      <div class="bg-[var(--papel)] rounded-[var(--radius-card)] p-6 border border-gray-100">
+        <div class="flex gap-0.5 mb-3">
+          {Array.from({ length: testimonial.rating }, (_, i) => (
+            <Icon key={i} name="solar:star-bold-duotone" class="w-4 h-4 text-yellow-500" />
+          ))}
+        </div>
+        <p class="text-[var(--near-black)] text-sm leading-relaxed mb-4 italic">
+          &ldquo;{testimonial.quote[locale]}&rdquo;
+        </p>
+          <div class="flex items-center gap-3">
+          {testimonial.avatar ? (
+            <img
+              src={testimonial.avatar}
+              alt={testimonial.author}
+              class="w-8 h-8 rounded-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="w-8 h-8 rounded-full bg-[var(--verde-botanico)]/10 flex items-center justify-center">
+              <span class="text-xs font-bold text-[var(--verde-botanico)]">
+                {testimonial.author.charAt(0)}
+              </span>
+            </div>
+          )}
+          <div>
+            <p class="text-sm font-medium text-[var(--near-black)]">{testimonial.author}</p>
+            <p class="text-xs text-[var(--ceniza)]">{testimonial.location[locale]}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

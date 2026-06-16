@@ -1,0 +1,43 @@
+# SDD Configuration - Octavo Fuego Astro
+
+schema: spec-driven
+
+context: |
+  Tech stack: Astro 6.1.3 + React 19 + TailwindCSS 4 + Base UI (shadcn) + Nanostores
+  Architecture: Static site with i18n (es/en/pt), static generation
+  Testing: No test runner configured
+  Style: TailwindCSS 4, Lucide React icons, CSS variables
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Document architecture decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing code patterns
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: "astro build"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+testing:
+  strict_tdd: false
+  runner: null
+  layers:
+    unit: false
+    integration: false
+    e2e: false
+  coverage: false
+  linter: false
+  type_checker: false
+  formatter: false

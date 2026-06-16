@@ -8,6 +8,7 @@
 
 import Layout from '@/layouts/Layout.astro';
 import PricingTable from '@/components/product/PricingTable.astro';
+import Testimonials from '@/components/tienda/Testimonials.astro';
 import { products } from '@/data/products';
 import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
@@ -151,6 +152,8 @@ const highlight = product.highlight[locale_];
           </span>
         </p>
       </div>
+
+      <Testimonials locale={locale_} />
 
     </div>
   </section>

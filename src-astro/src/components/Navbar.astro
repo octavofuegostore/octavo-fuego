@@ -3,6 +3,7 @@ import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
 import { products } from '@/data/products';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import { Icon } from 'astro-icon/components';
 
 interface Props {
   locale?: Locale;
@@ -31,9 +32,7 @@ const baseUrl = `/${locale}`;
           aria-haspopup="true"
         >
           {t.nav.tienda}
-          <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
+          <Icon name="solar:alt-arrow-down-bold-duotone" class="w-4 h-4 transition-transform group-hover:rotate-180" />
         </button>
 
         <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
@@ -79,9 +78,7 @@ const baseUrl = `/${locale}`;
       <LanguageSwitcher locale={locale} />
 
       <a href="/carrito" class="relative p-2 text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-        </svg>
+        <Icon name="solar:bag-2-bold-duotone" class="w-6 h-6" />
         <span class="absolute -top-1 -right-1 w-5 h-5 bg-[var(--verde-botanico)] text-white text-xs flex items-center justify-center hidden">
           0
         </span>
@@ -89,9 +86,7 @@ const baseUrl = `/${locale}`;
 
       <!-- Mobile menu button -->
       <button class="md:hidden p-2 text-[var(--ceniza)] hover:text-[var(--near-black)]" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
+        <Icon name="solar:hamburger-menu-bold-duotone" class="w-6 h-6" />
       </button>
     </div>
   </nav>

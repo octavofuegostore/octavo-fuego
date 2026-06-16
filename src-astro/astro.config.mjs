@@ -2,11 +2,43 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+import icon from 'astro-icon';
 
 export default defineConfig({
   site: 'https://octavofuego.com',
   integrations: [
     react(),
+    icon({
+      include: {
+        solar: [
+          // Footer
+          'letter-bold-duotone',
+          'chat-round-bold-duotone',
+          'map-point-bold-duotone',
+          'leaf-bold-duotone',
+          // Homepage Confianza
+          'shield-bold-duotone',
+          'cloud-waterdrop-bold-duotone',
+          // Homepage Intenciones
+          'eye-bold-duotone',
+          'lightning-bold-duotone',
+          'heart-bold-duotone',
+          'moon-bold-duotone',
+          // Testimonials
+          'star-bold-duotone',
+          // Navbar / LanguageSwitcher
+          'hamburger-menu-bold-duotone',
+          'alt-arrow-down-bold-duotone',
+          'global-bold-duotone',
+          'bag-2-bold-duotone',
+        ],
+        ph: [
+          'instagram-logo-duotone',
+          'facebook-logo-duotone',
+          'whatsapp-logo-duotone',
+        ],
+      },
+    }),
     sitemap({
       filter: (page) => !page.includes('/checkout/'),
       changefreq: 'weekly',
