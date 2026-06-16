@@ -190,18 +190,23 @@ function renderMarkdown(content: string): string {
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
+    '@id': `https://octavofuego.com/blog/${post.slug}#article`,
+    'mainEntityOfPage': `https://octavofuego.com/blog/${post.slug}`,
     'headline': post.title,
     'description': post.excerpt,
     'image': post.coverImage,
-    'datePublished': post.publishedAt,
-    'dateModified': post.publishedAt,
+    'datePublished': `${post.publishedAt}T00:00:00-05:00`,
+    'dateModified': `${post.publishedAt}T00:00:00-05:00`,
+    'articleSection': post.category,
     'author': {
       '@type': 'Organization',
+      '@id': 'https://octavofuego.com/#organization',
       'name': post.author,
       'url': 'https://octavofuego.com'
     },
     'publisher': {
       '@type': 'Organization',
+      '@id': 'https://octavofuego.com/#organization',
       'name': 'Octavo Fuego',
       'url': 'https://octavofuego.com'
     }

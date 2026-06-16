@@ -57,13 +57,15 @@ const highlight = product.highlight[locale_];
       etnia: '',
       tipo: 'rape',
       stock: 10,
+      url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`,
+      locale: locale_,
     }}
   />
   <BreadcrumbJsonLd items={[
-    { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}` },
-    { name: t.nav.tienda, url: `https://octavofuego.com/${locale_}/tienda` },
-    { name: t.nav.rape, url: `https://octavofuego.com/${locale_}/tienda/rape` },
-    { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_}/tienda/rape/${product.slug}` },
+    { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : ''}` },
+    { name: t.nav.tienda, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda` },
+    { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
+    { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
   ]} />
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
     <div class="max-w-4xl mx-auto px-6 md:px-12">

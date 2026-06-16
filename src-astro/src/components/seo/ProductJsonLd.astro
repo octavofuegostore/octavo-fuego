@@ -10,6 +10,8 @@ interface Props {
     etnia: string;
     tipo: string;
     stock: number;
+    url: string;
+    locale: string;
   };
 }
 
@@ -17,27 +19,40 @@ const { product } = Astro.props;
 
 const priceCOP = product.precio.toFixed(2);
 const availability = product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+const productUrl = product.url;
+const categoryName = product.tipo === 'rape' ? 'Rapé' : product.tipo === 'sananga' ? 'Sananga' : 'Kuripe';
+const localeName = product.locale === 'es' ? 'es-CO' : product.locale === 'en' ? 'en-US' : 'pt-BR';
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
+  '@id': `${productUrl}#product`,
   'name': product.nombre,
   'description': product.descripcion,
   'image': product.imagen,
   'sku': product.id,
+  'mainEntityOfPage': productUrl,
   'brand': {
     '@type': 'Brand',
     'name': 'Octavo Fuego'
   },
-  'category': product.tipo === 'rape' ? 'Rapé' : product.tipo === 'sananga' ? 'Sananga' : 'Kuripe',
+  'category': categoryName,
+  'itemCondition': 'https://schema.org/NewCondition',
+  'additionalProperty': [
+    { '@type': 'PropertyValue', 'name': 'Etnia', 'value': product.etnia },
+    { '@type': 'PropertyValue', 'name': 'Locale', 'value': localeName }
+  ],
   'offers': {
     '@type': 'Offer',
-    'url': `https://octavofuego.com/producto/${product.slug}`,
+    'url': productUrl,
     'priceCurrency': 'COP',
     'price': priceCOP,
+    'priceValidUntil': new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
     'availability': availability,
+    'itemCondition': 'https://schema.org/NewCondition',
     'seller': {
       '@type': 'Organization',
+      '@id': 'https://octavofuego.com/#organization',
       'name': 'Octavo Fuego'
     }
   }

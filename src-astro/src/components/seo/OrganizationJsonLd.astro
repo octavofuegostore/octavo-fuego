@@ -2,13 +2,21 @@
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://octavofuego.com/#organization',
   'name': 'Octavo Fuego',
   'description': 'Rapé do Acre, Sananga y Kuripes. Medicinas ancestrales amazónicas con propósito.',
   'url': 'https://octavofuego.com',
-  'logo': 'https://octavofuego.com/favicon.svg',
+  'logo': 'https://octavofuego.com/images/octavofuego-logo.png',
+  'email': 'hola@octavofuego.com',
+  'foundingDate': '2025',
+  'knowsAbout': [
+    { '@type': 'Thing', 'name': 'Rapé' },
+    { '@type': 'Thing', 'name': 'Sananga' },
+    { '@type': 'Thing', 'name': 'Kuripes' }
+  ],
   'contactPoint': {
     '@type': 'ContactPoint',
-    'telephone': '+57-317-213-7932',
+    'telephone': '+573172137932',
     'contactType': 'customer service',
     'availableLanguage': ['Spanish', 'English', 'Portuguese']
   },
