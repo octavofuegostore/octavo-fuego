@@ -71,7 +71,9 @@ src-astro/
 | `npm run build` | Genera sitio de producción en `./dist/` |
 | `npm run preview` | Previsualiza el build localmente |
 
-## 🌐 i18n
+## 🛒 Ecommerce (Tienda Pública)
+
+### 🌐 i18n
 
 El sitio soporta 3 idiomas:
 - `/es/` - Español (por defecto)
@@ -80,7 +82,12 @@ El sitio soporta 3 idiomas:
 
 El language switcher está en el Navbar y preserva la página actual al cambiar idioma.
 
-## 📱 WhatsApp Commerce
+### 🛒 Cart System (Nanostores)
+- **Store**: `cartStore` via Nanostores with localStorage persistence
+- **Components**: `CartDrawer.astro` (React island), `CartItem.astro`, cart badge in Navbar
+- **Flow**: Add to cart → Drawer shows items + subtotal → "Consultar por WhatsApp" or "Ir al Checkout"
+
+### 📱 WhatsApp Commerce / Carrito
 
 El modelo de negocio es WhatsApp-first:
 - Los precios se muestran como botones seleccionables (10g, 20g, 30g)
@@ -99,6 +106,36 @@ El modelo de negocio es WhatsApp-first:
 El proyecto se despliega automáticamente en Vercel al hacer push a `main`.
 
 **Dominio**: `www.octavofuego.com` (propagando via Vercel)
+
+## ⚙️ Admin Panel
+
+Panel de administración protegido con autenticación hardcoded:
+
+- **URL**: `/admin`
+- **Login**: `admin@octavofuego.com` / `octavo2026`
+- **Auth**: Cookie `of_admin_token` con SHA-256, httpOnly, 7 días
+- **Módulos**: Dashboard, Inventario, Órdenes, Clientes, Contabilidad, Configuración
+
+### Estructura Admin
+```
+admin/
+├── index.astro          # Dashboard
+├── login.astro          # Login (fetch-based)
+├── clientes/            # Gestión de clientes
+├── inventario/          # Productos, Stock, Transferencias
+├── ordenes/             # Órdenes de compra
+├── contabilidad/        # Dashboard contable, Transacciones, Informes
+└── configuracion/       # Configuración del panel
+```
+
+### Nota técnica
+Todas las páginas de admin requieren `export const prerender = false` en el frontmatter para que el middleware pueda leer cookies de sesión.
+
+## 📚 Documentación
+
+- [Índice completo de documentación](docs/INDEX.md)
+- [Tareas pendientes](PENDIENTES.md)
+- [Arquitectura del proyecto](../../ARCHITECTURE.md)
 
 ## 📝 Licencia
 
