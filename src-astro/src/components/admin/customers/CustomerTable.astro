@@ -1,0 +1,270 @@
+---
+// CustomerTable.astro — Customers list with search, filter, and actions
+interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: 'CO' | 'BR' | 'EU' | 'US';
+  totalOrders: number;
+  totalSpent: number;
+  currency: string;
+  lastOrder: string;
+  status: 'active' | 'inactive';
+  type: 'retail' | 'wholesale';
+}
+
+const mockCustomers: Customer[] = [
+  {
+    id: '1',
+    name: 'María García',
+    email: 'maria@email.com',
+    phone: '+57 300 123 4567',
+    location: 'CO',
+    totalOrders: 5,
+    totalSpent: 225000,
+    currency: 'COP',
+    lastOrder: '2026-06-16',
+    status: 'active',
+    type: 'retail'
+  },
+  {
+    id: '2',
+    name: 'João Silva',
+    email: 'joao@email.com',
+    phone: '+55 11 98765 4321',
+    location: 'BR',
+    totalOrders: 12,
+    totalSpent: 1068,
+    currency: 'BRL',
+    lastOrder: '2026-06-15',
+    status: 'active',
+    type: 'wholesale'
+  },
+  {
+    id: '3',
+    name: 'Andrés López',
+    email: 'andres@email.com',
+    phone: '+57 310 987 6543',
+    location: 'CO',
+    totalOrders: 3,
+    totalSpent: 360000,
+    currency: 'COP',
+    lastOrder: '2026-06-14',
+    status: 'active',
+    type: 'retail'
+  },
+  {
+    id: '4',
+    name: 'Sarah Johnson',
+    email: 'sarah@email.com',
+    phone: '+1 555 123 4567',
+    location: 'US',
+    totalOrders: 2,
+    totalSpent: 178,
+    currency: 'USD',
+    lastOrder: '2026-06-13',
+    status: 'active',
+    type: 'retail'
+  },
+  {
+    id: '5',
+    name: 'Lucas Fernandes',
+    email: 'lucas@email.com',
+    phone: '+55 21 91234 5678',
+    location: 'BR',
+    totalOrders: 8,
+    totalSpent: 712,
+    currency: 'BRL',
+    lastOrder: '2026-06-12',
+    status: 'active',
+    type: 'wholesale'
+  }
+];
+
+const locationConfig = {
+  CO: { flag: '🇨🇴', label: 'Colombia' },
+  BR: { flag: '🇧🇷', label: 'Brasil' },
+  EU: { flag: '🇪🇺', label: 'Europa' },
+  US: { flag: '🇺🇸', label: 'USA' }
+};
+
+const typeConfig = {
+  retail: { bg: 'bg-info/10', text: 'text-info', label: 'Minorista' },
+  wholesale: { bg: 'bg-tabacco/10', text: 'text-tabacco', label: 'Mayorista' }
+};
+
+function formatPrice(price: number, currency: string): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0
+  }).format(price);
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('es-CO', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+---
+
+<div class="bg-white rounded-2xl shadow-card overflow-hidden">
+  <!-- Header with search and filters -->
+  <div class="p-6 border-b border-papel">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div class="flex-1 max-w-md">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Buscar clientes..."
+            class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+          />
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <select class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+          <option value="">Todas las ubicaciones</option>
+          <option value="CO">Colombia</option>
+          <option value="BR">Brasil</option>
+          <option value="EU">Europa</option>
+          <option value="US">USA</option>
+        </select>
+        
+        <select class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+          <option value="">Todos los tipos</option>
+          <option value="retail">Minorista</option>
+          <option value="wholesale">Mayorista</option>
+        </select>
+        
+        <button class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nuevo Cliente
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Customers table -->
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-papel">
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Cliente</th>
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Contacto</th>
+          <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Ubicación</th>
+          <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Tipo</th>
+          <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Órdenes</th>
+          <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Total Gastado</th>
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Última Orden</th>
+          <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-papel">
+        {mockCustomers.map((customer) => {
+          const location = locationConfig[customer.location];
+          const type = typeConfig[customer.type];
+          
+          return (
+            <tr class="hover:bg-papel/30 transition-colors">
+              <td class="px-6 py-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-tabacco/10 rounded-full flex items-center justify-center">
+                    <span class="text-tabacco font-medium text-sm">
+                      {customer.name.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-humo">{customer.name}</p>
+                    <p class="text-xs text-ceniza">ID: {customer.id}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4">
+                <div>
+                  <p class="text-sm text-humo">{customer.email}</p>
+                  <p class="text-xs text-ceniza">{customer.phone}</p>
+                </div>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span class="text-sm">
+                  {location.flag} {location.label}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span class:list={[
+                  "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium",
+                  type.bg,
+                  type.text
+                ]}>
+                  {type.label}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-center">
+                <span class="text-sm font-medium text-humo">{customer.totalOrders}</span>
+              </td>
+              <td class="px-6 py-4 text-right">
+                <span class="text-sm font-medium text-humo">
+                  {formatPrice(customer.totalSpent, customer.currency)}
+                </span>
+              </td>
+              <td class="px-6 py-4 text-sm text-ceniza">{formatDate(customer.lastOrder)}</td>
+              <td class="px-6 py-4 text-right">
+                <div class="flex items-center justify-end gap-2">
+                  <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors" title="Ver perfil">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                  </button>
+                  <button class="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors" title="Editar">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                    </svg>
+                  </button>
+                  <button class="p-1.5 text-ceniza hover:text-success hover:bg-success/10 rounded-lg transition-colors" title="WhatsApp">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Pagination -->
+  <div class="p-4 border-t border-papel">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-ceniza">Mostrando 1-5 de 156 clientes</p>
+      <div class="flex items-center gap-2">
+        <button class="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors">
+          Anterior
+        </button>
+        <button class="px-3 py-1.5 bg-tabacco text-white rounded-lg text-sm font-medium">
+          1
+        </button>
+        <button class="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors">
+          2
+        </button>
+        <button class="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors">
+          3
+        </button>
+        <button class="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

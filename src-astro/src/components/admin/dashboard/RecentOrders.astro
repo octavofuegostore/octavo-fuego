@@ -1,0 +1,131 @@
+---
+// RecentOrders.astro — Recent orders table for dashboard
+interface Order {
+  id: string;
+  customer: string;
+  product: string;
+  amount: number;
+  currency: string;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  date: string;
+}
+
+const mockOrders: Order[] = [
+  {
+    id: 'OF-2026-001',
+    customer: 'María García',
+    product: 'Cera de Ducha 100g',
+    amount: 45000,
+    currency: 'COP',
+    status: 'pending',
+    date: '2026-06-16'
+  },
+  {
+    id: 'OF-2026-002',
+    customer: 'João Silva',
+    product: 'Sabonete Artesanal 75g',
+    amount: 89,
+    currency: 'BRL',
+    status: 'confirmed',
+    date: '2026-06-15'
+  },
+  {
+    id: 'OF-2026-003',
+    customer: 'Andrés López',
+    product: 'Pack 3 Jabones',
+    amount: 120000,
+    currency: 'COP',
+    status: 'shipped',
+    date: '2026-06-14'
+  },
+  {
+    id: 'OF-2026-004',
+    customer: 'Sarah Johnson',
+    product: 'Candle Collection',
+    amount: 89,
+    currency: 'USD',
+    status: 'delivered',
+    date: '2026-06-13'
+  },
+  {
+    id: 'OF-2026-005',
+    customer: 'Lucas Fernandes',
+    product: 'Cera de Ducha 100g',
+    amount: 89,
+    currency: 'BRL',
+    status: 'pending',
+    date: '2026-06-12'
+  }
+];
+
+const statusColors = {
+  pending: 'bg-warning/10 text-warning',
+  confirmed: 'bg-info/10 text-info',
+  shipped: 'bg-accent/10 text-accent',
+  delivered: 'bg-success/10 text-success',
+  cancelled: 'bg-error/10 text-error'
+};
+
+const statusLabels = {
+  pending: 'Pendiente',
+  confirmed: 'Confirmada',
+  shipped: 'Enviada',
+  delivered: 'Entregada',
+  cancelled: 'Cancelada'
+};
+
+function formatCurrency(amount: number, currency: string): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0
+  }).format(amount);
+}
+---
+
+<div class="bg-white rounded-2xl shadow-card overflow-hidden">
+  <div class="p-6 border-b border-papel">
+    <div class="flex items-center justify-between">
+      <h3 class="font-display text-lg font-bold text-humo">Órdenes Recientes</h3>
+      <a href="/admin/ordenes" class="text-sm text-tabacco hover:text-tabacco/80 font-medium transition-colors">
+        Ver todas →
+      </a>
+    </div>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="w-full">
+      <thead>
+        <tr class="border-b border-papel">
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">ID</th>
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Cliente</th>
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Producto</th>
+          <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Monto</th>
+          <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Estado</th>
+          <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Fecha</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-papel">
+        {mockOrders.map((order) => (
+          <tr class="hover:bg-papel/30 transition-colors">
+            <td class="px-6 py-4 text-sm font-medium text-humo">{order.id}</td>
+            <td class="px-6 py-4 text-sm text-humo">{order.customer}</td>
+            <td class="px-6 py-4 text-sm text-ceniza">{order.product}</td>
+            <td class="px-6 py-4 text-sm font-medium text-humo text-right">
+              {formatCurrency(order.amount, order.currency)}
+            </td>
+            <td class="px-6 py-4 text-center">
+              <span class:list={[
+                "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+                statusColors[order.status]
+              ]}>
+                {statusLabels[order.status]}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-ceniza">{order.date}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

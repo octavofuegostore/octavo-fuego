@@ -1,0 +1,247 @@
+---
+// CustomerDetail.astro — Customer detail view with order history
+interface Props {
+  customerId: string;
+}
+
+const { customerId } = Astro.props;
+
+// Mock customer data
+const customer = {
+  id: '1',
+  name: 'María García',
+  email: 'maria@email.com',
+  phone: '+57 300 123 4567',
+  address: 'Calle 123 #45-67, Bogotá, Colombia',
+  location: 'CO',
+  type: 'retail',
+  status: 'active',
+  totalOrders: 5,
+  totalSpent: 225000,
+  currency: 'COP',
+  averageOrderValue: 45000,
+  firstOrder: '2026-01-15',
+  lastOrder: '2026-06-16',
+  notes: 'Cliente frecuente, prefiere envío rápido',
+  orders: [
+    { id: 'OF-2026-001', date: '2026-06-16', total: 125000, status: 'pending' },
+    { id: 'OF-2026-005', date: '2026-05-20', total: 45000, status: 'delivered' },
+    { id: 'OF-2026-012', date: '2026-04-10', total: 90000, status: 'delivered' },
+    { id: 'OF-2026-018', date: '2026-03-05', total: 35000, status: 'delivered' },
+    { id: 'OF-2026-025', date: '2026-01-15', total: 45000, status: 'delivered' }
+  ]
+};
+
+const statusConfig = {
+  pending: { bg: 'bg-warning/10', text: 'text-warning', label: 'Pendiente' },
+  confirmed: { bg: 'bg-info/10', text: 'text-info', label: 'Confirmada' },
+  shipped: { bg: 'bg-accent/10', text: 'text-accent', label: 'Enviada' },
+  delivered: { bg: 'bg-success/10', text: 'text-success', label: 'Entregada' },
+  cancelled: { bg: 'bg-error/10', text: 'text-error', label: 'Cancelada' }
+};
+
+const locationConfig = {
+  CO: { flag: '🇨🇴', label: 'Colombia' },
+  BR: { flag: '🇧🇷', label: 'Brasil' },
+  EU: { flag: '🇪🇺', label: 'Europa' },
+  US: { flag: '🇺🇸', label: 'USA' }
+};
+
+const typeConfig = {
+  retail: { bg: 'bg-info/10', text: 'text-info', label: 'Minorista' },
+  wholesale: { bg: 'bg-tabacco/10', text: 'text-tabacco', label: 'Mayorista' }
+};
+
+function formatPrice(price: number, currency: string): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0
+  }).format(price);
+}
+
+function formatDate(dateStr: string): string {
+  return new Date(dateStr).toLocaleDateString('es-CO', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <!-- Main Info -->
+  <div class="lg:col-span-2 space-y-6">
+    <!-- Customer Header -->
+    <div class="bg-white rounded-2xl shadow-card p-6">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-tabacco/10 rounded-full flex items-center justify-center">
+            <span class="text-tabacco font-bold text-xl">
+              {customer.name.split(' ').map(n => n[0]).join('')}
+            </span>
+          </div>
+          <div>
+            <h2 class="text-xl font-display font-bold text-humo">{customer.name}</h2>
+            <p class="text-sm text-ceniza">{customer.email}</p>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="text-sm">
+                {locationConfig[customer.location].flag} {locationConfig[customer.location].label}
+              </span>
+              <span class:list={[
+                "inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium",
+                typeConfig[customer.type].bg,
+                typeConfig[customer.type].text
+              ]}>
+                {typeConfig[customer.type].label}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button class="p-2 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+          </button>
+          <button class="p-2 text-ceniza hover:text-success hover:bg-success/10 rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order History -->
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+      <div class="p-6 border-b border-papel">
+        <div class="flex items-center justify-between">
+          <h3 class="font-display text-lg font-bold text-humo">Historial de Órdenes</h3>
+          <span class="text-sm text-ceniza">{customer.totalOrders} órdenes</span>
+        </div>
+      </div>
+      
+      <div class="divide-y divide-papel">
+        {customer.orders.map((order) => {
+          const status = statusConfig[order.status];
+          
+          return (
+            <div class="p-4 hover:bg-papel/30 transition-colors">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-papel rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-medium text-humo">{order.id}</p>
+                    <p class="text-xs text-ceniza">{formatDate(order.date)}</p>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                  <span class:list={[
+                    "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
+                    status.bg,
+                    status.text
+                  ]}>
+                    {status.label}
+                  </span>
+                  <p class="text-sm font-medium text-humo w-24 text-right">
+                    {formatPrice(order.total, customer.currency)}
+                  </p>
+                  <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="space-y-6">
+    <!-- Stats -->
+    <div class="bg-white rounded-2xl shadow-card p-6">
+      <h3 class="font-display text-lg font-bold text-humo mb-4">Estadísticas</h3>
+      
+      <div class="space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ceniza">Total Órdenes</span>
+          <span class="text-sm font-bold text-humo">{customer.totalOrders}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ceniza">Total Gastado</span>
+          <span class="text-sm font-bold text-humo">{formatPrice(customer.totalSpent, customer.currency)}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ceniza">Valor Promedio</span>
+          <span class="text-sm font-bold text-humo">{formatPrice(customer.averageOrderValue, customer.currency)}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ceniza">Primera Orden</span>
+          <span class="text-sm font-medium text-humo">{formatDate(customer.firstOrder)}</span>
+        </div>
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-ceniza">Última Orden</span>
+          <span class="text-sm font-medium text-humo">{formatDate(customer.lastOrder)}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Info -->
+    <div class="bg-white rounded-2xl shadow-card p-6">
+      <h3 class="font-display text-lg font-bold text-humo mb-4">Contacto</h3>
+      
+      <div class="space-y-4">
+        <div>
+          <p class="text-sm text-ceniza">Email</p>
+          <p class="text-sm font-medium text-humo">{customer.email}</p>
+        </div>
+        <div>
+          <p class="text-sm text-ceniza">Teléfono</p>
+          <p class="text-sm font-medium text-humo">{customer.phone}</p>
+        </div>
+        <div>
+          <p class="text-sm text-ceniza">Dirección</p>
+          <p class="text-sm font-medium text-humo">{customer.address}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    {customer.notes && (
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <h3 class="font-display text-lg font-bold text-humo mb-4">Notas</h3>
+        <p class="text-sm text-ceniza">{customer.notes}</p>
+      </div>
+    )}
+
+    <!-- Actions -->
+    <div class="bg-white rounded-2xl shadow-card p-6">
+      <h3 class="font-display text-lg font-bold text-humo mb-4">Acciones</h3>
+      
+      <div class="space-y-3">
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-success text-white rounded-lg text-sm font-medium hover:bg-success/90 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          Enviar WhatsApp
+        </button>
+        <button class="w-full flex items-center justify-center gap-2 px-4 py-2.5 border border-papel text-humo rounded-lg text-sm font-medium hover:bg-papel transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Enviar Email
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

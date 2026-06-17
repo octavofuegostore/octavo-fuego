@@ -1,0 +1,55 @@
+---
+// StatusBadge.astro — Reusable status badge component
+interface Props {
+  status: 'active' | 'inactive' | 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled' | 'low' | 'critical';
+  size?: 'sm' | 'md';
+  label?: string;
+}
+
+const { status, size = 'md', label } = Astro.props;
+
+const statusConfig = {
+  active: { bg: 'bg-success/10', text: 'text-success', dot: 'bg-success' },
+  inactive: { bg: 'bg-ceniza/10', text: 'text-ceniza', dot: 'bg-ceniza' },
+  pending: { bg: 'bg-warning/10', text: 'text-warning', dot: 'bg-warning' },
+  confirmed: { bg: 'bg-info/10', text: 'text-info', dot: 'bg-info' },
+  shipped: { bg: 'bg-accent/10', text: 'text-accent', dot: 'bg-accent' },
+  delivered: { bg: 'bg-success/10', text: 'text-success', dot: 'bg-success' },
+  cancelled: { bg: 'bg-error/10', text: 'text-error', dot: 'bg-error' },
+  low: { bg: 'bg-warning/10', text: 'text-warning', dot: 'bg-warning' },
+  critical: { bg: 'bg-error/10', text: 'text-error', dot: 'bg-error' }
+};
+
+const statusLabels = {
+  active: 'Activo',
+  inactive: 'Inactivo',
+  pending: 'Pendiente',
+  confirmed: 'Confirmada',
+  shipped: 'Enviada',
+  delivered: 'Entregada',
+  cancelled: 'Cancelada',
+  low: 'Stock Bajo',
+  critical: 'Crítico'
+};
+
+const config = statusConfig[status];
+const displayLabel = label || statusLabels[status];
+
+const sizeClasses = {
+  sm: 'px-2 py-0.5 text-xs',
+  md: 'px-2.5 py-0.5 text-sm'
+};
+---
+
+<span class:list={[
+  "inline-flex items-center gap-1.5 rounded-full font-medium",
+  config.bg,
+  config.text,
+  sizeClasses[size]
+]}>
+  <span class:list={[
+    "w-1.5 h-1.5 rounded-full",
+    config.dot
+  ]} />
+  {displayLabel}
+</span>

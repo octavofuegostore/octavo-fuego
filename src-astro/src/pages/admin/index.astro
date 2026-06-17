@@ -1,0 +1,130 @@
+---
+// Dashboard page — Admin Panel home
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import StatsCard from '@/components/admin/dashboard/StatsCard.astro';
+import RecentOrders from '@/components/admin/dashboard/RecentOrders.astro';
+import LowStock from '@/components/admin/dashboard/LowStock.astro';
+---
+
+<AdminLayout title="Dashboard" description="Panel de administración de Octavo Fuego">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-display font-bold text-humo">Dashboard</h1>
+    <p class="text-ceniza mt-1">Resumen de tu negocio</p>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <StatsCard
+      title="Ventas Hoy"
+      value="$485.000"
+      change={12.5}
+      trend="up"
+      icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
+    />
+    
+    <StatsCard
+      title="Órdenes Activas"
+      value="12"
+      change={8.3}
+      trend="up"
+      icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>'
+    />
+    
+    <StatsCard
+      title="Productos"
+      value="24"
+      change={4}
+      trend="up"
+      icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>'
+    />
+    
+    <StatsCard
+      title="Clientes"
+      value="156"
+      change={15}
+      trend="up"
+      icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>'
+    />
+  </div>
+
+  <!-- Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Recent Orders (2 cols) -->
+    <div class="lg:col-span-2">
+      <RecentOrders />
+    </div>
+    
+    <!-- Low Stock (1 col) -->
+    <div>
+      <LowStock />
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="mt-8">
+    <h2 class="text-lg font-display font-bold text-humo mb-4">Acciones Rápidas</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <a
+        href="/admin/inventario"
+        class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
+      >
+        <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
+          <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-medium text-humo">Inventario</p>
+          <p class="text-xs text-ceniza">Gestionar productos</p>
+        </div>
+      </a>
+
+      <a
+        href="/admin/ordenes"
+        class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
+      >
+        <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
+          <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-medium text-humo">Órdenes</p>
+          <p class="text-xs text-ceniza">Ver pedidos</p>
+        </div>
+      </a>
+
+      <a
+        href="/admin/clientes"
+        class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
+      >
+        <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
+          <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-medium text-humo">Clientes</p>
+          <p class="text-xs text-ceniza">Ver clientes</p>
+        </div>
+      </a>
+
+      <a
+        href="/admin/configuracion"
+        class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
+      >
+        <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
+          <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <div>
+          <p class="font-medium text-humo">Configuración</p>
+          <p class="text-xs text-ceniza">Ajustes del sistema</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</AdminLayout>

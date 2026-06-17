@@ -1,0 +1,54 @@
+---
+// Customers page — Customers management
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
+---
+
+<AdminLayout title="Clientes" description="Gestiona tu base de clientes">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Clientes</h1>
+        <p class="text-ceniza mt-1">Gestiona tu base de clientes</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Exportar
+        </button>
+        <button class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nuevo Cliente
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Total Clientes</p>
+      <p class="text-2xl font-bold text-humo font-display">156</p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Activos</p>
+      <p class="text-2xl font-bold text-success font-display">142</p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Mayoristas</p>
+      <p class="text-2xl font-bold text-tabacco font-display">28</p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Nuevos (Mes)</p>
+      <p class="text-2xl font-bold text-info font-display">15</p>
+    </div>
+  </div>
+
+  <!-- Customers Table -->
+  <CustomerTable />
+</AdminLayout>
