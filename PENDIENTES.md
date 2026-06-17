@@ -700,3 +700,30 @@ octavo-fuego/
 - [x] **Detectado directorio fantasma** `ativos/octavo-fuego/` — build artifacts sin `.git` (solo `dist/`, `node_modules/`, `.astro/`). Proyecto real en `activos/octavo-fuego/`
 - [x] **Borrar** `rm -rf /Users/calderonjosue_/clientes/ativos/octavo-fuego/`
 - [x] **PENDIENTES.md auditado** — 2 items tachados (mobile 28/28, precio/g), Top 10 renumerado, 5 secciones actualizadas
+
+---
+
+## 🔍 Code Review — Admin + Infraestructura (Jun 17, 2026)
+
+> Auditoría completa del panel admin (🟡 mock) + infraestructura (🟢 real).
+> 2,512 líneas de admin pages, 537 infra, 130 services. 3 🔴 CRÍTICOS, 5 🟡 WARNINGS, 3 🟢 SUGERENCIAS.
+
+### 🔴 CRÍTICOS
+
+- [ ] **CR-01: CustomerDetail ignora el ID** — `CustomerDetail.astro:10` datos hardcodeados. Ignora `customerId` del parámetro URL. Siempre muestra "María García". No usa `getClienteById()` del service.
+- [ ] **CR-02: OrderDetail ignora el ID** — `OrderDetail.astro:10` datos hardcodeados. Ignora `orderId`. Siempre muestra "OF-2026-001". Botones de estado (`Confirmar`, `Cancelar`, `Marcar como Enviada`) solo muestran toast y redirigen — no modifican datos.
+- [ ] **CR-03: Mock data es de otro negocio** — `service.ts:6-69` contiene "Cera de Ducha", "Sabonete", "Packs Regalo". Nada que ver con rapé/sananga/kuripe. 24 productos mock vs 5 rapés reales en la tienda.
+
+### 🟡 WARNINGS
+
+- [ ] **W-04: Dashboard period selector no actualiza datos** — `admin/index.astro:58-100` los charts se renderizan con datos en `Astro.props` estáticos. El JS del selector cambia la UI (`hidden`/`visible`) pero los datos no se recalculan.
+- [ ] **W-05: Supabase placeholder keys** — `supabase.ts:22-29` si no hay credenciales, solo `console.warn` y crea cliente con placeholder URL/key. Las queries fallan silenciosamente sin alerta clara.
+- [ ] **W-06: Credenciales auth hardcodeadas** — `auth.ts:11-14` email y password en source code. Mover a env vars antes de producción. También `TOKEN_PAYLOAD` hardcodeado en `auth.ts:23`.
+- [ ] **W-07: AdminLayout elementos decorativos** — Search bar (`AdminLayout.astro:286`) sin funcionalidad. Botón "Nuevo" (`:312`) sin click handler. Badge de notificaciones hardcodeado "3" (`:306`).
+- [ ] **W-08: Iniciales de usuario hardcodeadas** — `AdminLayout.astro:251` "JD" para Josue Calderon. Debería venir del usuario autenticado.
+
+### 🟢 SUGERENCIAS
+
+- [ ] **S-09: Sidebar usa SVG inline en vez de astro-icon** — `AdminLayout.astro` usa `<svg>` inline en toda la navegación. La tienda pública usa `astro-icon` + Solar Bold. Inconsistente.
+- [ ] **S-10: Tipo Producto incluye categorías ajenas** — `types/admin.ts:34` incluye categorías "Cera de Ducha/Sabonete" del mock data viejo. Los tipos deberían reflejar el catálogo real de rapé/sananga/kuripe.
+- [ ] **S-11: Tipo Cliente incluye regiones no operadas** — `types/admin.ts:8` incluye 'EU' y 'US'. El negocio solo opera en Colombia (CO) y Brasil (BR).
