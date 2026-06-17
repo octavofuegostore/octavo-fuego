@@ -25,6 +25,8 @@ import {
   customerTypeFilter,
   customerCurrentPage,
 } from "@/stores/adminStore";
+import { getPageNumbers } from "@/lib/admin/usePagination";
+import { formatPrice, formatDate } from "@/lib/admin/formatters";
 
 export interface Customer {
   id: string;
@@ -56,33 +58,6 @@ const typeConfig = {
   retail: { bg: "bg-info/10", text: "text-info", label: "Minorista" },
   wholesale: { bg: "bg-tabacco/10", text: "text-tabacco", label: "Mayorista" },
 };
-
-function formatPrice(price: number, currency: string): string {
-  if (currency === "BRL") {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(price);
-  } else if (currency === "USD") {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  }
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(price);
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("es-CO", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
 
 interface CustomerTableClientProps {
   customers: Customer[];
@@ -165,42 +140,6 @@ export default function CustomerTableClient({
     if (page >= 1 && page <= totalPages) {
       customerCurrentPage.set(page);
     }
-  };
-
-  // Get page numbers to display
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    const maxVisible = 5;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if ($customerCurrentPage <= 3) {
-        for (let i = 1; i <= 4; i++) {
-          pages.push(i);
-        }
-        pages.push("...");
-        pages.push(totalPages);
-      } else if ($customerCurrentPage >= totalPages - 2) {
-        pages.push(1);
-        pages.push("...");
-        for (let i = totalPages - 3; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        pages.push(1);
-        pages.push("...");
-        pages.push($customerCurrentPage - 1);
-        pages.push($customerCurrentPage);
-        pages.push($customerCurrentPage + 1);
-        pages.push("...");
-        pages.push(totalPages);
-      }
-    }
-
-    return pages;
   };
 
   return (
@@ -378,7 +317,7 @@ export default function CustomerTableClient({
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              {getPageNumbers().map((page, index) =>
+              {getPageNumbers($customerCurrentPage, totalPages).map((page, index) =>
                 typeof page === "number" ? (
                   <button
                     key={`page-${page}`}

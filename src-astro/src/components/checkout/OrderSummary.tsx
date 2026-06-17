@@ -19,10 +19,10 @@ export function OrderSummary() {
             {items.slice(0, 3).map((item) => (
               <div key={item.variantId} class="flex gap-3">
                 <div class="w-16 h-16 bg-humo/50 flex-shrink-0">
-                  <img src={item.imagen} alt={item.nombre} class="w-full h-full object-cover" />
-                </div>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium truncate">{item.nombre}</p>
+                   <img src={item.imagen} alt={item.nombre.es} class="w-full h-full object-cover" />
+                 </div>
+                 <div class="flex-1 min-w-0">
+                   <p class="text-sm font-medium truncate">{item.nombre.es}</p>
                   <p class="text-xs text-ceniza">{item.cantidad} × {formatCOP(item.precio)}</p>
                 </div>
               </div>

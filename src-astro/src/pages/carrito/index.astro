@@ -104,7 +104,7 @@ const t = useTranslations('es');
       <div class="flex flex-col sm:flex-row gap-6 p-6 bg-humo/20 border border-humo/30" data-variant-id="${item.variantId}">
         <!-- Image -->
         <div class="w-20 sm:w-32 h-32 bg-humo/50 flex-shrink-0">
-          <img src="${item.imagen}" alt="${item.nombre}" class="w-full h-full object-cover" />
+          <img src="${item.imagen}" alt="${item.nombre.es}" class="w-full h-full object-cover" />
         </div>
 
         <!-- Details -->
@@ -112,7 +112,7 @@ const t = useTranslations('es');
           <div class="flex justify-between items-start gap-4">
             <div>
               <p class="text-ceniza text-xs uppercase tracking-widest mb-1">${item.etnia}</p>
-              <h3 class="font-display text-lg font-semibold mb-2">${item.nombre}</h3>
+              <h3 class="font-display text-lg font-semibold mb-2">${item.nombre.es}</h3>
               <p class="text-tabacco font-semibold">${formatCOP(item.precio)}</p>
             </div>
             <button onclick="removeItem('${item.variantId}')" class="text-ceniza hover:text-error transition-colors p-2 min-w-[44px] min-h-[44px]" aria-label="Eliminar producto">

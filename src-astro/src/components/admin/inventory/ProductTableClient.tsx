@@ -19,6 +19,8 @@ import {
   productStatusFilter,
   productCurrentPage,
 } from "@/stores/adminStore";
+import { getPageNumbers } from "@/lib/admin/usePagination";
+import { formatPrice } from "@/lib/admin/formatters";
 
 export interface Product {
   id: string;
@@ -40,25 +42,6 @@ const statusConfig = {
   inactive: { bg: "bg-ceniza/10", text: "text-ceniza", label: "Inactivo" },
   out_of_stock: { bg: "bg-error/10", text: "text-error", label: "Agotado" },
 };
-
-function formatPrice(price: number, currency: string): string {
-  if (currency === "BRL") {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(price);
-  } else if (currency === "USD") {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-    }).format(price);
-  }
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(price);
-}
 
 function getStockBadge(stock: number): { bg: string; text: string; label: string } {
   if (stock === 0) {
@@ -142,42 +125,6 @@ export default function ProductTableClient({ products }: ProductTableClientProps
     if (page >= 1 && page <= totalPages) {
       productCurrentPage.set(page);
     }
-  };
-
-  // Get page numbers to display
-  const getPageNumbers = () => {
-    const pages: (number | string)[] = [];
-    const maxVisible = 5;
-
-    if (totalPages <= maxVisible) {
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      if ($productCurrentPage <= 3) {
-        for (let i = 1; i <= 4; i++) {
-          pages.push(i);
-        }
-        pages.push("...");
-        pages.push(totalPages);
-      } else if ($productCurrentPage >= totalPages - 2) {
-        pages.push(1);
-        pages.push("...");
-        for (let i = totalPages - 3; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        pages.push(1);
-        pages.push("...");
-        pages.push($productCurrentPage - 1);
-        pages.push($productCurrentPage);
-        pages.push($productCurrentPage + 1);
-        pages.push("...");
-        pages.push(totalPages);
-      }
-    }
-
-    return pages;
   };
 
   return (
@@ -356,7 +303,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 <ChevronLeft className="w-4 h-4" />
               </button>
 
-              {getPageNumbers().map((page, index) =>
+              {getPageNumbers($productCurrentPage, totalPages).map((page, index) =>
                 typeof page === "number" ? (
                   <button
                     key={`page-${page}`}

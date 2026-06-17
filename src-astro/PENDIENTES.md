@@ -61,7 +61,7 @@
 ## ✅ COMPLETADO: Admin UI Wiring — admin-ui-complete (17 Junio 2026)
 
 > **Engram**: `sdd/admin-ui-complete/*` (#610, #611, #613)
-> **Status**: ⏳ Apply done (39/39 tasks), verify pendiente para mañana
+> **Status**: ✅ Complete (39/39 tasks, build 0 errors)
 
 - [x] `contabilidad/index.astro` — mes/año selectors + CSV export wired
 - [x] `contabilidad/transacciones.astro` — filters, pagination, CRUD modal (rewrite)
@@ -78,14 +78,20 @@
 
 > **Engram**: `sdd/admin-foundation-phase-0/proposal` (#617)
 
-- [ ] Unificar `.atl/` — consolidar en raíz del repo (hoy hay 2 directorios separados)
+- [x] Unificar `.atl/` — consolidar en raíz del repo (hoy hay 2 directorios separados) ✅ (Jun 17, 2026)
 - [ ] Crear `src/types/admin.ts` — interfaces: Cliente, Orden, Producto, Transaccion, KPI
 - [ ] Crear `src/lib/admin/service.ts` — service layer con funciones tipadas (mock today, Supabase tomorrow)
 - [ ] Refactor 9 páginas admin: `await service.getX()` en vez de arrays inline
 
-### ⚛️ React Islands Migration (Fase 2 de 4 — SDD Proposal pendiente)
+### ⚛️ React Islands Migration (Fase 2 de 4 — Slice 1-3 completados ✅)
 
-- [ ] Tablas CRUD → React islands (search/filtro/paginación con estado)
+> **Engram**: `sdd/react-islands/*`, `sdd/react-islands-slice-3/*`
+
+- [x] **Slice 1**: OrderTable React island (search + 3 filtros + paginación)
+- [x] **Slice 2**: CustomerTable React island (search + location/type filters)
+- [x] **Slice 3**: ProductTable React island (search + category/status + stock badges)
+- [ ] **Slice 4**: contabilidad/informes.astro → React island
+- [ ] **Slice 5**: contabilidad/transacciones.astro → React island  
 - [ ] Forms create/edit → React islands (validación con Zod)
 - [ ] ConfirmDialog delete → React island
 - [ ] Date selectors → React island
@@ -121,8 +127,8 @@
 
 ### 💰 Contabilidad Backend (Fase 4 de 4)
 
-> **Plan de referencia**: [contabilidad-integration-plan.md](.atl/proposals/contabilidad-integration-plan.md)
-> **Plan corto**: [contabilidad-integration.md](.atl/proposals/contabilidad-integration.md)
+> **Plan de referencia**: [contabilidad-integration-plan.md](../.atl/proposals/contabilidad-integration-plan.md)
+> **Plan corto**: [contabilidad-integration.md](../.atl/proposals/contabilidad-integration.md)
 
 **Fase 2: Supabase Integration**
 - [ ] Crear tabla `cont_transaccion` en Supabase (migración SQL)
@@ -165,10 +171,16 @@
 | Admin UI tasks (39 tasks) | `sdd/admin-ui-complete/tasks` (#613) |
 | Foundation Phase 0 proposal | `sdd/admin-foundation-phase-0/proposal` (#617) |
 | Foundation checkpoint (mañana) | `sdd/admin-ui-complete/verify-checkpoint` (#618) |
+| React Islands explore | `sdd/react-islands/explore` (#619) |
+| React Islands proposal | `sdd/react-islands/proposal` (#620) |
+| React Islands spec | `sdd/react-islands/spec` (#621) |
+| React Islands tasks | `sdd/react-islands/tasks` |
+| React Islands apply | `sdd/react-islands/apply-progress` |
+| React Islands verify | `sdd/react-islands/verify-report` |
 | Doc restructure (bifurcation) | `sdd/doc-restructure/proposal` (#602) |
-| L-Medusa Architecture | `.atl/l-medusa-architecture.md` |
-| L-Medusa Specs | `.atl/specs/l-medusa-complete-specs.md` |
-| L-Medusa Design | `.atl/design/l-medusa-complete-design.md` |
+| L-Medusa Architecture | `../.atl/l-medusa-architecture.md` |
+| L-Medusa Specs | `../.atl/specs/l-medusa-complete-specs.md` |
+| L-Medusa Design | `../.atl/design/l-medusa-complete-design.md` |
 | Prerender fix discovery | `bugfix/login-redirect-loop` (3 root causes) |
 
 ---

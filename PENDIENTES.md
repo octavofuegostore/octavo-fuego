@@ -308,7 +308,7 @@ Password: octavo2026
 - [ ] Newsletter signup funcional
 
 ### Blog — Estrategia "Consejos o Pajé" 📹
-> Fuente: [`.atl/estrategia-contenido-consejos-o-paje.md`](src-astro/.atl/estrategia-contenido-consejos-o-paje.md)
+> Fuente: [`.atl/estrategia-contenido-consejos-o-paje.md`](.atl/estrategia-contenido-consejos-o-paje.md)
 
 - [ ] **Crear sección "Consejos o Pajé"** — blog de curaduría de videos de YouTube (chamanes, taitas, antropólogos)
 - [ ] **Template de entrada:** video embebido (EMBED, no descarga) + resumen editorial (NO transcripción) + H2/H3 + blockquote + CTA sutil al catálogo
@@ -331,7 +331,7 @@ Password: octavo2026
 - [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4 + métricas de negocio)
 
 ### SEO — Gaps vs Arquitectura SEO Transnacional 🔴
-> Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](src-astro/.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
+> Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
 
 #### 🔴 Alto Impacto (Semana 1-3)
 - [ ] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs

@@ -56,7 +56,7 @@ src-astro/
 │   │   └── global.css          # Design tokens (CSS custom properties)
 │   └── i18n/                   # es.json, en.json, pt.json
 ├── public/images/
-├── .atl/proposals/             # SDD proposals
+├── ../.atl/proposals/           # SDD proposals (moved to repo root)
 ├── openspec/changes/           # SDD artifacts (optional)
 └── package.json
 ```
@@ -179,11 +179,11 @@ In `output: 'hybrid'` mode with Vite dev server, prerendered pages have `request
 | Project Overview | `../../PROYECTO.md` | Identidad, roadmap, modelo de negocio |
 | Architecture | `../../ARCHITECTURE.md` | Manifiesto técnico, 3 fases, monorepo |
 | Full Index | `docs/INDEX.md` | Mapa de los 25 documentos principales |
-| L-Medusa Architecture | `.atl/l-medusa-architecture.md` | Backend Supabase-First |
-| L-Medusa Specs | `.atl/specs/l-medusa-complete-specs.md` | Requirements formales |
-| SEO Strategy | `.atl/arquitectura-seo-transnacional.md` | 3 mercados, keywords |
-| Contabilidad Plan | `.atl/proposals/contabilidad-integration-plan.md` | Integración contable |
-| Session Jun 16 | `.atl/sesion-completa-junio-16-2026.md` | Decisiones consolidadas |
+| L-Medusa Architecture | `../.atl/l-medusa-architecture.md` | Backend Supabase-First |
+| L-Medusa Specs | `../.atl/specs/l-medusa-complete-specs.md` | Requirements formales |
+| SEO Strategy | `../.atl/arquitectura-seo-transnacional.md` | 3 mercados, keywords |
+| Contabilidad Plan | `../.atl/proposals/contabilidad-integration-plan.md` | Integración contable |
+| Session Jun 16 | `../.atl/sesion-completa-junio-16-2026.md` | Decisiones consolidadas |
 | SDD Artifacts | `openspec/changes/` | Cambios implementados/verificados |
 
 ## Commands
@@ -215,6 +215,6 @@ npm run build     # Verify build passes (zero errors)
 | Topic | Key |
 |-------|-----|
 | Admin auth system | `sdd/admin-auth-system/*` |
-| Contabilidad integration plan | `.atl/proposals/contabilidad-integration-plan.md` |
+| Contabilidad integration plan | `../.atl/proposals/contabilidad-integration-plan.md` |
 | Contabilidad UI module | `sdd/contabilidad-ui-module/*` |
 | Login redirect loop fix | `bugfix/login-redirect-loop` |
