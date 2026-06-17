@@ -1,0 +1,33 @@
+---
+// Skeleton.astro — Loading skeleton with animate-pulse
+interface Props {
+  variant?: 'text' | 'circular' | 'rectangular';
+  width?: string;
+  height?: string;
+  class?: string;
+}
+
+const { variant = 'text', width, height, class: className = '' } = Astro.props;
+
+const baseClasses = 'animate-pulse bg-papel/70';
+
+const variantClasses = {
+  text: 'rounded',
+  circular: 'rounded-full',
+  rectangular: 'rounded-lg'
+};
+
+const defaultDimensions = {
+  text: { width: 'w-full', height: 'h-4' },
+  circular: { width: 'w-10', height: 'h-10' },
+  rectangular: { width: 'w-full', height: 'h-20' }
+};
+
+const dim = defaultDimensions[variant];
+const finalWidth = width || dim.width;
+const finalHeight = height || dim.height;
+---
+
+<div
+  class:list={[baseClasses, variantClasses[variant], finalWidth, finalHeight, className]}
+></div>

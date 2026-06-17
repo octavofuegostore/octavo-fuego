@@ -1,0 +1,26 @@
+---
+// CustomerTable.astro — Customers list (React island wrapper)
+import CustomerTableClient from './CustomerTableClient';
+
+interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  location: 'CO' | 'BR' | 'EU' | 'US';
+  totalOrders: number;
+  totalSpent: number;
+  currency: string;
+  lastOrder: string;
+  status: 'active' | 'inactive';
+  type: 'retail' | 'wholesale';
+}
+
+interface Props {
+  customers: Customer[];
+}
+
+const { customers } = Astro.props;
+---
+
+<CustomerTableClient client:load customers={customers} />

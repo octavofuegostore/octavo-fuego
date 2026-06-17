@@ -1,0 +1,45 @@
+---
+interface Props {
+  title: string;
+  value: string | number;
+  change?: number;
+  icon: string;
+  trend?: 'up' | 'down' | 'neutral';
+}
+
+const { title, value, change, icon, trend = 'neutral' } = Astro.props;
+
+const trendColors = {
+  up: 'text-success',
+  down: 'text-error',
+  neutral: 'text-ceniza'
+};
+
+const trendIcons = {
+  up: '↑',
+  down: '↓',
+  neutral: '→'
+};
+---
+
+<div class="bg-white rounded-2xl p-6 shadow-card hover:shadow-hover transition-shadow duration-300">
+  <div class="flex items-center justify-between">
+    <div class="flex-1">
+      <p class="text-sm text-ceniza font-medium">{title}</p>
+      <p class="text-2xl font-bold text-humo mt-1 font-display">{value}</p>
+      {change !== undefined && (
+        <p class:list={[
+          "text-sm mt-2 flex items-center gap-1",
+          trendColors[trend]
+        ]}>
+          <span>{trendIcons[trend]}</span>
+          <span>{Math.abs(change)}%</span>
+          <span class="text-ceniza">vs mes anterior</span>
+        </p>
+      )}
+    </div>
+    <div class="w-12 h-12 bg-tabacco/10 rounded-xl flex items-center justify-center flex-shrink-0">
+      <Fragment set:html={icon} />
+    </div>
+  </div>
+</div>

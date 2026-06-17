@@ -101,10 +101,15 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
       const qty = parseInt(document.getElementById(`qty-${slug}`)?.textContent || '1');
       const qtyInput = document.querySelector(`[data-qty-input="${slug}"]`);
       
+      const productNameEs = document.querySelector(`[data-product-name="${slug}"]`)?.textContent || '';
       const productData = {
         id: slug,
         variantId: `${slug}-default`,
-        nombre: document.querySelector(`[data-product-name="${slug}"]`)?.textContent || '',
+        nombre: {
+          es: productNameEs,
+          en: productNameEs,
+          pt: productNameEs,
+        },
         etnia: document.querySelector(`[data-product-etnia="${slug}"]`)?.textContent || '',
         precio: parseInt(document.querySelector(`[data-product-price="${slug}"]`)?.textContent?.replace(/\D/g, '') || '0'),
         cantidad: qty,

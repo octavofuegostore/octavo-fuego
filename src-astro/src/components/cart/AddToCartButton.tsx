@@ -30,9 +30,11 @@ export function AddToCartButton({ product, quantity = 1, className }: AddToCartB
     const cartItem: CartItem = {
       id: product.id,
       variantId: product.variantId,
-      nombre: product.nombre,
-      nombreEn: product.nombreEn || product.nombre,
-      nombrePt: product.nombrePt || product.nombre,
+      nombre: {
+        es: product.nombre,
+        en: product.nombreEn || product.nombre,
+        pt: product.nombrePt || product.nombre,
+      },
       etnia: product.etnia,
       tipo: product.tipo,
       precio: product.precio,

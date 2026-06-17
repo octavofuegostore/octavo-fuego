@@ -1,0 +1,388 @@
+---
+import '../styles/global.css';
+import ToasterClient from '@/components/admin/ToasterClient';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Panel de administración de Octavo Fuego' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Admin Octavo Fuego</title>
+    {description && <meta name="description" content={description} />}
+  </head>
+  <body class="bg-papel min-h-screen">
+    <div class="flex h-screen overflow-hidden">
+      <!-- Sidebar -->
+      <aside
+        id="admin-sidebar"
+        class="w-64 bg-humo text-papel flex flex-col transition-all duration-300 lg:translate-x-0 -translate-x-full fixed lg:static inset-y-0 left-0 z-50"
+      >
+        <!-- Logo -->
+        <div class="p-4 border-b border-humo/50">
+          <a href="/admin" class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-tabacco rounded-lg flex items-center justify-center">
+              <span class="text-white font-display font-bold text-lg">OF</span>
+            </div>
+            <div>
+              <span class="font-display text-lg font-bold block leading-tight">Octavo Fuego</span>
+              <span class="text-xs text-ceniza">Admin Panel</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="flex-1 p-4 overflow-y-auto">
+          <ul class="space-y-1">
+            <!-- Dashboard -->
+            <li>
+              <a
+                href="/admin"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath === "/admin"
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                </svg>
+                <span class="font-medium">Dashboard</span>
+              </a>
+            </li>
+
+            <!-- Inventario -->
+            <li>
+              <button
+                id="inventario-toggle"
+                class:list={[
+                  "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/inventario")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                  </svg>
+                  <span class="font-medium">Inventario</span>
+                </div>
+                <svg class="w-4 h-4 transition-transform duration-200 inventario-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <ul id="inventario-submenu" class:list={[
+                "mt-1 ml-8 space-y-1 overflow-hidden transition-all duration-200",
+                currentPath.startsWith("/admin/inventario") ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+              ]}>
+                <li>
+                  <a
+                    href="/admin/inventario"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/inventario"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >
+                    Productos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/inventario/stock"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/inventario/stock"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >
+                    Stock
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/inventario/transferencias"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/inventario/transferencias"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >
+                    Transferencias
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Órdenes -->
+            <li>
+              <a
+                href="/admin/ordenes"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/ordenes")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                <span class="font-medium">Órdenes</span>
+              </a>
+            </li>
+
+            <!-- Clientes -->
+            <li>
+              <a
+                href="/admin/clientes"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/clientes")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="font-medium">Clientes</span>
+              </a>
+            </li>
+
+            <!-- Contabilidad -->
+            <li>
+              <button
+                id="contabilidad-toggle"
+                class:list={[
+                  "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/contabilidad")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                  </svg>
+                  <span class="font-medium">Contabilidad</span>
+                </div>
+                <svg class="w-4 h-4 transition-transform duration-200 contabilidad-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <ul id="contabilidad-submenu" class:list={[
+                "mt-1 ml-8 space-y-1 overflow-hidden transition-all duration-200",
+                currentPath.startsWith("/admin/contabilidad") ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+              ]}>
+                <li>
+                  <a
+                    href="/admin/contabilidad"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Dashboard</a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/contabilidad/transacciones"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad/transacciones"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Transacciones</a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/contabilidad/informes"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad/informes"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Informes</a>
+                </li>
+              </ul>
+            </li>
+
+            <!-- Configuración -->
+            <li>
+              <a
+                href="/admin/configuracion"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath === "/admin/configuracion"
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span class="font-medium">Configuración</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- User section -->
+        <div class="p-4 border-t border-humo/50">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 bg-tabacco/20 rounded-full flex items-center justify-center">
+              <span class="text-tabacco font-medium text-sm">JD</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium text-papel truncate">Josue Calderon</p>
+              <p class="text-xs text-ceniza truncate">Admin</p>
+            </div>
+            <a
+              href="/api/auth/logout"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg text-papel/70 hover:text-papel hover:bg-humo/80 transition-colors"
+              title="Cerrar sesión"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span class="text-sm font-medium">Cerrar Sesión</span>
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col min-w-0">
+        <!-- Header -->
+        <header class="h-16 bg-white border-b border-papel flex items-center justify-between px-6 sticky top-0 z-40">
+          <!-- Mobile menu button -->
+          <button
+            id="mobile-menu-toggle"
+            class="lg:hidden text-humo hover:text-tabacco transition-colors"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Search -->
+          <div class="flex-1 max-w-md mx-4">
+            <div class="relative">
+              <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                placeholder="Buscar productos, órdenes, clientes..."
+                class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+              />
+            </div>
+          </div>
+
+          <!-- Right section -->
+          <div class="flex items-center gap-4">
+            <!-- Notifications -->
+            <button class="relative text-humo hover:text-tabacco transition-colors">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span class="absolute -top-1 -right-1 w-4 h-4 bg-tabacco text-white text-xs rounded-full flex items-center justify-center">
+                3
+              </span>
+            </button>
+
+            <!-- Quick actions -->
+            <button class="flex items-center gap-2 px-3 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+              </svg>
+              Nuevo
+            </button>
+          </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="flex-1 overflow-y-auto p-6">
+          <slot />
+        </main>
+      </div>
+    </div>
+
+    <!-- Mobile sidebar overlay -->
+    <div
+      id="sidebar-overlay"
+      class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
+    ></div>
+
+    <!-- Sonner Toaster -->
+    <ToasterClient client:load />
+
+    <script>
+      // Mobile menu toggle
+      const mobileToggle = document.getElementById('mobile-menu-toggle');
+      const sidebar = document.getElementById('admin-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      mobileToggle?.addEventListener('click', () => {
+        sidebar?.classList.toggle('-translate-x-full');
+        overlay?.classList.toggle('hidden');
+      });
+
+      overlay?.addEventListener('click', () => {
+        sidebar?.classList.add('-translate-x-full');
+        overlay?.classList.add('hidden');
+      });
+
+      // Inventario submenu toggle
+      const inventarioToggle = document.getElementById('inventario-toggle');
+      const inventarioSubmenu = document.getElementById('inventario-submenu');
+      const inventarioArrow = document.querySelector('.inventario-arrow');
+
+      inventarioToggle?.addEventListener('click', () => {
+        inventarioSubmenu?.classList.toggle('max-h-0');
+        inventarioSubmenu?.classList.toggle('max-h-40');
+        inventarioSubmenu?.classList.toggle('opacity-0');
+        inventarioSubmenu?.classList.toggle('opacity-100');
+        inventarioArrow?.classList.toggle('rotate-180');
+      });
+
+      // Contabilidad submenu toggle
+      const contabilidadToggle = document.getElementById('contabilidad-toggle');
+      const contabilidadSubmenu = document.getElementById('contabilidad-submenu');
+      const contabilidadArrow = document.querySelector('.contabilidad-arrow');
+
+      contabilidadToggle?.addEventListener('click', () => {
+        contabilidadSubmenu?.classList.toggle('max-h-0');
+        contabilidadSubmenu?.classList.toggle('max-h-40');
+        contabilidadSubmenu?.classList.toggle('opacity-0');
+        contabilidadSubmenu?.classList.toggle('opacity-100');
+        contabilidadArrow?.classList.toggle('rotate-180');
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          sidebar?.classList.add('-translate-x-full');
+          overlay?.classList.add('hidden');
+        }
+      });
+    </script>
+  </body>
+</html>

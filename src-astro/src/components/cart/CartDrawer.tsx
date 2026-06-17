@@ -108,14 +108,14 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
       <div className="w-20 h-20 bg-humo/50 flex-shrink-0">
         <img
           src={item.imagen}
-          alt={item.nombre}
+          alt={item.nombre.es}
           className="w-full h-full object-cover"
         />
       </div>
 
       {/* Details */}
       <div className="flex-1 min-w-0">
-        <h3 className="font-medium text-sm truncate">{item.nombre}</h3>
+        <h3 className="font-medium text-sm truncate">{item.nombre.es}</h3>
         <p className="text-ceniza text-xs">{item.etnia}</p>
         <p className="text-tabacco text-sm font-semibold mt-1">
           {formatCOP(item.precio)}

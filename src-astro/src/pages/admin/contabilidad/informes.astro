@@ -1,0 +1,366 @@
+---
+export const prerender = false;
+// Informes page — Reportes financieros con tabs mensual/anual y JS wiring
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import {
+  MOCK_KPIS,
+  MOCK_GRAFICA_MENSUAL,
+  MOCK_EVOLUCION_ANUAL,
+  MOCK_TRANSACCIONES,
+  formatCOP,
+} from '@/lib/admin/contabilidad/mock';
+import type { BarChartData, LineChartData, Transaccion } from '@/lib/admin/contabilidad/mock';
+
+const mensualKpis = {
+  ingresos: MOCK_KPIS.ingresosMes,
+  egresos: MOCK_KPIS.egresosMes,
+  balance: MOCK_KPIS.balance,
+};
+
+const anualKpis = {
+  ingresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.ingreso, 0),
+  egresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.egreso, 0),
+  balance: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + (m.ingreso - m.egreso), 0),
+};
+
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const ingresosIcon = 'M7 11l5-5m0 0l5 5m-5-5v12';
+const egresosIcon = 'M7 13l5 5m0 0l5-5m-5 5V6';
+const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z';
+---
+
+<AdminLayout title="Informes" description="Reportes y análisis financiero">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Informes</h1>
+        <p class="text-ceniza mt-1">Reportes y análisis financiero</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab Buttons -->
+  <div class="flex gap-2 mb-6">
+    <button id="tab-mensual-btn" data-tab="mensual" class="px-6 py-2.5 rounded-lg text-sm font-medium transition-colors bg-tabacco text-white">
+      Mensual
+    </button>
+    <button id="tab-anual-btn" data-tab="anual" class="px-6 py-2.5 rounded-lg text-sm font-medium transition-colors bg-white text-humo border border-papel hover:bg-papel">
+      Anual
+    </button>
+  </div>
+
+  <!-- Mensual Tab -->
+  <div id="tab-mensual-content">
+    <!-- Date Range Selectors + Generate Button (tasks 9.1 and 9.2) -->
+    <div class="bg-white rounded-2xl shadow-card p-6 mb-6">
+      <div class="flex flex-col sm:flex-row sm:items-end gap-4">
+        <div class="flex items-end gap-3">
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Mes</label>
+            <select id="mes-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+              {meses.map((m, i) => <option value={i} selected={i === 5}>{m}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Año</label>
+            <select id="year-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026" selected>2026</option>
+            </select>
+          </div>
+        </div>
+        <button id="generar-informe-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Generar Informe
+        </button>
+        <div class="flex items-center gap-2 sm:ml-auto">
+          <!-- Export buttons (task 9.3) -->
+          <button id="export-mensual-pdf-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Exportar PDF
+          </button>
+          <button id="export-mensual-csv-btn" class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            Exportar CSV
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8" id="mensual-kpis">
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Total Ingresos</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-ingresos">{formatCOP(mensualKpis.ingresos)}</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13l5 5m0 0l5-5m-5 5V6" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Total Egresos</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-egresos">{formatCOP(mensualKpis.egresos)}</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Balance del Mes</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-balance">{formatCOP(mensualKpis.balance)}</p>
+      </div>
+    </div>
+
+    <!-- Transactions table -->
+    <div class="bg-white rounded-2xl shadow-card overflow-hidden mb-6">
+      <div class="p-6 border-b border-papel">
+        <h3 class="font-display text-lg font-bold text-humo">Transacciones del Mes</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-papel">
+              <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase">Fecha</th>
+              <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase">Descripción</th>
+              <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase">Categoría</th>
+              <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase">Tipo</th>
+              <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase">Monto</th>
+            </tr>
+          </thead>
+          <tbody id="mensual-transactions-tbody" class="divide-y divide-papel"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anual Tab -->
+  <div id="tab-anual-content" class="hidden">
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Total Ingresos</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.ingresos)}</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-error/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 13l5 5m0 0l5-5m-5 5V6" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Total Egresos</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.egresos)}</p>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-info" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+          </div>
+          <span class="text-sm text-ceniza">Balance del Año</span>
+        </div>
+        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.balance)}</p>
+      </div>
+    </div>
+
+    <!-- Export buttons -->
+    <div class="flex gap-3 mb-6">
+      <button id="export-anual-pdf-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Exportar PDF
+      </button>
+      <button id="export-anual-csv-btn" class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+        </svg>
+        Exportar CSV
+      </button>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  // Mock data keyed by month
+  const MOCK_DATA: Record<string, { ingresos: number; egresos: number; balance: number; transactions: Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }> }> = {
+    '0': { ingresos: 3800000, egresos: 2100000, balance: 1700000, transactions: [{ fecha: '2026-01-15', descripcion: 'Venta Tisunú - Inicio año', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 90000 }] },
+    '1': { ingresos: 4200000, egresos: 2500000, balance: 1700000, transactions: [{ fecha: '2026-02-10', descripcion: 'Venta Pixuri', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 110000 }] },
+    '2': { ingresos: 3900000, egresos: 2300000, balance: 1600000, transactions: [{ fecha: '2026-03-05', descripcion: 'Venta Kuripe', categoria: 'Venta Kuripe/Tepi', tipo: 'Ingreso', monto: 130000 }] },
+    '3': { ingresos: 5100000, egresos: 2700000, balance: 2400000, transactions: [{ fecha: '2026-04-20', descripcion: 'Venta B2B Bogotá', categoria: 'Distribución B2B', tipo: 'Ingreso', monto: 600000 }] },
+    '4': { ingresos: 4800000, egresos: 2900000, balance: 1900000, transactions: [{ fecha: '2026-05-15', descripcion: 'Venta Sananga', categoria: 'Venta Sananga', tipo: 'Ingreso', monto: 85000 }] },
+    '5': { ingresos: 4500000, egresos: 2800000, balance: 1700000, transactions: [{ fecha: '2026-06-15', descripcion: 'Venta Tisunú 20g', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 70000 }] },
+  };
+
+  function formatCOP(amount: number): string {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+  }
+
+  function formatDate(dateStr: string): string {
+    return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  // Tab switching
+  const mensualContent = document.getElementById('tab-mensual-content');
+  const anualContent = document.getElementById('tab-anual-content');
+  const mensualBtn = document.getElementById('tab-mensual-btn');
+  const anualBtn = document.getElementById('tab-anual-btn');
+
+  function switchTab(tab: string) {
+    if (tab === 'mensual') {
+      mensualContent?.classList.remove('hidden');
+      anualContent?.classList.add('hidden');
+      mensualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+      mensualBtn?.classList.add('bg-tabacco', 'text-white');
+      anualBtn?.classList.remove('bg-tabacco', 'text-white');
+      anualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+    } else {
+      anualContent?.classList.remove('hidden');
+      mensualContent?.classList.add('hidden');
+      anualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+      anualBtn?.classList.add('bg-tabacco', 'text-white');
+      mensualBtn?.classList.remove('bg-tabacco', 'text-white');
+      mensualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+    }
+  }
+
+  mensualBtn?.addEventListener('click', () => switchTab('mensual'));
+  anualBtn?.addEventListener('click', () => switchTab('anual'));
+
+  // Mensual data loading
+  const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
+  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+
+  function loadMensualData(mes: number, year: number) {
+    const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+
+    const ingresosEl = document.getElementById('kpi-ingresos');
+    const egresosEl = document.getElementById('kpi-egresos');
+    const balanceEl = document.getElementById('kpi-balance');
+    const tbody = document.getElementById('mensual-transactions-tbody');
+
+    if (ingresosEl) ingresosEl.textContent = formatCOP(data.ingresos);
+    if (egresosEl) egresosEl.textContent = formatCOP(data.egresos);
+    if (balanceEl) balanceEl.textContent = formatCOP(data.balance);
+
+    if (tbody) {
+      if (data.transactions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-ceniza">No hay transacciones para este período</td></tr>';
+      } else {
+        tbody.innerHTML = data.transactions.map(t => `
+          <tr class="hover:bg-papel/30 transition-colors">
+            <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
+            <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
+            <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
+            <td class="px-6 py-4 text-center">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
+            </td>
+            <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
+          </tr>
+        `).join('');
+      }
+    }
+  }
+
+  // Wire date range selectors (task 9.1)
+  mesSelect?.addEventListener('change', () => {
+    const mes = parseInt(mesSelect.value, 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    loadMensualData(mes, year);
+  });
+
+  yearSelect?.addEventListener('change', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect.value, 10);
+    loadMensualData(mes, year);
+  });
+
+  // Wire "Generar Informe" button (task 9.2)
+  const generarBtn = document.getElementById('generar-informe-btn');
+  generarBtn?.addEventListener('click', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    loadMensualData(mes, year);
+    toast.success(`Informe de ${meses[mes]} ${year} generado correctamente`);
+  });
+
+  // Wire export buttons (task 9.3)
+  function exportCSV(filename: string, content: string) {
+    const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${content}`);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    toast.success('CSV exportado correctamente');
+  }
+
+  function exportPDF(filename: string) {
+    // Mock PDF export - in production would use a PDF library
+    toast.info(`Generando PDF: ${filename}...`);
+    setTimeout(() => toast.success('PDF exportado correctamente'), 1000);
+  }
+
+  document.getElementById('export-mensual-pdf-btn')?.addEventListener('click', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    exportPDF(`informe_mensual_${meses[mes].toLowerCase()}_${year}.pdf`);
+  });
+
+  document.getElementById('export-mensual-csv-btn')?.addEventListener('click', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+    const header = 'Fecha,Descripción,Categoría,Tipo,Monto';
+    const rows = data.transactions.map(t => `"${t.fecha}","${t.descripcion}","${t.categoria}","${t.tipo}",${t.monto}`).join('\n');
+    exportCSV(`informe_mensual_${meses[mes].toLowerCase()}_${year}.csv`, `${header}\n${rows}`);
+  });
+
+  document.getElementById('export-anual-pdf-btn')?.addEventListener('click', () => {
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    exportPDF(`informe_anual_${year}.pdf`);
+  });
+
+  document.getElementById('export-anual-csv-btn')?.addEventListener('click', () => {
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    exportCSV(`informe_anual_${year}.csv`, 'Mes,Ingresos,Egresos,Balance\n"Enero",3800000,2100000,1700000\n"Febrero",4200000,2500000,1700000');
+  });
+
+  // Initial load
+  loadMensualData(5, 2026);
+</script>

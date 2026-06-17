@@ -1,0 +1,33 @@
+---
+// OrderTable.astro — Orders list wrapper
+import OrderTableClient from './OrderTableClient';
+
+interface Order {
+  id: string;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  items: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
+  total: number;
+  currency: string;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  channel: 'whatsapp' | 'web' | 'manual';
+  location: 'CO-BOGOTA' | 'BR-ACRE';
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Props {
+  orders: Order[];
+}
+
+const { orders } = Astro.props;
+---
+
+<OrderTableClient client:load orders={orders} />

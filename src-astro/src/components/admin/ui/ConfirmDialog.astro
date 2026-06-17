@@ -1,0 +1,71 @@
+---
+// ConfirmDialog.astro — Confirmation dialog component
+interface Props {
+  id: string;
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  variant?: 'default' | 'danger';
+}
+
+const {
+  id,
+  title,
+  message,
+  confirmLabel = 'Confirmar',
+  cancelLabel = 'Cancelar',
+  variant = 'default'
+} = Astro.props;
+
+const isDanger = variant === 'danger';
+---
+
+<dialog
+  id={id}
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+>
+  <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
+    <h2 class="text-lg font-display font-bold text-humo mb-2">{title}</h2>
+    <p class="text-sm text-ceniza mb-6">{message}</p>
+    <div class="flex items-center justify-end gap-3">
+      <button
+        type="button"
+        class="cancel-btn px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+      >
+        {cancelLabel}
+      </button>
+      <button
+        type="button"
+        class:list={[
+          "confirm-btn px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors",
+          isDanger ? 'bg-error hover:bg-error/90' : 'bg-tabacco hover:bg-tabacco/90'
+        ]}
+      >
+        {confirmLabel}
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script define:vars={{ id, confirmLabel, cancelLabel }}>
+  const dialog = document.getElementById(id);
+  const cancelBtn = dialog?.querySelector('.cancel-btn');
+  const confirmBtn = dialog?.querySelector('.confirm-btn');
+
+  cancelBtn?.addEventListener('click', () => {
+    dialog?.removeAttribute('open');
+    dialog?.close();
+  });
+
+  confirmBtn?.addEventListener('click', () => {
+    dialog?.dispatchEvent(new CustomEvent('confirm'));
+    dialog?.close();
+  });
+
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog) {
+      dialog.close();
+    }
+  });
+</script>

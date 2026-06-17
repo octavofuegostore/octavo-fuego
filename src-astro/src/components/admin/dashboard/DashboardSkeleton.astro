@@ -1,0 +1,118 @@
+---
+// DashboardSkeleton.astro — Loading skeleton for dashboard
+import Skeleton from './Skeleton.astro';
+---
+
+<div id="dashboard-skeleton" class="animate-pulse">
+  <!-- Page Header Skeleton -->
+  <div class="mb-8">
+    <div class="h-8 w-48 bg-papel/70 rounded mb-2"></div>
+    <div class="h-4 w-64 bg-papel/50 rounded"></div>
+  </div>
+
+  <!-- Stats Grid Skeleton -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    {[1, 2, 3, 4].map(() => (
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <div class="h-4 w-24 bg-papel/70 rounded mb-3"></div>
+        <div class="h-8 w-32 bg-papel/50 rounded mb-2"></div>
+        <div class="h-3 w-16 bg-papel/30 rounded"></div>
+      </div>
+    ))}
+  </div>
+
+  <!-- Content Grid Skeleton -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-card p-6">
+      <div class="h-6 w-40 bg-papel/70 rounded mb-4"></div>
+      <div class="space-y-3">
+        {[1, 2, 3, 4, 5].map(() => (
+          <div class="flex items-center justify-between py-2 border-b border-papel/50">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-papel/70 rounded-full"></div>
+              <div>
+                <div class="h-4 w-32 bg-papel/70 rounded mb-1"></div>
+                <div class="h-3 w-24 bg-papel/50 rounded"></div>
+              </div>
+            </div>
+            <div class="h-6 w-20 bg-papel/70 rounded"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl shadow-card p-6">
+      <div class="h-6 w-32 bg-papel/70 rounded mb-4"></div>
+      <div class="space-y-3">
+        {[1, 2, 3].map(() => (
+          <div class="flex items-center justify-between py-2 border-b border-papel/50">
+            <div class="h-4 w-40 bg-papel/70 rounded"></div>
+            <div class="h-6 w-12 bg-papel/50 rounded-full"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions Skeleton -->
+  <div>
+    <div class="h-6 w-32 bg-papel/70 rounded mb-4"></div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[1, 2, 3, 4].map(() => (
+        <div class="bg-white rounded-xl shadow-card p-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-papel/70 rounded-lg"></div>
+            <div>
+              <div class="h-4 w-24 bg-papel/70 rounded mb-1"></div>
+              <div class="h-3 w-20 bg-papel/50 rounded"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  // Count-up animation for stat numbers
+  function animateCountUp(element: HTMLElement, target: number, duration: number = 800) {
+    const start = 0;
+    const startTime = performance.now();
+
+    function update(currentTime: number) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const current = Math.floor(start + (target - start) * eased);
+
+      element.textContent = formatValue(current);
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        element.textContent = formatValue(target);
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+
+  function formatValue(num: number): string {
+    if (num >= 1000000) {
+      return '$' + (num / 1000000).toFixed(1) + 'M';
+    } else if (num >= 1000) {
+      return '$' + (num / 1000).toFixed(0) + 'K';
+    }
+    return String(num);
+  }
+
+  // Animate stat cards on mount
+  document.addEventListener('DOMContentLoaded', () => {
+    const statValues = document.querySelectorAll('[data-count-value]');
+    statValues.forEach((el) => {
+      const target = parseInt(el.getAttribute('data-count-value') || '0', 10);
+      if (target > 0) {
+        animateCountUp(el as HTMLElement, target);
+      }
+    });
+  });
+</script>

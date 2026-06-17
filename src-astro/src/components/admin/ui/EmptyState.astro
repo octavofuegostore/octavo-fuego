@@ -1,0 +1,39 @@
+---
+// EmptyState.astro — Empty state placeholder for tables/lists
+interface Props {
+  title: string;
+  description?: string;
+  icon?: string;
+  actionLabel?: string;
+  actionHref?: string;
+}
+
+const {
+  title,
+  description,
+  icon = 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2',
+  actionLabel,
+  actionHref
+} = Astro.props;
+---
+
+<div class="flex flex-col items-center justify-center py-12 px-4 text-center">
+  <div class="w-16 h-16 bg-papel rounded-full flex items-center justify-center mb-4">
+    <svg class="w-8 h-8 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={icon} />
+    </svg>
+  </div>
+  <h3 class="text-lg font-display font-bold text-humo mb-1">{title}</h3>
+  {description && <p class="text-sm text-ceniza max-w-sm mb-4">{description}</p>}
+  {actionLabel && actionHref && (
+    <a
+      href={actionHref}
+      class="inline-flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+      </svg>
+      {actionLabel}
+    </a>
+  )}
+</div>

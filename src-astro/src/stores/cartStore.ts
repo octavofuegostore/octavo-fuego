@@ -1,18 +1,7 @@
 import { atom } from 'nanostores';
+import type { CartItem } from '@/lib/cart/types';
 
-export interface CartItem {
-  id: string;
-  variantId: string;
-  nombre: string;
-  nombreEn: string;
-  nombrePt: string;
-  etnia: string;
-  tipo: 'rape';
-  precio: number; // COP
-  cantidad: number;
-  imagen: string;
-  slug: string;
-}
+export type { CartItem } from '@/lib/cart/types';
 
 const isBrowser = typeof window !== 'undefined';
 
@@ -26,7 +15,7 @@ function filterLegacyItems(items: CartItem[]): CartItem[] {
   return items.filter((item) => {
     if (!VALID_TIPOS.has(item.tipo)) {
       console.warn(
-        `[cartStore] Removing legacy item "${item.nombre}" with invalid tipo="${item.tipo}". ` +
+        `[cartStore] Removing legacy item "${item.nombre.es}" with invalid tipo="${item.tipo}". ` +
         `Only "rape" products are supported now.`
       );
       return false;

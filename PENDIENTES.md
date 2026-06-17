@@ -43,39 +43,40 @@
 
 ## 🔥 Prioridades Inmediatas — Pre-Lanzamiento (Top 10)
 
-> Análisis completo: [`.atl/analisis-critico-pendientes.md`](src-astro/.atl/analisis-critico-pendientes.md)
+> Análisis completo: [`01-estrategia/analisis-critico-pendientes-OF.md`](01-estrategia/analisis-critico-pendientes-OF.md)
 > Principio rector: "Shippear rápido > elegancia técnica sin facturación." — §7 ARCHITECTURE.md
 > Esfuerzo total Top 10: ~21 horas | No hacer: Medusa, monorepo, cross-domain (§7.2-§7.3 post-lanzamiento)
 
 | # | Tarea | Esfuerzo | Impacto | Dónde |
 |---|-------|----------|---------|-------|
-| 1 | **Precio/g visible en PDPs** + copy "20g por el precio que otros cobran por 10" | 1h | 🔥🔥🔥🔥🔥 | → §4 SEO Gaps |
-| 2 | **Mobile-First Phase 1** (hamburger nav ROTO, anti-zoom, safe-area, navbar collision) | 2h | 🔥🔥🔥🔥🔥 | → §7.1 |
-| 3 | **Google Search Console** + verificar que Google indexó las 34 páginas | 30min | 🔥🔥🔥🔥 | → §4 SEO |
-| 4 | **Imágenes reales de los 5 rapés** (placeholder bobinsana → producto real) | 3h | 🔥🔥🔥🔥 | → §3.6 |
-| 5 | **og:image social card (1200×630)** | 1h | 🔥🔥🔥🔥 | → §3.6 |
-| 6 | **H1 + meta descriptions alineadas** con arquitectura SEO (5 PDPs + homepage + landing B2B) | 2h | 🔥🔥🔥🔥 | → §4 + §3.10.1 |
-| 7 | **Landing B2B: 5 fixes críticos** (eliminar "y Brasil", H1, keywords, 4to pilar precio, hreflang) | 2h | 🔥🔥🔥🔥 | → §3.10.1 |
-| 8 | **3 páginas informacionales** (/es/que-es-el-rape/, /es/como-usar-el-rape/, /es/rape-do-acre-origen/) | 6h | 🔥🔥🔥 | → §4 SEO Gaps |
-| 9 | **Microsoft Clarity** — heatmaps + session recordings (GRATIS, 5 min setup) | 5min | 🔥🔥🔥 | → §5 Testing |
-| 10 | **Mobile-First Phase 2** (touch targets 44px, tap delay, snap-scroll) | 1.5h | 🔥🔥🔥 | → §7.1 |
+| ✅ | ~~Precio/g visible en PDPs~~ — `PricingTable.astro:78` | - | - | → §3.6 |
+| ✅ | ~~Mobile-First Phase 1~~ — 28/28 fixes (commits `2e79fe6..d06ab54`) | - | - | → §7.1 |
+| 1 | **Google Search Console** + Microsoft Clarity + verificar indexación | 35min | 🔥🔥🔥🔥 | → §5 Testing |
+| 2 | **Imágenes reales de los 5 rapés** (placeholder bobinsana → fotos reales en `assets/productos/rape/`) | 3h | 🔥🔥🔥🔥🔥 | → §3.6 |
+| 3 | **Landing B2B: 14 fixes** (audit completo en `.atl/b2b-mayoristas-landing-audit.md`, 0 aplicados) | 2h | 🔥🔥🔥🔥 | → §3.10.1 |
+| 4 | **3 páginas informacionales SEO** (/es/que-es-el-rape/, /es/como-usar-el-rape/, /es/rape-do-acre-origen/) | 6h | 🔥🔥🔥 | → §4 SEO Gaps |
+| 5 | **H1 + meta descriptions alineadas** con arquitectura SEO (5 PDPs + homepage + landing B2B) | 2h | 🔥🔥🔥 | → §4 + §3.10.1 |
+| 6 | **og:image social card (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen | 1h | 🔥🔥🔥 | → §3.6 |
+| 7 | **Mobile-First Phase 2** — validación en device real + `clamp()` en headings (29/29 fixes) | 1.5h | 🔥🔥 | → §7.1 |
+| 8 | **11 páginas SEO Trust Foundation** (nosotros, contacto, faq, envíos, términos, privacidad + 5 landings) | 12h | 🔥🔥🔥 | → §3.12 |
+| 9 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 30min | 🔥🔥🔥 | → §5 Testing |
+| 10 | **Velocidad en 3G colombiano** — 70%+ tráfico mobile no es 5G. Medir con throttling. | 30min | 🔥🔥 | → §5 Testing |
 
 ### Menciones de honor
 | # | Tarea | Esfuerzo | Dónde |
 |---|-------|----------|-------|
 | 11 | IndexNow Protocol (acelerar indexación Bing/Yandex) | 30min | → §4 SEO Pipod |
-| 12 | Design system find-replace `--verde-botanico` → `--color-action-primary` | 30min | → §Design System |
+| ✅ | ~~Design system `--verde-botanico` → `--color-action-primary`~~ — 76 ocurrencias, 18 archivos (`db89858`) | - | → §Design System |
 | 13 | FAQPage Schema en las 5 PDPs | 2h | → §4 SEO Pipod |
-| 14 | Página "Nosotros" | 3h | → §3.6 |
+| 14 | Página "Nosotros" | 3h | → §3.12 Bloque A |
 | 15 | hreflang cruzados CO↔EN | 1h | → §4 SEO Gaps |
 | 16 | "Consejos o Pajé" — artículo #1 | 2h | → §Blog |
 
 ### Tareas detectadas que NO estaban en PENDIENTES.md
 | # | Tarea | Prioridad |
 |---|-------|-----------|
-| 🆕 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 🔴 Alta |
 | 🆕 | **404 audit** — arquitectura SEO §10 prioridad 1 (arreglar 404s de páginas de producto) | 🔴 Alta |
-| 🆕 | **Velocidad en 3G colombiano** — 70%+ tráfico mobile en Colombia no es 5G. Medir con throttling. | 🟡 Media |
+| 🆕 | **Borrar directorio fantasma `ativos/octavo-fuego/`** — build artifacts sin .git | 🟢 Baja |
 
 ### Consolidación de secciones duplicadas
 > Las secciones §3.7-§3.10, §4 SEO Cross-Domain se consolidan en §7.2 y §7.3 (canonicals). Cada tarea original está referenciada. No se pierde detalle.
@@ -100,7 +101,7 @@
 
 ### 3.3 Sistema de Productos ✅
 - [x] Data layer: 5 rapés × 3 idiomas (verbatim copy)
-- [x] Precios: 10g/$35K, 20g/$70K, 30g/$100K
+- [x] Precios: 10g/$35K, 20g/$70K, 30g/$100K + precio/g visible
 - [x] PricingTable con botones seleccionables
 - [x] Mapa de intenciones (5 categorías)
 - [x] Profecía completa (3 idiomas)
@@ -138,10 +139,11 @@
 
 ### 3.6 Por Hacer 🔄
 - [x] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
-- [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
-- [ ] og:image social card real (1200×630 — actualmente usa logo.png)
-- [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
-- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [x] WhatsAppButton en PDP — integrado en `PricingTable.astro:86`
+- [ ] **Imágenes reales de los 5 rapés** (placeholder actual: `bobinsana-rape-2.webp`. Fotos reales existen en `assets/productos/rape/` — falta copiarlas a `public/` y mapear slugs a imágenes)
+- [ ] **og:image social card real (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen y pasarlo desde el PDP
+- [ ] **Página "Nosotros"** → Ver §3.12 Bloque A
+- [ ] **11 páginas SEO** (6 trust foundation + 5 landings) → Ver §3.12 Bloque A y B
 
 ### 3.7 Monorepo + Medusa SSR ⏳ → Ver §7.2 Centralización
 > **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El stack Medusa requiere facturación validada ("cuando WhatsApp colapse") y no es prioritario para el MVP. Las tareas detalladas de monorepo se preservan en §7.2 ### Monorepo Setup.
@@ -181,6 +183,121 @@
 #### 3.10.2 Backend B2B → Ver §7.3 Escala Élite
 > **Nota:** Todas las tareas de esta sección están consolidadas en §7.3 Escala Élite (B2B automatizado). El flujo B2B actual via formulario de contacto + approval manual funciona para el MVP.
 
+### 3.11 Confianza — Privacidad + Presencia Google 🛡️
+> Fuente: Engram `privacidad-confianza` (obs #525)
+
+#### ✅ Completado (15 Jun 2026)
+- [x] **Privacidad — dirección Bogotá removida** del Footer.astro
+- [x] **confianzaFooter agregado** ("🌿 Directo de la Amazonía, con propósito") en Footer + i18n
+- [x] **OrganizationJsonLd address simplificado** — array[2] → objeto único (solo fábrica BR)
+- [x] **i18n keys** — eliminada `direccionTienda`, agregada `confianzaFooter` (es/en/pt)
+- [x] **Testimonials.astro** componente creado con 3 testimonios, estrellas, avatares, i18n
+
+#### 📋 Google Business Profile
+- [ ] Configurar como "Área de Servicio" (NO tienda física)
+- [ ] Nombre: "Octavo Fuego" — Categoría: Herbal Medicine / Wellness
+- [ ] Áreas: Colombia + Brasil — 1 solo perfil, sin dirección visible
+- [ ] Verificar dominio: octavofuego.com
+- [ ] Solicitar primeras 5 reseñas a clientes reales
+- [ ] Agregar link de reseña de Google en página de confirmación de compra
+
+#### 🔜 Mejoras Futuras
+- [ ] Reemplazar testimonios placeholder con quotes reales de clientes
+- [ ] Avatar opcional (foto real) en componente Testimonials
+- [ ] Ajustar confianzaFooter ("Hecho con propósito desde Acre, Brasil")
+- [ ] Trustpilot (cuando facture +$5M/mes)
+- [ ] Añadir productos: sananga, kuripe, accesorios
+- [ ] Fotos reales de los 5 rapés (reemplazar placeholder)
+
+### 3.12 SEO Transactional Trust Foundation 📋
+> SDD Proposal: `seo-transactional-trust-foundation` (Jun 16, 2026)
+> Engram: `sdd/seo-transactional-trust-foundation/proposal`
+
+#### Bloque A: Trust Foundation (6 páginas, prioridad 🔴 primera)
+- [ ] `/nosotros` — historia, comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] `/contacto` — formulario + WhatsApp + email
+- [ ] `/faq` — preguntas frecuentes
+- [ ] `/envios` — política de envíos, tiempos, zonas
+- [ ] `/terminos` — términos y condiciones
+- [ ] `/privacidad` — política de privacidad
+
+#### Bloque B: SEO Landing Pages (5 páginas, prioridad 🔴 segunda)
+- [ ] `/es/guia-comprador-rape/` — transaccional pura (keywords: comprar rapé, dónde comprar rapé do acre)
+- [ ] `/es/ceremonia-de-rape/` — alto volumen (keywords: ceremonia de rapé, ritual rapé)
+- [ ] `/es/que-es-el-rape/` — informacional base (keywords: qué es el rapé, para qué sirve)
+- [ ] `/es/como-usar-el-rape/` — middle funnel (keywords: cómo aplicar con kuripe, dosis primera vez)
+- [ ] `/es/rape-do-acre-origen/` — diferenciación (keywords: rapé brasileño vs colombiano, etnias)
+
+#### Bloque C: Wiring (prioridad 🟡 tercera)
+- [ ] Footer: agregar sección Guías con las 5 landing pages
+- [ ] Blog: crear categoría Guías y posts introductorios linkeando a las landings
+- [ ] Homepage: bloque Explorar nuestras Guías (mitad inferior)
+- [ ] Sitemap regenerado con las 11 nuevas URLs
+
+### 3.13 L-Medusa Backend Layer ✅ (Jun 16, 2026)
+> Arquitectura: `.atl/l-medusa-architecture.md` | `.atl/sesion-completa-junio-16-2026.md`
+> Engram: `sdd/octavo-fuego/l-medusa-alfred-complete`
+
+#### ✅ Completado
+- [x] **SQL Schema completo** — `supabase/migrations/001_initial_schema.sql` (19 tablas, 3 vistas, 3 RPC functions, seed data)
+- [x] **Cliente Supabase** — `src/lib/supabase.ts` (singleton con Database types)
+- [x] **Servicio Inventory** — `src/lib/inventory/` (types, mock-data, service, index)
+- [x] **Servicio Cart** — `src/lib/cart/` (types, service, index)
+- [x] **Servicio Customer** — `src/lib/customer/` (types, service, index)
+- [x] **Servicio Pricing** — `src/lib/pricing/` (types, service, index)
+- [x] **Servicio Orders** — `src/lib/orders/` (types, service, index)
+- [x] **Servicio Region** — `src/lib/region/` (types, service, index)
+- [x] **Export unificado** — `src/lib/index.ts`
+- [x] **Variables de entorno** — `.env.example`
+- [x] **SDD Proposal** — `.atl/proposals/sdd-proposal-l-medusa-alfred.md`
+
+#### 📋 Pendiente (Etapas)
+- [ ] **Etapa 1:** Aplicar SQL schema a Supabase
+- [ ] **Etapa 2:** Multi-idioma (validar columnas nombre_es/en/pt)
+- [ ] **Etapa 3:** Precios y pasarelas (Wompi CO + Stripe BR)
+- [ ] **Etapa 4:** Checkout y órdenes
+- [ ] **Etapa 5:** Admin Panel (Alfred UI)
+- [ ] **Etapa 6:** Portal Mayorista
+
+### 3.14 Admin Auth System ✅ (Jun 17, 2026)
+> SDD: `admin-auth-system` | Engram: `sdd/admin-auth-system/*`
+> Commit: `f88b6b0` en develop (no push)
+
+#### ✅ Completado
+- [x] **Auth library** — `src/lib/auth.ts` (credenciales hardcodeadas, SHA-256 tokens, constant-time comparison)
+- [x] **Middleware** — `src/middleware/auth.ts` (locale redirect /en|pt/admin → /admin, cookie verification, auth guard)
+- [x] **API Login** — `POST /api/auth/login` (valida credenciales, setea cookie httpOnly, 400/401/500 JSON errors)
+- [x] **API Logout** — `GET /api/auth/logout` (limpia cookie, redirect /admin/login)
+- [x] **Login UI** — `login.astro` (fetch-based form, loading state, error display)
+- [x] **Logout Button** — `AdminLayout.astro` (Cerrar Sesión en sidebar)
+- [x] **Vercel Adapter** — `@astrojs/vercel` instalado para soporte de API routes en producción
+- [x] **Prerender Fix** — `export const prerender = false` en API routes para server-side rendering
+
+#### 📋 Pendiente
+- [ ] **Phase 4: Tests** — unitarios (lib/auth, middleware) + E2E login flow (Playwright)
+
+#### Credenciales (hardcoded)
+```
+Email:    admin@octavofuego.com
+Password: octavo2026
+```
+
+#### Reglas de Negocio
+| Región | Bodega | Moneda | Gateway | Envío |
+|--------|--------|--------|---------|-------|
+| CO | CO-BOGOTA | COP | Wompi | Local CO |
+| BR | BR-ACRE | BRL | Stripe+Pix | Nacional BR |
+| EU | BR-ACRE | USD | Stripe | Internacional |
+| US | BR-ACRE | USD | Stripe | Internacional |
+
+#### Factores de Conversión (Manuales)
+| Origen | Destino | Factor |
+|--------|---------|--------|
+| BRL | USD | 0.2020 |
+| COP | USD | 0.00024 |
+| BRL | COP | 833.00 |
+| USD | COP | 4166.00 |
+
 ---
 
 ## 📈 Fase 4 — Marketing & SEO 🔄
@@ -192,7 +309,7 @@
 - [ ] Newsletter signup funcional
 
 ### Blog — Estrategia "Consejos o Pajé" 📹
-> Fuente: [`.atl/estrategia-contenido-consejos-o-paje.md`](src-astro/.atl/estrategia-contenido-consejos-o-paje.md)
+> Fuente: [`.atl/estrategia-contenido-consejos-o-paje.md`](.atl/estrategia-contenido-consejos-o-paje.md)
 
 - [ ] **Crear sección "Consejos o Pajé"** — blog de curaduría de videos de YouTube (chamanes, taitas, antropólogos)
 - [ ] **Template de entrada:** video embebido (EMBED, no descarga) + resumen editorial (NO transcripción) + H2/H3 + blockquote + CTA sutil al catálogo
@@ -205,7 +322,8 @@
 - [x] Hreflang tags ES/EN/PT
 - [x] Sitemap generado
 - [x] Auditoría SEO completa (5 críticos + 4 warnings corregidos)
-- [ ] og:image social card (1200×630 — actualmente usa logo.png)
+- [x] Precio/g visible en PDP — `PricingTable.astro:78`
+- [ ] **og:image social card (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen (actualmente usa logo.png)
 - [ ] Imágenes reales de productos para SEO
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado
@@ -215,15 +333,15 @@
 - [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4 + métricas de negocio)
 
 ### SEO — Gaps vs Arquitectura SEO Transnacional 🔴
-> Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](src-astro/.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
+> Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
 
 #### 🔴 Alto Impacto (Semana 1-3)
-- [ ] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs
+- [x] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal en `PricingTable.astro:78` + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs
 - [ ] **Crear `/es/que-es-el-rape/`** — página informacional (qué es, para qué sirve, efectos)
 - [ ] **Crear `/es/como-usar-el-rape/`** — página informacional (cómo aplicar, kuripe, ceremonial)
 - [ ] **Crear `/es/rape-do-acre-origen/`** — página informacional (Brasil vs Colombia, empaque vacío)
 - [ ] **Categoría Kuripe + 2 productos** — `/es/tienda/kuripe/`, kuripe-clasico, kuripe-doble
-- [x] **URLs: decidir `/catalogo/` vs `/tienda/`** — ✅ YA MIGRADO. Código usa `/tienda/` en todos los componentes. Solo quedan 7 redirects legacy en `astro.config.mjs`. Ver [`.atl/plan-migracion-urls.md`](src-astro/.atl/plan-migracion-urls.md)
+- [x] **URLs: decidir `/catalogo/` vs `/tienda/`** — ✅ YA MIGRADO. Código usa `/tienda/` en todos los componentes. Solo quedan 7 redirects legacy en `astro.config.mjs`. Ver [`03-desarrollo/plan-migracion-urls-OF.md`](03-desarrollo/plan-migracion-urls-OF.md)
 
 #### 🟡 Medio Impacto (Semana 3 - Mes 2)
 - [ ] **hreflang cruzados** — activar en Layout para todas las páginas indexadas (CO ↔ EN ↔ BR)
@@ -310,14 +428,15 @@
 > **Objetivo:** Facturar. Validar demanda en Colombia y Brasil.
 
 - [x] Astro 6.1.3 con 3 locales (ES/EN/PT)
-- [x] 5 productos con precios COP
-- [x] WhatsApp Commerce integrado
+- [x] 5 productos con precios COP + precio/g visible
+- [x] WhatsApp Commerce integrado (FloatingWhatsApp global + WhatsAppButton en PDP)
 - [x] Schemas JSON-LD (100% cobertura)
-- [x] SEO on-page (hreflang, sitemap, OG)
+- [x] SEO on-page (hreflang, sitemap, OG, structured data)
+- [x] Mobile-First 28/29 fixes (4 commits, falta `clamp()` en headings)
 - [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] **Google Search Console** + verificar indexación de 34 páginas
 - [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4)
 - [ ] **Microsoft Clarity** — heatmaps, session recordings (gratis)
-- [ ] Google Search Console + indexación
 - [ ] Subcarpetas `/es/` y `/pt/` sembrando autoridad desde día 1
 
 #### Optimización Mobile-First 📱 (condición de salida a producción)
@@ -340,7 +459,7 @@
 - [ ] **Tipografía responsive con `clamp()`** — reemplazar `text-5xl md:text-6xl` por `clamp()` en headings (SDD usó breakpoints fijos, `clamp()` es más fluido). ~5 líneas.
 - [x] **Breakpoint detection CSS-first** — `data-breakpoint` en `<html>` via inline script
 
-> **28/28 fixes aplicados (SDD mobile-first-overhaul, 4 commits).** Ver `openspec/changes/mobile-first-overhaul/` para detalle. Quedan tareas de validación mobile que requieren device real o setup externo:
+> **28/29 fixes aplicados (SDD mobile-first-overhaul, 4 commits).** Ver `openspec/changes/mobile-first-overhaul/` para detalle. Queda 1 fix cosmético (`clamp()` en headings) + tareas de validación mobile que requieren device real o setup externo:
 
 | # | Tarea | Prioridad |
 |---|-------|-----------|
@@ -572,4 +691,39 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Junio 15, 2026*
+*Actualizado: Junio 17, 2026*
+
+---
+
+## 🧹 Limpieza (Jun 17, 2026)
+
+- [x] **Detectado directorio fantasma** `ativos/octavo-fuego/` — build artifacts sin `.git` (solo `dist/`, `node_modules/`, `.astro/`). Proyecto real en `activos/octavo-fuego/`
+- [x] **Borrar** `rm -rf /Users/calderonjosue_/clientes/ativos/octavo-fuego/`
+- [x] **PENDIENTES.md auditado** — 2 items tachados (mobile 28/28, precio/g), Top 10 renumerado, 5 secciones actualizadas
+
+---
+
+## 🔍 Code Review — Admin + Infraestructura (Jun 17, 2026)
+
+> Auditoría completa del panel admin (🟡 mock) + infraestructura (🟢 real).
+> 2,512 líneas de admin pages, 537 infra, 130 services. 3 🔴 CRÍTICOS, 5 🟡 WARNINGS, 3 🟢 SUGERENCIAS.
+
+### 🔴 CRÍTICOS
+
+- [ ] **CR-01: CustomerDetail ignora el ID** — `CustomerDetail.astro:10` datos hardcodeados. Ignora `customerId` del parámetro URL. Siempre muestra "María García". No usa `getClienteById()` del service.
+- [ ] **CR-02: OrderDetail ignora el ID** — `OrderDetail.astro:10` datos hardcodeados. Ignora `orderId`. Siempre muestra "OF-2026-001". Botones de estado (`Confirmar`, `Cancelar`, `Marcar como Enviada`) solo muestran toast y redirigen — no modifican datos.
+- [ ] **CR-03: Mock data es de otro negocio** — `service.ts:6-69` contiene "Cera de Ducha", "Sabonete", "Packs Regalo". Nada que ver con rapé/sananga/kuripe. 24 productos mock vs 5 rapés reales en la tienda.
+
+### 🟡 WARNINGS
+
+- [ ] **W-04: Dashboard period selector no actualiza datos** — `admin/index.astro:58-100` los charts se renderizan con datos en `Astro.props` estáticos. El JS del selector cambia la UI (`hidden`/`visible`) pero los datos no se recalculan.
+- [ ] **W-05: Supabase placeholder keys** — `supabase.ts:22-29` si no hay credenciales, solo `console.warn` y crea cliente con placeholder URL/key. Las queries fallan silenciosamente sin alerta clara.
+- [ ] **W-06: Credenciales auth hardcodeadas** — `auth.ts:11-14` email y password en source code. Mover a env vars antes de producción. También `TOKEN_PAYLOAD` hardcodeado en `auth.ts:23`.
+- [ ] **W-07: AdminLayout elementos decorativos** — Search bar (`AdminLayout.astro:286`) sin funcionalidad. Botón "Nuevo" (`:312`) sin click handler. Badge de notificaciones hardcodeado "3" (`:306`).
+- [ ] **W-08: Iniciales de usuario hardcodeadas** — `AdminLayout.astro:251` "JD" para Josue Calderon. Debería venir del usuario autenticado.
+
+### 🟢 SUGERENCIAS
+
+- [ ] **S-09: Sidebar usa SVG inline en vez de astro-icon** — `AdminLayout.astro` usa `<svg>` inline en toda la navegación. La tienda pública usa `astro-icon` + Solar Bold. Inconsistente.
+- [ ] **S-10: Tipo Producto incluye categorías ajenas** — `types/admin.ts:34` incluye categorías "Cera de Ducha/Sabonete" del mock data viejo. Los tipos deberían reflejar el catálogo real de rapé/sananga/kuripe.
+- [ ] **S-11: Tipo Cliente incluye regiones no operadas** — `types/admin.ts:8` incluye 'EU' y 'US'. El negocio solo opera en Colombia (CO) y Brasil (BR).

@@ -1,0 +1,154 @@
+---
+export const prerender = false;
+// Transferencias page — Transfer history
+import AdminLayout from '@/layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Transferencias" description="Historial de transferencias entre ubicaciones">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-display font-bold text-humo">Transferencias</h1>
+    <p class="text-ceniza mt-1">Historial de transferencias entre ubicaciones</p>
+  </div>
+
+  <!-- Filter -->
+  <div class="mb-6 flex items-center gap-4">
+    <div class="flex-1 max-w-xs">
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="search-transfer"
+          placeholder="Buscar transferencia..."
+          class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+        />
+      </div>
+    </div>
+    <select id="origin-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+      <option value="">Todos los orígenes</option>
+      <option value="CO">CO-BOGOTA</option>
+      <option value="BR">BR-ACRE</option>
+    </select>
+    <select id="status-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+      <option value="">Todos los estados</option>
+      <option value="completed">Completada</option>
+      <option value="pending">Pendiente</option>
+      <option value="cancelled">Cancelada</option>
+    </select>
+  </div>
+
+  <!-- Transfers Table -->
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-papel">
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">ID</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Fecha</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Producto</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Origen</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Destino</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Cantidad</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Estado</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Notas</th>
+          </tr>
+        </thead>
+        <tbody id="transfer-tbody" class="divide-y divide-papel">
+          <!-- JS will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  interface Transfer {
+    id: string;
+    date: string;
+    productName: string;
+    sku: string;
+    origin: string;
+    destination: string;
+    quantity: number;
+    status: string;
+    notes: string;
+  }
+
+  const mockTransfers: Transfer[] = [
+    { id: 'TR-001', date: '2026-06-15', productName: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', origin: 'BR-ACRE', destination: 'CO-BOGOTA', quantity: 200, status: 'completed', notes: 'Reposición de stock' },
+    { id: 'TR-002', date: '2026-06-14', productName: 'Sabonete - Lavanda', sku: 'SL-75', origin: 'CO-BOGOTA', destination: 'BR-ACRE', quantity: 100, status: 'completed', notes: 'Transferencia para venta B2B' },
+    { id: 'TR-003', date: '2026-06-12', productName: 'Pack Regalo Premium', sku: 'PR-100', origin: 'BR-ACRE', destination: 'CO-BOGOTA', quantity: 20, status: 'pending', notes: 'Pendiente de confirmación' },
+    { id: 'TR-004', date: '2026-06-10', productName: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', origin: 'CO-BOGOTA', destination: 'BR-ACRE', quantity: 150, status: 'completed', notes: 'Ajuste de inventario' },
+    { id: 'TR-005', date: '2026-06-08', productName: 'Sabonete - Avena', sku: 'SA-75', origin: 'BR-ACRE', destination: 'CO-BOGOTA', quantity: 50, status: 'cancelled', notes: 'Cancelada por cliente' },
+  ];
+
+  let filteredTransfers = [...mockTransfers];
+
+  const searchInput = document.getElementById('search-transfer') as HTMLInputElement;
+  const originFilter = document.getElementById('origin-filter') as HTMLSelectElement;
+  const statusFilter = document.getElementById('status-filter') as HTMLSelectElement;
+
+  function filterTransfers() {
+    const query = searchInput?.value.toLowerCase() || '';
+    const origin = originFilter?.value || '';
+    const status = statusFilter?.value || '';
+
+    filteredTransfers = mockTransfers.filter(t => {
+      const matchesSearch = t.id.toLowerCase().includes(query) ||
+                           t.productName.toLowerCase().includes(query) ||
+                           t.sku.toLowerCase().includes(query);
+      const matchesOrigin = !origin || t.origin.startsWith(origin) || t.destination.startsWith(origin);
+      const matchesStatus = !status || t.status === status;
+      return matchesSearch && matchesOrigin && matchesStatus;
+    });
+
+    renderTransfers();
+  }
+
+  function renderTransfers() {
+    const tbody = document.getElementById('transfer-tbody');
+    if (!tbody) return;
+
+    const statusConfig: Record<string, { class: string; label: string }> = {
+      completed: { class: 'bg-success/10 text-success', label: 'Completada' },
+      pending: { class: 'bg-warning/10 text-warning', label: 'Pendiente' },
+      cancelled: { class: 'bg-error/10 text-error', label: 'Cancelada' }
+    };
+
+    tbody.innerHTML = filteredTransfers.map(t => {
+      const status = statusConfig[t.status] || statusConfig.pending;
+
+      return `
+        <tr class="hover:bg-papel/30 transition-colors">
+          <td class="px-6 py-4 text-sm font-medium text-humo font-mono">${t.id}</td>
+          <td class="px-6 py-4 text-sm text-ceniza">${new Date(t.date).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
+          <td class="px-6 py-4">
+            <div>
+              <p class="text-sm font-medium text-humo">${t.productName}</p>
+              <p class="text-xs text-ceniza">${t.sku}</p>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-info/10 text-info">${t.origin}</span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">${t.destination}</span>
+          </td>
+          <td class="px-6 py-4 text-right text-sm font-medium text-humo">${t.quantity}g</td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}">${status.label}</span>
+          </td>
+          <td class="px-6 py-4 text-sm text-ceniza">${t.notes}</td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  searchInput?.addEventListener('input', filterTransfers);
+  originFilter?.addEventListener('change', filterTransfers);
+  statusFilter?.addEventListener('change', filterTransfers);
+
+  renderTransfers();
+</script>
