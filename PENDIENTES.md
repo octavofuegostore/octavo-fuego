@@ -43,7 +43,7 @@
 
 ## 🔥 Prioridades Inmediatas — Pre-Lanzamiento (Top 10)
 
-> Análisis completo: [`.atl/analisis-critico-pendientes.md`](src-astro/.atl/analisis-critico-pendientes.md)
+> Análisis completo: [`01-estrategia/analisis-critico-pendientes-OF.md`](01-estrategia/analisis-critico-pendientes-OF.md)
 > Principio rector: "Shippear rápido > elegancia técnica sin facturación." — §7 ARCHITECTURE.md
 > Esfuerzo total Top 10: ~21 horas | No hacer: Medusa, monorepo, cross-domain (§7.2-§7.3 post-lanzamiento)
 
@@ -141,7 +141,8 @@
 - [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
 - [ ] og:image social card real (1200×630 — actualmente usa logo.png)
 - [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
-- [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] **Página "Nosotros"** → Ver §3.12 Bloque A
+- [ ] **6 páginas inexistentes (404)** → Ver §3.12 Bloque A. Audit original: Jun 16, 2026.
 
 ### 3.7 Monorepo + Medusa SSR ⏳ → Ver §7.2 Centralización
 > **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El stack Medusa requiere facturación validada ("cuando WhatsApp colapse") y no es prioritario para el MVP. Las tareas detalladas de monorepo se preservan en §7.2 ### Monorepo Setup.
@@ -207,6 +208,72 @@
 - [ ] Añadir productos: sananga, kuripe, accesorios
 - [ ] Fotos reales de los 5 rapés (reemplazar placeholder)
 
+### 3.12 SEO Transactional Trust Foundation 📋
+> SDD Proposal: `seo-transactional-trust-foundation` (Jun 16, 2026)
+> Engram: `sdd/seo-transactional-trust-foundation/proposal`
+
+#### Bloque A: Trust Foundation (6 páginas, prioridad 🔴 primera)
+- [ ] `/nosotros` — historia, comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] `/contacto` — formulario + WhatsApp + email
+- [ ] `/faq` — preguntas frecuentes
+- [ ] `/envios` — política de envíos, tiempos, zonas
+- [ ] `/terminos` — términos y condiciones
+- [ ] `/privacidad` — política de privacidad
+
+#### Bloque B: SEO Landing Pages (5 páginas, prioridad 🔴 segunda)
+- [ ] `/es/guia-comprador-rape/` — transaccional pura (keywords: comprar rapé, dónde comprar rapé do acre)
+- [ ] `/es/ceremonia-de-rape/` — alto volumen (keywords: ceremonia de rapé, ritual rapé)
+- [ ] `/es/que-es-el-rape/` — informacional base (keywords: qué es el rapé, para qué sirve)
+- [ ] `/es/como-usar-el-rape/` — middle funnel (keywords: cómo aplicar con kuripe, dosis primera vez)
+- [ ] `/es/rape-do-acre-origen/` — diferenciación (keywords: rapé brasileño vs colombiano, etnias)
+
+#### Bloque C: Wiring (prioridad 🟡 tercera)
+- [ ] Footer: agregar sección Guías con las 5 landing pages
+- [ ] Blog: crear categoría Guías y posts introductorios linkeando a las landings
+- [ ] Homepage: bloque Explorar nuestras Guías (mitad inferior)
+- [ ] Sitemap regenerado con las 11 nuevas URLs
+
+### 3.13 L-Medusa Backend Layer ✅ (Jun 16, 2026)
+> Arquitectura: `.atl/l-medusa-architecture.md` | `.atl/sesion-completa-junio-16-2026.md`
+> Engram: `sdd/octavo-fuego/l-medusa-alfred-complete`
+
+#### ✅ Completado
+- [x] **SQL Schema completo** — `supabase/migrations/001_initial_schema.sql` (19 tablas, 3 vistas, 3 RPC functions, seed data)
+- [x] **Cliente Supabase** — `src/lib/supabase.ts` (singleton con Database types)
+- [x] **Servicio Inventory** — `src/lib/inventory/` (types, mock-data, service, index)
+- [x] **Servicio Cart** — `src/lib/cart/` (types, service, index)
+- [x] **Servicio Customer** — `src/lib/customer/` (types, service, index)
+- [x] **Servicio Pricing** — `src/lib/pricing/` (types, service, index)
+- [x] **Servicio Orders** — `src/lib/orders/` (types, service, index)
+- [x] **Servicio Region** — `src/lib/region/` (types, service, index)
+- [x] **Export unificado** — `src/lib/index.ts`
+- [x] **Variables de entorno** — `.env.example`
+- [x] **SDD Proposal** — `.atl/proposals/sdd-proposal-l-medusa-alfred.md`
+
+#### 📋 Pendiente (Etapas)
+- [ ] **Etapa 1:** Aplicar SQL schema a Supabase
+- [ ] **Etapa 2:** Multi-idioma (validar columnas nombre_es/en/pt)
+- [ ] **Etapa 3:** Precios y pasarelas (Wompi CO + Stripe BR)
+- [ ] **Etapa 4:** Checkout y órdenes
+- [ ] **Etapa 5:** Admin Panel (Alfred UI)
+- [ ] **Etapa 6:** Portal Mayorista
+
+#### Reglas de Negocio
+| Región | Bodega | Moneda | Gateway | Envío |
+|--------|--------|--------|---------|-------|
+| CO | CO-BOGOTA | COP | Wompi | Local CO |
+| BR | BR-ACRE | BRL | Stripe+Pix | Nacional BR |
+| EU | BR-ACRE | USD | Stripe | Internacional |
+| US | BR-ACRE | USD | Stripe | Internacional |
+
+#### Factores de Conversión (Manuales)
+| Origen | Destino | Factor |
+|--------|---------|--------|
+| BRL | USD | 0.2020 |
+| COP | USD | 0.00024 |
+| BRL | COP | 833.00 |
+| USD | COP | 4166.00 |
+
 ---
 
 ## 📈 Fase 4 — Marketing & SEO 🔄
@@ -249,7 +316,7 @@
 - [ ] **Crear `/es/como-usar-el-rape/`** — página informacional (cómo aplicar, kuripe, ceremonial)
 - [ ] **Crear `/es/rape-do-acre-origen/`** — página informacional (Brasil vs Colombia, empaque vacío)
 - [ ] **Categoría Kuripe + 2 productos** — `/es/tienda/kuripe/`, kuripe-clasico, kuripe-doble
-- [x] **URLs: decidir `/catalogo/` vs `/tienda/`** — ✅ YA MIGRADO. Código usa `/tienda/` en todos los componentes. Solo quedan 7 redirects legacy en `astro.config.mjs`. Ver [`.atl/plan-migracion-urls.md`](src-astro/.atl/plan-migracion-urls.md)
+- [x] **URLs: decidir `/catalogo/` vs `/tienda/`** — ✅ YA MIGRADO. Código usa `/tienda/` en todos los componentes. Solo quedan 7 redirects legacy en `astro.config.mjs`. Ver [`03-desarrollo/plan-migracion-urls-OF.md`](03-desarrollo/plan-migracion-urls-OF.md)
 
 #### 🟡 Medio Impacto (Semana 3 - Mes 2)
 - [ ] **hreflang cruzados** — activar en Layout para todas las páginas indexadas (CO ↔ EN ↔ BR)
@@ -598,4 +665,4 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Junio 15, 2026*
+*Actualizado: Junio 16, 2026*
