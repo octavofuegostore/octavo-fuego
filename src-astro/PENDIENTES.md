@@ -2,6 +2,129 @@
 
 ---
 
+## 🔍 PRUEBA MANUAL PENDIENTE — TODO JUNTO
+
+> Ejecutar: `npm run dev` → http://localhost:4321/admin → hacer login → probar todo.
+
+### Auth & Login
+- [ ] Login con credenciales correctas → entra al admin
+- [ ] Login con credenciales incorrectas → muestra error
+- [ ] Logout → redirige a login
+- [ ] Acceso a `/admin` sin cookie → redirige a login
+
+### Dashboard Principal (`/admin`)
+- [ ] KPI cards muestran números
+- [ ] Selector de período (Mes / Trimestre / Año) cambia los datos
+- [ ] `GraficaLíneas` — tendencia de ingresos se renderiza
+- [ ] `GraficaTorta` — órdenes por estado (Pendiente/Enviado/Entregado)
+- [ ] `GraficaBarrasH` — top 5 productos con valores COP
+- [ ] Cambiar período → los 3 gráficos se actualizan
+
+### Órdenes (`/admin/ordenes`)
+- [ ] Tabla renderiza órdenes mock
+- [ ] Búsqueda filtra por nombre/email
+- [ ] Filtro "Estado" (Todos/Pendiente/etc) cambia resultados
+- [ ] Filtro "Canal" (Todos/Web/WhatsApp/Tienda) cambia resultados
+- [ ] Filtro "Ubicación" (Todos/CO/BR/US/EU) cambia resultados
+- [ ] Paginación: Anterior / Siguiente / número de página
+- [ ] Click en "Ver" → navega a `/admin/ordenes/[id]`
+- [ ] Click en "Confirmar" → toast + refreshTrigger actualiza la tabla
+- [ ] Click en "Enviar" → toast + refreshTrigger actualiza la tabla
+- [ ] Botón "Nueva Orden" → abre modal/formulario
+
+### Clientes (`/admin/clientes`)
+- [ ] Tabla renderiza clientes mock
+- [ ] Búsqueda filtra por nombre/email
+- [ ] Filtro "Ubicación" cambia resultados
+- [ ] Filtro "Tipo" (Todos/Minorista/Mayorista) cambia resultados
+- [ ] Paginación funciona
+- [ ] Click en "Ver" → navega a `/admin/clientes/[id]`
+- [ ] Click en "Editar" → abre modal con datos precargados
+- [ ] Botón "Nuevo Cliente" → abre formulario vacío
+
+### Inventario (`/admin/inventario`)
+- [ ] Tabla renderiza productos mock
+- [ ] Búsqueda filtra por nombre/categoría
+- [ ] Filtro "Categoría" cambia resultados
+- [ ] Filtro "Estado" (Todos/Activo/Agotado) cambia resultados
+- [ ] Badges de stock: verde (>10), amarillo (1-10), rojo (0)
+- [ ] Paginación funciona
+- [ ] Botón "Nuevo Producto" → abre formulario
+
+### Contabilidad (`/admin/contabilidad`)
+- [ ] KPI cards muestran (Ingresos Totales, Egresos Totales, Ganancia Neta)
+- [ ] `GraficaBarras` — barras ingreso/egreso por mes
+- [ ] Selector de mes/año cambia los datos de la gráfica
+- [ ] `GraficaTorta` — egresos por categoría (Materia Prima, Envíos, Marketing, Empaque)
+
+### Transacciones (`/admin/contabilidad/transacciones`)
+- [ ] Tabla de transacciones renderiza
+- [ ] Búsqueda filtra
+- [ ] Filtros (tipo, estado) funcionan
+- [ ] Paginación funciona
+- [ ] Botones de acciones (ver/editar) funcionan
+
+### Informes (`/admin/contabilidad/informes`)
+- [ ] Tabs Mensual / Anual funcionan
+- [ ] Selector de período cambia datos
+- [ ] `GraficaLíneas` — tendencia anual se renderiza
+- [ ] Botón "Generar Informe" → genera PDF/CSV (mock)
+- [ ] Botón "Exportar" → descarga archivo
+
+### Sidebar & Navegación
+- [ ] Sidebar muestra todas las secciones
+- [ ] Submenu de Contabilidad se expande/colapsa
+- [ ] Items activos tienen estilo visual
+- [ ] Navegación entre secciones funciona sin recargar página
+
+### Toasts & Notificaciones
+- [ ] Al confirmar/enviar orden → toast aparece
+- [ ] Al guardar cliente → toast aparece
+- [ ] Al guardar producto → toast aparece
+
+### Responsive (Mobile)
+- [ ] Sidebar colapsable en móvil
+- [ ] Tablas scroll horizontal en móvil
+- [ ] Gráficos se adaptan al ancho
+
+---
+
+## ✅ COMPLETADO HOY — 17 Junio 2026
+
+### ✅ React Islands Migration — Slices 1-3 (17 Junio 2026)
+
+> **Engram**: `sdd/react-islands/*` (#619, #620, #621)
+> **Commits**: `b9f105a` (Slice 1), `dc0aec2` (Slices 2-3)
+
+- [x] **Slice 1**: OrderTable React island — search + 3 filtros + paginación + confirm/ship
+- [x] **Slice 2**: CustomerTable React island — search + location/type filters + paginación
+- [x] **Slice 3**: ProductTable React island — search + category/status + stock badges
+- [x] `src/stores/adminStore.ts` — nanostores atoms
+- [x] `src/components/ui/table.tsx` — shadcn-style Table primitives
+
+### ✅ Admin Dashboard Charts (17 Junio 2026)
+
+> **Engram**: `sdd/admin-dashboard-charts/*` (#629, #630)
+> **Commit**: `bddbb0c`
+
+- [x] `src/components/admin/charts/GraficaTorta.astro` — donut chart con leyenda y COP
+- [x] `src/components/admin/charts/GraficaBarrasH.astro` — barras horizontales, labels truncadas
+- [x] `src/lib/admin/dashboard/mockCharts.ts` — mock data para mes/trimestre/año
+- [x] `/admin` — selector período + 3 gráficos (Línea + Torta + BarrasH)
+- [x] `/admin/contabilidad` — GraficaTorta para egresos por categoría
+
+### ✅ Architecture Refactors (17 Junio 2026)
+
+> **Commit**: `638c452`
+
+- [x] DRY: `src/lib/admin/formatters.ts` — `formatPrice()`, `formatDate()` shared
+- [x] DRY: `src/lib/admin/usePagination.ts` — `getPageNumbers()` (antes duplicado 3x)
+- [x] Tipo: `CartItem` unificado — `stores/cartStore.ts` → `lib/cart/types`
+- [x] Deps: `phosphor-react` removido, `shadcn` → devDependencies
+- [x] Estructura: `.atl/` unificado en raíz
+
+---
+
 ## ✅ COMPLETADO: Admin Auth System (17 Junio 2026)
 
 > **Engram**: `sdd/admin-auth-system/*`
@@ -177,6 +300,11 @@
 | React Islands tasks | `sdd/react-islands/tasks` |
 | React Islands apply | `sdd/react-islands/apply-progress` |
 | React Islands verify | `sdd/react-islands/verify-report` |
+| React Islands archive | `sdd/react-islands/archive-report` |
+| Admin Dashboard Charts proposal | `sdd/admin-dashboard-charts/proposal` (#629) |
+| Admin Dashboard Charts spec | `sdd/admin-dashboard-charts/spec` (#630) |
+| Admin Dashboard Charts archive | `sdd/admin-dashboard-charts/archive-report` (#634) |
+| Architecture audit | `architecture-audit-octavo-fuego` (ses_129ffbabbffe) |
 | Doc restructure (bifurcation) | `sdd/doc-restructure/proposal` (#602) |
 | L-Medusa Architecture | `../.atl/l-medusa-architecture.md` |
 | L-Medusa Specs | `../.atl/specs/l-medusa-complete-specs.md` |
