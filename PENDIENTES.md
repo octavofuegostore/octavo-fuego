@@ -49,33 +49,34 @@
 
 | # | Tarea | Esfuerzo | Impacto | Dónde |
 |---|-------|----------|---------|-------|
-| 1 | **Precio/g visible en PDPs** + copy "20g por el precio que otros cobran por 10" | 1h | 🔥🔥🔥🔥🔥 | → §4 SEO Gaps |
-| 2 | **Mobile-First Phase 1** (hamburger nav ROTO, anti-zoom, safe-area, navbar collision) | 2h | 🔥🔥🔥🔥🔥 | → §7.1 |
-| 3 | **Google Search Console** + verificar que Google indexó las 34 páginas | 30min | 🔥🔥🔥🔥 | → §4 SEO |
-| 4 | **Imágenes reales de los 5 rapés** (placeholder bobinsana → producto real) | 3h | 🔥🔥🔥🔥 | → §3.6 |
-| 5 | **og:image social card (1200×630)** | 1h | 🔥🔥🔥🔥 | → §3.6 |
-| 6 | **H1 + meta descriptions alineadas** con arquitectura SEO (5 PDPs + homepage + landing B2B) | 2h | 🔥🔥🔥🔥 | → §4 + §3.10.1 |
-| 7 | **Landing B2B: 5 fixes críticos** (eliminar "y Brasil", H1, keywords, 4to pilar precio, hreflang) | 2h | 🔥🔥🔥🔥 | → §3.10.1 |
-| 8 | **3 páginas informacionales** (/es/que-es-el-rape/, /es/como-usar-el-rape/, /es/rape-do-acre-origen/) | 6h | 🔥🔥🔥 | → §4 SEO Gaps |
-| 9 | **Microsoft Clarity** — heatmaps + session recordings (GRATIS, 5 min setup) | 5min | 🔥🔥🔥 | → §5 Testing |
-| 10 | **Mobile-First Phase 2** (touch targets 44px, tap delay, snap-scroll) | 1.5h | 🔥🔥🔥 | → §7.1 |
+| ✅ | ~~Precio/g visible en PDPs~~ — `PricingTable.astro:78` | - | - | → §3.6 |
+| ✅ | ~~Mobile-First Phase 1~~ — 28/28 fixes (commits `2e79fe6..d06ab54`) | - | - | → §7.1 |
+| 1 | **Google Search Console** + Microsoft Clarity + verificar indexación | 35min | 🔥🔥🔥🔥 | → §5 Testing |
+| 2 | **Imágenes reales de los 5 rapés** (placeholder bobinsana → fotos reales en `assets/productos/rape/`) | 3h | 🔥🔥🔥🔥🔥 | → §3.6 |
+| 3 | **Landing B2B: 14 fixes** (audit completo en `.atl/b2b-mayoristas-landing-audit.md`, 0 aplicados) | 2h | 🔥🔥🔥🔥 | → §3.10.1 |
+| 4 | **3 páginas informacionales SEO** (/es/que-es-el-rape/, /es/como-usar-el-rape/, /es/rape-do-acre-origen/) | 6h | 🔥🔥🔥 | → §4 SEO Gaps |
+| 5 | **H1 + meta descriptions alineadas** con arquitectura SEO (5 PDPs + homepage + landing B2B) | 2h | 🔥🔥🔥 | → §4 + §3.10.1 |
+| 6 | **og:image social card (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen | 1h | 🔥🔥🔥 | → §3.6 |
+| 7 | **Mobile-First Phase 2** — validación en device real + `clamp()` en headings (29/29 fixes) | 1.5h | 🔥🔥 | → §7.1 |
+| 8 | **11 páginas SEO Trust Foundation** (nosotros, contacto, faq, envíos, términos, privacidad + 5 landings) | 12h | 🔥🔥🔥 | → §3.12 |
+| 9 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 30min | 🔥🔥🔥 | → §5 Testing |
+| 10 | **Velocidad en 3G colombiano** — 70%+ tráfico mobile no es 5G. Medir con throttling. | 30min | 🔥🔥 | → §5 Testing |
 
 ### Menciones de honor
 | # | Tarea | Esfuerzo | Dónde |
 |---|-------|----------|-------|
 | 11 | IndexNow Protocol (acelerar indexación Bing/Yandex) | 30min | → §4 SEO Pipod |
-| 12 | Design system find-replace `--verde-botanico` → `--color-action-primary` | 30min | → §Design System |
+| ✅ | ~~Design system `--verde-botanico` → `--color-action-primary`~~ — 76 ocurrencias, 18 archivos (`db89858`) | - | → §Design System |
 | 13 | FAQPage Schema en las 5 PDPs | 2h | → §4 SEO Pipod |
-| 14 | Página "Nosotros" | 3h | → §3.6 |
+| 14 | Página "Nosotros" | 3h | → §3.12 Bloque A |
 | 15 | hreflang cruzados CO↔EN | 1h | → §4 SEO Gaps |
 | 16 | "Consejos o Pajé" — artículo #1 | 2h | → §Blog |
 
 ### Tareas detectadas que NO estaban en PENDIENTES.md
 | # | Tarea | Prioridad |
 |---|-------|-----------|
-| 🆕 | **Test WhatsApp checkout end-to-end** — producto, cantidades, precio en iPhone + Android real | 🔴 Alta |
 | 🆕 | **404 audit** — arquitectura SEO §10 prioridad 1 (arreglar 404s de páginas de producto) | 🔴 Alta |
-| 🆕 | **Velocidad en 3G colombiano** — 70%+ tráfico mobile en Colombia no es 5G. Medir con throttling. | 🟡 Media |
+| 🆕 | **Borrar directorio fantasma `ativos/octavo-fuego/`** — build artifacts sin .git | 🟢 Baja |
 
 ### Consolidación de secciones duplicadas
 > Las secciones §3.7-§3.10, §4 SEO Cross-Domain se consolidan en §7.2 y §7.3 (canonicals). Cada tarea original está referenciada. No se pierde detalle.
@@ -100,7 +101,7 @@
 
 ### 3.3 Sistema de Productos ✅
 - [x] Data layer: 5 rapés × 3 idiomas (verbatim copy)
-- [x] Precios: 10g/$35K, 20g/$70K, 30g/$100K
+- [x] Precios: 10g/$35K, 20g/$70K, 30g/$100K + precio/g visible
 - [x] PricingTable con botones seleccionables
 - [x] Mapa de intenciones (5 categorías)
 - [x] Profecía completa (3 idiomas)
@@ -138,11 +139,11 @@
 
 ### 3.6 Por Hacer 🔄
 - [x] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
-- [ ] Imágenes reales de los 5 rapés (placeholder actual: bobinsana-rape-2.webp)
-- [ ] og:image social card real (1200×630 — actualmente usa logo.png)
-- [ ] WhatsAppButton en PDP (actualmente solo FloatingWhatsApp global)
+- [x] WhatsAppButton en PDP — integrado en `PricingTable.astro:86`
+- [ ] **Imágenes reales de los 5 rapés** (placeholder actual: `bobinsana-rape-2.webp`. Fotos reales existen en `assets/productos/rape/` — falta copiarlas a `public/` y mapear slugs a imágenes)
+- [ ] **og:image social card real (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen y pasarlo desde el PDP
 - [ ] **Página "Nosotros"** → Ver §3.12 Bloque A
-- [ ] **6 páginas inexistentes (404)** → Ver §3.12 Bloque A. Audit original: Jun 16, 2026.
+- [ ] **11 páginas SEO** (6 trust foundation + 5 landings) → Ver §3.12 Bloque A y B
 
 ### 3.7 Monorepo + Medusa SSR ⏳ → Ver §7.2 Centralización
 > **Nota:** Todas las tareas de esta sección están consolidadas en §7.2 Centralización Automatizada. El stack Medusa requiere facturación validada ("cuando WhatsApp colapse") y no es prioritario para el MVP. Las tareas detalladas de monorepo se preservan en §7.2 ### Monorepo Setup.
@@ -321,7 +322,8 @@ Password: octavo2026
 - [x] Hreflang tags ES/EN/PT
 - [x] Sitemap generado
 - [x] Auditoría SEO completa (5 críticos + 4 warnings corregidos)
-- [ ] og:image social card (1200×630 — actualmente usa logo.png)
+- [x] Precio/g visible en PDP — `PricingTable.astro:78`
+- [ ] **og:image social card (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen (actualmente usa logo.png)
 - [ ] Imágenes reales de productos para SEO
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado
@@ -334,7 +336,7 @@ Password: octavo2026
 > Fuente: [`.atl/arquitectura-seo-extraccion-completa.md`](.atl/arquitectura-seo-extraccion-completa.md) — 11 gaps extraídos del doc maestro
 
 #### 🔴 Alto Impacto (Semana 1-3)
-- [ ] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs
+- [x] **Precio/g visible en PDP** — `$3.500 COP/g` como elemento principal en `PricingTable.astro:78` + copy "20 gramos por el precio que otros cobran por 10" en TODAS las PDPs
 - [ ] **Crear `/es/que-es-el-rape/`** — página informacional (qué es, para qué sirve, efectos)
 - [ ] **Crear `/es/como-usar-el-rape/`** — página informacional (cómo aplicar, kuripe, ceremonial)
 - [ ] **Crear `/es/rape-do-acre-origen/`** — página informacional (Brasil vs Colombia, empaque vacío)
@@ -426,14 +428,15 @@ Password: octavo2026
 > **Objetivo:** Facturar. Validar demanda en Colombia y Brasil.
 
 - [x] Astro 6.1.3 con 3 locales (ES/EN/PT)
-- [x] 5 productos con precios COP
-- [x] WhatsApp Commerce integrado
+- [x] 5 productos con precios COP + precio/g visible
+- [x] WhatsApp Commerce integrado (FloatingWhatsApp global + WhatsAppButton en PDP)
 - [x] Schemas JSON-LD (100% cobertura)
-- [x] SEO on-page (hreflang, sitemap, OG)
+- [x] SEO on-page (hreflang, sitemap, OG, structured data)
+- [x] Mobile-First 28/29 fixes (4 commits, falta `clamp()` en headings)
 - [ ] **Página "Nosotros"** — historia, sourcing de comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
+- [ ] **Google Search Console** + verificar indexación de 34 páginas
 - [ ] **Google Looker Studio** — dashboard consolidado (Search Console + GA4)
 - [ ] **Microsoft Clarity** — heatmaps, session recordings (gratis)
-- [ ] Google Search Console + indexación
 - [ ] Subcarpetas `/es/` y `/pt/` sembrando autoridad desde día 1
 
 #### Optimización Mobile-First 📱 (condición de salida a producción)
@@ -456,7 +459,7 @@ Password: octavo2026
 - [ ] **Tipografía responsive con `clamp()`** — reemplazar `text-5xl md:text-6xl` por `clamp()` en headings (SDD usó breakpoints fijos, `clamp()` es más fluido). ~5 líneas.
 - [x] **Breakpoint detection CSS-first** — `data-breakpoint` en `<html>` via inline script
 
-> **28/28 fixes aplicados (SDD mobile-first-overhaul, 4 commits).** Ver `openspec/changes/mobile-first-overhaul/` para detalle. Quedan tareas de validación mobile que requieren device real o setup externo:
+> **28/29 fixes aplicados (SDD mobile-first-overhaul, 4 commits).** Ver `openspec/changes/mobile-first-overhaul/` para detalle. Queda 1 fix cosmético (`clamp()` en headings) + tareas de validación mobile que requieren device real o setup externo:
 
 | # | Tarea | Prioridad |
 |---|-------|-----------|
@@ -688,4 +691,12 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Junio 16, 2026*
+*Actualizado: Junio 17, 2026*
+
+---
+
+## 🧹 Limpieza (Jun 17, 2026)
+
+- [x] **Detectado directorio fantasma** `ativos/octavo-fuego/` — build artifacts sin `.git` (solo `dist/`, `node_modules/`, `.astro/`). Proyecto real en `activos/octavo-fuego/`
+- [x] **Borrar** `rm -rf /Users/calderonjosue_/clientes/ativos/octavo-fuego/`
+- [x] **PENDIENTES.md auditado** — 2 items tachados (mobile 28/28, precio/g), Top 10 renumerado, 5 secciones actualizadas
