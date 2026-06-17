@@ -4,7 +4,9 @@ export const prerender = false;
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import KpiCard from '@/components/admin/contabilidad/KpiCard.astro';
 import GraficaBarras from '@/components/admin/contabilidad/GraficaBarras.astro';
+import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
 import { MOCK_KPIS, MOCK_GRAFICA_MENSUAL, formatCOP } from '@/lib/admin/contabilidad/mock';
+import { MOCK_EXPENSES_BY_CATEGORY } from '@/lib/admin/dashboard/mockCharts';
 
 const ingresosIcon = 'M7 11l5-5m0 0l5 5m-5-5v12';
 const egresosIcon = 'M7 13l5 5m0 0l5-5m-5 5V6';
@@ -79,9 +81,38 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
   </div>
 
   <!-- Monthly Evolution Chart -->
-  <div>
+  <div class="mb-8">
     <h2 class="text-lg font-display font-bold text-humo mb-4">Evolución Mensual</h2>
     <GraficaBarras data={MOCK_GRAFICA_MENSUAL} />
+  </div>
+
+  <!-- Expense Breakdown Chart -->
+  <div>
+    <h2 class="text-lg font-display font-bold text-humo mb-4">Gastos por Categoría</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <GraficaTorta
+        data={MOCK_EXPENSES_BY_CATEGORY.mes}
+        title="Gastos del Mes"
+        size={280}
+      />
+      <!-- Summary cards for expenses -->
+      <div class="space-y-4">
+        {MOCK_EXPENSES_BY_CATEGORY.mes.map((expense) => (
+          <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-card">
+            <div class="flex items-center gap-3">
+              <span
+                class="w-4 h-4 rounded"
+                style={`background-color: ${expense.color};`}
+              ></span>
+              <span class="text-sm font-medium text-humo">{expense.label}</span>
+            </div>
+            <span class="text-sm font-bold text-humo">
+              {formatCOP(expense.value)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 </AdminLayout>
 

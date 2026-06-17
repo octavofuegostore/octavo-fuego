@@ -1,0 +1,152 @@
+---
+export interface BarraHItem {
+  label: string;
+  value: number;
+  color?: string;
+}
+
+export interface Props {
+  data: BarraHItem[];
+  title?: string;
+  maxValue?: number;
+  barHeight?: number;
+  barGap?: number;
+}
+
+const {
+  data,
+  title,
+  maxValue: providedMaxValue,
+  barHeight = 28,
+  barGap = 8,
+} = Astro.props;
+
+const hasData = data.length > 0;
+const maxValue = providedMaxValue ?? Math.max(...data.map((d) => d.value), 1);
+const defaultColor = '#8B4513';
+
+// Chart dimensions
+const labelWidth = 140;
+const valueWidth = 90;
+const chartWidth = 500 - labelWidth - valueWidth;
+const chartHeight = hasData ? data.length * (barHeight + barGap) - barGap : 100;
+const svgHeight = chartHeight + 40; // padding top/bottom
+
+// Calculate bar width proportionally
+function getBarWidth(value: number): number {
+  return (value / maxValue) * chartWidth;
+}
+
+// Format COP currency
+function formatCOP(value: number): string {
+  return new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    maximumFractionDigits: 0,
+  }).format(value);
+}
+
+// Format short value
+function formatValue(val: number): string {
+  if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+  if (val >= 1_000) return `${(val / 1_000).toFixed(0)}k`;
+  return String(val);
+}
+
+// Truncate label at 25 chars
+function truncateLabel(label: string, maxLen = 25): string {
+  return label.length > maxLen ? label.slice(0, maxLen - 1) + '…' : label;
+}
+---
+
+<div class="bg-white rounded-2xl p-6 shadow-card">
+  {title && <h3 class="text-base font-display font-bold text-humo mb-4">{title}</h3>}
+
+  <svg
+    viewBox={`0 0 500 ${svgHeight}`}
+    class="w-full h-auto"
+    role="img"
+    aria-label={title || 'Gráfico de barras horizontal'}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <title>{title || 'Gráfico de barras horizontal'}</title>
+
+    {!hasData ? (
+      // Empty state
+      <text x="250" y={svgHeight / 2} text-anchor="middle" dominant-baseline="middle" fill="#7b8084" font-size="14">
+        Sin datos
+      </text>
+    ) : (
+      <>
+        {/* Y-axis labels */}
+        {data.map((d, i) => {
+          const y = 20 + i * (barHeight + barGap) + barHeight / 2;
+          return (
+            <text
+              x={labelWidth - 8}
+              y={y}
+              text-anchor="end"
+              dominant-baseline="middle"
+              fill="#2A2A2A"
+              font-size="11"
+            >
+              {truncateLabel(d.label)}
+            </text>
+          );
+        })}
+
+        {/* Bars */}
+        {data.map((d, i) => {
+          const y = 20 + i * (barHeight + barGap);
+          const barWidth = getBarWidth(d.value);
+          const barColor = d.color || defaultColor;
+          return (
+            <>
+              {/* Bar background (track) */}
+              <rect
+                x={labelWidth}
+                y={y}
+                width={chartWidth}
+                height={barHeight}
+                fill="#F5F5F7"
+                rx="4"
+              />
+              {/* Bar fill */}
+              <rect
+                x={labelWidth}
+                y={y}
+                width={barWidth}
+                height={barHeight}
+                fill={barColor}
+                rx="4"
+                style={`transition: width 0.3s ease;`}
+              />
+              {/* Value label at end of bar */}
+              <text
+                x={labelWidth + barWidth + 8}
+                y={y + barHeight / 2}
+                dominant-baseline="middle"
+                fill="#2A2A2A"
+                font-size="10"
+                font-weight="500"
+              >
+                {formatCOP(d.value)}
+              </text>
+            </>
+          );
+        })}
+
+        {/* X-axis scale reference (right side) */}
+        <text
+          x={labelWidth + chartWidth}
+          y={svgHeight - 8}
+          text-anchor="end"
+          fill="#7b8084"
+          font-size="9"
+        >
+          {formatValue(maxValue)}
+        </text>
+      </>
+    )}
+  </svg>
+</div>

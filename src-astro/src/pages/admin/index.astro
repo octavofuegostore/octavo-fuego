@@ -6,6 +6,20 @@ import StatsCard from '@/components/admin/dashboard/StatsCard.astro';
 import RecentOrders from '@/components/admin/dashboard/RecentOrders.astro';
 import LowStock from '@/components/admin/dashboard/LowStock.astro';
 import DashboardSkeleton from '@/components/admin/dashboard/DashboardSkeleton.astro';
+import GraficaLíneas from '@/components/admin/contabilidad/GraficaLíneas.astro';
+import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
+import GraficaBarrasH from '@/components/admin/charts/GraficaBarrasH.astro';
+import {
+  MOCK_ORDERS_BY_STATUS,
+  MOCK_TOP_PRODUCTS,
+  MOCK_REVENUE_TREND,
+} from '@/lib/admin/dashboard/mockCharts';
+
+// Default period
+const defaultPeriod = 'mes';
+const ordersData = MOCK_ORDERS_BY_STATUS[defaultPeriod];
+const revenueData = MOCK_REVENUE_TREND[defaultPeriod];
+const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 ---
 
 <AdminLayout title="Dashboard" description="Panel de administración de Octavo Fuego">
@@ -17,9 +31,80 @@ import DashboardSkeleton from '@/components/admin/dashboard/DashboardSkeleton.as
   <!-- Content State (hidden initially) -->
   <div id="dashboard-content" class="hidden">
     <!-- Page Header -->
-    <div class="mb-8">
-      <h1 class="text-2xl font-display font-bold text-humo">Dashboard</h1>
-      <p class="text-ceniza mt-1">Resumen de tu negocio</p>
+    <div class="mb-8 flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Dashboard</h1>
+        <p class="text-ceniza mt-1">Resumen de tu negocio</p>
+      </div>
+      <!-- Period Selector -->
+      <div class="flex items-center gap-2">
+        <label for="period-selector" class="text-sm text-ceniza">Periodo:</label>
+        <select
+          id="period-selector"
+          class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white"
+        >
+          <option value="mes">Mes</option>
+          <option value="trimestre">Trimestre</option>
+          <option value="ano">Año</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="mb-8 space-y-6">
+      <!-- Top Row: Line Chart + Donut Chart -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Revenue Trend Line Chart (one per period) -->
+        {(['mes', 'trimestre', 'ano'] as const).map((period) => (
+          <div
+            id={`chart-revenue-${period}`}
+            data-chart="revenue"
+            data-period={period}
+            class={period !== defaultPeriod ? 'hidden' : ''}
+          >
+            <GraficaLíneas
+              data={MOCK_REVENUE_TREND[period].map(d => ({ label: d.label, value: d.value }))}
+              title={`Tendencia de Ingresos (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
+              height={220}
+              color="#8B4513"
+              fillColor="rgba(139,69,51,0.1)"
+            />
+          </div>
+        ))}
+
+        <!-- Orders by Status Donut Chart (one per period) -->
+        {(['mes', 'trimestre', 'ano'] as const).map((period) => (
+          <div
+            id={`chart-orders-${period}`}
+            data-chart="orders"
+            data-period={period}
+            class={period !== defaultPeriod ? 'hidden' : ''}
+          >
+            <GraficaTorta
+              data={MOCK_ORDERS_BY_STATUS[period]}
+              title={`Órdenes por Estado (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
+              size={280}
+            />
+          </div>
+        ))}
+      </div>
+
+      <!-- Bottom Row: Top Products Horizontal Bar Chart (one per period) -->
+      {(['mes', 'trimestre', 'ano'] as const).map((period) => (
+        <div
+          id={`chart-products-${period}`}
+          data-chart="products"
+          data-period={period}
+          class={period !== defaultPeriod ? 'hidden' : ''}
+        >
+          <GraficaBarrasH
+            data={MOCK_TOP_PRODUCTS[period]}
+            title={`Top 5 Productos (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
+            barHeight={32}
+            barGap={10}
+          />
+        </div>
+      ))}
     </div>
 
     <!-- Stats Grid -->
@@ -183,4 +268,20 @@ import DashboardSkeleton from '@/components/admin/dashboard/DashboardSkeleton.as
       }
     });
   }, 800);
+
+  // Period selector for charts
+  const periodSelector = document.getElementById('period-selector') as HTMLSelectElement;
+  const chartSections = document.querySelectorAll('[id^="chart-"]');
+
+  periodSelector?.addEventListener('change', () => {
+    const selectedPeriod = periodSelector.value;
+    chartSections.forEach((section) => {
+      const chartPeriod = section.getAttribute('data-period');
+      if (chartPeriod === selectedPeriod) {
+        section.classList.remove('hidden');
+      } else {
+        section.classList.add('hidden');
+      }
+    });
+  });
 </script>
