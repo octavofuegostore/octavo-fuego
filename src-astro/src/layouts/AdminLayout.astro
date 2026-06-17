@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import ToasterClient from '@/components/admin/ToasterClient';
 
 interface Props {
   title: string;
@@ -329,6 +330,9 @@ const currentPath = Astro.url.pathname;
       id="sidebar-overlay"
       class="fixed inset-0 bg-black/50 z-40 hidden lg:hidden"
     ></div>
+
+    <!-- Sonner Toaster -->
+    <ToasterClient client:load />
 
     <script>
       // Mobile menu toggle

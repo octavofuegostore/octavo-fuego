@@ -40,6 +40,10 @@
 - [contabilidad-integration-plan.md](../.atl/proposals/contabilidad-integration-plan.md) — Plan integración contable
 - [contabilidad-integration.md](../.atl/proposals/contabilidad-integration.md) — Plan corto contabilidad
 
+### SDD Activo
+- [admin-ui-complete/proposal](../.atl/proposals/) — Wiring UI search/filtros/paginación (39 tasks, apply done, verify pendiente)
+- [admin-foundation-phase-0/proposal](../.atl/proposals/) — Service layer + tipos + .atl/ unificación (pendiente)
+
 ## 🏗️ Arquitectura (Backend)
 - [ARCHITECTURE.md](../../ARCHITECTURE.md) — Manifiesto técnico, 3 fases, monorepo
 - [l-medusa-architecture.md](../.atl/l-medusa-architecture.md) — Backend Supabase-First

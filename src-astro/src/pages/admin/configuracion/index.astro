@@ -6,9 +6,20 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
 
 <AdminLayout title="Configuración" description="Configuración del sistema">
   <!-- Page Header -->
-  <div class="mb-8">
-    <h1 class="text-2xl font-display font-bold text-humo">Configuración</h1>
-    <p class="text-ceniza mt-1">Administra la configuración del sistema</p>
+  <div class="mb-8 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-display font-bold text-humo">Configuración</h1>
+      <p class="text-ceniza mt-1">Administra la configuración del sistema</p>
+    </div>
+    <button
+      id="guardar-cambios-btn"
+      class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+      Guardar Cambios
+    </button>
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -17,38 +28,44 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- General Settings -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h2 class="text-lg font-display font-bold text-humo mb-6">General</h2>
-        
+
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Nombre del Negocio</label>
             <input
               type="text"
+              id="config-nombre"
               value="Octavo Fuego"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Email de Contacto</label>
             <input
               type="email"
+              id="config-email"
               value="contacto@octavofuego.com"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Teléfono</label>
             <input
               type="tel"
+              id="config-telefono"
               value="+57 300 123 4567"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Moneda Principal</label>
-            <select class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors">
+            <select
+              id="config-moneda"
+              class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+            >
               <option value="COP" selected>COP - Peso Colombiano</option>
               <option value="BRL">BRL - Real Brasileño</option>
               <option value="USD">USD - Dólar Americano</option>
@@ -60,33 +77,42 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- Inventory Settings -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h2 class="text-lg font-display font-bold text-humo mb-6">Inventario</h2>
-        
+
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Unidad de Medida Principal</label>
-            <select class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors">
+            <select
+              id="config-unidad"
+              class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+            >
               <option value="g" selected>Gramos (g)</option>
               <option value="units">Unidades</option>
             </select>
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Stock Mínimo por Defecto</label>
             <input
               type="number"
+              id="config-stock-min"
               value="100"
               min="0"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-humo">Alertas de Stock Bajo</p>
               <p class="text-xs text-ceniza">Recibir notificaciones cuando el stock esté bajo</p>
             </div>
-            <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-tabacco transition-colors">
-              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
+            <button
+              type="button"
+              class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-papel transition-colors"
+              data-toggle="alertas-stock"
+              data-enabled="true"
+            >
+              <span class="toggle-indicator inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm" />
             </button>
           </div>
         </div>
@@ -95,46 +121,58 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- Order Settings -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h2 class="text-lg font-display font-bold text-humo mb-6">Órdenes</h2>
-        
+
         <div class="space-y-6">
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Tiempo de Expiración de Reserva (minutos)</label>
             <input
               type="number"
+              id="config-reserva-tiempo"
               value="15"
               min="5"
               max="60"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Costo de Envío por Defecto (COP)</label>
             <input
               type="number"
+              id="config-envio-costo"
               value="8000"
               min="0"
               class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
             />
           </div>
-          
+
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-humo">Checkout por WhatsApp</p>
               <p class="text-xs text-ceniza">Habilitar checkout via WhatsApp</p>
             </div>
-            <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-tabacco transition-colors">
-              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
+            <button
+              type="button"
+              class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-tabacco transition-colors"
+              data-toggle="checkout-whatsapp"
+              data-enabled="true"
+            >
+              <span class="toggle-indicator inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6 shadow-sm" />
             </button>
           </div>
-          
+
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-medium text-humo">Modo Mayorista</p>
               <p class="text-xs text-ceniza">Habilitar precios mayoristas</p>
             </div>
-            <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-tabacco transition-colors">
-              <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-6" />
+            <button
+              type="button"
+              class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-papel transition-colors"
+              data-toggle="modo-mayorista"
+              data-enabled="false"
+            >
+              <span class="toggle-indicator inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1 shadow-sm" />
             </button>
           </div>
         </div>
@@ -146,7 +184,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- Locations -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h3 class="font-display text-lg font-bold text-humo mb-4">Ubicaciones</h3>
-        
+
         <div class="space-y-4">
           <div class="p-3 bg-info/5 rounded-xl border border-info/20">
             <div class="flex items-center gap-2">
@@ -155,7 +193,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
             </div>
             <p class="text-xs text-ceniza mt-1">Bogotá, Colombia</p>
           </div>
-          
+
           <div class="p-3 bg-success/5 rounded-xl border border-success/20">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-success" />
@@ -169,7 +207,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- Regions -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h3 class="font-display text-lg font-bold text-humo mb-4">Regiones Activas</h3>
-        
+
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-sm text-humo">🇨🇴 Colombia</span>
@@ -193,7 +231,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       <!-- System Info -->
       <div class="bg-white rounded-2xl shadow-card p-6">
         <h3 class="font-display text-lg font-bold text-humo mb-4">Sistema</h3>
-        
+
         <div class="space-y-3">
           <div class="flex items-center justify-between">
             <span class="text-sm text-ceniza">Versión</span>
@@ -212,3 +250,81 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
     </div>
   </div>
 </AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  // Toggle button wiring
+  document.querySelectorAll('.toggle-btn').forEach(btn => {
+    btn?.addEventListener('click', () => {
+      const toggleBtn = btn as HTMLButtonElement;
+      const indicator = toggleBtn.querySelector('.toggle-indicator') as HTMLElement;
+      const isEnabled = toggleBtn.getAttribute('data-enabled') === 'true';
+      const newEnabled = !isEnabled;
+
+      toggleBtn.setAttribute('data-enabled', String(newEnabled));
+      toggleBtn.classList.toggle('bg-tabacco', newEnabled);
+      toggleBtn.classList.toggle('bg-papel', !newEnabled);
+
+      if (newEnabled) {
+        indicator.classList.remove('translate-x-1');
+        indicator.classList.add('translate-x-6');
+      } else {
+        indicator.classList.remove('translate-x-6');
+        indicator.classList.add('translate-x-1');
+      }
+
+      const toggleName = toggleBtn.getAttribute('data-toggle');
+      toast.info(`${toggleName} ${newEnabled ? 'habilitado' : 'deshabilitado'}`);
+    });
+  });
+
+  // Save button wiring
+  const guardarBtn = document.getElementById('guardar-cambios-btn');
+
+  guardarBtn?.addEventListener('click', async () => {
+    const btn = guardarBtn as HTMLButtonElement;
+    const originalText = btn.innerHTML;
+
+    // Set loading state
+    btn.disabled = true;
+    btn.innerHTML = `
+      <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+      </svg>
+      Guardando...
+    `;
+
+    // Collect form data
+    const config = {
+      nombre: (document.getElementById('config-nombre') as HTMLInputElement)?.value,
+      email: (document.getElementById('config-email') as HTMLInputElement)?.value,
+      telefono: (document.getElementById('config-telefono') as HTMLInputElement)?.value,
+      moneda: (document.getElementById('config-moneda') as HTMLSelectElement)?.value,
+      unidad: (document.getElementById('config-unidad') as HTMLSelectElement)?.value,
+      stockMin: (document.getElementById('config-stock-min') as HTMLInputElement)?.value,
+      reservaTiempo: (document.getElementById('config-reserva-tiempo') as HTMLInputElement)?.value,
+      envioCosto: (document.getElementById('config-envio-costo') as HTMLInputElement)?.value,
+      toggles: {} as Record<string, boolean>
+    };
+
+    // Collect toggle states
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      const toggleBtn = btn as HTMLButtonElement;
+      const name = toggleBtn.getAttribute('data-toggle');
+      if (name) {
+        config.toggles[name] = toggleBtn.getAttribute('data-enabled') === 'true';
+      }
+    });
+
+    // Simulate save (mock API call)
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    // Restore button
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+
+    // Show success toast
+    toast.success('Configuración guardada correctamente');
+  });
+</script>

@@ -1,0 +1,160 @@
+---
+export const prerender = false;
+// Stock page — Inventory stock levels by location
+import AdminLayout from '@/layouts/AdminLayout.astro';
+---
+
+<AdminLayout title="Stock" description="Niveles de inventario por ubicación">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-display font-bold text-humo">Stock</h1>
+    <p class="text-ceniza mt-1">Niveles de inventario por ubicación</p>
+  </div>
+
+  <!-- Filter -->
+  <div class="mb-6 flex items-center gap-4">
+    <div class="flex-1 max-w-xs">
+      <div class="relative">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="search-stock"
+          placeholder="Buscar producto..."
+          class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+        />
+      </div>
+    </div>
+    <select id="location-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+      <option value="">Todas las ubicaciones</option>
+      <option value="CO">CO-BOGOTA</option>
+      <option value="BR">BR-ACRE</option>
+    </select>
+    <select id="status-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+      <option value="">Todos los estados</option>
+      <option value="ok">Normal</option>
+      <option value="low">Stock Bajo</option>
+      <option value="critical">Crítico</option>
+    </select>
+  </div>
+
+  <!-- Stock Table -->
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-papel">
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Producto</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Ubicación</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Stock Actual</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Stock Mínimo</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Estado</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="stock-tbody" class="divide-y divide-papel">
+          <!-- JS will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  interface StockItem {
+    productId: string;
+    productName: string;
+    sku: string;
+    location: string;
+    current: number;
+    minimum: number;
+  }
+
+  const mockStock: StockItem[] = [
+    { productId: '1', productName: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', location: 'CO-BOGOTA', current: 250, minimum: 100 },
+    { productId: '1', productName: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', location: 'BR-ACRE', current: 800, minimum: 100 },
+    { productId: '2', productName: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', location: 'CO-BOGOTA', current: 180, minimum: 100 },
+    { productId: '2', productName: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', location: 'BR-ACRE', current: 650, minimum: 100 },
+    { productId: '3', productName: 'Sabonete - Lavanda', sku: 'SL-75', location: 'CO-BOGOTA', current: 400, minimum: 100 },
+    { productId: '3', productName: 'Sabonete - Lavanda', sku: 'SL-75', location: 'BR-ACRE', current: 15, minimum: 100 },
+    { productId: '4', productName: 'Sabonete - Avena', sku: 'SA-75', location: 'CO-BOGOTA', current: 350, minimum: 100 },
+    { productId: '4', productName: 'Sabonete - Avena', sku: 'SA-75', location: 'BR-ACRE', current: 450, minimum: 100 },
+    { productId: '5', productName: 'Pack Regalo Premium', sku: 'PR-100', location: 'CO-BOGOTA', current: 50, minimum: 50 },
+    { productId: '5', productName: 'Pack Regalo Premium', sku: 'PR-100', location: 'BR-ACRE', current: 3, minimum: 20 },
+  ];
+
+  let filteredStock = [...mockStock];
+
+  const searchInput = document.getElementById('search-stock') as HTMLInputElement;
+  const locationFilter = document.getElementById('location-filter') as HTMLSelectElement;
+  const statusFilter = document.getElementById('status-filter') as HTMLSelectElement;
+
+  function getStatus(current: number, minimum: number): { class: string; label: string } {
+    if (current < minimum * 0.5) return { class: 'bg-error/10 text-error', label: 'Crítico' };
+    if (current < minimum) return { class: 'bg-warning/10 text-warning', label: 'Stock Bajo' };
+    return { class: 'bg-success/10 text-success', label: 'Normal' };
+  }
+
+  function filterStock() {
+    const query = searchInput?.value.toLowerCase() || '';
+    const location = locationFilter?.value || '';
+    const status = statusFilter?.value || '';
+
+    filteredStock = mockStock.filter(s => {
+      const matchesSearch = s.productName.toLowerCase().includes(query) || s.sku.toLowerCase().includes(query);
+      const matchesLocation = !location || s.location.startsWith(location);
+      const statusInfo = getStatus(s.current, s.minimum);
+      const matchesStatus = !status || (status === 'ok' && statusInfo.label === 'Normal') ||
+                           (status === 'low' && statusInfo.label === 'Stock Bajo') ||
+                           (status === 'critical' && statusInfo.label === 'Crítico');
+      return matchesSearch && matchesLocation && matchesStatus;
+    });
+
+    renderStock();
+  }
+
+  function renderStock() {
+    const tbody = document.getElementById('stock-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = filteredStock.map(s => {
+      const status = getStatus(s.current, s.minimum);
+      const locationBg = s.location === 'CO-BOGOTA' ? 'bg-info/10 text-info' : 'bg-success/10 text-success';
+
+      return `
+        <tr class="hover:bg-papel/30 transition-colors">
+          <td class="px-6 py-4">
+            <div>
+              <p class="text-sm font-medium text-humo">${s.productName}</p>
+              <p class="text-xs text-ceniza">${s.sku}</p>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${locationBg}">${s.location}</span>
+          </td>
+          <td class="px-6 py-4 text-right text-sm font-medium text-humo">${s.current}g</td>
+          <td class="px-6 py-4 text-right text-sm text-ceniza">${s.minimum}g</td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}">${status.label}</span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <button class="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors" title="Ajustar stock">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  searchInput?.addEventListener('input', filterStock);
+  locationFilter?.addEventListener('change', filterStock);
+  statusFilter?.addEventListener('change', filterStock);
+
+  renderStock();
+</script>

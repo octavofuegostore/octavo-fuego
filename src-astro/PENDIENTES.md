@@ -58,11 +58,58 @@
 
 ---
 
-## 📋 PENDIENTES
+## ✅ COMPLETADO: Admin UI Wiring — admin-ui-complete (17 Junio 2026)
+
+> **Engram**: `sdd/admin-ui-complete/*` (#610, #611, #613)
+> **Status**: ⏳ Apply done (39/39 tasks), verify pendiente para mañana
+
+- [x] `contabilidad/index.astro` — mes/año selectors + CSV export wired
+- [x] `contabilidad/transacciones.astro` — filters, pagination, CRUD modal (rewrite)
+- [x] `contabilidad/informes.astro` — date selectors, Generar button, PDF/CSV export (rewrite)
+- [x] `inventario/index.astro` — ProductForm modal wired
+
+---
+
+## 📋 PENDIENTES — Master Plan 4 Fases
 
 > **Nota**: Para una guía completa de documentos, ver [docs/INDEX.md](docs/INDEX.md).
 
-### 🛒 E-commerce Público
+### 🏗️ Foundation Phase 0 (NEXT — Fase 0 de 4)
+
+> **Engram**: `sdd/admin-foundation-phase-0/proposal` (#617)
+
+- [ ] Unificar `.atl/` — consolidar en raíz del repo (hoy hay 2 directorios separados)
+- [ ] Crear `src/types/admin.ts` — interfaces: Cliente, Orden, Producto, Transaccion, KPI
+- [ ] Crear `src/lib/admin/service.ts` — service layer con funciones tipadas (mock today, Supabase tomorrow)
+- [ ] Refactor 9 páginas admin: `await service.getX()` en vez de arrays inline
+
+### ⚛️ React Islands Migration (Fase 2 de 4 — SDD Proposal pendiente)
+
+- [ ] Tablas CRUD → React islands (search/filtro/paginación con estado)
+- [ ] Forms create/edit → React islands (validación con Zod)
+- [ ] ConfirmDialog delete → React island
+- [ ] Date selectors → React island
+- [ ] Mantener vanilla JS para: toggle switches, tab switching, tooltips
+
+### ⚙️ Admin Panel — Mejoras restantes
+
+- [ ] Mobile responsive sidebar (hamburger menu)
+- [ ] Dark mode para admin pages
+- [ ] Toast notifications (sonner) para todas las páginas admin
+- [ ] Loading states / skeletons para todas las páginas
+- [ ] Fotos/imágenes en productos
+
+### 🗄️ Backend Integration (Fase 4 — Supabase)
+
+> Depende de Foundation Phase 0. Service layer → Supabase real.
+
+- [ ] Dashboard con datos reales de Supabase (vía service layer)
+- [ ] CRUD de clientes conectado a Supabase
+- [ ] CRUD de inventario/productos
+- [ ] Gestión de órdenes (crear, editar, cambiar estado)
+
+### 🛒 E-commerce Público (Fase 3 de 4)
+
 - [ ] Conectar checkout a Supabase (crear pedido antes de redirigir a Bold)
 - [ ] Página de confirmación post-compra
 - [ ] Webhook de Bold → actualizar estado de pedido
@@ -72,18 +119,7 @@
 - [ ] SEO: implementar hreflang con region subtags (es-CO/en-US/pt-BR)
 - [ ] SEO: crear hubs EN/BR faltantes
 
-### ⚙️ Admin Panel
-- [ ] Mobile responsive sidebar (hamburger menu)
-- [ ] Dark mode para admin pages
-- [ ] Toast notifications (sonner) para acciones CRUD
-- [ ] Loading states / skeletons para todas las páginas
-- [ ] Dashboard con datos reales de Supabase (no mock)
-- [ ] CRUD de clientes conectado a Supabase
-- [ ] CRUD de inventario/productos
-- [ ] Gestión de órdenes (crear, editar, cambiar estado)
-- [ ] Fotos/imágenes en productos
-
-### 💰 Contabilidad Backend
+### 💰 Contabilidad Backend (Fase 4 de 4)
 
 > **Plan de referencia**: [contabilidad-integration-plan.md](.atl/proposals/contabilidad-integration-plan.md)
 > **Plan corto**: [contabilidad-integration.md](.atl/proposals/contabilidad-integration.md)
@@ -94,14 +130,12 @@
 - [ ] API CRUD: GET/POST/PATCH/DELETE `/api/contabilidad/transacciones`
 - [ ] API KPIs: GET `/api/contabilidad/kpis`
 - [ ] API gráficas: GET `/api/contabilidad/graficas`
-- [ ] Reemplazar mock data por llamadas reales a Supabase
-- [ ] Servicio `src/lib/admin/contabilidad/service.ts`
+- [ ] Reemplazar mock data por llamadas reales a Supabase (vía service layer general)
 
-**Fase 3: Formularios React**
+**Fase 3: Formularios React** (ver ⚛️ React Islands Migration arriba)
 - [ ] Crear `TransaccionForm.tsx` (React island, Zod validation)
 - [ ] Crear `EditarTransaccionModal.tsx`
 - [ ] Integrar CurrencyInput para montos COP
-- [ ] Select de categorías + subcategorías
 
 **Fase 4: Bridge + Automatización**
 - [ ] Trigger PostgreSQL: orden `entregada` → `cont_transaccion` automática
@@ -122,14 +156,19 @@
 |------|------------------|
 | Admin auth system | `sdd/admin-auth-system/proposal` |
 | Login redirect loop fix | `bugfix/login-redirect-loop` |
-| Contabilidad integration plan | `Contabilidad Integration — SDD Proposal complete` |
 | Contabilidad UI spec | `sdd/contabilidad-ui-module/spec` |
 | Contabilidad UI design | `sdd/contabilidad-ui-module/design` |
 | Contabilidad UI tasks | `sdd/contabilidad-ui-module/tasks` |
 | Contabilidad UI apply progress | `sdd/contabilidad-ui-module/apply-progress` |
-| L-Medusa Architecture | `.atl/l-medusa-architecture.md` — Backend Supabase-First |
-| L-Medusa Specs | `.atl/specs/l-medusa-complete-specs.md` — Requirements formales |
-| L-Medusa Design | `.atl/design/l-medusa-complete-design.md` — Diseño técnico |
+| Contabilidad integration plan | `Contabilidad Integration — SDD Proposal complete` |
+| Admin UI complete (wiring) | `sdd/admin-ui-complete/proposal` (#610) |
+| Admin UI tasks (39 tasks) | `sdd/admin-ui-complete/tasks` (#613) |
+| Foundation Phase 0 proposal | `sdd/admin-foundation-phase-0/proposal` (#617) |
+| Foundation checkpoint (mañana) | `sdd/admin-ui-complete/verify-checkpoint` (#618) |
+| Doc restructure (bifurcation) | `sdd/doc-restructure/proposal` (#602) |
+| L-Medusa Architecture | `.atl/l-medusa-architecture.md` |
+| L-Medusa Specs | `.atl/specs/l-medusa-complete-specs.md` |
+| L-Medusa Design | `.atl/design/l-medusa-complete-design.md` |
 | Prerender fix discovery | `bugfix/login-redirect-loop` (3 root causes) |
 
 ---

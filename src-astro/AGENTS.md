@@ -118,6 +118,7 @@ src-astro/
 | 3 | **Build before commit** | Always run `npm run build` — 0 errors required before considering work done. |
 | 4 | **SSR for admin only** | Admin pages → SSR (`prerender = false`). Public pages → SSG (static). Hybrid mode. |
 | 5 | **Single admin** | Contabilidad runs INSIDE OF admin panel. NOT a separate app. |
+| 6 | **No borrar de archivos .md** | En AGENTS.md, PENDIENTES.md, INDEX.md, README.md y cualquier .atl: **agregar y modificar SÍ, borrar NO sin confirmación explícita del usuario.** Las listas de tareas completadas, referencias engram y notas técnicas se preservan siempre. Solo se reorganizan o expanden. |
 
 ## 🛠️ Dev Server Lifecycle
 

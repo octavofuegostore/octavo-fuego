@@ -1,10 +1,11 @@
 ---
 export const prerender = false;
-// Transacciones page — Lista de transacciones
+// Transacciones page — Lista de transacciones con JS wiring
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import TransaccionTable from '@/components/admin/contabilidad/TransaccionTable.astro';
-import PaginationControls from '@/components/admin/contabilidad/PaginationControls.astro';
-import { MOCK_TRANSACCIONES } from '@/lib/admin/contabilidad/mock';
+import { MOCK_TRANSACCIONES, CATEGORIAS_INGRESO, CATEGORIAS_EGRESO, formatCOP } from '@/lib/admin/contabilidad/mock';
+import type { Transaccion } from '@/lib/admin/contabilidad/mock';
+
+const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 ---
 
 <AdminLayout title="Transacciones" description="Historial de transacciones financieras">
@@ -18,9 +19,395 @@ import { MOCK_TRANSACCIONES } from '@/lib/admin/contabilidad/mock';
     </div>
   </div>
 
-  <!-- Transactions Table -->
-  <TransaccionTable transactions={MOCK_TRANSACCIONES} />
+  <!-- Filters -->
+  <div class="bg-white rounded-2xl shadow-card p-6 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+      <!-- Search -->
+      <div class="flex-1 max-w-md">
+        <div class="relative">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input
+            type="text"
+            id="search-transaccion"
+            placeholder="Buscar transacciones..."
+            class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+          />
+        </div>
+      </div>
+      <!-- Tipo filter -->
+      <select id="tipo-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+        <option value="">Todos los tipos</option>
+        <option value="Ingreso">Ingreso</option>
+        <option value="Egreso">Egreso</option>
+      </select>
+      <!-- Mes filter -->
+      <select id="mes-filter" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+        <option value="">Todos los meses</option>
+        {meses.map((m, i) => <option value={i}>{m}</option>)}
+      </select>
+      <!-- Nueva Transaccion button -->
+      <button id="nueva-transaccion-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+        </svg>
+        Nueva Transacción
+      </button>
+    </div>
+  </div>
+
+  <!-- Transactions Table (JS-rendered) -->
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden mb-6">
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead>
+          <tr class="border-b border-papel">
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Fecha</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Descripción</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Categoría</th>
+            <th class="text-center px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Tipo</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Monto</th>
+            <th class="text-right px-6 py-3 text-xs font-medium text-ceniza uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="transaccion-tbody" class="divide-y divide-papel">
+          <!-- JS renders rows -->
+        </tbody>
+      </table>
+    </div>
+    <!-- Empty state -->
+    <div id="empty-state" class="hidden p-12 text-center">
+      <svg class="w-12 h-12 text-ceniza mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      </svg>
+      <p class="text-humo font-medium">No se encontraron transacciones</p>
+      <p class="text-ceniza text-sm mt-1">Intenta ajustar los filtros</p>
+    </div>
+  </div>
 
   <!-- Pagination -->
-  <PaginationControls currentPage={1} totalPages={3} totalItems={24} pageSize={7} />
+  <div class="flex items-center justify-between">
+    <p id="pagination-info" class="text-sm text-ceniza">Mostrando 1-7 de 24 transacciones</p>
+    <div id="pagination-controls" class="flex items-center gap-2">
+      <!-- JS renders pagination buttons -->
+    </div>
+  </div>
+
+  <!-- Nueva Transaccion Modal -->
+  <div id="transaccion-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-papel">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-display font-bold text-humo">Nueva Transacción</h2>
+            <p class="text-sm text-ceniza mt-1">Agrega una nueva transacción al registro</p>
+          </div>
+          <button id="close-transaccion-modal" class="p-2 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <form id="transaccion-form" class="p-6 space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Tipo *</label>
+          <select id="transaccion-tipo" required class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+            <option value="">Seleccionar...</option>
+            <option value="Ingreso">Ingreso</option>
+            <option value="Egreso">Egreso</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Descripción *</label>
+          <input type="text" id="transaccion-descripcion" required placeholder="Descripción de la transacción" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Categoría *</label>
+          <select id="transaccion-categoria" required class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
+            <option value="">Seleccionar...</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Monto (COP) *</label>
+          <input type="number" id="transaccion-monto" required min="0" placeholder="0" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Fecha *</label>
+          <input type="date" id="transaccion-fecha" required class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-papel">
+          <button type="button" id="cancel-transaccion-form" class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">Guardar Transacción</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+  import type { Transaccion } from '@/lib/admin/contabilidad/mock';
+
+  // Mock transacciones data
+  const mockTransacciones: Transaccion[] = [
+    { id: '1', fecha: '2026-06-15', descripcion: 'Venta Tisunú 20g - María García', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 70000 },
+    { id: '2', fecha: '2026-06-14', descripcion: 'Compra materia prima Acre', categoria: 'Producción', tipo: 'Egreso', monto: 850000 },
+    { id: '3', fecha: '2026-06-12', descripcion: 'Venta Pixuri 30g - João Silva', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 100000 },
+    { id: '4', fecha: '2026-06-10', descripcion: 'Pago Meta Ads junio', categoria: 'Marketing', tipo: 'Egreso', monto: 350000 },
+    { id: '5', fecha: '2026-06-08', descripcion: 'Venta Kuripe Doble + Tepi', categoria: 'Venta Kuripe/Tepi', tipo: 'Ingreso', monto: 120000 },
+    { id: '6', fecha: '2026-06-05', descripcion: 'Envío nacional Colombia x5', categoria: 'Logística y Envíos', tipo: 'Egreso', monto: 45000 },
+    { id: '7', fecha: '2026-06-03', descripcion: 'Venta B2B - Tienda Bogotá', categoria: 'Distribución B2B', tipo: 'Ingreso', monto: 580000 },
+    { id: '8', fecha: '2026-05-28', descripcion: 'Compra envases y etiquetas', categoria: 'Producción', tipo: 'Egreso', monto: 120000 },
+    { id: '9', fecha: '2026-05-25', descripcion: 'Venta Sananga 10ml - Sarah', categoria: 'Venta Sananga', tipo: 'Ingreso', monto: 85000 },
+    { id: '10', fecha: '2026-05-20', descripcion: 'Pago arriendo junio', categoria: 'Infraestructura', tipo: 'Egreso', monto: 1500000 },
+    { id: '11', fecha: '2026-05-15', descripcion: 'Venta Tisunú 50g - Mayorista', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 180000 },
+    { id: '12', fecha: '2026-05-10', descripcion: 'Honorarios Josue', categoria: 'Nómina', tipo: 'Egreso', monto: 2000000 },
+    { id: '13', fecha: '2026-04-28', descripcion: 'Venta Cumaru de Cheiro 30g', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 95000 },
+    { id: '14', fecha: '2026-04-20', descripcion: 'Compra materia prima Yawanawá', categoria: 'Amazonía / Comunidades', tipo: 'Egreso', monto: 600000 },
+    { id: '15', fecha: '2026-04-15', descripcion: 'Pago IVA bimestral', categoria: 'Impuestos', tipo: 'Egreso', monto: 420000 },
+  ];
+
+  const allTransacciones = [...mockTransacciones];
+
+  // Pagination state
+  let currentPage = 1;
+  const pageSize = 7;
+  let filteredTransacciones = [...allTransacciones];
+
+  // DOM elements
+  const searchInput = document.getElementById('search-transaccion') as HTMLInputElement;
+  const tipoFilter = document.getElementById('tipo-filter') as HTMLSelectElement;
+  const mesFilter = document.getElementById('mes-filter') as HTMLSelectElement;
+  const tbody = document.getElementById('transaccion-tbody') as HTMLHTMLTableSectionElement;
+  const emptyState = document.getElementById('empty-state') as HTMLDivElement;
+  const paginationInfo = document.getElementById('pagination-info') as HTMLParagraphElement;
+  const paginationControls = document.getElementById('pagination-controls') as HTMLDivElement;
+  const nuevaBtn = document.getElementById('nueva-transaccion-btn');
+  const modal = document.getElementById('transaccion-modal');
+  const closeBtn = document.getElementById('close-transaccion-modal');
+  const cancelBtn = document.getElementById('cancel-transaccion-form');
+  const form = document.getElementById('transaccion-form') as HTMLFormElement;
+  const tipoSelect = document.getElementById('transaccion-tipo') as HTMLSelectElement;
+  const categoriaSelect = document.getElementById('transaccion-categoria') as HTMLSelectElement;
+
+  // Categories
+  const categoriasIngreso = ['Venta Rapé', 'Venta Sananga', 'Venta Kuripe/Tepi', 'Distribución B2B', 'Servicios'];
+  const categoriasEgreso = ['Amazonía / Comunidades', 'Producción', 'Logística y Envíos', 'Marketing', 'Infraestructura', 'Nómina', 'Impuestos', 'Otros Egresos'];
+
+  function filterTransacciones() {
+    const query = searchInput?.value.toLowerCase() || '';
+    const tipo = tipoFilter?.value || '';
+    const mes = mesFilter?.value || '';
+
+    filteredTransacciones = allTransacciones.filter(t => {
+      const matchesSearch = t.descripcion.toLowerCase().includes(query) || t.categoria.toLowerCase().includes(query);
+      const matchesTipo = !tipo || t.tipo === tipo;
+      const transactionMonth = new Date(t.fecha).getMonth();
+      const matchesMes = !mes || String(transactionMonth) === mes;
+      return matchesSearch && matchesTipo && matchesMes;
+    });
+
+    currentPage = 1;
+    renderTransacciones();
+    renderPagination();
+  }
+
+  function formatCOP(amount: number): string {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+  }
+
+  function formatDate(dateStr: string): string {
+    return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function renderTransacciones() {
+    if (!tbody) return;
+
+    const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageData = filteredTransacciones.slice(start, end);
+
+    if (pageData.length === 0) {
+      tbody.innerHTML = '';
+      emptyState?.classList.remove('hidden');
+      return;
+    }
+
+    emptyState?.classList.add('hidden');
+
+    tbody.innerHTML = pageData.map(t => `
+      <tr class="hover:bg-papel/30 transition-colors cursor-pointer" data-transaccion-id="${t.id}">
+        <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
+        <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
+        <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
+        <td class="px-6 py-4 text-center">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
+        </td>
+        <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
+        <td class="px-6 py-4 text-right">
+          <div class="flex items-center justify-end gap-2">
+            <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors edit-btn" title="Editar" data-id="${t.id}">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    // Wire row click to edit (task 8.4)
+    tbody.querySelectorAll('tr[data-transaccion-id]').forEach(row => {
+      row.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        // Don't trigger if clicking the edit button
+        if (target.closest('.edit-btn')) return;
+        const id = row.getAttribute('data-transaccion-id');
+        if (id) {
+          const transaccion = allTransacciones.find(t => t.id === id);
+          if (transaccion) {
+            openEditModal(transaccion);
+          }
+        }
+      });
+    });
+
+    // Wire edit buttons
+    tbody.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+        if (id) {
+          const transaccion = allTransacciones.find(t => t.id === id);
+          if (transaccion) {
+            openEditModal(transaccion);
+          }
+        }
+      });
+    });
+
+    // Update pagination info
+    if (paginationInfo) {
+      const total = filteredTransacciones.length;
+      paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, total)} de ${total} transacciones`;
+    }
+  }
+
+  function renderPagination() {
+    if (!paginationControls) return;
+    const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
+
+    let html = `
+      <button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors prev-btn" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
+    `;
+
+    for (let i = 1; i <= totalPages; i++) {
+      html += `<button class="px-3 py-1.5 text-sm rounded-lg transition-colors page-btn ${i === currentPage ? 'bg-tabacco text-white' : 'border border-papel text-humo hover:bg-papel'}" data-page="${i}">${i}</button>`;
+    }
+
+    html += `<button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors next-btn" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`;
+
+    paginationControls.innerHTML = html;
+
+    // Wire pagination buttons
+    paginationControls.querySelectorAll('.page-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const page = parseInt((btn as HTMLButtonElement).getAttribute('data-page') || '1', 10);
+        currentPage = page;
+        renderTransacciones();
+        renderPagination();
+      });
+    });
+
+    const prevBtn = paginationControls.querySelector('.prev-btn');
+    prevBtn?.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTransacciones();
+        renderPagination();
+      }
+    });
+
+    const nextBtn = paginationControls.querySelector('.next-btn');
+    nextBtn?.addEventListener('click', () => {
+      if (currentPage < Math.ceil(filteredTransacciones.length / pageSize)) {
+        currentPage++;
+        renderTransacciones();
+        renderPagination();
+      }
+    });
+  }
+
+  function openEditModal(t: Transaccion) {
+    toast.info(`Editando transacción ${t.id}: ${t.descripcion}`);
+    // In a full implementation, this would populate and open the modal
+  }
+
+  // Wire search and filters (tasks 8.1 and 8.2)
+  searchInput?.addEventListener('input', filterTransacciones);
+  tipoFilter?.addEventListener('change', filterTransacciones);
+  mesFilter?.addEventListener('change', filterTransacciones);
+
+  // Wire "Nueva Transaccion" button (task 8.3)
+  nuevaBtn?.addEventListener('click', () => {
+    if (!modal) return;
+    // Reset form
+    (form)?.reset();
+    // Update categoria options based on tipo
+    updateCategoriaOptions('');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+  });
+
+  function updateCategoriaOptions(tipo: string) {
+    if (!categoriaSelect) return;
+    const options = tipo === 'Ingreso' ? categoriasIngreso : tipo === 'Egreso' ? categoriasEgreso : [];
+    categoriaSelect.innerHTML = '<option value="">Seleccionar...</option>' + options.map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  tipoSelect?.addEventListener('change', () => {
+    updateCategoriaOptions(tipoSelect.value);
+  });
+
+  function closeModal() {
+    if (!modal) return;
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  cancelBtn?.addEventListener('click', closeModal);
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const tipo = (document.getElementById('transaccion-tipo') as HTMLSelectElement)?.value;
+    const descripcion = (document.getElementById('transaccion-descripcion') as HTMLInputElement)?.value;
+    const categoria = (document.getElementById('transaccion-categoria') as HTMLSelectElement)?.value;
+    const monto = parseInt((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0', 10);
+    const fecha = (document.getElementById('transaccion-fecha') as HTMLInputElement)?.value;
+
+    const newTransaccion: Transaccion = {
+      id: String(allTransacciones.length + 1),
+      fecha: fecha || new Date().toISOString().split('T')[0],
+      descripcion: descripcion || '',
+      categoria: categoria || '',
+      tipo: tipo as 'Ingreso' | 'Egreso',
+      monto
+    };
+
+    allTransacciones.unshift(newTransaccion);
+    closeModal();
+    filterTransacciones();
+    toast.success('Transacción creada correctamente');
+  });
+
+  // Initial render
+  renderTransacciones();
+  renderPagination();
+</script>

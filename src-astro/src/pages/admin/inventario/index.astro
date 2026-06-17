@@ -14,13 +14,13 @@ import ProductTable from '@/components/admin/inventory/ProductTable.astro';
         <p class="text-ceniza mt-1">Gestiona tu catálogo de productos</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+        <button id="exportar-productos-btn" class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
           </svg>
           Exportar
         </button>
-        <button class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+        <button id="nuevo-producto-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
@@ -30,22 +30,363 @@ import ProductTable from '@/components/admin/inventory/ProductTable.astro';
     </div>
   </div>
 
+  <!-- Product Form Modal (task 5.3) -->
+  <div id="product-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6 border-b border-papel">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-xl font-display font-bold text-humo">Nuevo Producto</h2>
+            <p class="text-sm text-ceniza mt-1">Agrega un nuevo producto al catálogo</p>
+          </div>
+          <button id="close-product-modal" class="p-2 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <form id="product-form" class="p-6 space-y-6">
+        <!-- Main Info -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Nombre *</label>
+            <input type="text" id="product-name" required placeholder="Ej: Cera de Ducha - Cacao" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">SKU *</label>
+            <input type="text" id="product-sku" required placeholder="Ej: CD-CA-100" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Categoría *</label>
+            <select id="product-category" required class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+              <option value="">Seleccionar...</option>
+              <option value="cera">Cera de Ducha</option>
+              <option value="sabonete">Sabonete</option>
+              <option value="packs">Packs</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Precio COP *</label>
+            <input type="number" id="product-price-cop" required min="0" placeholder="45000" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Precio BRL *</label>
+            <input type="number" id="product-price-brl" required min="0" step="0.01" placeholder="89" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Precio USD *</label>
+            <input type="number" id="product-price-usd" required min="0" step="0.01" placeholder="12" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+        </div>
+        <!-- Stock -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Stock CO-BOGOTA</label>
+            <input type="number" id="product-stock-co" min="0" value="0" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-humo mb-2">Stock BR-ACRE</label>
+            <input type="number" id="product-stock-br" min="0" value="0" class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco" />
+          </div>
+        </div>
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-papel">
+          <button type="button" id="cancel-product-form" class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">Cancelar</button>
+          <button type="submit" class="px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">Crear Producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Stats -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Total Productos</p>
-      <p class="text-2xl font-bold text-humo font-display">24</p>
+      <p class="text-2xl font-bold text-humo font-display" id="stat-total">24</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Activos</p>
-      <p class="text-2xl font-bold text-success font-display">22</p>
+      <p class="text-2xl font-bold text-success font-display" id="stat-activos">22</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Stock Bajo</p>
-      <p class="text-2xl font-bold text-warning font-display">4</p>
+      <p class="text-2xl font-bold text-warning font-display" id="stat-bajo">4</p>
     </div>
   </div>
 
-  <!-- Products Table -->
-  <ProductTable />
+  <!-- Products Table with JS wiring -->
+  <div id="product-table-wrapper">
+    <ProductTable />
+  </div>
 </AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  // Mock product data
+  interface Product {
+    id: string;
+    name: string;
+    sku: string;
+    category: string;
+    priceCOP: number;
+    priceBRL: number;
+    priceUSD: number;
+    stockCO: number;
+    stockBR: number;
+    status: string;
+  }
+
+  const baseProducts: Product[] = [
+    { id: '1', name: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', category: 'Cera de Ducha', priceCOP: 45000, priceBRL: 89, priceUSD: 12, stockCO: 250, stockBR: 800, status: 'active' },
+    { id: '2', name: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', category: 'Cera de Ducha', priceCOP: 45000, priceBRL: 89, priceUSD: 12, stockCO: 180, stockBR: 650, status: 'active' },
+    { id: '3', name: 'Sabonete - Lavanda', sku: 'SL-75', category: 'Sabonete', priceCOP: 35000, priceBRL: 69, priceUSD: 9.5, stockCO: 400, stockBR: 15, status: 'active' },
+    { id: '4', name: 'Sabonete - Avena', sku: 'SA-75', category: 'Sabonete', priceCOP: 35000, priceBRL: 69, priceUSD: 9.5, stockCO: 350, stockBR: 450, status: 'active' },
+    { id: '5', name: 'Pack Regalo Premium', sku: 'PR-100', category: 'Packs', priceCOP: 120000, priceBRL: 239, priceUSD: 32, stockCO: 50, stockBR: 3, status: 'active' },
+  ];
+
+  const mockProducts = [
+    ...baseProducts,
+    ...Array.from({ length: 19 }, (_, i) => ({
+      id: String(i + 6),
+      name: `Producto ${i + 6}`,
+      sku: `SKU-${String(i + 6).padStart(3, '0')}`,
+      category: ['Cera de Ducha', 'Sabonete', 'Packs'][i % 3],
+      priceCOP: 30000 + Math.floor(Math.random() * 50000),
+      priceBRL: 60 + Math.floor(Math.random() * 100),
+      priceUSD: 8 + Math.floor(Math.random() * 15),
+      stockCO: Math.floor(Math.random() * 500),
+      stockBR: Math.floor(Math.random() * 500),
+      status: i % 5 === 0 ? 'inactive' : 'active'
+    }))
+  ];
+
+  // Pagination state
+  let currentPage = 1;
+  const pageSize = 5;
+  let filteredProducts = [...mockProducts];
+
+  // Get DOM elements
+  const searchInput = document.querySelector('#product-table-wrapper input[type="text"]') as HTMLInputElement;
+  const categoryFilter = document.querySelector('#product-table-wrapper select:nth-of-type(1)') as HTMLSelectElement;
+  const locationFilter = document.querySelector('#product-table-wrapper select:nth-of-type(2)') as HTMLSelectElement;
+  const nuevoProductoBtn = document.getElementById('nuevo-producto-btn');
+  const exportarBtn = document.getElementById('exportar-productos-btn');
+
+  // Wire search input
+  searchInput?.addEventListener('input', () => filterProducts());
+
+  // Wire filter dropdowns
+  categoryFilter?.addEventListener('change', filterProducts);
+  locationFilter?.addEventListener('change', filterProducts);
+
+  function filterProducts() {
+    const query = searchInput?.value.toLowerCase() || '';
+    const category = categoryFilter?.value || '';
+    const location = locationFilter?.value || '';
+
+    filteredProducts = mockProducts.filter(p => {
+      const matchesSearch = p.name.toLowerCase().includes(query) ||
+                           p.sku.toLowerCase().includes(query);
+      const matchesCategory = !category || p.category.toLowerCase().includes(category.toLowerCase());
+      return matchesSearch && matchesCategory;
+    });
+
+    currentPage = 1;
+    renderProducts();
+    updateStats();
+  }
+
+  function formatPrice(price: number, currency: string): string {
+    if (currency === 'BRL') {
+      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
+    } else if (currency === 'USD') {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
+    }
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
+  }
+
+  function getStockStatus(stock: number, min: number = 100): string {
+    if (stock < min * 0.5) return 'bg-error/10 text-error';
+    if (stock < min) return 'bg-warning/10 text-warning';
+    return 'bg-success/10 text-success';
+  }
+
+  function renderProducts() {
+    const tbody = document.querySelector('#product-table-wrapper tbody');
+    if (!tbody) return;
+
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageProducts = filteredProducts.slice(start, end);
+
+    tbody.innerHTML = pageProducts.map(p => `
+      <tr class="hover:bg-papel/30 transition-colors" data-product-id="${p.id}">
+        <td class="px-6 py-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-papel rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-humo">${p.name}</p>
+              <p class="text-xs text-ceniza">ID: ${p.id}</p>
+            </div>
+          </div>
+        </td>
+        <td class="px-6 py-4 text-sm text-ceniza font-mono">${p.sku}</td>
+        <td class="px-6 py-4 text-sm text-ceniza">${p.category}</td>
+        <td class="px-6 py-4 text-sm text-humo text-right font-medium">${formatPrice(p.priceCOP, 'COP')}</td>
+        <td class="px-6 py-4 text-sm text-humo text-right font-medium">${formatPrice(p.priceBRL, 'BRL')}</td>
+        <td class="px-6 py-4 text-center">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStockStatus(p.stockCO)}">${p.stockCO}g</span>
+        </td>
+        <td class="px-6 py-4 text-center">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStockStatus(p.stockBR)}">${p.stockBR}g</span>
+        </td>
+        <td class="px-6 py-4 text-center">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${p.status === 'active' ? 'bg-success/10 text-success' : 'bg-ceniza/10 text-ceniza'}">
+            ${p.status === 'active' ? 'Activo' : 'Inactivo'}
+          </span>
+        </td>
+        <td class="px-6 py-4 text-right">
+          <div class="flex items-center justify-end gap-2">
+            <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors" title="Ver">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+            <button class="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors" title="Editar">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+            </button>
+            <button class="p-1.5 text-ceniza hover:text-error hover:bg-error/10 rounded-lg transition-colors delete-product" title="Eliminar" data-id="${p.id}">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+    // Update pagination info
+    const paginationText = document.querySelector('#product-table-wrapper .text-sm.text-ceniza');
+    if (paginationText) {
+      paginationText.textContent = `Mostrando ${start + 1}-${Math.min(end, filteredProducts.length)} de ${filteredProducts.length} productos`;
+    }
+
+    // Wire delete buttons
+    tbody.querySelectorAll('.delete-product').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const productId = (e.currentTarget as HTMLElement).getAttribute('data-id');
+        if (confirm('¿Estás seguro de eliminar este producto?')) {
+          const index = mockProducts.findIndex(p => p.id === productId);
+          if (index > -1) {
+            mockProducts.splice(index, 1);
+            toast.success('Producto eliminado');
+            filterProducts();
+          }
+        }
+      });
+    });
+  }
+
+  function updateStats() {
+    const statTotal = document.getElementById('stat-total');
+    const statActivos = document.getElementById('stat-activos');
+    const statBajo = document.getElementById('stat-bajo');
+
+    if (statTotal) statTotal.textContent = String(filteredProducts.length);
+    if (statActivos) statActivos.textContent = String(filteredProducts.filter(p => p.status === 'active').length);
+    if (statBajo) statBajo.textContent = String(filteredProducts.filter(p => p.stockCO < 100 || p.stockBR < 100).length);
+  }
+
+  // Wire pagination buttons
+  document.querySelectorAll('#product-table-wrapper button').forEach(btn => {
+    const text = btn.textContent?.trim();
+    if (text === 'Anterior') {
+      btn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderProducts();
+        }
+      });
+    } else if (text === 'Siguiente') {
+      btn.addEventListener('click', () => {
+        const totalPages = Math.ceil(filteredProducts.length / pageSize);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderProducts();
+        }
+      });
+    }
+  });
+
+  // Wire "Nuevo Producto" button to open modal (task 5.3)
+  const productModal = document.getElementById('product-form-modal');
+  const closeProductModal = document.getElementById('close-product-modal');
+  const cancelProductForm = document.getElementById('cancel-product-form');
+  const productForm = document.getElementById('product-form') as HTMLFormElement;
+
+  nuevoProductoBtn?.addEventListener('click', () => {
+    if (!productModal) return;
+    productForm?.reset();
+    productModal.classList.remove('hidden');
+    productModal.classList.add('flex');
+  });
+
+  function closeProductFormModal() {
+    if (!productModal) return;
+    productModal.classList.add('hidden');
+    productModal.classList.remove('flex');
+  }
+
+  closeProductModal?.addEventListener('click', closeProductFormModal);
+  cancelProductForm?.addEventListener('click', closeProductFormModal);
+  productModal?.addEventListener('click', (e) => {
+    if (e.target === productModal) closeProductFormModal();
+  });
+
+  productForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = (document.getElementById('product-name') as HTMLInputElement)?.value;
+    const sku = (document.getElementById('product-sku') as HTMLInputElement)?.value;
+    const category = (document.getElementById('product-category') as HTMLSelectElement)?.value;
+    const priceCOP = parseInt((document.getElementById('product-price-cop') as HTMLInputElement)?.value || '0', 10);
+    const priceBRL = parseFloat((document.getElementById('product-price-brl') as HTMLInputElement)?.value || '0');
+    const priceUSD = parseFloat((document.getElementById('product-price-usd') as HTMLInputElement)?.value || '0');
+    const stockCO = parseInt((document.getElementById('product-stock-co') as HTMLInputElement)?.value || '0', 10);
+    const stockBR = parseInt((document.getElementById('product-stock-br') as HTMLInputElement)?.value || '0', 10);
+
+    const newProduct = {
+      id: String(mockProducts.length + 1),
+      name: name || '',
+      sku: sku || '',
+      category: category || '',
+      priceCOP,
+      priceBRL,
+      priceUSD,
+      stockCO,
+      stockBR,
+      status: 'active' as const
+    };
+
+    mockProducts.unshift(newProduct);
+    closeProductFormModal();
+    filterProducts();
+    toast.success('Producto creado correctamente');
+  });
+
+  // Wire "Exportar" button
+  exportarBtn?.addEventListener('click', () => {
+    toast.success('Exportando productos...');
+    setTimeout(() => toast.success('Productos exportados correctamente'), 1000);
+  });
+
+  // Initial render
+  renderProducts();
+</script>

@@ -3,6 +3,7 @@ export const prerender = false;
 // Customers page — Customers management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
+import ClienteForm from '@/components/admin/customers/ClienteForm.astro';
 ---
 
 <AdminLayout title="Clientes" description="Gestiona tu base de clientes">
@@ -14,13 +15,13 @@ import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
         <p class="text-ceniza mt-1">Gestiona tu base de clientes</p>
       </div>
       <div class="flex items-center gap-3">
-        <button class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+        <button id="exportar-clientes-btn" class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
           </svg>
           Exportar
         </button>
-        <button class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+        <button id="nuevo-cliente-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
           </svg>
@@ -34,22 +35,277 @@ import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Total Clientes</p>
-      <p class="text-2xl font-bold text-humo font-display">156</p>
+      <p class="text-2xl font-bold text-humo font-display" id="stat-total">156</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Activos</p>
-      <p class="text-2xl font-bold text-success font-display">142</p>
+      <p class="text-2xl font-bold text-success font-display" id="stat-activos">142</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Mayoristas</p>
-      <p class="text-2xl font-bold text-tabacco font-display">28</p>
+      <p class="text-2xl font-bold text-tabacco font-display" id="stat-mayoristas">28</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Nuevos (Mes)</p>
-      <p class="text-2xl font-bold text-info font-display">15</p>
+      <p class="text-2xl font-bold text-info font-display" id="stat-nuevos">15</p>
     </div>
   </div>
 
-  <!-- Customers Table -->
-  <CustomerTable />
+  <!-- Cliente Form Modal -->
+  <ClienteForm />
+
+  <!-- Customers Table with JS wiring -->
+  <div id="customer-table-wrapper">
+    <CustomerTable />
+  </div>
 </AdminLayout>
+
+<script>
+  // Mock customer data
+  interface Customer {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    location: string;
+    type: string;
+    status: string;
+    totalOrders: number;
+    totalSpent: number;
+  }
+
+  const mockCustomers: Customer[] = [
+    { id: '1', name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567', location: 'CO', type: 'retail', status: 'active', totalOrders: 5, totalSpent: 225000 },
+    { id: '2', name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321', location: 'BR', type: 'wholesale', status: 'active', totalOrders: 12, totalSpent: 106800 },
+    { id: '3', name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543', location: 'CO', type: 'retail', status: 'active', totalOrders: 3, totalSpent: 360000 },
+    { id: '4', name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+1 555 123 4567', location: 'US', type: 'retail', status: 'active', totalOrders: 2, totalSpent: 17800 },
+    { id: '5', name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5678', location: 'BR', type: 'wholesale', status: 'active', totalOrders: 8, totalSpent: 71200 },
+  ];
+
+  const mockCustomersFull = [
+    ...mockCustomers,
+    ...Array.from({ length: 150 }, (_, i) => ({
+      id: String(i + 6),
+      name: `Cliente ${i + 6}`,
+      email: `cliente${i + 6}@email.com`,
+      phone: `+57 300 ${1000 + i}`,
+      location: ['CO', 'BR', 'US', 'EU'][i % 4],
+      type: i % 3 === 0 ? 'wholesale' : 'retail',
+      status: i % 10 === 0 ? 'inactive' : 'active',
+      totalOrders: Math.floor(Math.random() * 20),
+      totalSpent: Math.floor(Math.random() * 500000)
+    }))
+  ];
+
+  // Pagination state
+  let currentPage = 1;
+  const pageSize = 5;
+  let filteredCustomers = [...mockCustomersFull];
+
+  // Get DOM elements
+  const searchInput = document.querySelector('#customer-table-wrapper input[type="text"]') as HTMLInputElement;
+  const locationFilter = document.querySelector('#customer-table-wrapper select:nth-of-type(1)') as HTMLSelectElement;
+  const typeFilter = document.querySelector('#customer-table-wrapper select:nth-of-type(2)') as HTMLSelectElement;
+  const prevBtn = document.querySelector('#customer-table-wrapper button:has(svg)') as HTMLButtonElement;
+  const nuevoClienteBtn = document.getElementById('nuevo-cliente-btn');
+
+  // Wire search input
+  searchInput?.addEventListener('input', (e) => {
+    const query = (e.target as HTMLInputElement).value.toLowerCase();
+    filterCustomers();
+  });
+
+  // Wire filter dropdowns
+  locationFilter?.addEventListener('change', filterCustomers);
+  typeFilter?.addEventListener('change', filterCustomers);
+
+  function filterCustomers() {
+    const query = searchInput?.value.toLowerCase() || '';
+    const location = locationFilter?.value || '';
+    const type = typeFilter?.value || '';
+
+    filteredCustomers = mockCustomersFull.filter(c => {
+      const matchesSearch = c.name.toLowerCase().includes(query) ||
+                           c.email.toLowerCase().includes(query) ||
+                           c.id.includes(query);
+      const matchesLocation = !location || c.location === location;
+      const matchesType = !type || c.type === type;
+      return matchesSearch && matchesLocation && matchesType;
+    });
+
+    currentPage = 1;
+    renderCustomers();
+    updateStats();
+  }
+
+  function renderCustomers() {
+    const tbody = document.querySelector('#customer-table-wrapper tbody');
+    if (!tbody) return;
+
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+    const pageCustomers = filteredCustomers.slice(start, end);
+
+    tbody.innerHTML = pageCustomers.map((c) => {
+      const locationFlags: Record<string, string> = { CO: '🇨🇴', BR: '🇧🇷', US: '🇺🇸', EU: '🇪🇺' };
+      const locationLabels: Record<string, string> = { CO: 'Colombia', BR: 'Brasil', US: 'USA', EU: 'Europa' };
+      const typeLabels: Record<string, { bg: string; text: string; label: string }> = {
+        retail: { bg: 'bg-info/10', text: 'text-info', label: 'Minorista' },
+        wholesale: { bg: 'bg-tabacco/10', text: 'text-tabacco', label: 'Mayorista' }
+      };
+      const type = typeLabels[c.type as keyof typeof typeLabels] || typeLabels.retail;
+
+      return `
+        <tr class="hover:bg-papel/30 transition-colors" data-customer-id="${c.id}">
+          <td class="px-6 py-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-tabacco/10 rounded-full flex items-center justify-center">
+                <span class="text-tabacco font-medium text-sm">${c.name.split(' ').map((n: string) => n[0]).join('')}</span>
+              </div>
+              <div>
+                <a href="/admin/clientes/${c.id}" class="text-sm font-medium text-humo hover:text-tabacco">${c.name}</a>
+                <p class="text-xs text-ceniza">ID: ${c.id}</p>
+              </div>
+            </div>
+          </td>
+          <td class="px-6 py-4">
+            <div>
+              <p class="text-sm text-humo">${c.email}</p>
+              <p class="text-xs text-ceniza">${c.phone}</p>
+            </div>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="text-sm">${locationFlags[c.location] || '🌍'} ${locationLabels[c.location] || c.location}</span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${type.bg} ${type.text}">${type.label}</span>
+          </td>
+          <td class="px-6 py-4 text-center">
+            <span class="text-sm font-medium text-humo">${c.totalOrders}</span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <span class="text-sm font-medium text-humo">${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(c.totalSpent)}</span>
+          </td>
+          <td class="px-6 py-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors view-customer" title="Ver perfil">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </button>
+              <button class="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors edit-customer" title="Editar" data-id="${c.id}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    // Update pagination info
+    const paginationText = document.querySelector('#customer-table-wrapper .text-sm.text-ceniza');
+    if (paginationText) {
+      paginationText.textContent = `Mostrando ${start + 1}-${Math.min(end, filteredCustomers.length)} de ${filteredCustomers.length} clientes`;
+    }
+
+    // Wire view buttons to navigate
+    tbody.querySelectorAll('.view-customer').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const row = (e.currentTarget as HTMLElement).closest('tr');
+        const customerId = row?.getAttribute('data-customer-id');
+        if (customerId) {
+          window.location.href = `/admin/clientes/${customerId}`;
+        }
+      });
+    });
+
+    // Wire edit buttons
+    tbody.querySelectorAll('.edit-customer').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const customerId = (e.currentTarget as HTMLElement).getAttribute('data-id');
+        const customer = mockCustomersFull.find(c => c.id === customerId);
+        if (customer) {
+          showClienteForm(customer);
+        }
+      });
+    });
+  }
+
+  function updateStats() {
+    const statTotal = document.getElementById('stat-total');
+    const statActivos = document.getElementById('stat-activos');
+    const statMayoristas = document.getElementById('stat-mayoristas');
+    const statNuevos = document.getElementById('stat-nuevos');
+
+    if (statTotal) statTotal.textContent = String(filteredCustomers.length);
+    if (statActivos) statActivos.textContent = String(filteredCustomers.filter(c => c.status === 'active').length);
+    if (statMayoristas) statMayoristas.textContent = String(filteredCustomers.filter(c => c.type === 'wholesale').length);
+  }
+
+  // Wire pagination buttons
+  document.querySelectorAll('#customer-table-wrapper button').forEach(btn => {
+    const text = btn.textContent?.trim();
+    if (text === 'Anterior') {
+      btn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderCustomers();
+        }
+      });
+    } else if (text === 'Siguiente') {
+      btn.addEventListener('click', () => {
+        const totalPages = Math.ceil(filteredCustomers.length / pageSize);
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderCustomers();
+        }
+      });
+    } else if (!isNaN(Number(text)) && Number(text) > 0) {
+      btn.addEventListener('click', () => {
+        currentPage = Number(text);
+        renderCustomers();
+      });
+    }
+  });
+
+  // Wire "Nuevo Cliente" button
+  nuevoClienteBtn?.addEventListener('click', () => {
+    showClienteForm();
+  });
+
+  function showClienteForm(data?: Customer) {
+    // Simple DOM-based modal toggle using the existing ClienteForm visibility
+    const formContainer = document.querySelector('[data-cliente-form]');
+    const isEdit = !!data;
+    if (formContainer) {
+      formContainer.classList.toggle('hidden');
+      if (isEdit) {
+        formContainer.setAttribute('data-edit-id', data.id);
+        // Populate form fields
+        const nameField = formContainer.querySelector('[name="name"]') as HTMLInputElement;
+        const emailField = formContainer.querySelector('[name="email"]') as HTMLInputElement;
+        const phoneField = formContainer.querySelector('[name="phone"]') as HTMLInputElement;
+        if (nameField) nameField.value = data.name;
+        if (emailField) emailField.value = data.email;
+        if (phoneField) phoneField.value = data.phone;
+      }
+    }
+  }
+
+  // Listen for save events to refresh
+  window.addEventListener('cliente-saved', () => {
+    filterCustomers();
+          // Show toast via DOM
+          const toastMsg = document.createElement('div');
+          toastMsg.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
+          toastMsg.textContent = 'Cliente guardado correctamente';
+          document.body.appendChild(toastMsg);
+          setTimeout(() => toastMsg.remove(), 3000);
+  });
+
+  // Initial render
+  renderCustomers();
+</script>

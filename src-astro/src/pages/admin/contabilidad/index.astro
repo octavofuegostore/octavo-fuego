@@ -19,6 +19,37 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
         <h1 class="text-2xl font-display font-bold text-humo">Contabilidad</h1>
         <p class="text-ceniza mt-1">Resumen financiero de tu negocio</p>
       </div>
+      <div class="flex items-center gap-3">
+        <!-- Date Range Selector -->
+        <div class="flex items-center gap-2">
+          <select id="mes-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+            <option value="0">Enero</option>
+            <option value="1">Febrero</option>
+            <option value="2">Marzo</option>
+            <option value="3">Abril</option>
+            <option value="4">Mayo</option>
+            <option value="5" selected>Junio</option>
+            <option value="6">Julio</option>
+            <option value="7">Agosto</option>
+            <option value="8">Septiembre</option>
+            <option value="9">Octubre</option>
+            <option value="10">Noviembre</option>
+            <option value="11">Diciembre</option>
+          </select>
+          <select id="year-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+            <option value="2026" selected>2026</option>
+          </select>
+        </div>
+        <!-- Export Button -->
+        <button id="export-contabilidad-btn" class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Exportar CSV
+        </button>
+      </div>
     </div>
   </div>
 
@@ -53,3 +84,83 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     <GraficaBarras data={MOCK_GRAFICA_MENSUAL} />
   </div>
 </AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  // Mock data - in production this would come from an API
+  const MOCK_KPIS_DATA: Record<string, { ingresos: number; egresos: number; balance: number }> = {
+    '2026-0': { ingresos: 3800000, egresos: 2100000, balance: 1700000 },
+    '2026-1': { ingresos: 4200000, egresos: 2500000, balance: 1700000 },
+    '2026-2': { ingresos: 3900000, egresos: 2300000, balance: 1600000 },
+    '2026-3': { ingresos: 5100000, egresos: 2700000, balance: 2400000 },
+    '2026-4': { ingresos: 4800000, egresos: 2900000, balance: 1900000 },
+    '2026-5': { ingresos: 4500000, egresos: 2800000, balance: 1700000 },
+  };
+
+  const mesNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  function getKpiValues(mes: number, year: number) {
+    const key = `${year}-${mes}`;
+    return MOCK_KPIS_DATA[key] || { ingresos: 0, egresos: 0, balance: 0 };
+  }
+
+  function formatCOP(amount: number): string {
+    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+  }
+
+  function updateDashboard(mes: number, year: number) {
+    const kpis = getKpiValues(mes, year);
+    const kpiCards = document.querySelectorAll('[data-kpi-card]');
+    if (kpiCards.length >= 3) {
+      const values = kpiCards[0].querySelectorAll('.font-display.text-2xl');
+      const ingresosEl = kpiCards[0].querySelector('.font-display.text-2xl');
+      const egresosEl = kpiCards[1].querySelector('.font-display.text-2xl');
+      const balanceEl = kpiCards[2].querySelector('.font-display.text-2xl');
+      if (ingresosEl) ingresosEl.textContent = formatCOP(kpis.ingresos);
+      if (egresosEl) egresosEl.textContent = formatCOP(kpis.egresos);
+      if (balanceEl) balanceEl.textContent = formatCOP(kpis.balance);
+    }
+    // Update subtitle
+    const subtitle = document.querySelector('.text-ceniza.mt-1');
+    if (subtitle) subtitle.textContent = `Resumen de ${mesNames[mes]} ${year}`;
+  }
+
+  // Wire date selectors (tasks 7.1 and 7.2)
+  const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
+  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+
+  mesSelect?.addEventListener('change', () => {
+    const mes = parseInt(mesSelect.value, 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    updateDashboard(mes, year);
+    toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+  });
+
+  yearSelect?.addEventListener('change', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect.value, 10);
+    updateDashboard(mes, year);
+    toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+  });
+
+  // Wire export button (task 7.3)
+  const exportBtn = document.getElementById('export-contabilidad-btn');
+  exportBtn?.addEventListener('click', () => {
+    const mes = parseInt(mesSelect?.value || '5', 10);
+    const year = parseInt(yearSelect?.value || '2026', 10);
+    const kpis = getKpiValues(mes, year);
+
+    const csvContent = `data:text/csv;charset=utf-8,Mes,Ingresos,Egresos,Balance\n"${mesNames[mes]} ${year}",${kpis.ingresos},${kpis.egresos},${kpis.balance}`;
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `contabilidad_${mesNames[mes].toLowerCase()}_${year}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    toast.success('Reporte exportado correctamente');
+  });
+</script>
