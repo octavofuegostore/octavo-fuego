@@ -3,43 +3,9 @@ export const prerender = false;
 // Orders page — Orders management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import OrderTable from '@/components/admin/orders/OrderTable.astro';
+import { getOrdenes } from '@/lib/admin/service';
 
-interface Order {
-  id: string;
-  customer: { name: string; email: string; phone: string };
-  items: Array<{ name: string; quantity: number; price: number }>;
-  total: number;
-  currency: string;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-  channel: 'whatsapp' | 'web' | 'manual';
-  location: 'CO-BOGOTA' | 'BR-ACRE';
-  createdAt: string;
-  updatedAt: string;
-}
-
-const baseOrders: Order[] = [
-  { id: 'OF-2026-001', customer: { name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567' }, items: [{ name: 'Cera de Ducha - Cacao', quantity: 2, price: 45000 }], total: 125000, currency: 'COP', status: 'pending', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-16T10:30:00Z', updatedAt: '2026-06-16T10:30:00Z' },
-  { id: 'OF-2026-002', customer: { name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321' }, items: [{ name: 'Sabonete Artesanal 75g', quantity: 3, price: 89 }], total: 267, currency: 'BRL', status: 'confirmed', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-15T14:20:00Z', updatedAt: '2026-06-15T15:00:00Z' },
-  { id: 'OF-2026-003', customer: { name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543' }, items: [{ name: 'Pack 3 Jabones', quantity: 1, price: 120000 }], total: 120000, currency: 'COP', status: 'shipped', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-14T09:15:00Z', updatedAt: '2026-06-16T08:00:00Z' },
-  { id: 'OF-2026-004', customer: { name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+1 555 123 4567' }, items: [{ name: 'Candle Collection', quantity: 1, price: 89 }], total: 89, currency: 'USD', status: 'delivered', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-13T16:45:00Z', updatedAt: '2026-06-15T12:00:00Z' },
-  { id: 'OF-2026-005', customer: { name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5678' }, items: [{ name: 'Cera de Ducha 100g', quantity: 2, price: 89 }], total: 178, currency: 'BRL', status: 'pending', channel: 'manual', location: 'BR-ACRE', createdAt: '2026-06-12T11:00:00Z', updatedAt: '2026-06-12T11:00:00Z' },
-];
-
-const mockOrders: Order[] = [
-  ...baseOrders,
-  ...Array.from({ length: 43 }, (_, i) => ({
-    id: `OF-2026-${String(i + 6).padStart(3, '0')}`,
-    customer: { name: `Cliente ${i + 6}`, email: `cliente${i + 6}@email.com`, phone: `+57 300 ${1000 + i}` },
-    items: [{ name: 'Producto demo', quantity: 1, price: 50000 }],
-    total: 50000 + Math.floor(Math.random() * 100000),
-    currency: 'COP',
-    status: ['pending', 'confirmed', 'shipped', 'delivered'][i % 4] as Order['status'],
-    channel: ['whatsapp', 'web', 'manual'][i % 3] as Order['channel'],
-    location: (i % 2 === 0 ? 'CO-BOGOTA' : 'BR-ACRE') as Order['location'],
-    createdAt: new Date(2026, 5, 1 + (i % 16)).toISOString(),
-    updatedAt: new Date(2026, 5, 1 + (i % 16)).toISOString()
-  }))
-];
+const orders = getOrdenes();
 ---
 
 <AdminLayout title="Órdenes" description="Gestiona las órdenes de venta">
@@ -88,7 +54,7 @@ const mockOrders: Order[] = [
   </div>
 
   <!-- Orders Table -->
-  <OrderTable orders={mockOrders} />
+  <OrderTable orders={orders} />
 </AdminLayout>
 
 <script>

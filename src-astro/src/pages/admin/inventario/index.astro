@@ -3,39 +3,9 @@ export const prerender = false;
 // Inventory page — Products management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import ProductTable from '@/components/admin/inventory/ProductTable.astro';
+import { getProductos } from '@/lib/admin/service';
 
-interface Product {
-  id: string;
-  name: string;
-  sku: string;
-  category: string;
-  priceCOP: number;
-  priceBRL: number;
-  priceUSD: number;
-  stockCO: number;
-  stockBR: number;
-  status: "active" | "inactive" | "out_of_stock";
-}
-
-const mockProducts: Product[] = [
-  { id: '1', name: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', category: 'Cera de Ducha', priceCOP: 45000, priceBRL: 89, priceUSD: 12, stockCO: 250, stockBR: 800, status: 'active' },
-  { id: '2', name: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', category: 'Cera de Ducha', priceCOP: 45000, priceBRL: 89, priceUSD: 12, stockCO: 180, stockBR: 650, status: 'active' },
-  { id: '3', name: 'Sabonete - Lavanda', sku: 'SL-75', category: 'Sabonete', priceCOP: 35000, priceBRL: 69, priceUSD: 9.5, stockCO: 400, stockBR: 15, status: 'active' },
-  { id: '4', name: 'Sabonete - Avena', sku: 'SA-75', category: 'Sabonete', priceCOP: 35000, priceBRL: 69, priceUSD: 9.5, stockCO: 350, stockBR: 450, status: 'active' },
-  { id: '5', name: 'Pack Regalo Premium', sku: 'PR-100', category: 'Packs', priceCOP: 120000, priceBRL: 239, priceUSD: 32, stockCO: 50, stockBR: 3, status: 'out_of_stock' },
-  ...Array.from({ length: 19 }, (_, i) => ({
-    id: String(i + 6),
-    name: `Producto ${i + 6}`,
-    sku: `SKU-${String(i + 6).padStart(3, '0')}`,
-    category: ['Cera de Ducha', 'Sabonete', 'Packs', 'Accesorios'][i % 4],
-    priceCOP: 30000 + Math.floor(Math.random() * 50000),
-    priceBRL: 60 + Math.floor(Math.random() * 100),
-    priceUSD: 8 + Math.floor(Math.random() * 15),
-    stockCO: Math.floor(Math.random() * 500),
-    stockBR: Math.floor(Math.random() * 500),
-    status: (i % 5 === 0 ? 'inactive' : i % 7 === 0 ? 'out_of_stock' : 'active') as Product['status']
-  }))
-];
+const products = getProductos();
 ---
 
 <AdminLayout title="Inventario" description="Gestiona tu catálogo de productos">
@@ -61,20 +31,20 @@ const mockProducts: Product[] = [
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Total Productos</p>
-      <p class="text-2xl font-bold text-humo font-display" id="stat-total">{mockProducts.length}</p>
+      <p class="text-2xl font-bold text-humo font-display" id="stat-total">{products.length}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Activos</p>
-      <p class="text-2xl font-bold text-success font-display" id="stat-activos">{mockProducts.filter(p => p.status === 'active').length}</p>
+      <p class="text-2xl font-bold text-success font-display" id="stat-activos">{products.filter(p => p.status === 'active').length}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Stock Bajo</p>
-      <p class="text-2xl font-bold text-warning font-display" id="stat-bajo">{mockProducts.filter(p => p.stockCO < 100 || p.stockBR < 100).length}</p>
+      <p class="text-2xl font-bold text-warning font-display" id="stat-bajo">{products.filter(p => p.stockCO < 100 || p.stockBR < 100).length}</p>
     </div>
   </div>
 
   <!-- Products Table -->
-  <ProductTable products={mockProducts} />
+  <ProductTable products={products} />
 </AdminLayout>
 
 <script>

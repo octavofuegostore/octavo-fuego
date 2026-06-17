@@ -4,45 +4,9 @@ export const prerender = false;
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
 import ClienteForm from '@/components/admin/customers/ClienteForm.astro';
+import { getClientes } from '@/lib/admin/service';
 
-interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  location: 'CO' | 'BR' | 'EU' | 'US';
-  totalOrders: number;
-  totalSpent: number;
-  currency: string;
-  lastOrder: string;
-  status: 'active' | 'inactive';
-  type: 'retail' | 'wholesale';
-}
-
-const mockCustomers: Customer[] = [
-  { id: '1', name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567', location: 'CO', type: 'retail', status: 'active', totalOrders: 5, totalSpent: 225000, currency: 'COP', lastOrder: '2026-06-16' },
-  { id: '2', name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321', location: 'BR', type: 'wholesale', status: 'active', totalOrders: 12, totalSpent: 106800, currency: 'BRL', lastOrder: '2026-06-15' },
-  { id: '3', name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543', location: 'CO', type: 'retail', status: 'active', totalOrders: 3, totalSpent: 360000, currency: 'COP', lastOrder: '2026-06-14' },
-  { id: '4', name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+1 555 123 4567', location: 'US', type: 'retail', status: 'active', totalOrders: 2, totalSpent: 17800, currency: 'USD', lastOrder: '2026-06-13' },
-  { id: '5', name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5678', location: 'BR', type: 'wholesale', status: 'active', totalOrders: 8, totalSpent: 71200, currency: 'BRL', lastOrder: '2026-06-12' },
-];
-
-const mockCustomersFull: Customer[] = [
-  ...mockCustomers,
-  ...Array.from({ length: 150 }, (_, i) => ({
-    id: String(i + 6),
-    name: `Cliente ${i + 6}`,
-    email: `cliente${i + 6}@email.com`,
-    phone: `+57 300 ${1000 + i}`,
-    location: (['CO', 'BR', 'US', 'EU'] as const)[i % 4],
-    type: (i % 3 === 0 ? 'wholesale' : 'retail') as 'retail' | 'wholesale',
-    status: (i % 10 === 0 ? 'inactive' : 'active') as 'active' | 'inactive',
-    totalOrders: Math.floor(Math.random() * 20),
-    totalSpent: Math.floor(Math.random() * 500000),
-    currency: 'COP',
-    lastOrder: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-  })),
-];
+const customers = getClientes();
 ---
 
 <AdminLayout title="Clientes" description="Gestiona tu base de clientes">
@@ -94,7 +58,7 @@ const mockCustomersFull: Customer[] = [
   <ClienteForm />
 
   <!-- Customers Table -->
-  <CustomerTable customers={mockCustomersFull} />
+  <CustomerTable customers={customers} />
 </AdminLayout>
 
 <script>
