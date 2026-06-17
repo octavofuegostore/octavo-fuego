@@ -1,10 +1,12 @@
-// @tsCheck
+// @ts-check
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
+  adapter: vercel(),
   site: 'https://octavofuego.com',
   integrations: [
     react(),

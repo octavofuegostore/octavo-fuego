@@ -1,10 +1,12 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description = 'Panel de administración de Octavo Fuego' } = Astro.props;
 const currentPath = Astro.url.pathname;
 ---
 
@@ -190,11 +192,16 @@ const currentPath = Astro.url.pathname;
               <p class="text-sm font-medium text-papel truncate">Josue Calderon</p>
               <p class="text-xs text-ceniza truncate">Admin</p>
             </div>
-            <button class="text-papel/50 hover:text-papel transition-colors" title="Cerrar sesión">
+            <a
+              href="/api/auth/logout"
+              class="flex items-center gap-2 px-3 py-2 rounded-lg text-papel/70 hover:text-papel hover:bg-humo/80 transition-colors"
+              title="Cerrar sesión"
+            >
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
-            </button>
+              <span class="text-sm font-medium">Cerrar Sesión</span>
+            </a>
           </div>
         </div>
       </aside>
