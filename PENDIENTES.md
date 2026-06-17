@@ -258,6 +258,29 @@
 - [ ] **Etapa 5:** Admin Panel (Alfred UI)
 - [ ] **Etapa 6:** Portal Mayorista
 
+### 3.14 Admin Auth System ✅ (Jun 17, 2026)
+> SDD: `admin-auth-system` | Engram: `sdd/admin-auth-system/*`
+> Commit: `f88b6b0` en develop (no push)
+
+#### ✅ Completado
+- [x] **Auth library** — `src/lib/auth.ts` (credenciales hardcodeadas, SHA-256 tokens, constant-time comparison)
+- [x] **Middleware** — `src/middleware/auth.ts` (locale redirect /en|pt/admin → /admin, cookie verification, auth guard)
+- [x] **API Login** — `POST /api/auth/login` (valida credenciales, setea cookie httpOnly, 400/401/500 JSON errors)
+- [x] **API Logout** — `GET /api/auth/logout` (limpia cookie, redirect /admin/login)
+- [x] **Login UI** — `login.astro` (fetch-based form, loading state, error display)
+- [x] **Logout Button** — `AdminLayout.astro` (Cerrar Sesión en sidebar)
+- [x] **Vercel Adapter** — `@astrojs/vercel` instalado para soporte de API routes en producción
+- [x] **Prerender Fix** — `export const prerender = false` en API routes para server-side rendering
+
+#### 📋 Pendiente
+- [ ] **Phase 4: Tests** — unitarios (lib/auth, middleware) + E2E login flow (Playwright)
+
+#### Credenciales (hardcoded)
+```
+Email:    admin@octavofuego.com
+Password: octavo2026
+```
+
 #### Reglas de Negocio
 | Región | Bodega | Moneda | Gateway | Envío |
 |--------|--------|--------|---------|-------|
