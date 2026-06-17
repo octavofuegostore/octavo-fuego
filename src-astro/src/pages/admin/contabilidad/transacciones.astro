@@ -1,0 +1,26 @@
+---
+export const prerender = false;
+// Transacciones page — Lista de transacciones
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import TransaccionTable from '@/components/admin/contabilidad/TransaccionTable.astro';
+import PaginationControls from '@/components/admin/contabilidad/PaginationControls.astro';
+import { MOCK_TRANSACCIONES } from '@/lib/admin/contabilidad/mock';
+---
+
+<AdminLayout title="Transacciones" description="Historial de transacciones financieras">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Transacciones</h1>
+        <p class="text-ceniza mt-1">Historial de transacciones financieras</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transactions Table -->
+  <TransaccionTable transactions={MOCK_TRANSACCIONES} />
+
+  <!-- Pagination -->
+  <PaginationControls currentPage={1} totalPages={3} totalItems={24} pageSize={7} />
+</AdminLayout>

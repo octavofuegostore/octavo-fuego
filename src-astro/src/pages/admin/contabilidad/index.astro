@@ -1,0 +1,55 @@
+---
+export const prerender = false;
+// Contabilidad dashboard — Resumen financiero
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import KpiCard from '@/components/admin/contabilidad/KpiCard.astro';
+import GraficaBarras from '@/components/admin/contabilidad/GraficaBarras.astro';
+import { MOCK_KPIS, MOCK_GRAFICA_MENSUAL, formatCOP } from '@/lib/admin/contabilidad/mock';
+
+const ingresosIcon = 'M7 11l5-5m0 0l5 5m-5-5v12';
+const egresosIcon = 'M7 13l5 5m0 0l5-5m-5 5V6';
+const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z';
+---
+
+<AdminLayout title="Contabilidad" description="Resumen financiero de tu negocio">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Contabilidad</h1>
+        <p class="text-ceniza mt-1">Resumen financiero de tu negocio</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <KpiCard
+      icon={ingresosIcon}
+      title="Ingresos del Mes"
+      value={formatCOP(MOCK_KPIS.ingresosMes)}
+      trend="up"
+      trendValue="+12.5%"
+    />
+    <KpiCard
+      icon={egresosIcon}
+      title="Egresos del Mes"
+      value={formatCOP(MOCK_KPIS.egresosMes)}
+      trend="down"
+      trendValue="+8.3%"
+    />
+    <KpiCard
+      icon={balanceIcon}
+      title="Balance"
+      value={formatCOP(MOCK_KPIS.balance)}
+      trend="up"
+      trendValue="+15.2%"
+    />
+  </div>
+
+  <!-- Monthly Evolution Chart -->
+  <div>
+    <h2 class="text-lg font-display font-bold text-humo mb-4">Evolución Mensual</h2>
+    <GraficaBarras data={MOCK_GRAFICA_MENSUAL} />
+  </div>
+</AdminLayout>

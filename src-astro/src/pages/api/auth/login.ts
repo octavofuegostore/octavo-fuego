@@ -3,7 +3,7 @@ import { validateCredentials, generateToken, COOKIE_CONFIG } from '@/lib/auth';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+export const POST: APIRoute = async ({ request, cookies }) => {
   try {
     const body = await request.json();
     const { email, password } = body;
@@ -31,8 +31,11 @@ export const POST: APIRoute = async ({ request, cookies, redirect }) => {
     const token = await generateToken();
     cookies.set('of_admin_token', token, COOKIE_CONFIG);
 
-    return redirect('/admin', 302);
-  } catch (e) {
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch {
     return new Response(
       JSON.stringify({ error: 'Error interno del servidor' }),
       {

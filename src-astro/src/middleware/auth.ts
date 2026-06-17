@@ -11,7 +11,7 @@
 import type { MiddlewareHandler } from 'astro';
 import { verifyToken } from '@/lib/auth';
 
-const LOCALE_ADMIN_REGEX = /^\/(en|pt)\/(admin|api)/;
+const LOCALE_ADMIN_REGEX = /^\/(es|en|pt)\/(admin|api)/;
 
 /**
  * Check if the request is for a protected admin route (excluding the login page).
@@ -33,7 +33,7 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // redirects always land on canonical (es) paths.
   const localeMatch = pathname.match(LOCALE_ADMIN_REGEX);
   if (localeMatch) {
-    const cleanPath = pathname.replace(/^\/(en|pt)/, '');
+    const cleanPath = pathname.replace(/^\/(es|en|pt)/, '');
     return redirect(cleanPath, 302);
   }
 

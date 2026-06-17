@@ -1,0 +1,45 @@
+---
+export const prerender = false;
+// Informes page — Reportes financieros con tabs mensual/anual
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import InformesTabs from '@/components/admin/contabilidad/InformesTabs.astro';
+import {
+  MOCK_KPIS,
+  MOCK_GRAFICA_MENSUAL,
+  MOCK_EVOLUCION_ANUAL,
+  MOCK_TRANSACCIONES,
+} from '@/lib/admin/contabilidad/mock';
+
+const mensualKpis = {
+  ingresos: MOCK_KPIS.ingresosMes,
+  egresos: MOCK_KPIS.egresosMes,
+  balance: MOCK_KPIS.balance,
+};
+
+const anualKpis = {
+  ingresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.ingreso, 0),
+  egresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.egreso, 0),
+  balance: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + (m.ingreso - m.egreso), 0),
+};
+---
+
+<AdminLayout title="Informes" description="Reportes y análisis financiero">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Informes</h1>
+        <p class="text-ceniza mt-1">Reportes y análisis financiero</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Informes Tabs -->
+  <InformesTabs
+    mensualKpis={mensualKpis}
+    mensualChartData={MOCK_GRAFICA_MENSUAL}
+    mensualTransactions={MOCK_TRANSACCIONES}
+    anualKpis={anualKpis}
+    anualChartData={MOCK_EVOLUCION_ANUAL}
+  />
+</AdminLayout>

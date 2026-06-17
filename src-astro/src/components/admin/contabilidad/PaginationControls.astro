@@ -1,0 +1,40 @@
+---
+export interface Props {
+  currentPage: number;
+  totalPages: number;
+  totalItems: number;
+  pageSize: number;
+}
+
+const { currentPage, totalPages, totalItems, pageSize } = Astro.props;
+const start = (currentPage - 1) * pageSize + 1;
+const end = Math.min(currentPage * pageSize, totalItems);
+---
+
+<div class="flex items-center justify-between mt-4">
+  <p class="text-sm text-ceniza">
+    Mostrando {start}-{end} de {totalItems}
+  </p>
+  <div class="flex items-center gap-1">
+    <button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors">
+      Anterior
+    </button>
+    {
+      Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <button
+          class:list={[
+            "px-3 py-1.5 text-sm rounded-lg transition-colors",
+            page === currentPage
+              ? "bg-tabacco text-white"
+              : "border border-papel text-humo hover:bg-papel"
+          ]}
+        >
+          {page}
+        </button>
+      ))
+    }
+    <button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors">
+      Siguiente
+    </button>
+  </div>
+</div>

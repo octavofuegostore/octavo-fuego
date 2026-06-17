@@ -1,0 +1,42 @@
+---
+export interface Props {
+  icon: string;
+  title: string;
+  value: string;
+  trend: 'up' | 'down' | 'neutral';
+  trendValue: string;
+}
+
+const { icon, title, value, trend, trendValue } = Astro.props;
+
+const trendColors = {
+  up: 'text-green-600',
+  down: 'text-red-500',
+  neutral: 'text-ceniza',
+};
+const trendIcons = {
+  up: 'M5 10l7-7m0 0l7 7m-7-7v18',
+  down: 'M19 14l-7 7m0 0l-7-7m7 7V3',
+  neutral: 'M5 12h14',
+};
+---
+
+<div class="bg-white rounded-2xl p-6 shadow-card hover:shadow-hover transition-shadow duration-300">
+  <div class="flex items-start justify-between">
+    <div class="flex-1">
+      <p class="text-sm text-ceniza font-medium">{title}</p>
+      <p class="text-2xl font-bold text-humo mt-1 font-display">{value}</p>
+      <p class="text-sm mt-2 flex items-center gap-1 {trendColors[trend]}">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={trendIcons[trend]} />
+        </svg>
+        <span>{trendValue}</span>
+      </p>
+    </div>
+    <div class="w-12 h-12 bg-tabacco/10 rounded-xl flex items-center justify-center flex-shrink-0">
+      <svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={icon} />
+      </svg>
+    </div>
+  </div>
+</div>

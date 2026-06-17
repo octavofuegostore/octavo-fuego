@@ -161,6 +161,67 @@ const currentPath = Astro.url.pathname;
               </a>
             </li>
 
+            <!-- Contabilidad -->
+            <li>
+              <button
+                id="contabilidad-toggle"
+                class:list={[
+                  "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/contabilidad")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <div class="flex items-center gap-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                  </svg>
+                  <span class="font-medium">Contabilidad</span>
+                </div>
+                <svg class="w-4 h-4 transition-transform duration-200 contabilidad-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <ul id="contabilidad-submenu" class:list={[
+                "mt-1 ml-8 space-y-1 overflow-hidden transition-all duration-200",
+                currentPath.startsWith("/admin/contabilidad") ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+              ]}>
+                <li>
+                  <a
+                    href="/admin/contabilidad"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Dashboard</a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/contabilidad/transacciones"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad/transacciones"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Transacciones</a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/contabilidad/informes"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/contabilidad/informes"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >Informes</a>
+                </li>
+              </ul>
+            </li>
+
             <!-- Configuración -->
             <li>
               <a
@@ -296,6 +357,19 @@ const currentPath = Astro.url.pathname;
         inventarioSubmenu?.classList.toggle('opacity-0');
         inventarioSubmenu?.classList.toggle('opacity-100');
         inventarioArrow?.classList.toggle('rotate-180');
+      });
+
+      // Contabilidad submenu toggle
+      const contabilidadToggle = document.getElementById('contabilidad-toggle');
+      const contabilidadSubmenu = document.getElementById('contabilidad-submenu');
+      const contabilidadArrow = document.querySelector('.contabilidad-arrow');
+
+      contabilidadToggle?.addEventListener('click', () => {
+        contabilidadSubmenu?.classList.toggle('max-h-0');
+        contabilidadSubmenu?.classList.toggle('max-h-40');
+        contabilidadSubmenu?.classList.toggle('opacity-0');
+        contabilidadSubmenu?.classList.toggle('opacity-100');
+        contabilidadArrow?.classList.toggle('rotate-180');
       });
 
       // Keyboard navigation

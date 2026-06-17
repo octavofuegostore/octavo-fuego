@@ -353,3 +353,31 @@ CREATE TRIGGER trigger_orden_entregada
 8. ✅ Sidebar muestra "Contabilidad" con submenú colapsable
 9. ✅ Mismo login (cookie `of_admin_token`) protege todas las rutas
 10. ✅ Build sin errores en producción (Vercel)
+
+---
+
+## Status Update (17 Junio 2026)
+
+### ✅ Completado: Fase UI-Only (mock data)
+| Criterio | Estado | Nota |
+|----------|--------|------|
+| Dashboard contable con KPIs | ✅ | Mock data (`mock.ts`), 3 KpiCards (Ingresos, Egresos, Balance) |
+| Transacciones CRUD | 🔶 | UI lista (tabla + filtros + botones acción), backend pendiente |
+| Tabla paginada con filtros | ✅ | `TransaccionTable.astro` + `PaginationControls.astro` |
+| Gráficas | ✅ | `GraficaBarras.astro` + `GraficaLíneas.astro` (SVG inline, sin librerías) |
+| Informe Mensual/Anual | ✅ | `InformesTabs.astro` con tabs + KPIs + gráficos |
+| Sidebar colapsable | ✅ | `AdminLayout.astro` con submenú Contabilidad (Dashboard, Transacciones, Informes) |
+| Login protege rutas | ✅ | `of_admin_token` cookie + middleware + prerender fix |
+| Build sin errores | ✅ | `npm run build` pasa con 0 errores |
+
+### ✅ Completado: Auth Fix
+- **Login redirect loop resuelto** (3 root causes)
+- **Locale middleware** ahora cubre `es`, `en`, `pt`
+- **Prerender = false** en todas las páginas admin
+
+### 🔜 Pendiente: Fase Supabase (backend)
+1. Migración SQL: tablas `cont_transaccion`, `cont_categoria`
+2. API CRUD transacciones
+3. API KPIs + gráficas
+4. Reemplazar mock data por Supabase
+5. Bridge trigger: orden `entregada` → transacción automática

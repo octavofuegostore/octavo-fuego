@@ -1,0 +1,95 @@
+---
+export interface LineData {
+  label: string;
+  value: number;
+}
+
+export interface Props {
+  data: LineData[];
+  height?: number;
+  color?: string;
+  fillColor?: string;
+}
+
+const {
+  data,
+  height = 200,
+  color = '#8B4513',
+  fillColor = 'rgba(139,69,51,0.1)',
+} = Astro.props;
+
+const padding = { top: 20, right: 20, bottom: 40, left: 50 };
+const chartWidth = 500 - padding.left - padding.right;
+const chartHeight = height - padding.top - padding.bottom;
+const maxValue = Math.max(...data.map(d => d.value)) * 1.2;
+const steps = 4;
+const yStep = maxValue / steps;
+const pointSpacing = chartWidth / (data.length - 1);
+
+// Generate polyline points
+const points = data
+  .map((d, i) => {
+    const x = padding.left + i * pointSpacing;
+    const y = padding.top + chartHeight - (d.value / maxValue) * chartHeight;
+    return `${x},${y}`;
+  })
+  .join(' ');
+
+// Generate area fill points (polygon: line + bottom edge)
+const areaPoints = [
+  `${padding.left},${padding.top + chartHeight}`,
+  points,
+  `${padding.left + chartWidth},${padding.top + chartHeight}`,
+].join(' ');
+
+function formatValue(val: number): string {
+  if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+  if (val >= 1_000) return `${(val / 1_000).toFixed(0)}k`;
+  return String(val);
+}
+---
+
+<div class="bg-white rounded-2xl p-6 shadow-card">
+  <svg viewBox="0 0 500 {height}" class="w-full h-auto" xmlns="http://www.w3.org/2000/svg">
+    <!-- Y-axis grid lines -->
+    {
+      Array.from({ length: steps + 1 }, (_, i) => {
+        const y = padding.top + chartHeight - (i * chartHeight / steps);
+        const val = Math.round(yStep * i);
+        return [
+          <line x1={padding.left} y1={y} x2={500 - padding.right} y2={y} stroke="#E5E5E7" stroke-width="1" />,
+          <text x={padding.left - 8} y={y + 4} text-anchor="end" fill="#7b8084" font-size="10">
+            {formatValue(val)}
+          </text>,
+        ];
+      })
+    }
+
+    <!-- Area fill -->
+    <polygon points={areaPoints} fill={fillColor} />
+
+    <!-- Line -->
+    <polyline points={points} fill="none" stroke={color} stroke-width="2" stroke-linejoin="round" stroke-linecap="round" />
+
+    <!-- Data points -->
+    {
+      data.filter(d => d.value > 0).map((d, i) => {
+        const x = padding.left + i * pointSpacing;
+        const y = padding.top + chartHeight - (d.value / maxValue) * chartHeight;
+        return <circle cx={x} cy={y} r="3" fill={color} />;
+      })
+    }
+
+    <!-- X-axis labels -->
+    {
+      data.map((d, i) => {
+        const x = padding.left + i * pointSpacing;
+        return (
+          <text x={x} y={height - 5} text-anchor="middle" fill="#7b8084" font-size="10">
+            {d.label}
+          </text>
+        );
+      })
+    }
+  </svg>
+</div>

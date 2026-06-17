@@ -1,0 +1,131 @@
+---
+// InformesTabs.astro — Tabbed reports view (Mensual / Anual) with vanilla JS toggle
+import KpiCard from './KpiCard.astro';
+import GraficaBarras from './GraficaBarras.astro';
+import GraficaLíneas from './GraficaLíneas.astro';
+import TransaccionTable from './TransaccionTable.astro';
+import { formatCOP } from '@/lib/admin/contabilidad/mock';
+import type { BarChartData, LineChartData, Transaccion } from '@/lib/admin/contabilidad/mock';
+
+export interface KpiData {
+  ingresos: number;
+  egresos: number;
+  balance: number;
+}
+
+interface Props {
+  mensualKpis: KpiData;
+  mensualChartData: BarChartData[];
+  mensualTransactions: Transaccion[];
+  anualKpis: KpiData;
+  anualChartData: LineChartData[];
+}
+
+const {
+  mensualKpis,
+  mensualChartData,
+  mensualTransactions,
+  anualKpis,
+  anualChartData,
+} = Astro.props;
+
+const ingresosIcon = 'M7 11l5-5m0 0l5 5m-5-5v12';
+const egresosIcon = 'M7 13l5 5m0 0l5-5m-5 5V6';
+const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z';
+---
+
+<div>
+  <!-- Tab Buttons -->
+  <div class="flex gap-2 mb-6">
+    <button
+      id="tab-mensual-btn"
+      data-tab="mensual"
+      class="px-6 py-2.5 rounded-lg text-sm font-medium transition-colors bg-tabacco text-white"
+    >
+      Mensual
+    </button>
+    <button
+      id="tab-anual-btn"
+      data-tab="anual"
+      class="px-6 py-2.5 rounded-lg text-sm font-medium transition-colors bg-white text-humo border border-papel hover:bg-papel"
+    >
+      Anual
+    </button>
+  </div>
+
+  <!-- Mensual Tab -->
+  <div id="tab-mensual-content">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <KpiCard icon={ingresosIcon} title="Total Ingresos" value={formatCOP(mensualKpis.ingresos)} trend="up" trendValue="+12.5%" />
+      <KpiCard icon={egresosIcon} title="Total Egresos" value={formatCOP(mensualKpis.egresos)} trend="down" trendValue="+8.3%" />
+      <KpiCard icon={balanceIcon} title="Balance del Mes" value={formatCOP(mensualKpis.balance)} trend="up" trendValue="+15.2%" />
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-lg font-display font-bold text-humo mb-4">Ingresos vs Egresos</h2>
+      <GraficaBarras data={mensualChartData} />
+    </div>
+
+    <div>
+      <h2 class="text-lg font-display font-bold text-humo mb-4">Transacciones del Mes</h2>
+      <TransaccionTable transactions={mensualTransactions} showFilters={false} showActions={false} />
+    </div>
+  </div>
+
+  <!-- Anual Tab -->
+  <div id="tab-anual-content" class="hidden">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <KpiCard icon={ingresosIcon} title="Total Ingresos" value={formatCOP(anualKpis.ingresos)} trend="up" trendValue="+18.3%" />
+      <KpiCard icon={egresosIcon} title="Total Egresos" value={formatCOP(anualKpis.egresos)} trend="up" trendValue="+11.7%" />
+      <KpiCard icon={balanceIcon} title="Balance del Año" value={formatCOP(anualKpis.balance)} trend="up" trendValue="+24.1%" />
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-lg font-display font-bold text-humo mb-4">Evolución del Balance</h2>
+      <GraficaLíneas data={anualChartData} />
+    </div>
+
+    <div class="flex gap-3">
+      <button class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Exportar PDF
+      </button>
+      <button class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+        </svg>
+        Exportar CSV
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const mensualContent = document.getElementById('tab-mensual-content');
+  const anualContent = document.getElementById('tab-anual-content');
+  const mensualBtn = document.getElementById('tab-mensual-btn');
+  const anualBtn = document.getElementById('tab-anual-btn');
+
+  function switchTab(tab) {
+    if (tab === 'mensual') {
+      mensualContent?.classList.remove('hidden');
+      anualContent?.classList.add('hidden');
+      mensualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+      mensualBtn?.classList.add('bg-tabacco', 'text-white');
+      anualBtn?.classList.remove('bg-tabacco', 'text-white');
+      anualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+    } else {
+      anualContent?.classList.remove('hidden');
+      mensualContent?.classList.add('hidden');
+      anualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+      anualBtn?.classList.add('bg-tabacco', 'text-white');
+      mensualBtn?.classList.remove('bg-tabacco', 'text-white');
+      mensualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+    }
+  }
+
+  mensualBtn?.addEventListener('click', () => switchTab('mensual'));
+  anualBtn?.addEventListener('click', () => switchTab('anual'));
+</script>
