@@ -3,6 +3,43 @@ export const prerender = false;
 // Orders page — Orders management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import OrderTable from '@/components/admin/orders/OrderTable.astro';
+
+interface Order {
+  id: string;
+  customer: { name: string; email: string; phone: string };
+  items: Array<{ name: string; quantity: number; price: number }>;
+  total: number;
+  currency: string;
+  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  channel: 'whatsapp' | 'web' | 'manual';
+  location: 'CO-BOGOTA' | 'BR-ACRE';
+  createdAt: string;
+  updatedAt: string;
+}
+
+const baseOrders: Order[] = [
+  { id: 'OF-2026-001', customer: { name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567' }, items: [{ name: 'Cera de Ducha - Cacao', quantity: 2, price: 45000 }], total: 125000, currency: 'COP', status: 'pending', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-16T10:30:00Z', updatedAt: '2026-06-16T10:30:00Z' },
+  { id: 'OF-2026-002', customer: { name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321' }, items: [{ name: 'Sabonete Artesanal 75g', quantity: 3, price: 89 }], total: 267, currency: 'BRL', status: 'confirmed', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-15T14:20:00Z', updatedAt: '2026-06-15T15:00:00Z' },
+  { id: 'OF-2026-003', customer: { name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543' }, items: [{ name: 'Pack 3 Jabones', quantity: 1, price: 120000 }], total: 120000, currency: 'COP', status: 'shipped', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-14T09:15:00Z', updatedAt: '2026-06-16T08:00:00Z' },
+  { id: 'OF-2026-004', customer: { name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+1 555 123 4567' }, items: [{ name: 'Candle Collection', quantity: 1, price: 89 }], total: 89, currency: 'USD', status: 'delivered', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-13T16:45:00Z', updatedAt: '2026-06-15T12:00:00Z' },
+  { id: 'OF-2026-005', customer: { name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5678' }, items: [{ name: 'Cera de Ducha 100g', quantity: 2, price: 89 }], total: 178, currency: 'BRL', status: 'pending', channel: 'manual', location: 'BR-ACRE', createdAt: '2026-06-12T11:00:00Z', updatedAt: '2026-06-12T11:00:00Z' },
+];
+
+const mockOrders: Order[] = [
+  ...baseOrders,
+  ...Array.from({ length: 43 }, (_, i) => ({
+    id: `OF-2026-${String(i + 6).padStart(3, '0')}`,
+    customer: { name: `Cliente ${i + 6}`, email: `cliente${i + 6}@email.com`, phone: `+57 300 ${1000 + i}` },
+    items: [{ name: 'Producto demo', quantity: 1, price: 50000 }],
+    total: 50000 + Math.floor(Math.random() * 100000),
+    currency: 'COP',
+    status: ['pending', 'confirmed', 'shipped', 'delivered'][i % 4] as Order['status'],
+    channel: ['whatsapp', 'web', 'manual'][i % 3] as Order['channel'],
+    location: (i % 2 === 0 ? 'CO-BOGOTA' : 'BR-ACRE') as Order['location'],
+    createdAt: new Date(2026, 5, 1 + (i % 16)).toISOString(),
+    updatedAt: new Date(2026, 5, 1 + (i % 16)).toISOString()
+  }))
+];
 ---
 
 <AdminLayout title="Órdenes" description="Gestiona las órdenes de venta">
@@ -50,277 +87,21 @@ import OrderTable from '@/components/admin/orders/OrderTable.astro';
     </div>
   </div>
 
-  <!-- Orders Table with JS wiring -->
-  <div id="order-table-wrapper">
-    <OrderTable />
-  </div>
+  <!-- Orders Table -->
+  <OrderTable orders={mockOrders} />
 </AdminLayout>
 
 <script>
   import { toast } from 'sonner';
 
-  // Mock order data
-  interface Order {
-    id: string;
-    customer: { name: string; email: string; phone: string };
-    items: Array<{ name: string; quantity: number; price: number }>;
-    total: number;
-    currency: string;
-    status: string;
-    channel: string;
-    location: string;
-    createdAt: string;
-  }
-
-  const baseOrders: Order[] = [
-    { id: 'OF-2026-001', customer: { name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567' }, items: [{ name: 'Cera de Ducha - Cacao', quantity: 2, price: 45000 }], total: 125000, currency: 'COP', status: 'pending', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-16' },
-    { id: 'OF-2026-002', customer: { name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321' }, items: [{ name: 'Sabonete Artesanal 75g', quantity: 3, price: 89 }], total: 267, currency: 'BRL', status: 'confirmed', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-15' },
-    { id: 'OF-2026-003', customer: { name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543' }, items: [{ name: 'Pack 3 Jabones', quantity: 1, price: 120000 }], total: 120000, currency: 'COP', status: 'shipped', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-14' },
-    { id: 'OF-2026-004', customer: { name: 'Sarah Johnson', email: 'sarah@email.com', phone: '+1 555 123 4567' }, items: [{ name: 'Candle Collection', quantity: 1, price: 89 }], total: 89, currency: 'USD', status: 'delivered', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-13' },
-    { id: 'OF-2026-005', customer: { name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5678' }, items: [{ name: 'Cera de Ducha 100g', quantity: 2, price: 89 }], total: 178, currency: 'BRL', status: 'pending', channel: 'manual', location: 'BR-ACRE', createdAt: '2026-06-12' },
-  ];
-
-  const mockOrders = [
-    ...baseOrders,
-    ...Array.from({ length: 43 }, (_, i) => ({
-      id: `OF-2026-${String(i + 6).padStart(3, '0')}`,
-      customer: { name: `Cliente ${i + 6}`, email: `cliente${i + 6}@email.com`, phone: `+57 300 ${1000 + i}` },
-      items: [{ name: 'Producto demo', quantity: 1, price: 50000 }],
-      total: 50000 + Math.floor(Math.random() * 100000),
-      currency: 'COP',
-      status: ['pending', 'confirmed', 'shipped', 'delivered'][i % 4],
-      channel: ['whatsapp', 'web', 'manual'][i % 3],
-      location: i % 2 === 0 ? 'CO-BOGOTA' : 'BR-ACRE',
-      createdAt: new Date(2026, 5, 1 + (i % 16)).toISOString().split('T')[0]
-    }))
-  ];
-
-  // Pagination state
-  let currentPage = 1;
-  const pageSize = 5;
-  let filteredOrders = [...mockOrders];
-
-  // Get DOM elements
-  const searchInput = document.querySelector('#order-table-wrapper input[type="text"]') as HTMLInputElement;
-  const statusFilter = document.querySelector('#order-table-wrapper select:nth-of-type(1)') as HTMLSelectElement;
-  const channelFilter = document.querySelector('#order-table-wrapper select:nth-of-type(2)') as HTMLSelectElement;
-  const locationFilter = document.querySelector('#order-table-wrapper select:nth-of-type(3)') as HTMLSelectElement;
-  const nuevaOrdenBtn = document.getElementById('nueva-orden-btn');
-  const exportarBtn = document.getElementById('exportar-ordenes-btn');
-
-  // Wire search input
-  searchInput?.addEventListener('input', (e) => {
-    const query = (e.target as HTMLInputElement).value.toLowerCase();
-    filterOrders();
-  });
-
-  // Wire filter dropdowns
-  statusFilter?.addEventListener('change', filterOrders);
-  channelFilter?.addEventListener('change', filterOrders);
-  locationFilter?.addEventListener('change', filterOrders);
-
-  function filterOrders() {
-    const query = searchInput?.value.toLowerCase() || '';
-    const status = statusFilter?.value || '';
-    const channel = channelFilter?.value || '';
-    const location = locationFilter?.value || '';
-
-    filteredOrders = mockOrders.filter(o => {
-      const matchesSearch = o.id.toLowerCase().includes(query) ||
-                           o.customer.name.toLowerCase().includes(query) ||
-                           o.customer.email.toLowerCase().includes(query);
-      const matchesStatus = !status || o.status === status;
-      const matchesChannel = !channel || o.channel === channel;
-      const matchesLocation = !location || o.location.startsWith(location);
-      return matchesSearch && matchesStatus && matchesChannel && matchesLocation;
-    });
-
-    currentPage = 1;
-    renderOrders();
-    updateStats();
-  }
-
-  function formatPrice(price: number, currency: string): string {
-    if (currency === 'BRL') {
-      return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(price);
-    } else if (currency === 'USD') {
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-    }
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(price);
-  }
-
-  function renderOrders() {
-    const tbody = document.querySelector('#order-table-wrapper tbody');
-    if (!tbody) return;
-
-    const start = (currentPage - 1) * pageSize;
-    const end = start + pageSize;
-    const pageOrders = filteredOrders.slice(start, end);
-
-    const statusConfig: Record<string, { bg: string; text: string; label: string }> = {
-      pending: { bg: 'bg-warning/10', text: 'text-warning', label: 'Pendiente' },
-      confirmed: { bg: 'bg-info/10', text: 'text-info', label: 'Confirmada' },
-      shipped: { bg: 'bg-accent/10', text: 'text-accent', label: 'Enviada' },
-      delivered: { bg: 'bg-success/10', text: 'text-success', label: 'Entregada' },
-      cancelled: { bg: 'bg-error/10', text: 'text-error', label: 'Cancelada' }
-    };
-
-    const channelConfig: Record<string, { bg: string; text: string; label: string }> = {
-      whatsapp: { bg: 'bg-success/10', text: 'text-success', label: 'WhatsApp' },
-      web: { bg: 'bg-info/10', text: 'text-info', label: 'Web' },
-      manual: { bg: 'bg-ceniza/10', text: 'text-ceniza', label: 'Manual' }
-    };
-
-    tbody.innerHTML = pageOrders.map(o => {
-      const status = statusConfig[o.status] || statusConfig.pending;
-      const channel = channelConfig[o.channel] || channelConfig.web;
-      const locationBg = o.location === 'CO-BOGOTA' ? 'bg-info/10 text-info' : 'bg-success/10 text-success';
-
-      return `
-        <tr class="hover:bg-papel/30 transition-colors" data-order-id="${o.id}">
-          <td class="px-6 py-4 text-sm font-medium text-humo font-mono">${o.id}</td>
-          <td class="px-6 py-4">
-            <div>
-              <p class="text-sm font-medium text-humo">${o.customer.name}</p>
-              <p class="text-xs text-ceniza">${o.customer.email}</p>
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <div class="text-sm text-ceniza">${o.items.length} ${o.items.length === 1 ? 'producto' : 'productos'}</div>
-            <div class="text-xs text-ceniza mt-0.5">${o.items[0].name}</div>
-          </td>
-          <td class="px-6 py-4 text-sm font-medium text-humo text-right">${formatPrice(o.total, o.currency)}</td>
-          <td class="px-6 py-4 text-center">
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.bg} ${status.text}">${status.label}</span>
-          </td>
-          <td class="px-6 py-4 text-center">
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${channel.bg} ${channel.text}">${channel.label}</span>
-          </td>
-          <td class="px-6 py-4 text-center">
-            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${locationBg}">${o.location}</span>
-          </td>
-          <td class="px-6 py-4 text-sm text-ceniza">${new Date(o.createdAt).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })}</td>
-          <td class="px-6 py-4 text-right">
-            <div class="flex items-center justify-end gap-2">
-              <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors view-order" title="Ver detalles">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </button>
-              ${o.status === 'pending' ? `
-                <button class="p-1.5 text-ceniza hover:text-success hover:bg-success/10 rounded-lg transition-colors confirm-order" title="Confirmar" data-id="${o.id}">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </button>
-              ` : ''}
-              ${o.status === 'confirmed' ? `
-                <button class="p-1.5 text-ceniza hover:text-accent hover:bg-accent/10 rounded-lg transition-colors ship-order" title="Marcar como enviada" data-id="${o.id}">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                  </svg>
-                </button>
-              ` : ''}
-            </div>
-          </td>
-        </tr>
-      `;
-    }).join('');
-
-    // Update pagination info
-    const paginationText = document.querySelector('#order-table-wrapper .text-sm.text-ceniza');
-    if (paginationText) {
-      paginationText.textContent = `Mostrando ${start + 1}-${Math.min(end, filteredOrders.length)} de ${filteredOrders.length} órdenes`;
-    }
-
-    // Wire view buttons to navigate
-    tbody.querySelectorAll('.view-order').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const row = (e.currentTarget as HTMLElement).closest('tr');
-        const orderId = row?.getAttribute('data-order-id');
-        if (orderId) {
-          window.location.href = `/admin/ordenes/${orderId}`;
-        }
-      });
-    });
-
-    // Wire confirm buttons
-    tbody.querySelectorAll('.confirm-order').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const orderId = (e.currentTarget as HTMLElement).getAttribute('data-id');
-        const order = mockOrders.find(o => o.id === orderId);
-        if (order) {
-          order.status = 'confirmed';
-          toast.success(`Orden ${orderId} confirmada`);
-          renderOrders();
-          updateStats();
-        }
-      });
-    });
-
-    // Wire ship buttons
-    tbody.querySelectorAll('.ship-order').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const orderId = (e.currentTarget as HTMLElement).getAttribute('data-id');
-        const order = mockOrders.find(o => o.id === orderId);
-        if (order) {
-          order.status = 'shipped';
-          toast.success(`Orden ${orderId} marcada como enviada`);
-          renderOrders();
-          updateStats();
-        }
-      });
-    });
-  }
-
-  function updateStats() {
-    const statHoy = document.getElementById('stat-hoy');
-    const statPendientes = document.getElementById('stat-pendientes');
-    const statProceso = document.getElementById('stat-proceso');
-    const statCompletadas = document.getElementById('stat-completadas');
-
-    if (statHoy) {
-      const today = new Date().toISOString().split('T')[0];
-      statHoy.textContent = String(filteredOrders.filter(o => o.createdAt === today).length);
-    }
-    if (statPendientes) statPendientes.textContent = String(filteredOrders.filter(o => o.status === 'pending').length);
-    if (statProceso) statProceso.textContent = String(filteredOrders.filter(o => o.status === 'confirmed' || o.status === 'shipped').length);
-    if (statCompletadas) statCompletadas.textContent = String(filteredOrders.filter(o => o.status === 'delivered').length);
-  }
-
-  // Wire pagination buttons
-  document.querySelectorAll('#order-table-wrapper button').forEach(btn => {
-    const text = btn.textContent?.trim();
-    if (text === 'Anterior') {
-      btn.addEventListener('click', () => {
-        if (currentPage > 1) {
-          currentPage--;
-          renderOrders();
-        }
-      });
-    } else if (text === 'Siguiente') {
-      btn.addEventListener('click', () => {
-        const totalPages = Math.ceil(filteredOrders.length / pageSize);
-        if (currentPage < totalPages) {
-          currentPage++;
-          renderOrders();
-        }
-      });
-    }
-  });
-
   // Wire "Nueva Orden" button
-  nuevaOrdenBtn?.addEventListener('click', () => {
+  document.getElementById('nueva-orden-btn')?.addEventListener('click', () => {
     toast.info('Función de crear orden coming soon');
   });
 
   // Wire "Exportar" button
-  exportarBtn?.addEventListener('click', () => {
+  document.getElementById('exportar-ordenes-btn')?.addEventListener('click', () => {
     toast.success('Exportando órdenes...');
     setTimeout(() => toast.success('Órdenes exportadas correctamente'), 1000);
   });
-
-  // Initial render
-  renderOrders();
 </script>
