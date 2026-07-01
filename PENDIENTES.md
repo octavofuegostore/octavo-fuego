@@ -13,7 +13,7 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.4.0) |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.7.1) |
 | 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
@@ -21,7 +21,71 @@
 
 ---
 
-## 🏁 Último Sprint — v0.5.0: SEO Transaccional + Bug Fixes (Julio 1, 2026)
+## 🏁 Último Sprint — v0.7.1: Schema Bugs Fix + Real Supabase Data (Julio 1, 2026)
+
+> **Tags:** `v0.7.1` | **Build:** ✅ 0 errores
+> **Commits:** d58a73d | **Fuente:** Hotfix directo
+
+### ✅ Schema bugs corregidos
+| Bug | Archivos | Fix |
+|-----|----------|-----|
+| `alerta_stock_bajo` en `niveles_inventario` | 4 queries en services/helpers | Cambiado a `gramos_disponibles` view |
+| `clientes.nombre` no existe | `ordenes.ts`, `service.ts`, `mapper.ts` | Cambiado a `nombre_empresa` |
+| FK path productos→niveles | Verificado que ya era correcto | Sin cambios |
+
+**Resultado:** Dashboard con data real de Supabase. 5 productos desde DB. 0 errores.
+
+---
+
+## 🏁 Sprint Anterior — v0.7.0: Admin Hydration Fix + Sidebar Toggles (Julio 1, 2026)
+
+> **Tags:** `v0.7.0` | **Build:** ✅ 0 errores
+> **Commits:** 30f9ce0 | **PR:** — | **Fuente:** SDD explore + apply
+
+### ✅ AdminLayout — Sidebar
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| Init guard | `AdminLayout.astro` | data-ui-initialized + event delegation en `<nav>` |
+| Submenu toggles | `AdminLayout.astro` | 3 listeners → 1 (delegación) |
+| Duplicate fix | `AdminLayout.astro` | `$sidebarOpen.subscribe()` fuera del init guard |
+
+### ✅ 12 páginas admin — astro:page-load
+| Páginas | Fix |
+|---------|-----|
+| dashboard, ordenes, clientes, b2b, stock, pagos, contabilidad (3), actividad, configuracion | Scripts envueltos en `function initPage()` + `astro:page-load` listener |
+
+---
+
+## 🏁 Sprint Anterior — v0.6.1: Blank Page Fix (Julio 1, 2026)
+
+> **Tags:** `v0.6.1` | **Build:** ✅ 0 errores
+> **Commits:** 45248ec
+
+### ✅ Causas raíz del blank page
+| Bug | Archivo | Fix |
+|-----|---------|-----|
+| `BodegaSwitcher` usaba `document.cookie` en SSR | `BodegaSwitcher.tsx:41` | `typeof document !== 'undefined'` guard |
+| 9 iconos Solar Bold faltaban en config | `astro.config.mjs` | Agregados `chart-square-bold`, `box-bold`, etc. |
+
+---
+
+## 🏁 Sprint Anterior — v0.6.0: SEO Architecture Complete (Julio 1, 2026)
+
+> **Tags:** `v0.6.0` | **Build:** ✅ 0 errores
+> **Commits:** 7a2bda6 | **PR:** #31
+
+### ✅ F0-F7 completados
+| Fase | Qué | Archivos |
+|------|-----|----------|
+| F0 | Fix blank dashboard (Supabase env check) | `AdminLayout.astro`, `index.astro`, `mapper.ts` |
+| F2 | FAQ Schema (6 preguntas × 5 prod × 3 locales) | `FAQPageJsonLd.astro`, `FAQSection.astro` |
+| F5 | OG Branded SVG (locale-aware, sin fotos) | `OGBrandedImage.astro` |
+| F6 | hreflang + canonical (language-only) | `Layout.astro` |
+| F7 | Visual breadcrumb ES + OG title double brand | `[product].astro` |
+
+---
+
+## 🏁 Sprint Anterior — v0.5.0: SEO Transaccional + Bug Fixes (Julio 1, 2026)
 
 > **Tags:** `v0.5.0` | **Commits:** 1490815 | **Build:** ✅ 0 errores
 > **PR:** #30 | **Fuente:** SDD proposal/spec/tasks/apply/verify
