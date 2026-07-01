@@ -119,187 +119,192 @@ import { Toaster } from 'sonner';
     </div>
 
     <script>
-      // Email validation regex
-      const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      function initPage() {
+        // Email validation regex
+        const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // Rate limiting state
-      let attempts = 0;
-      const MAX_ATTEMPTS = 3;
-      const LOCKOUT_DURATION = 30000; // 30 seconds
+        // Rate limiting state
+        let attempts = 0;
+        const MAX_ATTEMPTS = 3;
+        const LOCKOUT_DURATION = 30000; // 30 seconds
 
-      // Toggle password visibility
-      const togglePassword = document.getElementById('toggle-password');
-      const passwordInput = document.getElementById('password') as HTMLInputElement;
+        // Toggle password visibility
+        const togglePassword = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password') as HTMLInputElement;
 
-      togglePassword?.addEventListener('click', () => {
-        const type = passwordInput?.type === 'password' ? 'text' : 'password';
-        if (passwordInput) {
-          passwordInput.type = type;
-        }
-      });
-
-      // Create inline error element
-      function createInlineError(input: HTMLInputElement, message: string) {
-        const existing = input.parentElement?.querySelector('.inline-error');
-        if (existing) existing.remove();
-
-        const error = document.createElement('p');
-        error.className = 'inline-error text-xs text-error mt-1';
-        error.textContent = message;
-        input.parentElement?.appendChild(error);
-        input.classList.add('border-error');
-        input.classList.remove('border-papel');
-      }
-
-      function clearInlineError(input: HTMLInputElement) {
-        const existing = input.parentElement?.querySelector('.inline-error');
-        if (existing) existing.remove();
-        input.classList.remove('border-error');
-        input.classList.add('border-papel');
-      }
-
-      // Form submission
-      const form = document.getElementById('login-form') as HTMLFormElement;
-      const errorEl = document.getElementById('error-message') as HTMLDivElement;
-      const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const emailInput = document.getElementById('email') as HTMLInputElement;
-      const passwordField = document.getElementById('password') as HTMLInputElement;
-
-      function setLoading(loading: boolean) {
-        if (!submitBtn || !emailInput || !passwordField) return;
-        submitBtn.disabled = loading;
-        submitBtn.textContent = loading ? 'Iniciando sesión...' : 'Iniciar Sesión';
-        submitBtn.style.opacity = loading ? '0.7' : '1';
-        submitBtn.style.cursor = loading ? 'not-allowed' : 'pointer';
-        emailInput.disabled = loading;
-        passwordField.disabled = loading;
-      }
-
-      function showError(message: string) {
-        if (!errorEl) return;
-        errorEl.textContent = message;
-        errorEl.classList.remove('hidden');
-      }
-
-      function hideError() {
-        if (!errorEl) return;
-        errorEl.classList.add('hidden');
-      }
-
-      function startLockout() {
-        const lockoutMsg = document.createElement('div');
-        lockoutMsg.id = 'lockout-message';
-        lockoutMsg.className = 'mt-4 p-3 bg-warning/10 border border-warning/30 text-warning rounded-lg text-sm text-center';
-        lockoutMsg.innerHTML = 'Demasiados intentos. Espera <span id="countdown">30</span>s...';
-        form?.appendChild(lockoutMsg);
-
-        let remaining = 30;
-        const countdownEl = document.getElementById('countdown');
-        submitBtn.disabled = true;
-
-        const interval = setInterval(() => {
-          remaining--;
-          if (countdownEl) countdownEl.textContent = String(remaining);
-          if (remaining <= 0) {
-            clearInterval(interval);
-            lockoutMsg.remove();
-            submitBtn.disabled = false;
-            attempts = 0;
+        togglePassword?.addEventListener('click', () => {
+          const type = passwordInput?.type === 'password' ? 'text' : 'password';
+          if (passwordInput) {
+            passwordInput.type = type;
           }
-        }, 1000);
-      }
+        });
 
-      function validateForm() {
-        let isValid = true;
-        const email = emailInput?.value.trim();
-        const password = passwordField?.value;
+        // Create inline error element
+        function createInlineError(input: HTMLInputElement, message: string) {
+          const existing = input.parentElement?.querySelector('.inline-error');
+          if (existing) existing.remove();
 
-        // Clear previous errors
-        clearInlineError(emailInput);
-        clearInlineError(passwordField);
-
-        // Email validation
-        if (!email) {
-          createInlineError(emailInput, 'El email es requerido');
-          isValid = false;
-        } else if (!EMAIL_REGEX.test(email)) {
-          createInlineError(emailInput, 'Formato de email inválido');
-          isValid = false;
+          const error = document.createElement('p');
+          error.className = 'inline-error text-xs text-error mt-1';
+          error.textContent = message;
+          input.parentElement?.appendChild(error);
+          input.classList.add('border-error');
+          input.classList.remove('border-papel');
         }
 
-        // Password validation
-        if (!password) {
-          createInlineError(passwordField, 'La contraseña es requerida');
-          isValid = false;
-        } else if (password.length < 6) {
-          createInlineError(passwordField, 'La contraseña debe tener al menos 6 caracteres');
-          isValid = false;
+        function clearInlineError(input: HTMLInputElement) {
+          const existing = input.parentElement?.querySelector('.inline-error');
+          if (existing) existing.remove();
+          input.classList.remove('border-error');
+          input.classList.add('border-papel');
         }
 
-        return isValid;
-      }
+        // Form submission
+        const form = document.getElementById('login-form') as HTMLFormElement;
+        const errorEl = document.getElementById('error-message') as HTMLDivElement;
+        const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+        const emailInput = document.getElementById('email') as HTMLInputElement;
+        const passwordField = document.getElementById('password') as HTMLInputElement;
 
-      form?.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        hideError();
-
-        if (!validateForm()) {
-          return;
+        function setLoading(loading: boolean) {
+          if (!submitBtn || !emailInput || !passwordField) return;
+          submitBtn.disabled = loading;
+          submitBtn.textContent = loading ? 'Iniciando sesión...' : 'Iniciar Sesión';
+          submitBtn.style.opacity = loading ? '0.7' : '1';
+          submitBtn.style.cursor = loading ? 'not-allowed' : 'pointer';
+          emailInput.disabled = loading;
+          passwordField.disabled = loading;
         }
 
-        const email = emailInput?.value.trim();
-        const password = passwordField?.value;
+        function showError(message: string) {
+          if (!errorEl) return;
+          errorEl.textContent = message;
+          errorEl.classList.remove('hidden');
+        }
 
-        setLoading(true);
+        function hideError() {
+          if (!errorEl) return;
+          errorEl.classList.add('hidden');
+        }
 
-        try {
-          const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-            redirect: 'manual',
-          });
+        function startLockout() {
+          const lockoutMsg = document.createElement('div');
+          lockoutMsg.id = 'lockout-message';
+          lockoutMsg.className = 'mt-4 p-3 bg-warning/10 border border-warning/30 text-warning rounded-lg text-sm text-center';
+          lockoutMsg.innerHTML = 'Demasiados intentos. Espera <span id="countdown">30</span>s...';
+          form?.appendChild(lockoutMsg);
 
-          const data = await response.json();
+          let remaining = 30;
+          const countdownEl = document.getElementById('countdown');
+          submitBtn.disabled = true;
 
-          if (response.ok && data.success) {
-            // Brief success feedback before redirect
-            submitBtn.textContent = '✓ ¡Bienvenido!';
-            submitBtn.style.background = '#16a34a';
-            window.location.href = '/admin';
-          } else {
-            attempts++;
-            if (attempts >= MAX_ATTEMPTS) {
-              showError('Demasiados intentos fallidos. Espera 30 segundos.');
-              startLockout();
-            } else {
-              const msg = data.error || 'Error de autenticación.';
-              showError(`${msg} (${MAX_ATTEMPTS - attempts} intentos restantes)`);
+          const interval = setInterval(() => {
+            remaining--;
+            if (countdownEl) countdownEl.textContent = String(remaining);
+            if (remaining <= 0) {
+              clearInterval(interval);
+              lockoutMsg.remove();
+              submitBtn.disabled = false;
+              attempts = 0;
             }
+          }, 1000);
+        }
+
+        function validateForm() {
+          let isValid = true;
+          const email = emailInput?.value.trim();
+          const password = passwordField?.value;
+
+          // Clear previous errors
+          clearInlineError(emailInput);
+          clearInlineError(passwordField);
+
+          // Email validation
+          if (!email) {
+            createInlineError(emailInput, 'El email es requerido');
+            isValid = false;
+          } else if (!EMAIL_REGEX.test(email)) {
+            createInlineError(emailInput, 'Formato de email inválido');
+            isValid = false;
           }
-        } catch {
-          showError('Error de conexión. Intenta de nuevo.');
-        } finally {
-          setLoading(false);
-        }
-      });
 
-      // Real-time validation on blur
-      emailInput?.addEventListener('blur', () => {
-        const email = emailInput.value.trim();
-        clearInlineError(emailInput);
-        if (email && !EMAIL_REGEX.test(email)) {
-          createInlineError(emailInput, 'Formato de email inválido');
-        }
-      });
+          // Password validation
+          if (!password) {
+            createInlineError(passwordField, 'La contraseña es requerida');
+            isValid = false;
+          } else if (password.length < 6) {
+            createInlineError(passwordField, 'La contraseña debe tener al menos 6 caracteres');
+            isValid = false;
+          }
 
-      passwordField?.addEventListener('blur', () => {
-        const password = passwordField.value;
-        clearInlineError(passwordField);
-        if (password && password.length < 6) {
-          createInlineError(passwordField, 'La contraseña debe tener al menos 6 caracteres');
+          return isValid;
         }
-      });
+
+        form?.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          hideError();
+
+          if (!validateForm()) {
+            return;
+          }
+
+          const email = emailInput?.value.trim();
+          const password = passwordField?.value;
+
+          setLoading(true);
+
+          try {
+            const response = await fetch('/api/auth/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password }),
+              redirect: 'manual',
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+              // Brief success feedback before redirect
+              submitBtn.textContent = '✓ ¡Bienvenido!';
+              submitBtn.style.background = '#16a34a';
+              window.location.href = '/admin';
+            } else {
+              attempts++;
+              if (attempts >= MAX_ATTEMPTS) {
+                showError('Demasiados intentos fallidos. Espera 30 segundos.');
+                startLockout();
+              } else {
+                const msg = data.error || 'Error de autenticación.';
+                showError(`${msg} (${MAX_ATTEMPTS - attempts} intentos restantes)`);
+              }
+            }
+          } catch {
+            showError('Error de conexión. Intenta de nuevo.');
+          } finally {
+            setLoading(false);
+          }
+        });
+
+        // Real-time validation on blur
+        emailInput?.addEventListener('blur', () => {
+          const email = emailInput.value.trim();
+          clearInlineError(emailInput);
+          if (email && !EMAIL_REGEX.test(email)) {
+            createInlineError(emailInput, 'Formato de email inválido');
+          }
+        });
+
+        passwordField?.addEventListener('blur', () => {
+          const password = passwordField.value;
+          clearInlineError(passwordField);
+          if (password && password.length < 6) {
+            createInlineError(passwordField, 'La contraseña debe tener al menos 6 caracteres');
+          }
+        });
+      }
+
+      initPage();
+      document.addEventListener('astro:page-load', initPage);
     </script>
   </body>
 </html>

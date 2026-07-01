@@ -22,7 +22,7 @@ declare global {
 
 const LOCALE_ADMIN_REGEX = /^\/(es|en|pt)\/(admin|api)/
 const PUBLIC_ROUTES = ['/admin/login']
-const PUBLIC_PREFIXES = ['/api/']
+const PUBLIC_PREFIXES = ['/api/auth/']
 
 const localeHandler = defineMiddleware(async (context, next) => {
   const { redirect } = context

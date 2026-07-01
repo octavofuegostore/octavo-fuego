@@ -33,7 +33,10 @@ export interface AuthPayload extends JWTPayload {
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 
-const JWT_SECRET_RAW = import.meta.env.JWT_SECRET || 'octavo-fuego-dev-secret-2026';
+const JWT_SECRET_RAW = import.meta.env.JWT_SECRET;
+if (!JWT_SECRET_RAW) {
+  throw new Error('FATAL: JWT_SECRET env var is required. Set it in .env or Vercel.');
+}
 const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_RAW);
 
 const JWT_ISSUER = 'octavo-fuego';
@@ -113,7 +116,7 @@ export async function authenticateUser(
     if (!data.activo) return null;
 
     // Compare password with bcrypt hash from DB
-    const valid = bcrypt.compareSync(password, data.password_hash);
+    const valid = await bcrypt.compare(password, data.password_hash);
     if (!valid) return null;
 
     const user: AuthUser = {

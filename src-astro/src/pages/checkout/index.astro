@@ -1,16 +1,20 @@
 ---
 import Layout from '@/layouts/Layout.astro';
+import { useTranslations, getLocaleFromUrl } from '@/i18n';
 import { CheckoutForm } from '@/components/checkout/CheckoutForm';
 import { OrderSummary } from '@/components/checkout/OrderSummary';
+
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 ---
 
-<Layout title="Checkout" description="Completa tu pedido">
+<Layout title={t.cart.irCheckout} description={t.common.tagline} locale={locale}>
   <section class="py-16 md:py-24">
     <div class="max-w-6xl mx-auto px-6 md:px-12">
       <!-- Header -->
       <div class="text-center mb-12">
         <h1 class="font-display text-3xl md:text-4xl font-bold mb-4">
-          Finalizar Pedido
+          {t.cart.irCheckout}
         </h1>
       </div>
 
@@ -19,22 +23,22 @@ import { OrderSummary } from '@/components/checkout/OrderSummary';
         <div class="flex items-center gap-4 md:gap-8">
           <div id="step-1-indicator" class="flex items-center gap-2">
             <div class="w-8 h-8 rounded-full border-2 border-tabacco bg-tabacco text-white flex items-center justify-center text-sm font-semibold">1</div>
-            <span class="hidden md:inline text-sm">Información</span>
+            <span class="hidden md:inline text-sm">{t.checkout.info}</span>
           </div>
           <div class="w-8 md:w-16 h-px bg-humo"></div>
           <div id="step-2-indicator" class="flex items-center gap-2 opacity-50">
             <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold">2</div>
-            <span class="hidden md:inline text-sm text-ceniza">Envío</span>
+            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.envio}</span>
           </div>
           <div class="w-8 md:w-16 h-px bg-humo"></div>
           <div id="step-3-indicator" class="flex items-center gap-2 opacity-50">
             <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold">3</div>
-            <span class="hidden md:inline text-sm text-ceniza">Pago</span>
+            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.pago}</span>
           </div>
           <div class="w-8 md:w-16 h-px bg-humo"></div>
           <div id="step-4-indicator" class="flex items-center gap-2 opacity-50">
             <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold">4</div>
-            <span class="hidden md:inline text-sm text-ceniza">Listo</span>
+            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.listo}</span>
           </div>
         </div>
       </div>

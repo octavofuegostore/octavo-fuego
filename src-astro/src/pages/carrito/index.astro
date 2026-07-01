@@ -1,14 +1,15 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/i18n';
+import { useTranslations, getLocaleFromUrl } from '@/i18n';
 import { formatCOP } from '@/stores/cartStore';
 import { CartStore } from '@/components/cart/CartStore';
 
-const t = useTranslations('es');
+const locale = getLocaleFromUrl(Astro.url);
+const t = useTranslations(locale);
 ---
 
-<Layout title="Carrito" description="Tu carrito de compras">
+<Layout title={t.cart.titulo} description={t.common.tagline} locale={locale}>
   <CartStore client:load />
   
   <section class="py-16 md:py-24">
@@ -16,10 +17,10 @@ const t = useTranslations('es');
       <!-- Header -->
       <div class="text-center mb-12">
         <h1 class="font-display text-4xl md:text-5xl font-bold mb-4">
-          Tu Carrito
+          {t.cart.titulo}
         </h1>
         <p class="text-ceniza text-lg">
-          Revisa tus productos antes de proceder al pago
+          {t.common.tagline}
         </p>
       </div>
 
@@ -35,9 +36,9 @@ const t = useTranslations('es');
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
           </svg>
         </div>
-        <p class="text-ceniza text-xl mb-6">Tu carrito está vacío</p>
+        <p class="text-ceniza text-xl mb-6">{t.cart.vacío}</p>
         <Button variant="secondary" id="btn-explorar-productos">
-          Explorar productos
+          {t.nav.verTienda}
         </Button>
       </div>
 
@@ -47,15 +48,15 @@ const t = useTranslations('es');
           <!-- Summary -->
           <div class="w-full md:w-1/2 space-y-4">
             <div class="flex justify-between items-center">
-              <span class="text-ceniza">Subtotal</span>
+              <span class="text-ceniza">{t.cart.subtotal}</span>
               <span id="subtotal" class="font-semibold">$0</span>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-ceniza">Envío</span>
-              <span class="text-success">Gratis</span>
+              <span class="text-ceniza">{t.cart.envio}</span>
+              <span class="text-success">{t.cart.envioGratis}</span>
             </div>
             <div class="flex justify-between items-center pt-4 border-t border-humo">
-              <span class="font-semibold text-lg">Total</span>
+              <span class="font-semibold text-lg">{t.cart.total}</span>
               <span id="total" class="font-display text-2xl font-bold text-tabacco">$0</span>
             </div>
           </div>
@@ -63,10 +64,10 @@ const t = useTranslations('es');
           <!-- Actions -->
           <div class="w-full md:w-1/2 flex flex-col gap-4">
             <Button size="lg" class="w-full" onclick="window.location.href='/checkout'">
-              Proceder al Pago
+              {t.cart.irCheckout}
             </Button>
             <Button variant="ghost" class="w-full" id="btn-continuar-comprando">
-              Continuar Comprando
+              {t.cart.continuarComprando}
             </Button>
           </div>
         </div>
@@ -77,7 +78,9 @@ const t = useTranslations('es');
 
 <script>
   import { cartItems, cartTotal, removeFromCart, updateQuantity, formatCOP } from '@/stores/cartStore';
+  import { getLocaleFromUrl } from '@/i18n';
   import type { CartItem } from '@/stores/cartStore';
+  import type { Locale } from '@/i18n';
 
   function renderCart() {
     const container = document.getElementById('cart-container');
@@ -88,6 +91,7 @@ const t = useTranslations('es');
 
     if (!container || !emptyState || !cartSummary || !subtotalEl || !totalEl) return;
 
+    const currentLocale: Locale = getLocaleFromUrl(new URL(window.location.href));
     const items = cartItems.get();
 
     if (items.length === 0) {
@@ -104,7 +108,7 @@ const t = useTranslations('es');
       <div class="flex flex-col sm:flex-row gap-6 p-6 bg-humo/20 border border-humo/30" data-variant-id="${item.variantId}">
         <!-- Image -->
         <div class="w-20 sm:w-32 h-32 bg-humo/50 flex-shrink-0">
-          <img src="${item.imagen}" alt="${item.nombre.es}" class="w-full h-full object-cover" />
+          <img src="${item.imagen}" alt="${item.nombre[currentLocale] || item.nombre.es}" class="w-full h-full object-cover" />
         </div>
 
         <!-- Details -->
@@ -112,7 +116,7 @@ const t = useTranslations('es');
           <div class="flex justify-between items-start gap-4">
             <div>
               <p class="text-ceniza text-xs uppercase tracking-widest mb-1">${item.etnia}</p>
-              <h3 class="font-display text-lg font-semibold mb-2">${item.nombre.es}</h3>
+              <h3 class="font-display text-lg font-semibold mb-2">${item.nombre[currentLocale] || item.nombre.es}</h3>
               <p class="text-tabacco font-semibold">${formatCOP(item.precio)}</p>
             </div>
             <button onclick="removeItem('${item.variantId}')" class="text-ceniza hover:text-error transition-colors p-2 min-w-[44px] min-h-[44px]" aria-label="Eliminar producto">
@@ -171,10 +175,9 @@ const t = useTranslations('es');
   renderCart();
 
   // Locale-aware redirects — set up CTA links with current locale
-  const locale = window.location.pathname.split('/')[1];
-  const validLocales = ['es', 'en', 'pt'];
-  const currentLocale = validLocales.includes(locale) ? locale : 'es';
-  const tiendaUrl = `/${currentLocale}/tienda`;
+  const currentLocale: Locale = getLocaleFromUrl(new URL(window.location.href));
+  const localePrefix = currentLocale === 'es' ? '' : `/${currentLocale}`;
+  const tiendaUrl = `${localePrefix}/tienda`;
 
   const explorarBtn = document.getElementById('btn-explorar-productos');
   const continuarBtn = document.getElementById('btn-continuar-comprando');

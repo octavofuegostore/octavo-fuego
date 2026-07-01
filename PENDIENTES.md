@@ -1061,3 +1061,26 @@ octavo-fuego/
 - [ ] **S-09: Sidebar usa SVG inline en vez de astro-icon** — `AdminLayout.astro` usa `<svg>` inline en toda la navegación. La tienda pública usa `astro-icon` + Solar Bold. Inconsistente.
 - [ ] **S-10: Tipo Producto incluye categorías ajenas** — `types/admin.ts:34` incluye categorías "Cera de Ducha/Sabonete" del mock data viejo. Los tipos deberían reflejar el catálogo real de rapé/sananga/kuripe.
 - [ ] **S-11: Tipo Cliente incluye regiones no operadas** — `types/admin.ts:8` incluye 'EU' y 'US'. El negocio solo opera en Colombia (CO) y Brasil (BR).
+
+---
+
+## 📋 Judgment Day — Postergados (v0.9.0+)
+
+> Issues identificados por JD que no bloquean el funcionamiento actual. Revisar cuando haya data real y múltiples usuarios.
+
+### 🔵 Postergados (no urgentes para etapa pre-lanzamiento)
+
+| # | Issue | Archivo | Cuándo revisar |
+|---|-------|---------|----------------|
+| 1 | N+1 queries en contabilidad/service.ts (tablas vacías → mismo resultado) | `contabilidad.ts`, `service.ts` | Cuando haya +100 transacciones |
+| 2 | KpiCard color class no se aplica (visual, datos en 0) | `KpiCard.astro:29` | Cuando contabilidad tenga data real |
+| 3 | NotificationDropdown circular import (no crítico, casi no se usa) | `NotificationDropdown.astro` | Cuando se implementen notificaciones reales |
+| 4 | Stats hardcodeadas en órdenes page (sin órdenes reales da igual) | `ordenes/index.astro:41-54` | Cuando haya órdenes reales |
+| 5 | Configuración mock save (no hay settings reales aún) | `configuracion/index.astro` | Cuando haya settings que persistir |
+| 6 | Legacy SHA-256 token path (1 solo admin, 0 conflictos) | `middleware/auth.ts` | Cuando haya multi-rol |
+| 7 | `base.ts` CUD inconsistency (no hay mock/test scenarios) | `base.ts:90,106,120` | Cuando se implementen tests |
+| 8 | Resize listener leak en Layout (acumulación tras 50+ navs) | `Layout.astro:93-104` | Cuando se reporten issues de performance |
+| 9 | EventTimeline path mismatch (cosmético) | `EventTimeline.astro` | Refactor general |
+| 10 | CartStore React island redundante (optimización) | `carrito/index.astro` | Post-lanzamiento, si hay issues de bundle |
+| 11 | Imágenes placeholder compartidas (sin fotos reales aún) | `data/products.ts` | Cuando se tengan fotos de producto |
+| 12 | sitemap `lastmod` artificial (pre-lanzamiento, no indexado) | `astro.config.mjs` | Cuando haya contenido indexable |
