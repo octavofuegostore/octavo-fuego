@@ -38,11 +38,26 @@ if (!product) {
 
 const description = product.descripcion[locale_];
 const highlight = product.highlight[locale_];
+
+// F3: Transactional title prefix per locale
+const TITLE_PREFIX = { es: 'Comprar Rapé', en: 'Buy Rapé', pt: 'Comprar Rapé' } as const;
+const titlePrefix = TITLE_PREFIX[locale_];
+
+// F3: Transactional title — includes keyword for purchase-intent search traffic
+const transactionalTitle = `${titlePrefix} ${product.nombre[locale_]} | Rapé do Acre — Octavo Fuego`;
+
+// F3: Lowest price-per-gram across all tiers (e.g. 10g at $35,000 = $3,500/g)
+const minPPG = Math.min(...product.pricing.map(p => p.precio / p.cantidad));
+const pricePerGramFormatted = minPPG.toLocaleString('es-CO');
+const priceFraming = locale_ === 'en'
+  ? ` From COP ${pricePerGramFormatted}/g.`
+  : ` Desde COP ${pricePerGramFormatted}/g.`;
+const transactionalDescription = `${product.metaDescription[locale_]}${priceFraming}`;
 ---
 
 <Layout
-  title={product.nombre[locale_]}
-  description={product.metaDescription[locale_]}
+  title={transactionalTitle}
+  description={transactionalDescription}
   locale={locale_}
   ogType="product"
 >
@@ -52,7 +67,7 @@ const highlight = product.highlight[locale_];
       nombre: product.nombre[locale_],
       descripcion: product.descripcion[locale_],
       imagen: product.imagenes[0],
-      precio: product.pricing[0].precio,
+      pricing: product.pricing,
       slug: product.slug,
       etnia: '',
       tipo: 'rape',
@@ -62,7 +77,7 @@ const highlight = product.highlight[locale_];
     }}
   />
   <BreadcrumbJsonLd items={[
-    { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : ''}` },
+    { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}` },
     { name: t.nav.tienda, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda` },
     { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
     { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
