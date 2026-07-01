@@ -21,35 +21,56 @@
 
 ---
 
-## 🏁 Último Sprint — Astro 6 Improvements (Julio 1, 2026)
+## 🏁 Último Sprint — Phase 2: Core Ecommerce (Julio 1, 2026)
 
-> **Tags:** `v0.4.2` | **Commits:** ee7c999 | **Build:** ✅ 0 errores
-> **PR:** #25
-> **Fuente:** `astro-docs` MCP — documentación oficial de Astro 6
+> **Tags:** `v0.4.3` | **Commits:** 68e59fe | **Build:** ✅ 0 errores
+> **Fuente:** Patrones Medusa + Pipod `runWorkflow()` compensation
 
-### ✅ F40: Astro Actions
+### ✅ F43: PricingService → Supabase
 | Tarea | Archivo | Cambio |
 |-------|---------|--------|
-| 40.1 Actions Setup | `src/actions/index.ts` | defineAction() para form submission tipado |
-| 40.2 Validation | Reusa F1 Zod schemas | CrearProductoSchema + ActualizarEstadoSchema |
+| 43.1 | `lib/pricing/service.ts` | Lectura de variantes + listas_precio + factores_conversion |
+| 43.2 | PriceTiers | getPriceTiers() multi-moneda con interpolación |
 
-### ✅ F41: View Transitions
+### ✅ F44: liberar_reserva + FOR UPDATE
 | Tarea | Archivo | Cambio |
 |-------|---------|--------|
-| 41.1 ClientRouter | `AdminLayout.astro` | Navegación SPA en admin |
-| 41.2 Persist Sidebar | `AdminLayout.astro` | transition:persist mantiene estado |
-| 41.3 Scripts | `AdminLayout.astro` | astro:page-load para re-ejecución |
+| 44.1 | `migrations/009_...sql` | FOR UPDATE en incrementar_reserva (race condition fix) |
+| 44.2 | `migrations/009_...sql` | liberar_reserva + confirmar_reserva RPCs |
 
-### ✅ F42: Middleware Composition
+### ✅ F45: runWorkflow Compensation
 | Tarea | Archivo | Cambio |
 |-------|---------|--------|
-| 42.1 Locale Handler | `middleware/auth.ts` | defineMiddleware separado |
-| 42.2 Auth Handler | `middleware/auth.ts` | JWT + getActionContext gating |
-| 42.3 Composition | `middleware/auth.ts` | sequence() para orden |
+| 45.1 | `lib/checkout/workflow.ts` | runWorkflow() con compensate automático en reversa |
+| 45.2 | `lib/checkout/index.ts` | Checkout service con reserva → WhatsApp → evento |
+
+### ✅ F46: Cart Service Híbrido
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 46.1 | `lib/checkout/index.ts` | Validación stock + precios contra Supabase antes de checkout |
+
+### ✅ F47: Checkout WhatsApp Flow
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 47.1 | `lib/checkout/index.ts` | Workflow completo: carrito → reserva → WhatsApp → confirmación |
+
+### ✅ F48: ProductForm Price Editing
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 48.1 | `ProductForm.astro` | Tabla de variantes con precio_cop/precio_brl/precio_usd editables |
+| 48.2 | `inventario/index.astro` | POST handler para guardar precios |
 
 ---
 
-## 🏁 Sprint Anterior — SDD F1-F33: Admin Service Layer + Page Migration (Julio 1, 2026)
+## 🏁 Sprint Anterior v0.4.2 — Astro 6 Improvements (Julio 1, 2026)
+
+> **Tags:** `v0.4.2` | **Commits:** ee7c999 | **Build:** ✅ 0 errores
+
+### ✅ F40-F42: Actions, View Transitions, Middleware
+
+---
+
+## 🏁 Sprint v0.4.0 — SDD F1-F33: Admin Service Layer + Page Migration (Julio 1, 2026)
 
 > **Tags:** `v0.4.0` | **Commits:** 20 (ebc2cff..0f8d44a) | **Build:** ✅ 0 errores
 > **PRs:** #4 → #23 (chained, feature-branch-chain)
@@ -395,6 +416,16 @@
 - [x] **F40 Astro Actions** — `src/actions/index.ts` con defineAction() + validación Zod
 - [x] **F41 View Transitions** — `<ClientRouter />` + `transition:persist` + `astro:page-load`
 - [x] **F42 Middleware Composition** — `sequence()` + `defineMiddleware()` + `getActionContext()`
+
+### 3.17 Phase 2: Core Ecommerce ✅ (Jul 1, 2026)
+> **v0.4.3** — Pricing, reservas, checkout workflow, cart híbrido, precios en admin
+
+- [x] **F43 PricingService** — Supabase con variantes + listas_precio + factores conversión multi-moneda
+- [x] **F44 Reservas RPC** — FOR UPDATE (race condition fix) + liberar_reserva + confirmar_reserva
+- [x] **F45 runWorkflow** — Patrón de compensación Pipod (50 líneas, rollback automático en fallo)
+- [x] **F46 Cart Híbrido** — Validación stock + precios contra Supabase antes de checkout
+- [x] **F47 Checkout WhatsApp** — Workflow: cart → reserva → WhatsApp → confirmación → orden
+- [x] **F48 Precios en Admin** — ProductForm con tabla de variantes + precios editables (COP/BRL/USD)
 
 #### Credenciales (hardcoded)
 ```
@@ -785,6 +816,10 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
+| Jul 01 | `68e59fe` | `develop` | **v0.4.3** — Phase 2 Core Ecommerce (pricing, reservas, checkout, precios admin) |
+| Jul 01 | `2ffa6b0` | `develop` | feat: F45-F47 checkout workflow, cart service, WhatsApp flow |
+| Jul 01 | `41b11d9` | `develop` | feat: F44 liberar_reserva + confirmar_reserva RPCs with FOR UPDATE |
+| Jul 01 | `8b0249c` | `develop` | feat: F43 PricingService with Supabase (variantes + listas_precio) |
 | Jul 01 | `f397893` | `main` | **v0.4.2** — Astro 6 improvements: Actions, View Transitions, Middleware |
 | Jul 01 | `ee7c999` | `develop` | feat: F42 middleware composition with sequence + getActionContext |
 | Jul 01 | `4bd0254` | `develop` | feat: F41 View Transitions with ClientRouter + persisted sidebar |
@@ -828,7 +863,7 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Julio 1, 2026 — v0.4.2 Astro 6 improvements completado*
+*Actualizado: Julio 1, 2026 — v0.4.3 Phase 2 Core Ecommerce completado*
 
 ---
 
