@@ -155,9 +155,12 @@ export function mapToAdminCliente(row: LMClienteRow): Cliente {
  * Map L-Medusa orden row to admin Orden.
  */
 export function mapToAdminOrden(row: LMOrdenRow): Orden {
+  const cliente = (row as any).clientes
   return {
     id: row.id,
-    customer: { name: '', email: '', phone: '' }, // Requires client join
+    customer: cliente
+      ? { name: cliente.nombre_empresa || '', email: cliente.email || '', phone: cliente.telefono || '' }
+      : { name: '', email: '', phone: '' },
     items: [], // Requires items_orden join
     total: row.total_cop || row.total_brl || row.total_usd || 0,
     currency: row.total_cop ? 'COP' : row.total_brl ? 'BRL' : 'USD',

@@ -134,7 +134,7 @@ export async function getOrdenes(bodegaId?: string): Promise<Orden[]> {
 
   let query = supabase
     .from('ordenes')
-    .select('*')
+    .select('*, clientes!inner(nombre_empresa, email, telefono)')
     .order('creado_en', { ascending: false });
 
   if (bodegaId) {
@@ -197,8 +197,8 @@ export async function getProductos(bodegaId?: string): Promise<Producto[]> {
       .eq('producto_id', prod.id);
 
     let query = supabase
-      .from('niveles_inventario')
-      .select('*, alerta_stock_bajo')
+      .from('gramos_disponibles')
+      .select('*')
       .in('item_id', (variantes || []).map((v: LMVarianteRow) => v.id));
 
     if (bodegaId) {
@@ -224,7 +224,7 @@ export async function getOrdenById(id: string): Promise<Orden | undefined> {
 
   const { data, error } = await supabase
     .from('ordenes')
-    .select('*')
+    .select('*, clientes(nombre_empresa, email, telefono)')
     .eq('id', id)
     .single();
 
@@ -262,8 +262,8 @@ export async function getProductoById(id: string): Promise<Producto | undefined>
     .eq('producto_id', id);
 
   const { data: niveles } = await supabase
-    .from('niveles_inventario')
-    .select('*, alerta_stock_bajo')
+    .from('gramos_disponibles')
+    .select('*')
     .in('item_id', (variantes || []).map((v: LMVarianteRow) => v.id));
 
   return mapToAdminProducto(

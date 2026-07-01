@@ -56,7 +56,7 @@ export class ProductoService extends SupabaseService<LMProductoRow> {
     const itemIds = (items ?? []).map(i => i.id)
 
     let nivelesQuery = supabase
-      .from('niveles_inventario').select('*, alerta_stock_bajo')
+      .from('gramos_disponibles').select('*')
       .in('item_id', itemIds)
 
     const activeBodega = opts?.bodegaId ?? this.bodegaId
@@ -87,7 +87,7 @@ export class ProductoService extends SupabaseService<LMProductoRow> {
     const activeBodega = opts?.bodegaId ?? this.bodegaId
 
     let nivelesQuery = supabase
-      .from('niveles_inventario').select('*, alerta_stock_bajo')
+      .from('gramos_disponibles').select('*')
       .in('item_id', itemIds)
 
     if (activeBodega) nivelesQuery = nivelesQuery.eq('bodega_id', activeBodega)

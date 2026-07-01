@@ -24,19 +24,12 @@ export class OrdenService extends SupabaseService<LMOrdenRow> {
 
     const { data, error } = await supabase
       .from('ordenes')
-      .select('*, clientes!inner(nombre, email, telefono)')
+      .select('*, clientes!inner(nombre_empresa, email, telefono)')
       .order('creado_en', { ascending: false })
 
     if (error) throw error
 
-    return ((data ?? []) as LMOrdenRow[]).map(row => {
-      const orden = mapToAdminOrden(row)
-      const cliente = (row as any).clientes
-      if (cliente) {
-        orden.customer = { name: cliente.nombre, email: cliente.email, phone: cliente.telefono || '' }
-      }
-      return orden
-    })
+    return ((data ?? []) as LMOrdenRow[]).map(mapToAdminOrden)
   }
 
   async obtenerPorId(id: string, opts?: { bodegaId?: string }): Promise<Orden> {

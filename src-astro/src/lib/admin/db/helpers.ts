@@ -1,15 +1,15 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import type { LMNivelInventarioRow } from '@/lib/admin/mapper'
 
-/** Query niveles_inventario with alerta_stock_bajo by variante IDs */
+/** Query gramos_disponibles view (includes alerta_stock_bajo) by variante IDs */
 export async function getNivelesInventario(
   supabase: SupabaseClient,
   varianteIds: string[],
   bodegaId?: string,
 ): Promise<LMNivelInventarioRow[]> {
   let query = supabase
-    .from('niveles_inventario')
-    .select('*, alerta_stock_bajo')
+    .from('gramos_disponibles')
+    .select('*')
     .in('item_id', varianteIds)
 
   if (bodegaId) query = query.eq('bodega_id', bodegaId)
