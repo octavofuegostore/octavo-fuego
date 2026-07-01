@@ -3,8 +3,28 @@ export const prerender = false;
 // Order detail page — [id]
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import OrderDetail from '@/components/admin/orders/OrderDetail.astro';
+import { crearServicios } from '@/lib/admin/provider';
+import { ActualizarEstadoSchema } from '@/lib/admin/schemas/orden';
 
 const { id } = Astro.params;
+const svc = crearServicios();
+
+// POST handler for estado changes
+let transitionError: string | null = null
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData()
+  const nuevoEstado = form.get('estado') as string
+  const valid = ActualizarEstadoSchema.safeParse({
+    estadoAnterior: form.get('estadoAnterior') as string,
+    estadoNuevo: nuevoEstado,
+  })
+  if (!valid.success) {
+    transitionError = 'Transición de estado no válida'
+  } else {
+    await svc.ordenes.cambiarEstado(id!, nuevoEstado,)
+    return Astro.redirect(Astro.url.pathname)
+  }
+}
 ---
 
 <AdminLayout title={`Orden ${id}`} description="Detalle de la orden">
