@@ -1,0 +1,128 @@
+---
+/**
+ * FAQPage JSON-LD Schema Component
+ * 6 locale-aware questions per product for SEO (voice search + rich snippets).
+ */
+import type { Product, PriceGram } from '@/data/products';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  product: Product;
+  locale: Locale;
+}
+
+const { product, locale } = Astro.props;
+const name = product.nombre[locale];
+const desc = product.descripcion[locale];
+const enfoque = product.enfoque[locale];
+const uso = product.usoRecomendado[locale];
+const nivel = product.intensidad.nivel[locale];
+const fuerza = product.intensidad.fuerza[locale];
+const lowestPricing = product.pricing.reduce((min: PriceGram, p: PriceGram) =>
+  p.precio < min.precio ? p : min, product.pricing[0]
+);
+
+// Locale-aware question templates
+const questions: Array<{ name: string; text: string }> = [];
+
+if (locale === 'es') {
+  questions.push(
+    {
+      name: `¿Qué es el Rapé ${name} y de dónde viene?`,
+      text: `El Rapé ${name} es una medicina ancestral amazónica. ${desc.split('.')[0]}. Se prepara de forma artesanal por comunidades indígenas de la Amazonía brasileña, siguiendo tradiciones transmitidas por generaciones.`
+    },
+    {
+      name: `¿Para qué sirve ${name}? ¿Qué efectos tiene?`,
+      text: `${name} tiene un enfoque ${enfoque.toLowerCase()}. ${desc.split('.')[0]}. Sus efectos varían según la persona, pero está diseñado para apoyar prácticas espirituales y de conexión con la naturaleza.`
+    },
+    {
+      name: `¿Cuánto cuesta ${name} y qué presentaciones hay?`,
+      text: `${name} está disponible en presentaciones de ${lowestPricing.cantidad}g desde COP $${lowestPricing.precio.toLocaleString('es-CO')}. Ofrecemos tamaños de 10g, 20g y 30g para adaptarnos a tus necesidades.`
+    },
+    {
+      name: `¿Es ${name} para mí? ¿Nivel principiante o avanzado?`,
+      text: `${name} tiene un nivel ${nivel.toLowerCase()} y una fuerza ${fuerza.toLowerCase()}. Si eres nuevo en el mundo del rapé, te recomendamos consultar con un guía experimentado para determinar si esta variedad es adecuada para tu práctica.`
+    },
+    {
+      name: `¿Cómo se aplica correctamente ${name}?`,
+      text: `${name} se aplica mediante insuflación nasal usando un kuripe (aplicador personal). ${uso.toLowerCase()}. Es importante hacerlo en un espacio tranquilo y con la intención adecuada.`
+    },
+    {
+      name: `¿En qué se diferencia ${name} de otras variedades de rapé?`,
+      text: `${name} se distingue por su enfoque ${enfoque.toLowerCase()} y su perfil de intensidad ${fuerza.toLowerCase()} con aroma ${product.intensidad.aroma[locale].toLowerCase()}. Cada variedad de rapé tiene propiedades únicas, y ${name} es especialmente valorado por ${desc.split('.')[0].toLowerCase()}.`
+    }
+  );
+} else if (locale === 'en') {
+  questions.push(
+    {
+      name: `What is Rapé ${name} and where does it come from?`,
+      text: `Rapé ${name} is an ancestral Amazonian medicine. ${desc.split('.')[0]}. It is handcrafted by indigenous communities in the Brazilian Amazon, following traditions passed down through generations.`
+    },
+    {
+      name: `What is ${name} for? What effects does it have?`,
+      text: `${name} has a ${enfoque.toLowerCase()} focus. ${desc.split('.')[0]}. Its effects vary by person, but it is designed to support spiritual practices and connection with nature.`
+    },
+    {
+      name: `How much does ${name} cost and what sizes are available?`,
+      text: `${name} is available from ${lowestPricing.cantidad}g starting at COP $${lowestPricing.precio.toLocaleString('es-CO')}. We offer 10g, 20g, and 30g sizes to suit your needs.`
+    },
+    {
+      name: `Is ${name} for me? Beginner or advanced level?`,
+      text: `${name} has a ${nivel.toLowerCase()} level and ${fuerza.toLowerCase()} strength. If you are new to rapé, we recommend consulting with an experienced guide to determine if this variety is right for your practice.`
+    },
+    {
+      name: `How is ${name} correctly applied?`,
+      text: `${name} is applied through nasal insufflation using a kuripe (personal applicator). ${uso.toLowerCase()}. It is important to do this in a quiet space with the right intention.`
+    },
+    {
+      name: `What makes ${name} different from other rapé varieties?`,
+      text: `${name} stands out for its ${enfoque.toLowerCase()} focus and ${fuerza.toLowerCase()} intensity profile with a ${product.intensidad.aroma[locale].toLowerCase()} aroma. Each rapé variety has unique properties, and ${name} is especially valued for ${desc.split('.')[0].toLowerCase()}.`
+    }
+  );
+} else {
+  // pt
+  questions.push(
+    {
+      name: `O que é o Rapé ${name} e de onde vem?`,
+      text: `O Rapé ${name} é uma medicina ancestral amazônica. ${desc.split('.')[0]}. É preparado artesanalmente por comunidades indígenas da Amazônia brasileira, seguindo tradições transmitidas por gerações.`
+    },
+    {
+      name: `Para que serve ${name}? Que efeitos tem?`,
+      text: `${name} tem um enfoque ${enfoque.toLowerCase()}. ${desc.split('.')[0]}. Seus efeitos variam conforme a pessoa, mas é projetado para apoiar práticas espirituais e de conexão com a natureza.`
+    },
+    {
+      name: `Quanto custa ${name} e quais apresentações estão disponíveis?`,
+      text: `${name} está disponível em apresentações de ${lowestPricing.cantidad}g a partir de COP $${lowestPricing.precio.toLocaleString('es-CO')}. Oferecemos tamanhos de 10g, 20g e 30g para atender suas necessidades.`
+    },
+    {
+      name: `${name} é para mim? Nível iniciante ou avançado?`,
+      text: `${name} tem nível ${nivel.toLowerCase()} e força ${fuerza.toLowerCase()}. Se você é novo no rapé, recomendamos consultar um guia experiente para determinar se esta variedade é adequada para sua prática.`
+    },
+    {
+      name: `Como aplicar ${name} corretamente?`,
+      text: `${name} é aplicado por insuflação nasal usando um kuripe (aplicador pessoal). ${uso.toLowerCase()}. É importante fazer isso em um espaço tranquilo e com a intenção adequada.`
+    },
+    {
+      name: `O que diferencia ${name} de outras variedades de rapé?`,
+      text: `${name} se destaca por seu enfoque ${enfoque.toLowerCase()} e perfil de intensidade ${fuerza.toLowerCase()} com aroma ${product.intensidad.aroma[locale].toLowerCase()}. Cada variedade de rapé tem propriedades únicas, e ${name} é especialmente valorizado por ${desc.split('.')[0].toLowerCase()}.`
+    }
+  );
+}
+
+const mainEntity = questions.map((q) => ({
+  '@type': 'Question',
+  'name': q.name,
+  'acceptedAnswer': {
+    '@type': 'Answer',
+    'text': q.text,
+  },
+}));
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': mainEntity,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

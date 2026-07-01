@@ -20,11 +20,22 @@ import {
 // Compute real stats from service layer (falls back to mock when no Supabase)
 const bodegaId = getBodegaSeleccionada(Astro.cookies);
 const svc = crearServicios(bodegaId);
-const [ordenes, clientes, productos] = await Promise.all([
-  svc.ordenes.listar(),
-  svc.clientes.listar(),
-  svc.productos.listar(),
-]);
+let ordenes = [], clientes = [], productos = [];
+try {
+  const results = await Promise.all([
+    svc.ordenes.listar(),
+    svc.clientes.listar(),
+    svc.productos.listar(),
+  ]);
+  ordenes = results[0] ?? [];
+  clientes = results[1] ?? [];
+  productos = results[2] ?? [];
+} catch {
+  // One or more services failed — render dashboard with empty data
+  ordenes = [];
+  clientes = [];
+  productos = [];
+}
 
 // Stats
 const ventasHoy = ordenes

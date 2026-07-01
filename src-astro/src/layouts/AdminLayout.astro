@@ -8,14 +8,19 @@ import { ClientRouter } from 'astro:transitions';
 import { $sidebarOpen, $seccionActual } from '@/stores/admin';
 import { supabase } from '@/lib/supabase';
 
-const SUPABASE_CONFIGURED = !!(import.meta.env.PUBLIC_SUPABASE_URL)
+const SUPABASE_CONFIGURED = !!(import.meta.env.PUBLIC_SUPABASE_URL && import.meta.env.SUPABASE_SERVICE_ROLE_KEY)
 let stockAlertCount = 0
 if (SUPABASE_CONFIGURED) {
-  const { count } = await supabase
-    .from('gramos_disponibles')
-    .select('*', { count: 'exact', head: true })
-    .eq('alerta_stock_bajo', true)
-  stockAlertCount = count ?? 0
+  try {
+    const { count } = await supabase
+      .from('gramos_disponibles')
+      .select('*', { count: 'exact', head: true })
+      .eq('alerta_stock_bajo', true)
+    stockAlertCount = count ?? 0
+  } catch {
+    // Supabase query failed silently — dashboard renders without stock alert
+    stockAlertCount = 0
+  }
 }
 
 interface Props {

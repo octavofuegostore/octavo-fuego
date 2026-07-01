@@ -22,7 +22,11 @@ const {
 } = Astro.props;
 
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
-const canonicalUrl = new URL(Astro.url.pathname, 'https://octavofuego.com').href;
+
+// F6.1.1: Canonical always points to ES version (strip locale prefix)
+const canonicalPath = Astro.url.pathname.replace(/^\/(en|pt)\//, '/');
+const canonicalUrl = new URL(canonicalPath, 'https://octavofuego.com').href;
+
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
 
 // Hreflang: regex-based locale extraction to avoid substring corruption
@@ -32,10 +36,11 @@ const localeMatch = pathname.match(/^\/(es|en|pt)(\/.*)?$/i);
 const matchedLocale = localeMatch ? localeMatch[1] : 'es';
 const restPath = localeMatch ? (localeMatch[2] || '/') : (pathname || '/');
 
+// F6.1.2: Language-only hreflang (no region subtags) + x-default pointing to ES
 const hreflangLocales = [
-  { tag: 'es-CO', urlPrefix: '' },           // default locale — no prefix
-  { tag: 'en-US', urlPrefix: '/en' },
-  { tag: 'pt-BR', urlPrefix: '/pt' },
+  { tag: 'es', urlPrefix: '' },           // default locale — no prefix
+  { tag: 'en', urlPrefix: '/en' },
+  { tag: 'pt', urlPrefix: '/pt' },
 ];
 ---
 
@@ -46,10 +51,13 @@ const hreflangLocales = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     
+    <!-- Page-specific head slot FIRST so it takes priority over defaults -->
+    <slot name="head" />
+
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Hreflang Tags (region subtags: es-CO, en-US, pt-BR) -->
+    <!-- Hreflang Tags (language-only: es, en, pt) -->
     {
       hreflangLocales.map(({ tag, urlPrefix }) => (
         <link rel="alternate" hreflang={tag} href={`https://octavofuego.com${urlPrefix}${restPath}`} />
@@ -80,9 +88,6 @@ const hreflangLocales = [
     
     <!-- Organization Schema -->
     <OrganizationJsonLd />
-
-    <!-- Page-specific head slot (structured data, scripts, etc.) -->
-    <slot name="head" />
 
     <!-- CSS-first breakpoint detection -->
     <script>

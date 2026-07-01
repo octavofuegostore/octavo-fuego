@@ -11,6 +11,9 @@ import PricingTable from '@/components/product/PricingTable.astro';
 import Testimonials from '@/components/tienda/Testimonials.astro';
 import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
+import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
+import FAQSection from '@/components/seo/FAQSection.astro';
+import OGBrandedImage from '@/components/seo/OGBrandedImage.astro';
 import { products } from '@/data/products';
 import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
@@ -29,7 +32,7 @@ export async function getStaticPaths() {
 const { locale, category, product: productSlug } = Astro.params;
 const locale_ = locale as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const product = products.find((p) => p.slug === productSlug);
 if (!product) {
@@ -44,7 +47,7 @@ const TITLE_PREFIX = { es: 'Comprar Rapé', en: 'Buy Rapé', pt: 'Comprar Rapé'
 const titlePrefix = TITLE_PREFIX[locale_];
 
 // F3: Transactional title — includes keyword for purchase-intent search traffic
-const transactionalTitle = `${titlePrefix} ${product.nombre[locale_]} | Rapé do Acre — Octavo Fuego`;
+const transactionalTitle = `${titlePrefix} ${product.nombre[locale_]} | Rapé do Acre`;
 
 // F3: Lowest price-per-gram across all tiers (e.g. 10g at $35,000 = $3,500/g)
 const minPPG = Math.min(...product.pricing.map(p => p.precio / p.cantidad));
@@ -61,27 +64,31 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
   locale={locale_}
   ogType="product"
 >
-  <ProductJsonLd
-    product={{
-      id: product.slug,
-      nombre: product.nombre[locale_],
-      descripcion: product.descripcion[locale_],
-      imagen: product.imagenes[0],
-      pricing: product.pricing,
-      slug: product.slug,
-      etnia: '',
-      tipo: 'rape',
-      stock: 10,
-      url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`,
-      locale: locale_,
-    }}
-  />
-  <BreadcrumbJsonLd items={[
-    { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}` },
-    { name: t.nav.tienda, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda` },
-    { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
-    { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
-  ]} />
+  <Fragment slot="head">
+    <ProductJsonLd
+      product={{
+        id: product.slug,
+        nombre: product.nombre[locale_],
+        descripcion: product.descripcion[locale_],
+        imagen: product.imagenes[0],
+        pricing: product.pricing,
+        slug: product.slug,
+        etnia: '',
+        tipo: 'rape',
+        stock: 10,
+        url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`,
+        locale: locale_,
+      }}
+    />
+    <BreadcrumbJsonLd items={[
+      { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}` },
+      { name: t.nav.tienda, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda` },
+      { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
+      { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
+    ]} />
+    <FAQPageJsonLd product={product} locale={locale_} />
+    <OGBrandedImage product={product} locale={locale_} />
+  </Fragment>
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
     <div class="max-w-4xl mx-auto px-6 md:px-12">
 
@@ -194,6 +201,8 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
       </div>
 
       <Testimonials locale={locale_} />
+
+      <FAQSection product={product} locale={locale_} />
 
     </div>
   </section>

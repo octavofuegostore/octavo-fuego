@@ -1,0 +1,103 @@
+---
+/**
+ * OGBrandedImage — 1200×630 inline SVG for Open Graph social previews.
+ * Pure typography + brand shapes. No embedded photos.
+ * Produces a data URI for use as og:image.
+ */
+import type { Locale } from '@/i18n';
+import type { PriceGram } from '@/data/products';
+import type { Product } from '@/data/products';
+
+interface Props {
+  product: Pick<Product, 'nombre' | 'pricing'>;
+  locale: Locale;
+}
+
+const { product, locale } = Astro.props;
+const productName = product.nombre[locale];
+const lowest = product.pricing.reduce((min: PriceGram, p: PriceGram) =>
+  p.precio < min.precio ? p : min, product.pricing[0]
+);
+
+const priceLabel = locale === 'en'
+  ? `From COP $${lowest.precio.toLocaleString('es-CO')}`
+  : `Desde COP $${lowest.precio.toLocaleString('es-CO')}`;
+
+const brandLabel = locale === 'en' ? 'Octavo Fuego — Rapé do Acre' : 'Octavo Fuego — Rapé do Acre';
+
+// Build SVG as a data URI
+const svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F5F0"/>
+      <stop offset="100%" style="stop-color:#ECE9E0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6d5e4d"/>
+      <stop offset="100%" style="stop-color:#8B6F4E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect fill="url(#bg)" width="1200" height="630"/>
+
+  <!-- Decorative top bar -->
+  <rect fill="url(#accent)" x="0" y="0" width="1200" height="6"/>
+
+  <!-- Decorative circle (top-right) -->
+  <circle cx="1050" cy="180" r="280" fill="#6d5e4d" opacity="0.04"/>
+
+  <!-- Decorative circle (bottom-left) -->
+  <circle cx="150" cy="480" r="200" fill="#6d5e4d" opacity="0.03"/>
+
+  <!-- Brand mark line -->
+  <line x1="80" y1="120" x2="300" y2="120" stroke="#C4956A" stroke-width="2"/>
+
+  <!-- Product name -->
+  <text x="80" y="200" font-family="'Playfair Display', 'Georgia', serif" font-size="58" font-weight="700" fill="#1C1410">
+    ${escapeXml(productName)}
+  </text>
+
+  <!-- Subtitle: Rapé do Acre -->
+  <text x="80" y="260" font-family="'Inter', 'Arial', sans-serif" font-size="26" fill="#8C8680" letter-spacing="4" font-weight="500">
+    RAPÉ DO ACRE
+  </text>
+
+  <!-- Price label -->
+  <rect x="80" y="310" width="360" height="60" rx="8" fill="#6d5e4d"/>
+  <text x="260" y="348" font-family="'Inter', 'Arial', sans-serif" font-size="28" fill="#F2EFE8" text-anchor="middle" font-weight="600">
+    ${escapeXml(priceLabel)}
+  </text>
+
+  <!-- Lowest tier info -->
+  <text x="80" y="420" font-family="'Inter', 'Arial', sans-serif" font-size="18" fill="#8C8680">
+    ${escapeXml(lowest.label)} — COP $${lowest.precio.toLocaleString('es-CO')}
+  </text>
+
+  <!-- Brand footer -->
+  <text x="80" y="560" font-family="'Playfair Display', 'Georgia', serif" font-size="32" font-weight="600" fill="#1C1410">
+    Octavo Fuego
+  </text>
+  <text x="80" y="590" font-family="'Inter', 'Arial', sans-serif" font-size="14" fill="#8C8680" letter-spacing="3">
+    RAPÉ DO ACRE · AMAZONÍA BRASILEÑA
+  </text>
+
+  <!-- Bottom accent bar -->
+  <rect fill="url(#accent)" x="0" y="624" width="1200" height="6"/>
+</svg>`;
+
+function escapeXml(str: string): string {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+const dataUri = `data:image/svg+xml,${encodeURIComponent(svgContent)}`;
+---
+
+<Fragment>
+  <!-- OG image meta tag for social previews -->
+  <meta property="og:image" content={dataUri} />
+  <meta name="twitter:image" content={dataUri} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+</Fragment>

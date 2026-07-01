@@ -100,9 +100,9 @@ export function mapToAdminProducto(
   locale: 'es' | 'en' | 'pt' = 'es',
 ): Producto {
   // Take the smallest gramos variant for base pricing
-  const baseVariant = variantes.reduce((min, v) =>
-    v.gramos < min.gramos ? v : min,
-  );
+  const baseVariant = (variantes ?? []).length > 0
+    ? variantes.reduce((min, v) => v.gramos < min.gramos ? v : min)
+    : { sku: '', precio_cop: 0, precio_brl: null, precio_usd: null };
 
   // Sum stock per bodega
   const stockCO = niveles
