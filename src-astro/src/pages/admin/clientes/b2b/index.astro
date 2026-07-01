@@ -187,38 +187,38 @@ function estadoBadge(estado: string): { bg: string; text: string; label: string 
 <script>
   // ─── Approve / Reject flow ──────────────────────────────────────────────
 
-  function initPage() {
-    let pendingAction: { id: string; action: 'approve' | 'reject' } | null = null;
+  let pendingAction: { id: string; action: 'approve' | 'reject' } | null = null;
 
+  // Delegate clicks at module scope (runs once per ESM lifecycle)
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.approve-btn, .reject-btn') as HTMLElement | null;
+    if (btn) {
+      const id = btn.dataset.id!;
+      const action = btn.dataset.action as 'approve' | 'reject';
+      pendingAction = { id, action };
+      const modal = document.getElementById('notas-modal')
+      const modalTitle = document.getElementById('notas-modal-title')
+      const notasInput = document.getElementById('notas-input') as HTMLTextAreaElement | null
+      if (modal && modalTitle && notasInput) {
+        modalTitle.textContent = action === 'approve' ? 'Aprobar solicitud' : 'Rechazar solicitud';
+        notasInput.value = '';
+        modal.classList.remove('hidden');
+      }
+    }
+  });
+
+  function initPage() {
     const modal = document.getElementById('notas-modal')!;
-    const modalTitle = document.getElementById('notas-modal-title')!;
     const notasInput = document.getElementById('notas-input') as HTMLTextAreaElement;
     const cancelBtn = document.getElementById('notas-cancel')!;
     const confirmBtn = document.getElementById('notas-confirm')!;
-
-    function openModal(id: string, action: 'approve' | 'reject') {
-      pendingAction = { id, action };
-      modalTitle.textContent = action === 'approve' ? 'Aprobar solicitud' : 'Rechazar solicitud';
-      notasInput.value = '';
-      modal.classList.remove('hidden');
-    }
 
     function closeModal() {
       modal.classList.add('hidden');
       pendingAction = null;
       notasInput.value = '';
     }
-
-    // Delegate clicks
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      const btn = target.closest('.approve-btn, .reject-btn') as HTMLElement | null;
-      if (btn) {
-        const id = btn.dataset.id!;
-        const action = btn.dataset.action as 'approve' | 'reject';
-        openModal(id, action);
-      }
-    });
 
     cancelBtn.addEventListener('click', closeModal);
 

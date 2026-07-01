@@ -498,34 +498,30 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           arrow?.classList.toggle('rotate-180')
         })
 
-        // Mobile menu toggle
-        const mobileToggle = document.getElementById('mobile-menu-toggle')
-        const overlay = document.getElementById('sidebar-overlay')
-
-        mobileToggle?.addEventListener('click', () => {
-          sidebar.classList.toggle('-translate-x-full')
-          overlay?.classList.toggle('hidden')
-        })
-
-        overlay?.addEventListener('click', () => {
-          sidebar.classList.add('-translate-x-full')
-          overlay?.classList.add('hidden')
+        // Sidebar-level delegation for mobile toggle, overlay, quick-create
+        sidebar.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement
+          const toggle = target.closest('#mobile-menu-toggle')
+          const overlayEl = target.closest('#sidebar-overlay')
+          const quickCreate = target.closest('#admin-quick-create-btn')
+          if (toggle) {
+            sidebar.classList.toggle('-translate-x-full')
+            document.getElementById('sidebar-overlay')?.classList.toggle('hidden')
+          } else if (overlayEl) {
+            sidebar.classList.add('-translate-x-full')
+            document.getElementById('sidebar-overlay')?.classList.add('hidden')
+          } else if (quickCreate) {
+            import('sonner').then(({ toast }) => toast('Próximamente'))
+              .catch(() => window.alert('Próximamente'))
+          }
         })
 
         // Escape key closes mobile menu
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') {
             sidebar.classList.add('-translate-x-full')
-            overlay?.classList.add('hidden')
+            document.getElementById('sidebar-overlay')?.classList.add('hidden')
           }
-        })
-
-        // Quick create button
-        const quickCreateBtn = document.getElementById('admin-quick-create-btn')
-        quickCreateBtn?.addEventListener('click', () => {
-          import('sonner')
-            .then(({ toast }) => toast('Próximamente'))
-            .catch(() => window.alert('Próximamente'))
         })
       }
 
