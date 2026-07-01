@@ -1,0 +1,15 @@
+export const NOMBRES_ENTIDAD: Record<string, string> = {
+  usuarios: 'Usuario',
+  clientes: 'Cliente',
+  productos: 'Producto',
+  variantes: 'Variante',
+  listas_precio: 'Lista de precio',
+  bodegas: 'Bodega',
+  items_inventario: 'Item de inventario',
+  niveles_inventario: 'Nivel de inventario',
+  ordenes: 'Orden',
+  orden_items: 'Item de orden',
+  pagos: 'Pago',
+  eventos: 'Evento',
+  notificaciones: 'Notificación',
+}

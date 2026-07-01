@@ -10,6 +10,14 @@
 
 import type { Cliente, Orden, Producto, Transaccion, SolicitudB2B, Pago, Evento, Notificacion } from '@/types/admin';
 
+// ─── Mapper interface ─────────────────────────────────────────────────────────
+
+export interface Mapper<TRow, TAdmin> {
+  toAdmin(row: TRow): TAdmin
+  toAdminList(rows: TRow[]): TAdmin[]
+  toRow?(admin: TAdmin): Partial<TRow>
+}
+
 // ─── L-Medusa Row types (from the DB schema) ─────────────────────────────────
 
 export interface LMProductoRow {
@@ -284,3 +292,61 @@ export function mapToAdminNotificacion(row: LMNotificacionRow): Notificacion {
     creado_en: row.creado_en,
   };
 }
+
+// ─── Mapper Registry ──────────────────────────────────────────────────────────
+
+export const ClienteMapper: Mapper<LMClienteRow, Cliente> = {
+  toAdmin: mapToAdminCliente,
+  toAdminList: (rows) => rows.map(mapToAdminCliente),
+}
+
+export const OrdenMapper: Mapper<LMOrdenRow, Orden> = {
+  toAdmin: mapToAdminOrden,
+  toAdminList: (rows) => rows.map(mapToAdminOrden),
+}
+
+export const EventoMapper: Mapper<LMEventoRow, Evento> = {
+  toAdmin: mapToAdminEvento,
+  toAdminList: (rows) => rows.map(mapToAdminEvento),
+}
+
+export const PagoMapper: Mapper<LMPagoRow, Pago> = {
+  toAdmin: mapToAdminPago,
+  toAdminList: (rows) => rows.map(mapToAdminPago),
+}
+
+export const NotificacionMapper: Mapper<LMNotificacionRow, Notificacion> = {
+  toAdmin: mapToAdminNotificacion,
+  toAdminList: (rows) => rows.map(mapToAdminNotificacion),
+}
+
+export const SolicitudB2BMapper: Mapper<LMSolicitudB2BRow, SolicitudB2B> = {
+  toAdmin: mapToAdminSolicitud,
+  toAdminList: (rows) => rows.map(r => mapToAdminSolicitud(r)),
+}
+
+export interface ProductoMapperContext {
+  producto: LMProductoRow
+  variantes: LMVarianteRow[]
+  niveles: LMNivelInventarioRow[]
+  locale?: 'es' | 'en' | 'pt'
+}
+
+export const ProductoMapper = {
+  toAdmin(ctx: ProductoMapperContext): Producto {
+    return mapToAdminProducto(ctx.producto, ctx.variantes, ctx.niveles, ctx.locale)
+  },
+  toAdminList(list: ProductoMapperContext[]): Producto[] {
+    return list.map(ctx => this.toAdmin(ctx))
+  },
+}
+
+export const MAPEADORES = {
+  cliente: ClienteMapper,
+  orden: OrdenMapper,
+  producto: ProductoMapper,
+  evento: EventoMapper,
+  pago: PagoMapper,
+  notificacion: NotificacionMapper,
+  solicitudB2B: SolicitudB2BMapper,
+} as const

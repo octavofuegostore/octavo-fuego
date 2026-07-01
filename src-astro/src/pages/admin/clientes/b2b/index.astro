@@ -2,11 +2,10 @@
 export const prerender = false;
 // B2B Approval Queue — Solicitudes de clientes mayoristas
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import { getSolicitudes } from '@/lib/admin/service';
-import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+import { crearServicios } from '@/lib/admin/provider';
 
-const bodegaId = getBodegaSeleccionada(Astro.cookies);
-const solicitudes = await getSolicitudes(bodegaId || undefined);
+const svc = crearServicios();
+const solicitudes = await svc.clientes.listarSolicitudes();
 
 const pendientes = solicitudes.filter((s) => s.estado === 'pendiente');
 const aprobadas = solicitudes.filter((s) => s.estado === 'aprobada');

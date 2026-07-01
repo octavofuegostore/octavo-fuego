@@ -2,6 +2,15 @@
 export const prerender = false;
 // Stock page — Inventory stock levels by location
 import AdminLayout from '@/layouts/AdminLayout.astro';
+import { supabase } from '@/lib/supabase';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const { data: niveles } = await supabase
+  .from('gramos_disponibles')
+  .select('*')
+  .order('producto_slug');
+const stockData = bodegaId ? (niveles ?? []).filter(n => n.bodega_id === bodegaId) : (niveles ?? []);
 ---
 
 <AdminLayout title="Stock" description="Niveles de inventario por ubicación">

@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import ToasterClient from '@/components/admin/ToasterClient';
 import BodegaSwitcher from '@/components/admin/BodegaSwitcher';
 import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown.astro';
+import { $sidebarOpen, $seccionActual } from '@/stores/admin';
 
 interface Props {
   title: string;
@@ -404,6 +405,31 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <ToasterClient client:load />
 
     <script>
+      import { $sidebarOpen, $seccionActual } from '@/stores/admin'
+
+      // Set active section from path
+      const path = window.location.pathname
+      if (path.includes('/admin/ordenes')) $seccionActual.set('ordenes')
+      else if (path.includes('/admin/pagos')) $seccionActual.set('pagos')
+      else if (path.includes('/admin/clientes/b2b')) $seccionActual.set('b2b')
+      else if (path.includes('/admin/clientes')) $seccionActual.set('clientes')
+      else if (path.includes('/admin/inventario/stock')) $seccionActual.set('stock')
+      else if (path.includes('/admin/inventario')) $seccionActual.set('inventario')
+      else if (path.includes('/admin/contabilidad/informes')) $seccionActual.set('informes')
+      else if (path.includes('/admin/contabilidad/transacciones')) $seccionActual.set('transacciones')
+      else if (path.includes('/admin/contabilidad')) $seccionActual.set('contabilidad')
+      else if (path.includes('/admin/configuracion')) $seccionActual.set('configuracion')
+      else if (path.includes('/admin/actividad')) $seccionActual.set('actividad')
+      else $seccionActual.set('dashboard')
+
+      // Sync sidebar visibility with store
+      $sidebarOpen.subscribe((open) => {
+        const sidebar = document.getElementById('admin-sidebar')
+        if (!sidebar) return
+        if (window.innerWidth < 1024) return // mobile handles via toggle
+        sidebar.classList.toggle('-translate-x-full', !open)
+      })
+
       // Mobile menu toggle
       const mobileToggle = document.getElementById('mobile-menu-toggle');
       const sidebar = document.getElementById('admin-sidebar');

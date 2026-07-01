@@ -1,0 +1,52 @@
+---
+import { getStatusLabel } from '@/lib/admin/schemas/traducciones'
+
+interface Props {
+  eventos: Array<{
+    id: string
+    tipo: string
+    payload?: Record<string, unknown>
+    usuario_id?: string | null
+    creado_en: string
+  }>
+}
+
+const { eventos } = Astro.props
+
+const iconos: Record<string, string> = {
+  'orden:creada': '🛒',
+  'orden:estado_cambiado': '🔄',
+  'pago:confirmado': '✅',
+  'pago:fallido': '❌',
+  'b2b:solicitud_aprobada': '👍',
+  'b2b:solicitud_rechazada': '👎',
+  'stock:alterado': '📦',
+}
+---
+
+<div class="space-y-4">
+  {eventos.length === 0 && (
+    <p class="text-ceniza text-sm text-center py-8">No hay eventos registrados</p>
+  )}
+
+  {eventos.map((evento) => (
+    <div class="flex gap-3 items-start">
+      <div class="flex-shrink-0 w-8 h-8 bg-tabacco/10 rounded-full flex items-center justify-center text-sm">
+        {iconos[evento.tipo] ?? '📌'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-medium text-humo">
+          {evento.tipo}
+        </p>
+        {evento.payload && (
+          <p class="text-xs text-ceniza mt-0.5 truncate">
+            {JSON.stringify(evento.payload).slice(0, 100)}
+          </p>
+        )}
+        <p class="text-xs text-ceniza/60 mt-0.5">
+          {new Date(evento.creado_en).toLocaleString('es-CO')}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>

@@ -2,12 +2,13 @@
 export const prerender = false;
 // Pago detail page — [id]
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import { getPagoById, getOrdenes } from '@/lib/admin/service';
+import { crearServicios } from '@/lib/admin/provider';
 import { formatCurrency } from '@/lib/formatCurrency';
 
 const { id } = Astro.params;
+const svc = crearServicios();
 
-const pago = id ? await getPagoById(id) : undefined;
+const pago = id ? await svc.pagos.obtenerPorId(id) : undefined;
 const ordenes = pago ? await getOrdenes() : [];
 const orden = ordenes.find((o) => o.id === pago?.orden_id);
 
