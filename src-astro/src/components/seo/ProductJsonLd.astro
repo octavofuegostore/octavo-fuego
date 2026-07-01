@@ -41,8 +41,6 @@ const makeOffer = (p: PriceGram) => ({
   }
 });
 
-const variants = product.pricing.map(makeOffer);
-
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Product',
@@ -62,8 +60,7 @@ const schema = {
     { '@type': 'PropertyValue', 'name': 'Etnia', 'value': product.etnia },
     { '@type': 'PropertyValue', 'name': 'Locale', 'value': localeName }
   ],
-  'offers': makeOffer(product.pricing[0]),
-  'hasVariant': variants
+  'offers': product.pricing.map(makeOffer)
 };
 ---
 

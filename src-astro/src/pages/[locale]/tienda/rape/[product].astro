@@ -13,7 +13,6 @@ import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
-import OGBrandedImage from '@/components/seo/OGBrandedImage.astro';
 import { products } from '@/data/products';
 import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
@@ -87,7 +86,6 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
       { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
     ]} />
     <FAQPageJsonLd product={product} locale={locale_} />
-    <OGBrandedImage product={product} locale={locale_} />
   </Fragment>
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
     <div class="max-w-4xl mx-auto px-6 md:px-12">

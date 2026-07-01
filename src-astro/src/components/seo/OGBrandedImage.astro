@@ -1,8 +1,8 @@
 ---
 /**
- * OGBrandedImage — 1200×630 inline SVG for Open Graph social previews.
+ * OGBrandedImage — 1200×630 inline SVG display asset.
  * Pure typography + brand shapes. No embedded photos.
- * Produces a data URI for use as og:image.
+ * For social previews the Layout uses /images/octavofuego-logo.png.
  */
 import type { Locale } from '@/i18n';
 import type { PriceGram } from '@/data/products';
@@ -90,14 +90,6 @@ const svgContent = `
 function escapeXml(str: string): string {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-
-const dataUri = `data:image/svg+xml,${encodeURIComponent(svgContent)}`;
 ---
 
-<Fragment>
-  <!-- OG image meta tag for social previews -->
-  <meta property="og:image" content={dataUri} />
-  <meta name="twitter:image" content={dataUri} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-</Fragment>
+<Fragment set:html={svgContent} />

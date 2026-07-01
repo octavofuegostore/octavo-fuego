@@ -24,7 +24,7 @@ const {
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
 
 // F6.1.1: Canonical always points to ES version (strip locale prefix)
-const canonicalPath = Astro.url.pathname.replace(/^\/(en|pt)\//, '/');
+const canonicalPath = Astro.url.pathname.replace(/^\/(en|pt)(?:\/|$)/, '/');
 const canonicalUrl = new URL(canonicalPath, 'https://octavofuego.com').href;
 
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
