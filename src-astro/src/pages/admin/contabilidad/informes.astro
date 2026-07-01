@@ -3,6 +3,7 @@ export const prerender = false;
 // Informes page — Reportes financieros con tabs mensual/anual (datos reales)
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { supabase } from '@/lib/supabase';
 import { formatCurrency } from '@/lib/formatCurrency';
 import { formatDate } from '@/lib/admin/formatters';
 
@@ -12,28 +13,41 @@ const now = new Date();
 const currentMes = now.getMonth(); // 0-indexed
 const currentAño = now.getFullYear();
 
+// Single query for all transactions in the current year — replaces 24 individual queries
+const { data: allAnnualTxns } = await supabase
+  .from('transacciones')
+  .select('fecha, descripcion, tipo, monto, categorias_transaccion: categoria_id (nombre)')
+  .gte('fecha', `${currentAño}-01-01`)
+  .lt('fecha', `${currentAño + 1}-01-01`)
+  .order('fecha', { ascending: false })
+
+const parsedTxns = (allAnnualTxns ?? []).map(t => {
+  const row = t as Record<string, unknown>
+  return {
+    fecha: row.fecha as string,
+    descripcion: row.descripcion as string,
+    categoria: (row.categorias_transaccion as { nombre?: string })?.nombre ?? 'Sin categoría',
+    tipo: row.tipo as string,
+    monto: Number(row.monto),
+  }
+})
+
 // Pre-fetch all 12 months of data for the current year (both tabs)
-const monthlyKpis: Array<{ ingresos: number; egresos: number; balance: number }> = [];
-const monthlyTransactions: Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>[] = [];
+const monthlyKpis: Array<{ ingresos: number; egresos: number; balance: number }> = []
+const monthlyTransactions: Array<Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>> = []
 
 for (let m = 0; m < 12; m++) {
-  const kpi = await svc.obtenerKPIs(m + 1, currentAño);
-  monthlyKpis.push(kpi);
+  const monthTxns = parsedTxns.filter(t => new Date(t.fecha).getMonth() === m)
+  const ingresos = monthTxns.filter(t => t.tipo === 'ingreso').reduce((s, t) => s + t.monto, 0)
+  const egresos = monthTxns.filter(t => t.tipo === 'egreso').reduce((s, t) => s + t.monto, 0)
+  monthlyKpis.push({ ingresos, egresos, balance: ingresos - egresos })
 
-  // Get transactions for this month
-  const { data: txns } = await svc.listarTransacciones(1, 1000, {
-    fechaDesde: `${currentAño}-${String(m + 1).padStart(2, '0')}-01`,
-    fechaHasta: `${currentAño}-${String(m + 1).padStart(2, '0')}-31`,
-  });
   monthlyTransactions.push(
-    txns.map(t => ({
-      fecha: t.fecha,
-      descripcion: t.descripcion,
-      categoria: t.categoria,
-      tipo: t.tipo,
-      monto: t.monto,
+    monthTxns.map(t => ({
+      ...t,
+      tipo: t.tipo === 'ingreso' ? 'Ingreso' : 'Egreso',
     }))
-  );
+  )
 }
 
 // Annual totals

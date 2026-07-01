@@ -12,12 +12,12 @@ export class ContabilidadService {
     const { data, error } = await supabase
       .from('transacciones')
       .select('tipo, monto')
-      .gte('fecha', `${año}-${String(mes).padStart(2, '0')}-01`)
-      .lt('fecha', `${año}-${String(mes + 1).padStart(2, '0')}-01`)
+      .gte('fecha', new Date(año, mes - 1, 1).toISOString().split('T')[0])
+      .lt('fecha', new Date(año, mes, 1).toISOString().split('T')[0])
 
     if (error) {
       console.error('Error al obtener KPIs:', error)
-      return { ingresosMes: 0, egresosMes: 0, balance: 0 }
+      throw error
     }
 
     const ingresosMes = (data ?? [])
@@ -31,50 +31,48 @@ export class ContabilidadService {
   }
 
   async obtenerGraficaMensual(año: number): Promise<BarChartData[]> {
-    const months: BarChartData[] = []
+    const { data, error } = await supabase
+      .from('transacciones')
+      .select('tipo, monto, fecha')
+      .gte('fecha', `${año}-01-01`)
+      .lt('fecha', `${año + 1}-01-01`)
+
+    if (error) throw error
+
     const mesNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    const months: BarChartData[] = mesNames.map(label => ({ label, ingreso: 0, egreso: 0 }))
 
-    for (let i = 0; i < 12; i++) {
-      const { data } = await supabase
-        .from('transacciones')
-        .select('tipo, monto')
-        .gte('fecha', `${año}-${String(i + 1).padStart(2, '0')}-01`)
-        .lt('fecha', `${año}-${String(i + 2).padStart(2, '0')}-01`)
-
-      const ingreso = (data ?? [])
-        .filter(t => t.tipo === 'ingreso')
-        .reduce((sum, t) => sum + Number(t.monto), 0)
-      const egreso = (data ?? [])
-        .filter(t => t.tipo === 'egreso')
-        .reduce((sum, t) => sum + Number(t.monto), 0)
-
-      months.push({ label: mesNames[i], ingreso, egreso })
+    for (const t of data ?? []) {
+      const d = new Date(t.fecha)
+      const mesIdx = d.getMonth()
+      if (t.tipo === 'ingreso') {
+        months[mesIdx].ingreso += Number(t.monto)
+      } else {
+        months[mesIdx].egreso += Number(t.monto)
+      }
     }
 
     return months
   }
 
   async obtenerEvolucionAnual(): Promise<LineChartData[]> {
-    const mesNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
     const currentYear = new Date().getFullYear()
-    const result: LineChartData[] = []
+    const { data, error } = await supabase
+      .from('transacciones')
+      .select('tipo, monto, fecha')
+      .gte('fecha', `${currentYear}-01-01`)
+      .lt('fecha', `${currentYear + 1}-01-01`)
 
-    // Get data for last 3 years, but only show current year's data
-    for (let i = 0; i < 12; i++) {
-      const { data } = await supabase
-        .from('transacciones')
-        .select('tipo, monto')
-        .gte('fecha', `${currentYear}-${String(i + 1).padStart(2, '0')}-01`)
-        .lt('fecha', `${currentYear}-${String(i + 2).padStart(2, '0')}-01`)
+    if (error) throw error
 
-      const ingresos = (data ?? [])
-        .filter(t => t.tipo === 'ingreso')
-        .reduce((sum, t) => sum + Number(t.monto), 0)
-      const egresos = (data ?? [])
-        .filter(t => t.tipo === 'egreso')
-        .reduce((sum, t) => sum + Number(t.monto), 0)
+    const mesNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+    const result: LineChartData[] = mesNames.map(label => ({ label, value: 0 }))
 
-      result.push({ label: mesNames[i], value: ingresos - egresos })
+    for (const t of data ?? []) {
+      const d = new Date(t.fecha)
+      const mesIdx = d.getMonth()
+      const delta = t.tipo === 'ingreso' ? Number(t.monto) : -Number(t.monto)
+      result[mesIdx].value += delta
     }
 
     return result
@@ -93,12 +91,14 @@ export class ContabilidadService {
       query = query.eq('tipo', filters.tipo.toLowerCase())
     }
     if (filters?.categoria) {
-      const { data: cat } = await supabase
+      const { data: cat, error: catError } = await supabase
         .from('categorias_transaccion')
         .select('id')
         .ilike('nombre', filters.categoria)
-        .single()
-      if (cat) {
+        .maybeSingle()
+      if (catError) {
+        console.error('Error al buscar categoría por filtro:', catError)
+      } else if (cat) {
         query = query.eq('categoria_id', cat.id)
       }
     }
@@ -106,7 +106,7 @@ export class ContabilidadService {
       query = query.gte('fecha', filters.fechaDesde)
     }
     if (filters?.fechaHasta) {
-      query = query.lte('fecha', filters.fechaHasta)
+      query = query.lt('fecha', filters.fechaHasta)
     }
 
     const from = (page - 1) * pageSize
@@ -117,7 +117,7 @@ export class ContabilidadService {
 
     if (error) {
       console.error('Error al listar transacciones:', error)
-      return { data: [], total: 0 }
+      throw error
     }
 
     // Map to TransaccionReal type
@@ -140,35 +140,43 @@ export class ContabilidadService {
   }
 
   async obtenerCategorias(): Promise<CategoriaTransaccion[]> {
-    const { data: categorias, error } = await supabase
+    const { data: categorias, error: catError } = await supabase
       .from('categorias_transaccion')
       .select('id, nombre, tipo')
       .eq('activa', true)
       .order('nombre')
 
-    if (error) {
-      console.error('Error al obtener categorías:', error)
-      return []
+    if (catError) {
+      console.error('Error al obtener categorías:', catError)
+      throw catError
     }
 
-    // Get subcategorias for each
-    const result: CategoriaTransaccion[] = []
-    for (const cat of categorias ?? []) {
-      const { data: subs } = await supabase
-        .from('subcategorias_transaccion')
-        .select('nombre')
-        .eq('categoria_id', cat.id)
-        .eq('activa', true)
-        .order('nombre')
+    // Single query for all subcategorias, then group client-side
+    const catIds = (categorias ?? []).map(c => c.id)
+    const { data: subs, error: subsError } = await supabase
+      .from('subcategorias_transaccion')
+      .select('categoria_id, nombre')
+      .eq('activa', true)
+      .in('categoria_id', catIds.length > 0 ? catIds : [''])
+      .order('nombre')
 
-      result.push({
-        id: cat.id,
-        nombre: cat.nombre,
-        tipo: cat.tipo,
-        subcategorias: (subs ?? []).map(s => s.nombre),
-      })
+    if (subsError) {
+      console.error('Error al obtener subcategorías:', subsError)
+      throw subsError
     }
 
-    return result
+    const subsByCat = new Map<string, string[]>()
+    for (const s of subs ?? []) {
+      const list = subsByCat.get(s.categoria_id) ?? []
+      list.push(s.nombre)
+      subsByCat.set(s.categoria_id, list)
+    }
+
+    return (categorias ?? []).map(c => ({
+      id: c.id,
+      nombre: c.nombre,
+      tipo: c.tipo,
+      subcategorias: subsByCat.get(c.id) ?? [],
+    }))
   }
 }

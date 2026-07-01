@@ -6,6 +6,7 @@ import KpiCard from '@/components/admin/contabilidad/KpiCard.astro';
 import GraficaBarras from '@/components/admin/contabilidad/GraficaBarras.astro';
 import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
 import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { supabase } from '@/lib/supabase';
 import { formatCurrency } from '@/lib/formatCurrency';
 
 const svc = new ContabilidadService();
@@ -24,7 +25,7 @@ const graficaMensual = await svc.obtenerGraficaMensual(año);
 const { data: transacciones } = await svc.listarTransacciones(1, 1000, {
   tipo: 'egreso',
   fechaDesde: `${año}-${String(mes + 1).padStart(2, '0')}-01`,
-  fechaHasta: `${año}-${String(mes + 1).padStart(2, '0')}-31`,
+  fechaHasta: new Date(año, mes + 1, 1).toISOString().split('T')[0],
 });
 
 // Aggregate expenses by category
@@ -44,11 +45,32 @@ const expensesByCategory = Array.from(expenseMap.entries()).map(([label, value])
   color: expenseColors[colorIdx++ % expenseColors.length],
 }));
 
-// Serialize monthly KPI data for client-side: compute all months for current year
+// Serialize monthly KPI data for client-side: single aggregate query
+const { data: monthlyTxns } = await supabase
+  .from('transacciones')
+  .select('tipo, monto, fecha')
+  .gte('fecha', `${año}-01-01`)
+  .lt('fecha', `${año + 1}-01-01`)
+
 const monthlyData: Record<string, { ingresos: number; egresos: number; balance: number }> = {};
 for (let m = 0; m < 12; m++) {
-  const monthKpi = await svc.obtenerKPIs(m + 1, año);
-  monthlyData[`${año}-${m}`] = monthKpi;
+  monthlyData[`${año}-${m}`] = { ingresos: 0, egresos: 0, balance: 0 }
+}
+
+for (const t of monthlyTxns ?? []) {
+  const d = new Date(t.fecha)
+  const mesIdx = d.getMonth()
+  const key = `${año}-${mesIdx}`
+  if (t.tipo === 'ingreso') {
+    monthlyData[key].ingresos += Number(t.monto)
+  } else {
+    monthlyData[key].egresos += Number(t.monto)
+  }
+}
+
+for (let m = 0; m < 12; m++) {
+  const key = `${año}-${m}`
+  monthlyData[key].balance = monthlyData[key].ingresos - monthlyData[key].egresos
 }
 
 const mesNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
