@@ -122,3 +122,36 @@ export interface Notificacion {
   leida: boolean;
   creado_en: string;
 }
+
+// ─── Contabilidad ────────────────────────────────────────────────────────────
+
+export interface TransaccionReal {
+  id: string;
+  fecha: string;
+  descripcion: string;
+  categoria: string;
+  subcategoria?: string;
+  tipo: 'Ingreso' | 'Egreso';
+  monto: number;
+  moneda: string;
+  metodo_pago?: string;
+  orden_id?: string;
+}
+
+export interface CategoriaTransaccion {
+  id: string;
+  nombre: string;
+  tipo: 'ingreso' | 'egreso';
+  subcategorias: string[];
+}
+
+export interface BarChartData {
+  label: string;
+  ingreso: number;
+  egreso: number;
+}
+
+export interface LineChartData {
+  label: string;
+  value: number;
+}

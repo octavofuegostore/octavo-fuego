@@ -4,8 +4,10 @@ import KpiCard from './KpiCard.astro';
 import GraficaBarras from './GraficaBarras.astro';
 import GraficaLíneas from './GraficaLíneas.astro';
 import TransaccionTable from './TransaccionTable.astro';
-import { formatCOP } from '@/lib/admin/contabilidad/mock';
-import type { BarChartData, LineChartData, Transaccion } from '@/lib/admin/contabilidad/mock';
+import { formatCurrency } from '@/lib/formatCurrency';
+import type { BarChartData, LineChartData } from '@/types/admin';
+
+const formatCOP = (amount: number) => formatCurrency(amount, 'COP');
 
 export interface KpiData {
   ingresos: number;
@@ -13,10 +15,19 @@ export interface KpiData {
   balance: number;
 }
 
+interface TransaccionDisplay {
+  id: string;
+  fecha: string;
+  descripcion: string;
+  categoria: string;
+  tipo: 'Ingreso' | 'Egreso';
+  monto: number;
+}
+
 interface Props {
   mensualKpis: KpiData;
   mensualChartData: BarChartData[];
-  mensualTransactions: Transaccion[];
+  mensualTransactions: TransaccionDisplay[];
   anualKpis: KpiData;
   anualChartData: LineChartData[];
 }

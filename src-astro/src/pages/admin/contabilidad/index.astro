@@ -1,13 +1,57 @@
 ---
 export const prerender = false;
-// Contabilidad dashboard — Resumen financiero
+// Contabilidad dashboard — Resumen financiero con datos reales
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import KpiCard from '@/components/admin/contabilidad/KpiCard.astro';
 import GraficaBarras from '@/components/admin/contabilidad/GraficaBarras.astro';
 import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
-import { MOCK_KPIS, MOCK_GRAFICA_MENSUAL, formatCOP } from '@/lib/admin/contabilidad/mock';
-import { MOCK_EXPENSES_BY_CATEGORY } from '@/lib/admin/dashboard/mockCharts';
+import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { formatCurrency } from '@/lib/formatCurrency';
 
+const svc = new ContabilidadService();
+
+// Parse selected month/year from URL, default to current
+const now = new Date();
+const mesParam = parseInt(Astro.url.searchParams.get('mes') ?? String(now.getMonth()), 10);
+const añoParam = parseInt(Astro.url.searchParams.get('año') ?? String(now.getFullYear()), 10);
+const mes = mesParam >= 0 && mesParam <= 11 ? mesParam : now.getMonth();
+const año = añoParam >= 2020 && añoParam <= 2030 ? añoParam : now.getFullYear();
+
+const kpis = await svc.obtenerKPIs(mes + 1, año);
+const graficaMensual = await svc.obtenerGraficaMensual(año);
+
+// Expense breakdown by category for the selected month
+const { data: transacciones } = await svc.listarTransacciones(1, 1000, {
+  tipo: 'egreso',
+  fechaDesde: `${año}-${String(mes + 1).padStart(2, '0')}-01`,
+  fechaHasta: `${año}-${String(mes + 1).padStart(2, '0')}-31`,
+});
+
+// Aggregate expenses by category
+const expenseMap = new Map<string, number>();
+const expenseColors = [
+  '#8B4513', '#6B7280', '#EC4899', '#F59E0B',
+  '#3B82F6', '#10B981', '#EF4444', '#8B5CF6',
+];
+let colorIdx = 0;
+for (const t of transacciones) {
+  const current = expenseMap.get(t.categoria) ?? 0;
+  expenseMap.set(t.categoria, current + t.monto);
+}
+const expensesByCategory = Array.from(expenseMap.entries()).map(([label, value]) => ({
+  label,
+  value,
+  color: expenseColors[colorIdx++ % expenseColors.length],
+}));
+
+// Serialize monthly KPI data for client-side: compute all months for current year
+const monthlyData: Record<string, { ingresos: number; egresos: number; balance: number }> = {};
+for (let m = 0; m < 12; m++) {
+  const monthKpi = await svc.obtenerKPIs(m + 1, año);
+  monthlyData[`${año}-${m}`] = monthKpi;
+}
+
+const mesNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 const ingresosIcon = 'M7 11l5-5m0 0l5 5m-5-5v12';
 const egresosIcon = 'M7 13l5 5m0 0l5-5m-5 5V6';
 const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z';
@@ -19,29 +63,29 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-display font-bold text-humo">Contabilidad</h1>
-        <p class="text-ceniza mt-1">Resumen financiero de tu negocio</p>
+        <p class="text-ceniza mt-1">Resumen de {mesNames[mes]} {año}</p>
       </div>
       <div class="flex items-center gap-3">
         <!-- Date Range Selector -->
         <div class="flex items-center gap-2">
           <select id="mes-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
-            <option value="0">Enero</option>
-            <option value="1">Febrero</option>
-            <option value="2">Marzo</option>
-            <option value="3">Abril</option>
-            <option value="4">Mayo</option>
-            <option value="5" selected>Junio</option>
-            <option value="6">Julio</option>
-            <option value="7">Agosto</option>
-            <option value="8">Septiembre</option>
-            <option value="9">Octubre</option>
-            <option value="10">Noviembre</option>
-            <option value="11">Diciembre</option>
+            <option value="0" set:selected={mes === 0}>Enero</option>
+            <option value="1" set:selected={mes === 1}>Febrero</option>
+            <option value="2" set:selected={mes === 2}>Marzo</option>
+            <option value="3" set:selected={mes === 3}>Abril</option>
+            <option value="4" set:selected={mes === 4}>Mayo</option>
+            <option value="5" set:selected={mes === 5}>Junio</option>
+            <option value="6" set:selected={mes === 6}>Julio</option>
+            <option value="7" set:selected={mes === 7}>Agosto</option>
+            <option value="8" set:selected={mes === 8}>Septiembre</option>
+            <option value="9" set:selected={mes === 9}>Octubre</option>
+            <option value="10" set:selected={mes === 10}>Noviembre</option>
+            <option value="11" set:selected={mes === 11}>Diciembre</option>
           </select>
           <select id="year-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
-            <option value="2024">2024</option>
-            <option value="2025">2025</option>
-            <option value="2026" selected>2026</option>
+            <option value="2024" set:selected={año === 2024}>2024</option>
+            <option value="2025" set:selected={año === 2025}>2025</option>
+            <option value="2026" set:selected={año === 2026}>2026</option>
           </select>
         </div>
         <!-- Export Button -->
@@ -60,21 +104,21 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     <KpiCard
       icon={ingresosIcon}
       title="Ingresos del Mes"
-      value={formatCOP(MOCK_KPIS.ingresosMes)}
+      value={formatCurrency(kpis.ingresosMes, 'COP')}
       trend="up"
       trendValue="+12.5%"
     />
     <KpiCard
       icon={egresosIcon}
       title="Egresos del Mes"
-      value={formatCOP(MOCK_KPIS.egresosMes)}
+      value={formatCurrency(kpis.egresosMes, 'COP')}
       trend="down"
       trendValue="+8.3%"
     />
     <KpiCard
       icon={balanceIcon}
       title="Balance"
-      value={formatCOP(MOCK_KPIS.balance)}
+      value={formatCurrency(kpis.balance, 'COP')}
       trend="up"
       trendValue="+15.2%"
     />
@@ -83,7 +127,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
   <!-- Monthly Evolution Chart -->
   <div class="mb-8">
     <h2 class="text-lg font-display font-bold text-humo mb-4">Evolución Mensual</h2>
-    <GraficaBarras data={MOCK_GRAFICA_MENSUAL} />
+    <GraficaBarras data={graficaMensual} />
   </div>
 
   <!-- Expense Breakdown Chart -->
@@ -91,13 +135,13 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     <h2 class="text-lg font-display font-bold text-humo mb-4">Gastos por Categoría</h2>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <GraficaTorta
-        data={MOCK_EXPENSES_BY_CATEGORY.mes}
+        data={expensesByCategory}
         title="Gastos del Mes"
         size={280}
       />
       <!-- Summary cards for expenses -->
       <div class="space-y-4">
-        {MOCK_EXPENSES_BY_CATEGORY.mes.map((expense) => (
+        {expensesByCategory.map((expense) => (
           <div class="flex items-center justify-between p-4 bg-white rounded-xl shadow-card">
             <div class="flex items-center gap-3">
               <span
@@ -107,7 +151,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
               <span class="text-sm font-medium text-humo">{expense.label}</span>
             </div>
             <span class="text-sm font-bold text-humo">
-              {formatCOP(expense.value)}
+              {formatCurrency(expense.value, 'COP')}
             </span>
           </div>
         ))}
@@ -116,33 +160,19 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
   </div>
 </AdminLayout>
 
-<script>
+<script define:vars={{ monthlyData, mes, año }}>
   import { toast } from 'sonner';
-
-  // Mock data - in production this would come from an API
-  const MOCK_KPIS_DATA: Record<string, { ingresos: number; egresos: number; balance: number }> = {
-    '2026-0': { ingresos: 3800000, egresos: 2100000, balance: 1700000 },
-    '2026-1': { ingresos: 4200000, egresos: 2500000, balance: 1700000 },
-    '2026-2': { ingresos: 3900000, egresos: 2300000, balance: 1600000 },
-    '2026-3': { ingresos: 5100000, egresos: 2700000, balance: 2400000 },
-    '2026-4': { ingresos: 4800000, egresos: 2900000, balance: 1900000 },
-    '2026-5': { ingresos: 4500000, egresos: 2800000, balance: 1700000 },
-  };
 
   const mesNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
   function initPage() {
-    function getKpiValues(mes: number, year: number) {
-      const key = `${year}-${mes}`;
-      return MOCK_KPIS_DATA[key] || { ingresos: 0, egresos: 0, balance: 0 };
-    }
-
     function formatCOP(amount: number): string {
       return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
     }
 
     function updateDashboard(mes: number, year: number) {
-      const kpis = getKpiValues(mes, year);
+      const key = `${year}-${mes}`;
+      const kpis = (monthlyData as Record<string, { ingresos: number; egresos: number; balance: number }>)[key] || { ingresos: 0, egresos: 0, balance: 0 };
       const kpiCards = document.querySelectorAll('[data-kpi-card]');
       if (kpiCards.length >= 3) {
         const ingresosEl = kpiCards[0].querySelector('.font-display.text-2xl');
@@ -157,37 +187,42 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
       if (subtitle) subtitle.textContent = `Resumen de ${mesNames[mes]} ${year}`;
     }
 
+    function navigateTo(mes: number, year: number) {
+      // Full page navigation with URL params — loads real data from server
+      const params = new URLSearchParams({ mes: String(mes), año: String(year) });
+      window.location.href = `/admin/contabilidad?${params.toString()}`;
+    }
+
     // Wire date selectors
     const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
     const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
 
     mesSelect?.addEventListener('change', () => {
-      const mes = parseInt(mesSelect.value, 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
-      updateDashboard(mes, year);
-      toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+      const newMes = parseInt(mesSelect.value, 10);
+      const newYear = parseInt(yearSelect?.value || String(año), 10);
+      navigateTo(newMes, newYear);
     });
 
     yearSelect?.addEventListener('change', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
-      const year = parseInt(yearSelect.value, 10);
-      updateDashboard(mes, year);
-      toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+      const newMes = parseInt(mesSelect?.value || String(mes), 10);
+      const newYear = parseInt(yearSelect.value, 10);
+      navigateTo(newMes, newYear);
     });
 
     // Wire export button
     const exportBtn = document.getElementById('export-contabilidad-btn');
     exportBtn?.addEventListener('click', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
-      const kpis = getKpiValues(mes, year);
+      const currentMes = parseInt(mesSelect?.value || String(mes), 10);
+      const currentYear = parseInt(yearSelect?.value || String(año), 10);
+      const key = `${currentYear}-${currentMes}`;
+      const kpis = (monthlyData as Record<string, { ingresos: number; egresos: number; balance: number }>)[key] || { ingresos: 0, egresos: 0, balance: 0 };
 
-      const csvContent = `data:text/csv;charset=utf-8,Mes,Ingresos,Egresos,Balance\n"${mesNames[mes]} ${year}",${kpis.ingresos},${kpis.egresos},${kpis.balance}`;
+      const csvContent = `data:text/csv;charset=utf-8,Mes,Ingresos,Egresos,Balance\n"${mesNames[currentMes]} ${currentYear}",${kpis.ingresos},${kpis.egresos},${kpis.balance}`;
 
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', `contabilidad_${mesNames[mes].toLowerCase()}_${year}.csv`);
+      link.setAttribute('download', `contabilidad_${mesNames[currentMes].toLowerCase()}_${currentYear}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

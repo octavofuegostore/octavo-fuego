@@ -1,26 +1,46 @@
 ---
 export const prerender = false;
-// Informes page — Reportes financieros con tabs mensual/anual y JS wiring
+// Informes page — Reportes financieros con tabs mensual/anual (datos reales)
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import {
-  MOCK_KPIS,
-  MOCK_GRAFICA_MENSUAL,
-  MOCK_EVOLUCION_ANUAL,
-  MOCK_TRANSACCIONES,
-  formatCOP,
-} from '@/lib/admin/contabilidad/mock';
-import type { BarChartData, LineChartData, Transaccion } from '@/lib/admin/contabilidad/mock';
+import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { formatCurrency } from '@/lib/formatCurrency';
+import { formatDate } from '@/lib/admin/formatters';
 
-const mensualKpis = {
-  ingresos: MOCK_KPIS.ingresosMes,
-  egresos: MOCK_KPIS.egresosMes,
-  balance: MOCK_KPIS.balance,
-};
+const svc = new ContabilidadService();
 
+const now = new Date();
+const currentMes = now.getMonth(); // 0-indexed
+const currentAño = now.getFullYear();
+
+// Pre-fetch all 12 months of data for the current year (both tabs)
+const monthlyKpis: Array<{ ingresos: number; egresos: number; balance: number }> = [];
+const monthlyTransactions: Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>[] = [];
+
+for (let m = 0; m < 12; m++) {
+  const kpi = await svc.obtenerKPIs(m + 1, currentAño);
+  monthlyKpis.push(kpi);
+
+  // Get transactions for this month
+  const { data: txns } = await svc.listarTransacciones(1, 1000, {
+    fechaDesde: `${currentAño}-${String(m + 1).padStart(2, '0')}-01`,
+    fechaHasta: `${currentAño}-${String(m + 1).padStart(2, '0')}-31`,
+  });
+  monthlyTransactions.push(
+    txns.map(t => ({
+      fecha: t.fecha,
+      descripcion: t.descripcion,
+      categoria: t.categoria,
+      tipo: t.tipo,
+      monto: t.monto,
+    }))
+  );
+}
+
+// Annual totals
 const anualKpis = {
-  ingresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.ingreso, 0),
-  egresos: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + m.egreso, 0),
-  balance: MOCK_GRAFICA_MENSUAL.reduce((sum, m) => sum + (m.ingreso - m.egreso), 0),
+  ingresos: monthlyKpis.reduce((sum, m) => sum + m.ingresos, 0),
+  egresos: monthlyKpis.reduce((sum, m) => sum + m.egresos, 0),
+  balance: monthlyKpis.reduce((sum, m) => sum + m.balance, 0),
 };
 
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -52,14 +72,14 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
 
   <!-- Mensual Tab -->
   <div id="tab-mensual-content">
-    <!-- Date Range Selectors + Generate Button (tasks 9.1 and 9.2) -->
+    <!-- Date Range Selectors + Generate Button -->
     <div class="bg-white rounded-2xl shadow-card p-6 mb-6">
       <div class="flex flex-col sm:flex-row sm:items-end gap-4">
         <div class="flex items-end gap-3">
           <div>
             <label class="block text-sm font-medium text-humo mb-2">Mes</label>
             <select id="mes-select" class="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white">
-              {meses.map((m, i) => <option value={i} selected={i === 5}>{m}</option>)}
+              {meses.map((m, i) => <option value={i} selected={i === currentMes}>{m}</option>)}
             </select>
           </div>
           <div>
@@ -78,7 +98,6 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           Generar Informe
         </button>
         <div class="flex items-center gap-2 sm:ml-auto">
-          <!-- Export buttons (task 9.3) -->
           <button id="export-mensual-pdf-btn" class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -106,7 +125,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Total Ingresos</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo" id="kpi-ingresos">{formatCOP(mensualKpis.ingresos)}</p>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-ingresos">{formatCurrency(monthlyKpis[currentMes]?.ingresos ?? 0, 'COP')}</p>
       </div>
       <div class="bg-white rounded-2xl shadow-card p-6">
         <div class="flex items-center gap-3 mb-3">
@@ -117,7 +136,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Total Egresos</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo" id="kpi-egresos">{formatCOP(mensualKpis.egresos)}</p>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-egresos">{formatCurrency(monthlyKpis[currentMes]?.egresos ?? 0, 'COP')}</p>
       </div>
       <div class="bg-white rounded-2xl shadow-card p-6">
         <div class="flex items-center gap-3 mb-3">
@@ -128,7 +147,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Balance del Mes</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo" id="kpi-balance">{formatCOP(mensualKpis.balance)}</p>
+        <p class="font-display text-2xl font-bold text-humo" id="kpi-balance">{formatCurrency(monthlyKpis[currentMes]?.balance ?? 0, 'COP')}</p>
       </div>
     </div>
 
@@ -167,7 +186,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Total Ingresos</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.ingresos)}</p>
+        <p class="font-display text-2xl font-bold text-humo">{formatCurrency(anualKpis.ingresos, 'COP')}</p>
       </div>
       <div class="bg-white rounded-2xl shadow-card p-6">
         <div class="flex items-center gap-3 mb-3">
@@ -178,7 +197,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Total Egresos</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.egresos)}</p>
+        <p class="font-display text-2xl font-bold text-humo">{formatCurrency(anualKpis.egresos, 'COP')}</p>
       </div>
       <div class="bg-white rounded-2xl shadow-card p-6">
         <div class="flex items-center gap-3 mb-3">
@@ -189,7 +208,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
           </div>
           <span class="text-sm text-ceniza">Balance del Año</span>
         </div>
-        <p class="font-display text-2xl font-bold text-humo">{formatCOP(anualKpis.balance)}</p>
+        <p class="font-display text-2xl font-bold text-humo">{formatCurrency(anualKpis.balance, 'COP')}</p>
       </div>
     </div>
 
@@ -211,20 +230,8 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
   </div>
 </AdminLayout>
 
-<script>
+<script define:vars={{ monthlyKpis, monthlyTransactions, meses, currentMes, currentAño }}>
   import { toast } from 'sonner';
-
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-
-  // Mock data keyed by month
-  const MOCK_DATA: Record<string, { ingresos: number; egresos: number; balance: number; transactions: Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }> }> = {
-    '0': { ingresos: 3800000, egresos: 2100000, balance: 1700000, transactions: [{ fecha: '2026-01-15', descripcion: 'Venta Tisunú - Inicio año', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 90000 }] },
-    '1': { ingresos: 4200000, egresos: 2500000, balance: 1700000, transactions: [{ fecha: '2026-02-10', descripcion: 'Venta Pixuri', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 110000 }] },
-    '2': { ingresos: 3900000, egresos: 2300000, balance: 1600000, transactions: [{ fecha: '2026-03-05', descripcion: 'Venta Kuripe', categoria: 'Venta Kuripe/Tepi', tipo: 'Ingreso', monto: 130000 }] },
-    '3': { ingresos: 5100000, egresos: 2700000, balance: 2400000, transactions: [{ fecha: '2026-04-20', descripcion: 'Venta B2B Bogotá', categoria: 'Distribución B2B', tipo: 'Ingreso', monto: 600000 }] },
-    '4': { ingresos: 4800000, egresos: 2900000, balance: 1900000, transactions: [{ fecha: '2026-05-15', descripcion: 'Venta Sananga', categoria: 'Venta Sananga', tipo: 'Ingreso', monto: 85000 }] },
-    '5': { ingresos: 4500000, egresos: 2800000, balance: 1700000, transactions: [{ fecha: '2026-06-15', descripcion: 'Venta Tisunú 20g', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 70000 }] },
-  };
 
   function initPage() {
     function formatCOP(amount: number): string {
@@ -267,7 +274,9 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
 
     function loadMensualData(mes: number, year: number) {
-      const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+      // For now we only have current year data serialized
+      const data = (monthlyKpis as Array<{ ingresos: number; egresos: number; balance: number }>)[mes] || { ingresos: 0, egresos: 0, balance: 0 };
+      const txns = (monthlyTransactions as Array<Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>>)[mes] || [];
 
       const ingresosEl = document.getElementById('kpi-ingresos');
       const egresosEl = document.getElementById('kpi-egresos');
@@ -279,10 +288,10 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
       if (balanceEl) balanceEl.textContent = formatCOP(data.balance);
 
       if (tbody) {
-        if (data.transactions.length === 0) {
+        if (txns.length === 0) {
           tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-ceniza">No hay transacciones para este período</td></tr>';
         } else {
-          tbody.innerHTML = data.transactions.map(t => `
+          tbody.innerHTML = txns.map((t: { fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }) => `
             <tr class="hover:bg-papel/30 transition-colors">
               <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
               <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
@@ -300,12 +309,12 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     // Wire date range selectors
     mesSelect?.addEventListener('change', () => {
       const mes = parseInt(mesSelect.value, 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
       loadMensualData(mes, year);
     });
 
     yearSelect?.addEventListener('change', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
+      const mes = parseInt(mesSelect?.value || String(currentMes), 10);
       const year = parseInt(yearSelect.value, 10);
       loadMensualData(mes, year);
     });
@@ -313,10 +322,10 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     // Wire "Generar Informe" button
     const generarBtn = document.getElementById('generar-informe-btn');
     generarBtn?.addEventListener('click', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
+      const mes = parseInt(mesSelect?.value || String(currentMes), 10);
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
       loadMensualData(mes, year);
-      toast.success(`Informe de ${meses[mes]} ${year} generado correctamente`);
+      toast.success(`Informe de ${(meses as string[])[mes]} ${year} generado correctamente`);
     });
 
     // Wire export buttons
@@ -337,32 +346,37 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     }
 
     document.getElementById('export-mensual-pdf-btn')?.addEventListener('click', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
-      exportPDF(`informe_mensual_${meses[mes].toLowerCase()}_${year}.pdf`);
+      const mes = parseInt(mesSelect?.value || String(currentMes), 10);
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
+      exportPDF(`informe_mensual_${(meses as string[])[mes].toLowerCase()}_${year}.pdf`);
     });
 
     document.getElementById('export-mensual-csv-btn')?.addEventListener('click', () => {
-      const mes = parseInt(mesSelect?.value || '5', 10);
-      const year = parseInt(yearSelect?.value || '2026', 10);
-      const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+      const mes = parseInt(mesSelect?.value || String(currentMes), 10);
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
+      const txns = (monthlyTransactions as Array<Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>>)[mes] || [];
       const header = 'Fecha,Descripción,Categoría,Tipo,Monto';
-      const rows = data.transactions.map(t => `"${t.fecha}","${t.descripcion}","${t.categoria}","${t.tipo}",${t.monto}`).join('\n');
-      exportCSV(`informe_mensual_${meses[mes].toLowerCase()}_${year}.csv`, `${header}\n${rows}`);
+      const rows = txns.map((t: { fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }) =>
+        `"${t.fecha}","${t.descripcion}","${t.categoria}","${t.tipo}",${t.monto}`
+      ).join('\n');
+      exportCSV(`informe_mensual_${(meses as string[])[mes].toLowerCase()}_${year}.csv`, `${header}\n${rows}`);
     });
 
     document.getElementById('export-anual-pdf-btn')?.addEventListener('click', () => {
-      const year = parseInt(yearSelect?.value || '2026', 10);
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
       exportPDF(`informe_anual_${year}.pdf`);
     });
 
     document.getElementById('export-anual-csv-btn')?.addEventListener('click', () => {
-      const year = parseInt(yearSelect?.value || '2026', 10);
-      exportCSV(`informe_anual_${year}.csv`, 'Mes,Ingresos,Egresos,Balance\n"Enero",3800000,2100000,1700000\n"Febrero",4200000,2500000,1700000');
+      const year = parseInt(yearSelect?.value || String(currentAño), 10);
+      const kpis = (monthlyKpis as Array<{ ingresos: number; egresos: number; balance: number }>);
+      const header = 'Mes,Ingresos,Egresos,Balance';
+      const rows = (meses as string[]).map((m, i) => `"${m}",${kpis[i]?.ingresos ?? 0},${kpis[i]?.egresos ?? 0},${kpis[i]?.balance ?? 0}`).join('\n');
+      exportCSV(`informe_anual_${year}.csv`, `${header}\n${rows}`);
     });
 
     // Initial load
-    loadMensualData(5, 2026);
+    loadMensualData(currentMes, currentAño);
   }
 
   initPage();

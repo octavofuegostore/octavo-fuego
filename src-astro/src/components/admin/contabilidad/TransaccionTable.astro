@@ -1,10 +1,20 @@
 ---
 // TransaccionTable.astro — Transaction list with search, filters, and actions
-import { formatCOP } from '@/lib/admin/contabilidad/mock';
-import type { Transaccion } from '@/lib/admin/contabilidad/mock';
+import { formatCurrency } from '@/lib/formatCurrency';
+
+const formatCOP = (amount: number) => formatCurrency(amount, 'COP');
+
+interface TransaccionDisplay {
+  id: string;
+  fecha: string;
+  descripcion: string;
+  categoria: string;
+  tipo: 'Ingreso' | 'Egreso';
+  monto: number;
+}
 
 interface Props {
-  transactions: Transaccion[];
+  transactions: TransaccionDisplay[];
   showFilters?: boolean;
   showActions?: boolean;
 }

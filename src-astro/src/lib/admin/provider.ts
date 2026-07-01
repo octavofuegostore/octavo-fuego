@@ -3,6 +3,7 @@ import { ProductoService } from '@/lib/admin/services/productos'
 import { OrdenService } from '@/lib/admin/services/ordenes'
 import { ClienteService } from '@/lib/admin/services/clientes'
 import { PagoService } from '@/lib/admin/services/pagos'
+import { ContabilidadService } from '@/lib/admin/services/contabilidad'
 import { eventBus } from '@/lib/admin/eventos'
 import { setAdminUser, clearAdminUser } from '@/stores/admin'
 
@@ -12,6 +13,7 @@ export function crearServicios(bodegaId?: string) {
     ordenes: new OrdenService(supabase, bodegaId),
     clientes: new ClienteService(supabase, bodegaId),
     pagos: new PagoService(supabase, bodegaId),
+    contabilidad: new ContabilidadService(),
   }
 }
 

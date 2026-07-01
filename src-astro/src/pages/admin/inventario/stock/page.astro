@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-// Stock page — Inventory stock levels by location
+// Stock page — Inventory stock levels by location (datos reales)
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import { supabase } from '@/lib/supabase';
 import { getBodegaSeleccionada } from '@/lib/admin/bodega';
@@ -11,6 +11,25 @@ const { data: niveles } = await supabase
   .select('*')
   .order('producto_slug');
 const stockData = bodegaId ? (niveles ?? []).filter(n => n.bodega_id === bodegaId) : (niveles ?? []);
+
+// Map to client-friendly format
+interface StockItem {
+  productId: string;
+  productName: string;
+  sku: string;
+  location: string;
+  current: number;
+  minimum: number;
+}
+
+const stockItems: StockItem[] = (stockData ?? []).map(n => ({
+  productId: n.item_id,
+  productName: n.producto_slug?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) ?? 'Sin nombre',
+  sku: n.sku ?? '',
+  location: n.bodega_codigo ?? n.pais ?? '',
+  current: n.gramos_disponibles ?? 0,
+  minimum: n.gramos_alerta ?? 50,
+}));
 ---
 
 <AdminLayout title="Stock" description="Niveles de inventario por ubicación">
@@ -70,33 +89,11 @@ const stockData = bodegaId ? (niveles ?? []).filter(n => n.bodega_id === bodegaI
   </div>
 </AdminLayout>
 
-<script>
+<script define:vars={{ stockItems }}>
   import { toast } from 'sonner';
 
   function initPage() {
-    interface StockItem {
-      productId: string;
-      productName: string;
-      sku: string;
-      location: string;
-      current: number;
-      minimum: number;
-    }
-
-    const mockStock: StockItem[] = [
-      { productId: '1', productName: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', location: 'CO-BOGOTA', current: 250, minimum: 100 },
-      { productId: '1', productName: 'Cera de Ducha - Cacao', sku: 'CD-CA-100', location: 'BR-ACRE', current: 800, minimum: 100 },
-      { productId: '2', productName: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', location: 'CO-BOGOTA', current: 180, minimum: 100 },
-      { productId: '2', productName: 'Cera de Ducha - Vainilla', sku: 'CD-VA-100', location: 'BR-ACRE', current: 650, minimum: 100 },
-      { productId: '3', productName: 'Sabonete - Lavanda', sku: 'SL-75', location: 'CO-BOGOTA', current: 400, minimum: 100 },
-      { productId: '3', productName: 'Sabonete - Lavanda', sku: 'SL-75', location: 'BR-ACRE', current: 15, minimum: 100 },
-      { productId: '4', productName: 'Sabonete - Avena', sku: 'SA-75', location: 'CO-BOGOTA', current: 350, minimum: 100 },
-      { productId: '4', productName: 'Sabonete - Avena', sku: 'SA-75', location: 'BR-ACRE', current: 450, minimum: 100 },
-      { productId: '5', productName: 'Pack Regalo Premium', sku: 'PR-100', location: 'CO-BOGOTA', current: 50, minimum: 50 },
-      { productId: '5', productName: 'Pack Regalo Premium', sku: 'PR-100', location: 'BR-ACRE', current: 3, minimum: 20 },
-    ];
-
-    let filteredStock = [...mockStock];
+    let filteredStock = [...(stockItems as Array<{ productId: string; productName: string; sku: string; location: string; current: number; minimum: number }>)];
 
     const searchInput = document.getElementById('search-stock') as HTMLInputElement;
     const locationFilter = document.getElementById('location-filter') as HTMLSelectElement;
@@ -113,7 +110,7 @@ const stockData = bodegaId ? (niveles ?? []).filter(n => n.bodega_id === bodegaI
       const location = locationFilter?.value || '';
       const status = statusFilter?.value || '';
 
-      filteredStock = mockStock.filter(s => {
+      filteredStock = (stockItems as Array<{ productId: string; productName: string; sku: string; location: string; current: number; minimum: number }>).filter(s => {
         const matchesSearch = s.productName.toLowerCase().includes(query) || s.sku.toLowerCase().includes(query);
         const matchesLocation = !location || s.location.startsWith(location);
         const statusInfo = getStatus(s.current, s.minimum);
@@ -132,7 +129,7 @@ const stockData = bodegaId ? (niveles ?? []).filter(n => n.bodega_id === bodegaI
 
       tbody.innerHTML = filteredStock.map(s => {
         const status = getStatus(s.current, s.minimum);
-        const locationBg = s.location === 'CO-BOGOTA' ? 'bg-info/10 text-info' : 'bg-success/10 text-success';
+        const locationBg = s.location.startsWith('CO') ? 'bg-info/10 text-info' : 'bg-success/10 text-success';
 
         return `
           <tr class="hover:bg-papel/30 transition-colors">

@@ -1,9 +1,14 @@
 ---
 export const prerender = false;
-// Transacciones page — Lista de transacciones con JS wiring
+// Transacciones page — Lista de transacciones con datos reales
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import { MOCK_TRANSACCIONES, CATEGORIAS_INGRESO, CATEGORIAS_EGRESO, formatCOP } from '@/lib/admin/contabilidad/mock';
-import type { Transaccion } from '@/lib/admin/contabilidad/mock';
+import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { formatCurrency } from '@/lib/formatCurrency';
+import type { CategoriaTransaccion } from '@/types/admin';
+
+const svc = new ContabilidadService();
+const categorias = await svc.obtenerCategorias();
+const { data: transacciones, total } = await svc.listarTransacciones(1, 200);
 
 const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 ---
@@ -88,7 +93,7 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
 
   <!-- Pagination -->
   <div class="flex items-center justify-between">
-    <p id="pagination-info" class="text-sm text-ceniza">Mostrando 1-7 de 24 transacciones</p>
+    <p id="pagination-info" class="text-sm text-ceniza">Mostrando 1-{Math.min(total, 200)} de {total} transacciones</p>
     <div id="pagination-controls" class="flex items-center gap-2">
       <!-- JS renders pagination buttons -->
     </div>
@@ -146,31 +151,23 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
   </div>
 </AdminLayout>
 
-<script>
+<script define:vars={{ transacciones, categorias, total }}>
   import { toast } from 'sonner';
-  import type { Transaccion } from '@/lib/admin/contabilidad/mock';
 
-  // Mock transacciones data
-  const mockTransacciones: Transaccion[] = [
-    { id: '1', fecha: '2026-06-15', descripcion: 'Venta Tisunú 20g - María García', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 70000 },
-    { id: '2', fecha: '2026-06-14', descripcion: 'Compra materia prima Acre', categoria: 'Producción', tipo: 'Egreso', monto: 850000 },
-    { id: '3', fecha: '2026-06-12', descripcion: 'Venta Pixuri 30g - João Silva', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 100000 },
-    { id: '4', fecha: '2026-06-10', descripcion: 'Pago Meta Ads junio', categoria: 'Marketing', tipo: 'Egreso', monto: 350000 },
-    { id: '5', fecha: '2026-06-08', descripcion: 'Venta Kuripe Doble + Tepi', categoria: 'Venta Kuripe/Tepi', tipo: 'Ingreso', monto: 120000 },
-    { id: '6', fecha: '2026-06-05', descripcion: 'Envío nacional Colombia x5', categoria: 'Logística y Envíos', tipo: 'Egreso', monto: 45000 },
-    { id: '7', fecha: '2026-06-03', descripcion: 'Venta B2B - Tienda Bogotá', categoria: 'Distribución B2B', tipo: 'Ingreso', monto: 580000 },
-    { id: '8', fecha: '2026-05-28', descripcion: 'Compra envases y etiquetas', categoria: 'Producción', tipo: 'Egreso', monto: 120000 },
-    { id: '9', fecha: '2026-05-25', descripcion: 'Venta Sananga 10ml - Sarah', categoria: 'Venta Sananga', tipo: 'Ingreso', monto: 85000 },
-    { id: '10', fecha: '2026-05-20', descripcion: 'Pago arriendo junio', categoria: 'Infraestructura', tipo: 'Egreso', monto: 1500000 },
-    { id: '11', fecha: '2026-05-15', descripcion: 'Venta Tisunú 50g - Mayorista', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 180000 },
-    { id: '12', fecha: '2026-05-10', descripcion: 'Honorarios Josue', categoria: 'Nómina', tipo: 'Egreso', monto: 2000000 },
-    { id: '13', fecha: '2026-04-28', descripcion: 'Venta Cumaru de Cheiro 30g', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 95000 },
-    { id: '14', fecha: '2026-04-20', descripcion: 'Compra materia prima Yawanawá', categoria: 'Amazonía / Comunidades', tipo: 'Egreso', monto: 600000 },
-    { id: '15', fecha: '2026-04-15', descripcion: 'Pago IVA bimestral', categoria: 'Impuestos', tipo: 'Egreso', monto: 420000 },
-  ];
+  interface TransaccionItem {
+    id: string;
+    fecha: string;
+    descripcion: string;
+    categoria: string;
+    tipo: string;
+    monto: number;
+    moneda: string;
+    metodo_pago?: string;
+    orden_id?: string;
+  }
 
   function initPage() {
-    const allTransacciones = [...mockTransacciones];
+    const allTransacciones: TransaccionItem[] = (transacciones as TransaccionItem[]) || [];
 
     // Pagination state
     let currentPage = 1;
@@ -193,16 +190,12 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     const tipoSelect = document.getElementById('transaccion-tipo') as HTMLSelectElement;
     const categoriaSelect = document.getElementById('transaccion-categoria') as HTMLSelectElement;
 
-    // Categories
-    const categoriasIngreso = ['Venta Rapé', 'Venta Sananga', 'Venta Kuripe/Tepi', 'Distribución B2B', 'Servicios'];
-    const categoriasEgreso = ['Amazonía / Comunidades', 'Producción', 'Logística y Envíos', 'Marketing', 'Infraestructura', 'Nómina', 'Impuestos', 'Otros Egresos'];
-
     function filterTransacciones() {
       const query = searchInput?.value.toLowerCase() || '';
       const tipo = tipoFilter?.value || '';
       const mes = mesFilter?.value || '';
 
-      filteredTransacciones = allTransacciones.filter(t => {
+      filteredTransacciones = allTransacciones.filter((t: TransaccionItem) => {
         const matchesSearch = t.descripcion.toLowerCase().includes(query) || t.categoria.toLowerCase().includes(query);
         const matchesTipo = !tipo || t.tipo === tipo;
         const transactionMonth = new Date(t.fecha).getMonth();
@@ -239,7 +232,7 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
 
       emptyState?.classList.add('hidden');
 
-      tbody.innerHTML = pageData.map(t => `
+      tbody.innerHTML = pageData.map((t: TransaccionItem) => `
         <tr class="hover:bg-papel/30 transition-colors cursor-pointer" data-transaccion-id="${t.id}">
           <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
           <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
@@ -267,9 +260,9 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
           if (target.closest('.edit-btn')) return;
           const id = row.getAttribute('data-transaccion-id');
           if (id) {
-            const transaccion = allTransacciones.find(t => t.id === id);
-            if (transaccion) {
-              openEditModal(transaccion);
+            const t = allTransacciones.find((tx: TransaccionItem) => tx.id === id);
+            if (t) {
+              toast.info(`Editando transacción ${t.descripcion}`);
             }
           }
         });
@@ -281,9 +274,9 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
           e.stopPropagation();
           const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
           if (id) {
-            const transaccion = allTransacciones.find(t => t.id === id);
-            if (transaccion) {
-              openEditModal(transaccion);
+            const t = allTransacciones.find((tx: TransaccionItem) => tx.id === id);
+            if (t) {
+              toast.info(`Editando transacción ${t.descripcion}`);
             }
           }
         });
@@ -291,8 +284,8 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
 
       // Update pagination info
       if (paginationInfo) {
-        const total = filteredTransacciones.length;
-        paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, total)} de ${total} transacciones`;
+        const totalItems = filteredTransacciones.length;
+        paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, totalItems)} de ${totalItems} transacciones`;
       }
     }
 
@@ -341,10 +334,6 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
       });
     }
 
-    function openEditModal(t: Transaccion) {
-      toast.info(`Editando transacción ${t.id}: ${t.descripcion}`);
-    }
-
     // Wire search and filters
     searchInput?.addEventListener('input', filterTransacciones);
     tipoFilter?.addEventListener('change', filterTransacciones);
@@ -353,15 +342,19 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     // Wire "Nueva Transaccion" button
     nuevaBtn?.addEventListener('click', () => {
       if (!modal) return;
-      (form)?.reset();
+      form?.reset();
       updateCategoriaOptions('');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     });
 
+    const categoriasList = (categorias as Array<{ nombre: string; tipo: string; subcategorias: string[] }>) || [];
+
     function updateCategoriaOptions(tipo: string) {
       if (!categoriaSelect) return;
-      const options = tipo === 'Ingreso' ? categoriasIngreso : tipo === 'Egreso' ? categoriasEgreso : [];
+      const options = categoriasList
+        .filter(c => (tipo === 'Ingreso' && c.tipo === 'ingreso') || (tipo === 'Egreso' && c.tipo === 'egreso'))
+        .map(c => c.nombre);
       categoriaSelect.innerHTML = '<option value="">Seleccionar...</option>' + options.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
@@ -389,19 +382,23 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
       const monto = parseInt((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0', 10);
       const fecha = (document.getElementById('transaccion-fecha') as HTMLInputElement)?.value;
 
-      const newTransaccion: Transaccion = {
-        id: String(allTransacciones.length + 1),
+      // Optimistic local add
+      const newTransaccion: TransaccionItem = {
+        id: crypto.randomUUID(),
         fecha: fecha || new Date().toISOString().split('T')[0],
         descripcion: descripcion || '',
         categoria: categoria || '',
         tipo: tipo as 'Ingreso' | 'Egreso',
-        monto
+        monto,
+        moneda: 'COP',
       };
 
       allTransacciones.unshift(newTransaccion);
       closeModal();
       filterTransacciones();
-      toast.success('Transacción creada correctamente');
+      toast.success('Transacción creada correctamente (local)');
+
+      // TODO: POST to API endpoint when available
     });
 
     // Initial render
