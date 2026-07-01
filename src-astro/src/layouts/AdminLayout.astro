@@ -4,6 +4,7 @@ import { Icon } from 'astro-icon/components';
 import ToasterClient from '@/components/admin/ToasterClient';
 import BodegaSwitcher from '@/components/admin/BodegaSwitcher';
 import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown.astro';
+import { ClientRouter } from 'astro:transitions';
 import { $sidebarOpen, $seccionActual } from '@/stores/admin';
 import { supabase } from '@/lib/supabase';
 
@@ -45,12 +46,14 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | Admin Octavo Fuego</title>
     {description && <meta name="description" content={description} />}
+    <ClientRouter />
   </head>
   <body class="bg-papel min-h-screen">
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
       <aside
         id="admin-sidebar"
+        transition:persist
         class="w-64 bg-humo text-papel flex flex-col transition-all duration-300 lg:translate-x-0 -translate-x-full fixed lg:static inset-y-0 left-0 z-50"
       >
         <!-- Logo -->
@@ -423,6 +426,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <script>
       import { $sidebarOpen, $seccionActual } from '@/stores/admin'
 
+      function initAdminUI() {
       // Set active section from path
       const path = window.location.pathname
       if (path.includes('/admin/ordenes')) $seccionActual.set('ordenes')
@@ -515,6 +519,11 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           .then(({ toast }) => toast('Próximamente'))
           .catch(() => window.alert('Próximamente'));
       });
+      } // end initAdminUI
+
+      // Run on page load and after client-side navigation
+      initAdminUI();
+      document.addEventListener('astro:page-load', initAdminUI);
     </script>
   </body>
 </html>
