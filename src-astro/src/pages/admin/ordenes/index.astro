@@ -3,9 +3,10 @@ export const prerender = false;
 // Orders page — Orders management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import OrderTable from '@/components/admin/orders/OrderTable.astro';
-import { getOrdenes } from '@/lib/admin/service';
+import { crearServicios } from '@/lib/admin/provider';
 
-const orders = getOrdenes();
+const svc = crearServicios();
+const orders = await svc.ordenes.listar();
 ---
 
 <AdminLayout title="Órdenes" description="Gestiona las órdenes de venta">
