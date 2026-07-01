@@ -21,7 +21,30 @@
 
 ---
 
-## 🏁 Último Sprint — v0.7.1: Schema Bugs Fix + Real Supabase Data (Julio 1, 2026)
+## 🏁 Último Sprint — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
+
+> **Tags:** `v0.9.1` | **Build:** ✅ 0 errores
+> **Commits:** 55a8007 | **Fuente:** Judgment Day findings
+
+### ✅ Fixes aplicados
+| Fix | Archivos | Cambio |
+|-----|----------|--------|
+| Redirects `/es/...` | `astro.config.mjs` | Eliminados targets a rutas que no existen con `prefixDefaultLocale: false` |
+| SEO JSON-LD URLs | 3 componentes SEO | URLs sin `/es/` — Google ya no ve 404s en datos estructurados |
+| i18n Cart + Checkout | `carrito/`, `checkout/` | Locale-aware: detectan idioma desde la URL |
+| JWT secret requerido | `auth.ts` | Ya no hay fallback hardcodeado — lanza error si falta env var |
+| API routes protegidas | `middleware/auth.ts` | Solo `/api/auth/` es pública, el resto requiere auth |
+| bcrypt async | `auth.ts` | `compareSync` → `await compare` (no bloquea event loop) |
+| Login con `astro:page-load` | `login.astro` | Funciona después de navegaciones ClientRouter |
+
+### ✅ Segundo usuario admin
+| Email | Contraseña | Creado en |
+|-------|-----------|-----------|
+| `edison@octavofuego.com` | `octavo2026` | Supabase `usuarios` table |
+
+---
+
+## 🏁 Sprint Anterior — v0.9.0: Judgment Day Completo (Julio 1, 2026)
 
 > **Tags:** `v0.7.1` | **Build:** ✅ 0 errores
 > **Commits:** d58a73d | **Fuente:** Hotfix directo
