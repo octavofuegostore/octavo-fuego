@@ -2,14 +2,13 @@
 export const prerender = false;
 // Pagos — Payment tracking dashboard
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import { getPagos, getOrdenes } from '@/lib/admin/service';
-import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+import { crearServicios } from '@/lib/admin/provider';
 import { formatCurrency } from '@/lib/formatCurrency';
 
-const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const svc = crearServicios();
 const [pagos, ordenes] = await Promise.all([
-  getPagos(bodegaId || undefined),
-  getOrdenes(bodegaId || undefined),
+  svc.pagos.listar(),
+  svc.ordenes.listar(),
 ]);
 
 // ─── Stats ──────────────────────────────────────────────────────────────────
