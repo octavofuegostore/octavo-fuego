@@ -1,0 +1,33 @@
+export const COLUMNAS_LISTA: Record<string, string> = {
+  usuarios: 'id, email, nombre, role, activo, creado_en',
+  clientes: 'id, nombre, email, telefono, pais, tipo, b2b_estado, creado_en',
+  productos: 'id, slug, nombre_es, tipo_venta, disponible_en, activo, creado_en',
+  variantes: 'id, producto_id, gramos, precio_cop, precio_brl, precio_usd, sku, activo',
+  listas_precio: 'id, grupo_id, variante_id, precio_cop, precio_brl, precio_usd, min_gramos',
+  bodegas: 'id, codigo, nombre, pais, activo',
+  items_inventario: 'id, variante_id, sku',
+  niveles_inventario: 'id, item_id, bodega_id, gramos_stock, gramos_reserva, gramos_alerta',
+  gramos_disponibles: 'id, item_id, bodega_id, bodega_codigo, pais, gramos_variante, sku, producto_slug, gramos_disponibles, gramos_stock, gramos_reserva, gramos_alerta, alerta_stock_bajo',
+  ordenes: 'id, cliente_id, canal, estado, notas, bodega_id, creado_en',
+  orden_items: 'id, orden_id, variante_id, gramos, precio_unit',
+  pagos: 'id, orden_id, metodo, monto, moneda, estado, metadata',
+  eventos: 'id, bodega_id, tipo, payload, usuario_id, orden_id, creado_en',
+  notificaciones: 'id, usuario_id, tipo, canal, titulo, contenido, leido, creado_en',
+}
+
+export const COLUMNAS_DETALLE: Record<string, string> = {
+  usuarios: '*',
+  clientes: '*',
+  productos: '*',
+  variantes: '*',
+  listas_precio: '*',
+  bodegas: '*',
+  items_inventario: '*',
+  niveles_inventario: '*',
+  gramos_disponibles: '*',
+  ordenes: '*',
+  orden_items: '*',
+  pagos: '*',
+  eventos: '*',
+  notificaciones: '*',
+}
