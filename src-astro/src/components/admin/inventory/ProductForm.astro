@@ -1,5 +1,14 @@
 ---
 // ProductForm.astro — Create/Edit product form
+interface VariantRow {
+  id: string
+  gramos: number
+  precio_cop: number
+  precio_brl: number | null
+  precio_usd: number | null
+  sku: string
+}
+
 interface Props {
   mode: 'create' | 'edit';
   product?: {
@@ -19,6 +28,8 @@ interface Props {
     minStockBR: number;
     status: 'active' | 'inactive';
   };
+  variantes?: VariantRow[]
+  errors?: Record<string, string> | null
 }
 
 const { mode, product } = Astro.props;
@@ -266,4 +277,65 @@ const isEdit = mode === 'edit';
       </div>
     </div>
   </div>
+
+  {isEdit && variantes && variantes.length > 0 && <div class="bg-white rounded-2xl shadow-card p-6">
+      <h3 class="font-display text-lg font-bold text-humo mb-4">Variantes y Precios</h3>
+      <p class="text-sm text-ceniza mb-4">Los precios se reflejan automáticamente en la tienda.</p>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-papel">
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider">Presentación</th>
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider">SKU</th>
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider">Precio COP</th>
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider">Precio BRL</th>
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider">Precio USD</th>
+              <th class="text-left px-4 py-2 text-xs font-medium text-ceniza uppercase tracking-wider"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-papel">
+            {variantes.map((v) => (
+              <tr class="hover:bg-papel/30">
+                <td class="px-4 py-3 text-sm font-medium text-humo">{v.gramos}g</td>
+                <td class="px-4 py-3 text-sm text-ceniza">{v.sku}</td>
+                <td class="px-4 py-3">
+                  <input
+                    name={`precio_cop_${v.id}`}
+                    type="number"
+                    value={v.precio_cop}
+                    class="w-28 px-3 py-1.5 border border-papel rounded-lg text-sm"
+                  />
+                </td>
+                <td class="px-4 py-3">
+                  <input
+                    name={`precio_brl_${v.id}`}
+                    type="number"
+                    step="0.01"
+                    value={v.precio_brl ?? ''}
+                    class="w-24 px-3 py-1.5 border border-papel rounded-lg text-sm"
+                  />
+                </td>
+                <td class="px-4 py-3">
+                  <input
+                    name={`precio_usd_${v.id}`}
+                    type="number"
+                    step="0.01"
+                    value={v.precio_usd ?? ''}
+                    class="w-24 px-3 py-1.5 border border-papel rounded-lg text-sm"
+                  />
+                </td>
+                <td class="px-4 py-3">
+                  {errors?.[`precio_cop_${v.id}`] && (
+                    <span class="text-xs text-error">{errors[`precio_cop_${v.id}`]}</span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  {errors?._form && <p class="text-sm text-error mt-2">{errors._form}</p>}
 </form>
