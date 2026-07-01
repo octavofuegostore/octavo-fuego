@@ -14,14 +14,47 @@
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.4.0) |
-| 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
+| 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
 
-## 🏁 Último Sprint — Phase 2: Core Ecommerce (Julio 1, 2026)
+## 🏁 Último Sprint — v0.5.0: SEO Transaccional + Bug Fixes (Julio 1, 2026)
+
+> **Tags:** `v0.5.0` | **Commits:** 1490815 | **Build:** ✅ 0 errores
+> **PR:** #30 | **Fuente:** SDD proposal/spec/tasks/apply/verify
+
+### ✅ F1: hasVariant en ProductJsonLd
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 1.1 Refactor props | `ProductJsonLd.astro` | `precio: number` → `pricing: PriceGram[]` |
+| 1.2 Schema | `ProductJsonLd.astro` | `hasVariant` con 3 Offer entries (10g/$35K, 20g/$70K, 30g/$105K) |
+| 1.3 Wiring | `[product].astro` | Pasar `pricing` array desde template |
+
+### ✅ F3: Meta Titles Transaccionales
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 3.1 Title | `[product].astro` | "Comprar Rapé Tisunú \| Rapé do Acre — Octavo Fuego" (ES/EN/PT) |
+| 3.2 Meta desc | `[product].astro` | "Desde COP 3.500/g." price-per-gram framing |
+
+### ✅ F4: Breadcrumb URL Fix
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 4.1 Home URL | `[product].astro` | EN → `/en/`, PT → `/pt/`, ES → `/` (estaba roto) |
+
+### ✅ Bug Fixes
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| Status buttons | `OrderDetail.astro` | `'pending'` → `'pendiente'` (nunca renderizaban) |
+| Script scope | `page.astro` | `document.querySelectorAll('button')` sin scope → scoped a `#order-actions` |
+| API endpoint | `status.ts` | `'pending'` → `'pendiente'` (inglés vs español) |
+| Branch cleanup | 21 branches | Deleted all `feature/sdd-*` branches (local + remote) |
+
+---
+
+## 🏁 Sprint Anterior — Phase 2: Core Ecommerce (Julio 1, 2026)
 
 > **Tags:** `v0.4.3` | **Commits:** 68e59fe | **Build:** ✅ 0 errores
 > **Fuente:** Patrones Medusa + Pipod `runWorkflow()` compensation
