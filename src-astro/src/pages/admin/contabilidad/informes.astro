@@ -226,141 +226,145 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
     '5': { ingresos: 4500000, egresos: 2800000, balance: 1700000, transactions: [{ fecha: '2026-06-15', descripcion: 'Venta Tisunú 20g', categoria: 'Venta Rapé', tipo: 'Ingreso', monto: 70000 }] },
   };
 
-  function formatCOP(amount: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
-  }
-
-  function formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  // Tab switching
-  const mensualContent = document.getElementById('tab-mensual-content');
-  const anualContent = document.getElementById('tab-anual-content');
-  const mensualBtn = document.getElementById('tab-mensual-btn');
-  const anualBtn = document.getElementById('tab-anual-btn');
-
-  function switchTab(tab: string) {
-    if (tab === 'mensual') {
-      mensualContent?.classList.remove('hidden');
-      anualContent?.classList.add('hidden');
-      mensualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
-      mensualBtn?.classList.add('bg-tabacco', 'text-white');
-      anualBtn?.classList.remove('bg-tabacco', 'text-white');
-      anualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
-    } else {
-      anualContent?.classList.remove('hidden');
-      mensualContent?.classList.add('hidden');
-      anualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
-      anualBtn?.classList.add('bg-tabacco', 'text-white');
-      mensualBtn?.classList.remove('bg-tabacco', 'text-white');
-      mensualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+  function initPage() {
+    function formatCOP(amount: number): string {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
     }
-  }
 
-  mensualBtn?.addEventListener('click', () => switchTab('mensual'));
-  anualBtn?.addEventListener('click', () => switchTab('anual'));
+    function formatDate(dateStr: string): string {
+      return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
 
-  // Mensual data loading
-  const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
-  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+    // Tab switching
+    const mensualContent = document.getElementById('tab-mensual-content');
+    const anualContent = document.getElementById('tab-anual-content');
+    const mensualBtn = document.getElementById('tab-mensual-btn');
+    const anualBtn = document.getElementById('tab-anual-btn');
 
-  function loadMensualData(mes: number, year: number) {
-    const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
-
-    const ingresosEl = document.getElementById('kpi-ingresos');
-    const egresosEl = document.getElementById('kpi-egresos');
-    const balanceEl = document.getElementById('kpi-balance');
-    const tbody = document.getElementById('mensual-transactions-tbody');
-
-    if (ingresosEl) ingresosEl.textContent = formatCOP(data.ingresos);
-    if (egresosEl) egresosEl.textContent = formatCOP(data.egresos);
-    if (balanceEl) balanceEl.textContent = formatCOP(data.balance);
-
-    if (tbody) {
-      if (data.transactions.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-ceniza">No hay transacciones para este período</td></tr>';
+    function switchTab(tab: string) {
+      if (tab === 'mensual') {
+        mensualContent?.classList.remove('hidden');
+        anualContent?.classList.add('hidden');
+        mensualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+        mensualBtn?.classList.add('bg-tabacco', 'text-white');
+        anualBtn?.classList.remove('bg-tabacco', 'text-white');
+        anualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
       } else {
-        tbody.innerHTML = data.transactions.map(t => `
-          <tr class="hover:bg-papel/30 transition-colors">
-            <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
-            <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
-            <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
-            </td>
-            <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
-          </tr>
-        `).join('');
+        anualContent?.classList.remove('hidden');
+        mensualContent?.classList.add('hidden');
+        anualBtn?.classList.remove('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
+        anualBtn?.classList.add('bg-tabacco', 'text-white');
+        mensualBtn?.classList.remove('bg-tabacco', 'text-white');
+        mensualBtn?.classList.add('bg-white', 'text-humo', 'border', 'border-papel', 'hover:bg-papel');
       }
     }
+
+    mensualBtn?.addEventListener('click', () => switchTab('mensual'));
+    anualBtn?.addEventListener('click', () => switchTab('anual'));
+
+    // Mensual data loading
+    const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
+    const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+
+    function loadMensualData(mes: number, year: number) {
+      const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+
+      const ingresosEl = document.getElementById('kpi-ingresos');
+      const egresosEl = document.getElementById('kpi-egresos');
+      const balanceEl = document.getElementById('kpi-balance');
+      const tbody = document.getElementById('mensual-transactions-tbody');
+
+      if (ingresosEl) ingresosEl.textContent = formatCOP(data.ingresos);
+      if (egresosEl) egresosEl.textContent = formatCOP(data.egresos);
+      if (balanceEl) balanceEl.textContent = formatCOP(data.balance);
+
+      if (tbody) {
+        if (data.transactions.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-ceniza">No hay transacciones para este período</td></tr>';
+        } else {
+          tbody.innerHTML = data.transactions.map(t => `
+            <tr class="hover:bg-papel/30 transition-colors">
+              <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
+              <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
+              <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
+              <td class="px-6 py-4 text-center">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
+              </td>
+              <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
+            </tr>
+          `).join('');
+        }
+      }
+    }
+
+    // Wire date range selectors
+    mesSelect?.addEventListener('change', () => {
+      const mes = parseInt(mesSelect.value, 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      loadMensualData(mes, year);
+    });
+
+    yearSelect?.addEventListener('change', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect.value, 10);
+      loadMensualData(mes, year);
+    });
+
+    // Wire "Generar Informe" button
+    const generarBtn = document.getElementById('generar-informe-btn');
+    generarBtn?.addEventListener('click', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      loadMensualData(mes, year);
+      toast.success(`Informe de ${meses[mes]} ${year} generado correctamente`);
+    });
+
+    // Wire export buttons
+    function exportCSV(filename: string, content: string) {
+      const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${content}`);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success('CSV exportado correctamente');
+    }
+
+    function exportPDF(filename: string) {
+      toast.info(`Generando PDF: ${filename}...`);
+      setTimeout(() => toast.success('PDF exportado correctamente'), 1000);
+    }
+
+    document.getElementById('export-mensual-pdf-btn')?.addEventListener('click', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      exportPDF(`informe_mensual_${meses[mes].toLowerCase()}_${year}.pdf`);
+    });
+
+    document.getElementById('export-mensual-csv-btn')?.addEventListener('click', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
+      const header = 'Fecha,Descripción,Categoría,Tipo,Monto';
+      const rows = data.transactions.map(t => `"${t.fecha}","${t.descripcion}","${t.categoria}","${t.tipo}",${t.monto}`).join('\n');
+      exportCSV(`informe_mensual_${meses[mes].toLowerCase()}_${year}.csv`, `${header}\n${rows}`);
+    });
+
+    document.getElementById('export-anual-pdf-btn')?.addEventListener('click', () => {
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      exportPDF(`informe_anual_${year}.pdf`);
+    });
+
+    document.getElementById('export-anual-csv-btn')?.addEventListener('click', () => {
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      exportCSV(`informe_anual_${year}.csv`, 'Mes,Ingresos,Egresos,Balance\n"Enero",3800000,2100000,1700000\n"Febrero",4200000,2500000,1700000');
+    });
+
+    // Initial load
+    loadMensualData(5, 2026);
   }
 
-  // Wire date range selectors (task 9.1)
-  mesSelect?.addEventListener('change', () => {
-    const mes = parseInt(mesSelect.value, 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    loadMensualData(mes, year);
-  });
-
-  yearSelect?.addEventListener('change', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect.value, 10);
-    loadMensualData(mes, year);
-  });
-
-  // Wire "Generar Informe" button (task 9.2)
-  const generarBtn = document.getElementById('generar-informe-btn');
-  generarBtn?.addEventListener('click', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    loadMensualData(mes, year);
-    toast.success(`Informe de ${meses[mes]} ${year} generado correctamente`);
-  });
-
-  // Wire export buttons (task 9.3)
-  function exportCSV(filename: string, content: string) {
-    const encodedUri = encodeURI(`data:text/csv;charset=utf-8,${content}`);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    toast.success('CSV exportado correctamente');
-  }
-
-  function exportPDF(filename: string) {
-    // Mock PDF export - in production would use a PDF library
-    toast.info(`Generando PDF: ${filename}...`);
-    setTimeout(() => toast.success('PDF exportado correctamente'), 1000);
-  }
-
-  document.getElementById('export-mensual-pdf-btn')?.addEventListener('click', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    exportPDF(`informe_mensual_${meses[mes].toLowerCase()}_${year}.pdf`);
-  });
-
-  document.getElementById('export-mensual-csv-btn')?.addEventListener('click', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    const data = MOCK_DATA[String(mes)] || { ingresos: 0, egresos: 0, balance: 0, transactions: [] };
-    const header = 'Fecha,Descripción,Categoría,Tipo,Monto';
-    const rows = data.transactions.map(t => `"${t.fecha}","${t.descripcion}","${t.categoria}","${t.tipo}",${t.monto}`).join('\n');
-    exportCSV(`informe_mensual_${meses[mes].toLowerCase()}_${year}.csv`, `${header}\n${rows}`);
-  });
-
-  document.getElementById('export-anual-pdf-btn')?.addEventListener('click', () => {
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    exportPDF(`informe_anual_${year}.pdf`);
-  });
-
-  document.getElementById('export-anual-csv-btn')?.addEventListener('click', () => {
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    exportCSV(`informe_anual_${year}.csv`, 'Mes,Ingresos,Egresos,Balance\n"Enero",3800000,2100000,1700000\n"Febrero",4200000,2500000,1700000');
-  });
-
-  // Initial load
-  loadMensualData(5, 2026);
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

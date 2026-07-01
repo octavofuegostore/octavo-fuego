@@ -431,104 +431,107 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <script>
       import { $sidebarOpen, $seccionActual } from '@/stores/admin'
 
-      function initAdminUI() {
-      // Set active section from path
-      const path = window.location.pathname
-      if (path.includes('/admin/ordenes')) $seccionActual.set('ordenes')
-      else if (path.includes('/admin/pagos')) $seccionActual.set('pagos')
-      else if (path.includes('/admin/clientes/b2b')) $seccionActual.set('b2b')
-      else if (path.includes('/admin/clientes')) $seccionActual.set('clientes')
-      else if (path.includes('/admin/inventario/stock')) $seccionActual.set('stock')
-      else if (path.includes('/admin/inventario')) $seccionActual.set('inventario')
-      else if (path.includes('/admin/contabilidad/informes')) $seccionActual.set('informes')
-      else if (path.includes('/admin/contabilidad/transacciones')) $seccionActual.set('transacciones')
-      else if (path.includes('/admin/contabilidad')) $seccionActual.set('contabilidad')
-      else if (path.includes('/admin/configuracion')) $seccionActual.set('configuracion')
-      else if (path.includes('/admin/actividad')) $seccionActual.set('actividad')
-      else $seccionActual.set('dashboard')
-
-      // Sync sidebar visibility with store
+      // ── STORE SUBSCRIPTION (module scope — runs once per ESM module lifecycle) ──
       $sidebarOpen.subscribe((open) => {
-        const sidebar = document.getElementById('admin-sidebar')
-        if (!sidebar) return
-        if (window.innerWidth < 1024) return // mobile handles via toggle
-        sidebar.classList.toggle('-translate-x-full', !open)
+        const el = document.getElementById('admin-sidebar')
+        if (!el) return
+        if (window.innerWidth < 1024) return
+        el.classList.toggle('-translate-x-full', !open)
       })
 
-      // Mobile menu toggle
-      const mobileToggle = document.getElementById('mobile-menu-toggle');
-      const sidebar = document.getElementById('admin-sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
+      // ── PATH DETECTION + SUBMENU RESET (runs on every navigation) ──
+      function initAdminUI() {
+        const path = window.location.pathname
 
-      mobileToggle?.addEventListener('click', () => {
-        sidebar?.classList.toggle('-translate-x-full');
-        overlay?.classList.toggle('hidden');
-      });
+        // Set active section from path
+        if (path.includes('/admin/ordenes')) $seccionActual.set('ordenes')
+        else if (path.includes('/admin/pagos')) $seccionActual.set('pagos')
+        else if (path.includes('/admin/clientes/b2b')) $seccionActual.set('b2b')
+        else if (path.includes('/admin/clientes')) $seccionActual.set('clientes')
+        else if (path.includes('/admin/inventario/stock')) $seccionActual.set('stock')
+        else if (path.includes('/admin/inventario')) $seccionActual.set('inventario')
+        else if (path.includes('/admin/contabilidad/informes')) $seccionActual.set('informes')
+        else if (path.includes('/admin/contabilidad/transacciones')) $seccionActual.set('transacciones')
+        else if (path.includes('/admin/contabilidad')) $seccionActual.set('contabilidad')
+        else if (path.includes('/admin/configuracion')) $seccionActual.set('configuracion')
+        else if (path.includes('/admin/actividad')) $seccionActual.set('actividad')
+        else $seccionActual.set('dashboard')
 
-      overlay?.addEventListener('click', () => {
-        sidebar?.classList.add('-translate-x-full');
-        overlay?.classList.add('hidden');
-      });
-
-      // Inventario submenu toggle
-      const inventarioToggle = document.getElementById('inventario-toggle');
-      const inventarioSubmenu = document.getElementById('inventario-submenu');
-      const inventarioArrow = document.querySelector('.inventario-arrow');
-
-      inventarioToggle?.addEventListener('click', () => {
-        inventarioSubmenu?.classList.toggle('max-h-0');
-        inventarioSubmenu?.classList.toggle('max-h-40');
-        inventarioSubmenu?.classList.toggle('opacity-0');
-        inventarioSubmenu?.classList.toggle('opacity-100');
-        inventarioArrow?.classList.toggle('rotate-180');
-      });
-
-      // Clientes submenu toggle
-      const clientesToggle = document.getElementById('clientes-toggle');
-      const clientesSubmenu = document.getElementById('clientes-submenu');
-      const clientesArrow = document.querySelector('.clientes-arrow');
-
-      clientesToggle?.addEventListener('click', () => {
-        clientesSubmenu?.classList.toggle('max-h-0');
-        clientesSubmenu?.classList.toggle('max-h-40');
-        clientesSubmenu?.classList.toggle('opacity-0');
-        clientesSubmenu?.classList.toggle('opacity-100');
-        clientesArrow?.classList.toggle('rotate-180');
-      });
-
-      // Contabilidad submenu toggle
-      const contabilidadToggle = document.getElementById('contabilidad-toggle');
-      const contabilidadSubmenu = document.getElementById('contabilidad-submenu');
-      const contabilidadArrow = document.querySelector('.contabilidad-arrow');
-
-      contabilidadToggle?.addEventListener('click', () => {
-        contabilidadSubmenu?.classList.toggle('max-h-0');
-        contabilidadSubmenu?.classList.toggle('max-h-40');
-        contabilidadSubmenu?.classList.toggle('opacity-0');
-        contabilidadSubmenu?.classList.toggle('opacity-100');
-        contabilidadArrow?.classList.toggle('rotate-180');
-      });
-
-      // Keyboard navigation
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          sidebar?.classList.add('-translate-x-full');
-          overlay?.classList.add('hidden');
+        // Reset submenu expand/collapse based on current path
+        const entries = [
+          { toggle: 'inventario', active: path.includes('/admin/inventario') },
+          { toggle: 'clientes', active: path.includes('/admin/clientes') },
+          { toggle: 'contabilidad', active: path.includes('/admin/contabilidad') },
+        ]
+        for (const { toggle, active } of entries) {
+          const submenu = document.getElementById(`${toggle}-submenu`)
+          const arrow = document.querySelector(`.${toggle}-arrow`)
+          if (!submenu) continue
+          if (active) {
+            submenu.classList.remove('max-h-0', 'opacity-0')
+            submenu.classList.add('max-h-40', 'opacity-100')
+            arrow?.classList.add('rotate-180')
+          } else {
+            submenu.classList.remove('max-h-40', 'opacity-100', 'rotate-180')
+            submenu.classList.add('max-h-0', 'opacity-0')
+            arrow?.classList.remove('rotate-180')
+          }
         }
-      });
+      }
 
-      // Quick create button
-      const quickCreateBtn = document.getElementById('admin-quick-create-btn');
-      quickCreateBtn?.addEventListener('click', () => {
-        import('sonner')
-          .then(({ toast }) => toast('Próximamente'))
-          .catch(() => window.alert('Próximamente'));
-      });
-      } // end initAdminUI
+      // ── ONE-TIME UI SETUP (runs only once — init guard via data attribute) ──
+      const sidebar = document.getElementById('admin-sidebar')
+      if (sidebar && !sidebar.hasAttribute('data-ui-initialized')) {
+        sidebar.setAttribute('data-ui-initialized', 'true')
 
-      // Run on page load and after client-side navigation
-      initAdminUI();
-      document.addEventListener('astro:page-load', initAdminUI);
+        // Event delegation on <nav> for submenu toggles
+        document.querySelector('nav')?.addEventListener('click', (e) => {
+          const btn = (e.target as HTMLElement).closest('button[id$="-toggle"]')
+          if (!btn) return
+          const id = btn.id.replace('-toggle', '')
+          const submenu = document.getElementById(`${id}-submenu`)
+          const arrow = document.querySelector(`.${id}-arrow`)
+          submenu?.classList.toggle('max-h-0')
+          submenu?.classList.toggle('max-h-40')
+          submenu?.classList.toggle('opacity-0')
+          submenu?.classList.toggle('opacity-100')
+          arrow?.classList.toggle('rotate-180')
+        })
+
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobile-menu-toggle')
+        const overlay = document.getElementById('sidebar-overlay')
+
+        mobileToggle?.addEventListener('click', () => {
+          sidebar.classList.toggle('-translate-x-full')
+          overlay?.classList.toggle('hidden')
+        })
+
+        overlay?.addEventListener('click', () => {
+          sidebar.classList.add('-translate-x-full')
+          overlay?.classList.add('hidden')
+        })
+
+        // Escape key closes mobile menu
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            sidebar.classList.add('-translate-x-full')
+            overlay?.classList.add('hidden')
+          }
+        })
+
+        // Quick create button
+        const quickCreateBtn = document.getElementById('admin-quick-create-btn')
+        quickCreateBtn?.addEventListener('click', () => {
+          import('sonner')
+            .then(({ toast }) => toast('Próximamente'))
+            .catch(() => window.alert('Próximamente'))
+        })
+      }
+
+      // Run on initial load and after every ClientRouter navigation
+      initAdminUI()
+      document.addEventListener('astro:page-load', initAdminUI)
     </script>
   </body>
 </html>

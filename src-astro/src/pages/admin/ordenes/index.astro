@@ -61,14 +61,19 @@ const orders = await svc.ordenes.listar();
 <script>
   import { toast } from 'sonner';
 
-  // Wire "Nueva Orden" button
-  document.getElementById('nueva-orden-btn')?.addEventListener('click', () => {
-    toast.info('Función de crear orden coming soon');
-  });
+  function initPage() {
+    // Wire "Nueva Orden" button
+    document.getElementById('nueva-orden-btn')?.addEventListener('click', () => {
+      toast.info('Función de crear orden coming soon');
+    });
 
-  // Wire "Exportar" button
-  document.getElementById('exportar-ordenes-btn')?.addEventListener('click', () => {
-    toast.success('Exportando órdenes...');
-    setTimeout(() => toast.success('Órdenes exportadas correctamente'), 1000);
-  });
+    // Wire "Exportar" button
+    document.getElementById('exportar-ordenes-btn')?.addEventListener('click', () => {
+      toast.success('Exportando órdenes...');
+      setTimeout(() => toast.success('Órdenes exportadas correctamente'), 1000);
+    });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

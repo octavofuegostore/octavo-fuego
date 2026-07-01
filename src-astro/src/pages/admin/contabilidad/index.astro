@@ -131,67 +131,71 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
 
   const mesNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
 
-  function getKpiValues(mes: number, year: number) {
-    const key = `${year}-${mes}`;
-    return MOCK_KPIS_DATA[key] || { ingresos: 0, egresos: 0, balance: 0 };
-  }
-
-  function formatCOP(amount: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
-  }
-
-  function updateDashboard(mes: number, year: number) {
-    const kpis = getKpiValues(mes, year);
-    const kpiCards = document.querySelectorAll('[data-kpi-card]');
-    if (kpiCards.length >= 3) {
-      const values = kpiCards[0].querySelectorAll('.font-display.text-2xl');
-      const ingresosEl = kpiCards[0].querySelector('.font-display.text-2xl');
-      const egresosEl = kpiCards[1].querySelector('.font-display.text-2xl');
-      const balanceEl = kpiCards[2].querySelector('.font-display.text-2xl');
-      if (ingresosEl) ingresosEl.textContent = formatCOP(kpis.ingresos);
-      if (egresosEl) egresosEl.textContent = formatCOP(kpis.egresos);
-      if (balanceEl) balanceEl.textContent = formatCOP(kpis.balance);
+  function initPage() {
+    function getKpiValues(mes: number, year: number) {
+      const key = `${year}-${mes}`;
+      return MOCK_KPIS_DATA[key] || { ingresos: 0, egresos: 0, balance: 0 };
     }
-    // Update subtitle
-    const subtitle = document.querySelector('.text-ceniza.mt-1');
-    if (subtitle) subtitle.textContent = `Resumen de ${mesNames[mes]} ${year}`;
+
+    function formatCOP(amount: number): string {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function updateDashboard(mes: number, year: number) {
+      const kpis = getKpiValues(mes, year);
+      const kpiCards = document.querySelectorAll('[data-kpi-card]');
+      if (kpiCards.length >= 3) {
+        const ingresosEl = kpiCards[0].querySelector('.font-display.text-2xl');
+        const egresosEl = kpiCards[1].querySelector('.font-display.text-2xl');
+        const balanceEl = kpiCards[2].querySelector('.font-display.text-2xl');
+        if (ingresosEl) ingresosEl.textContent = formatCOP(kpis.ingresos);
+        if (egresosEl) egresosEl.textContent = formatCOP(kpis.egresos);
+        if (balanceEl) balanceEl.textContent = formatCOP(kpis.balance);
+      }
+      // Update subtitle
+      const subtitle = document.querySelector('.text-ceniza.mt-1');
+      if (subtitle) subtitle.textContent = `Resumen de ${mesNames[mes]} ${year}`;
+    }
+
+    // Wire date selectors
+    const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
+    const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+
+    mesSelect?.addEventListener('change', () => {
+      const mes = parseInt(mesSelect.value, 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      updateDashboard(mes, year);
+      toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+    });
+
+    yearSelect?.addEventListener('change', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect.value, 10);
+      updateDashboard(mes, year);
+      toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
+    });
+
+    // Wire export button
+    const exportBtn = document.getElementById('export-contabilidad-btn');
+    exportBtn?.addEventListener('click', () => {
+      const mes = parseInt(mesSelect?.value || '5', 10);
+      const year = parseInt(yearSelect?.value || '2026', 10);
+      const kpis = getKpiValues(mes, year);
+
+      const csvContent = `data:text/csv;charset=utf-8,Mes,Ingresos,Egresos,Balance\n"${mesNames[mes]} ${year}",${kpis.ingresos},${kpis.egresos},${kpis.balance}`;
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', `contabilidad_${mesNames[mes].toLowerCase()}_${year}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('Reporte exportado correctamente');
+    });
   }
 
-  // Wire date selectors (tasks 7.1 and 7.2)
-  const mesSelect = document.getElementById('mes-select') as HTMLSelectElement;
-  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
-
-  mesSelect?.addEventListener('change', () => {
-    const mes = parseInt(mesSelect.value, 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    updateDashboard(mes, year);
-    toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
-  });
-
-  yearSelect?.addEventListener('change', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect.value, 10);
-    updateDashboard(mes, year);
-    toast.info(`Mostrando datos de ${mesNames[mes]} ${year}`);
-  });
-
-  // Wire export button (task 7.3)
-  const exportBtn = document.getElementById('export-contabilidad-btn');
-  exportBtn?.addEventListener('click', () => {
-    const mes = parseInt(mesSelect?.value || '5', 10);
-    const year = parseInt(yearSelect?.value || '2026', 10);
-    const kpis = getKpiValues(mes, year);
-
-    const csvContent = `data:text/csv;charset=utf-8,Mes,Ingresos,Egresos,Balance\n"${mesNames[mes]} ${year}",${kpis.ingresos},${kpis.egresos},${kpis.balance}`;
-
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `contabilidad_${mesNames[mes].toLowerCase()}_${year}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    toast.success('Reporte exportado correctamente');
-  });
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

@@ -257,8 +257,9 @@ const allPeriodsData = {
 </AdminLayout>
 
 <script>
-  // Count-up animation for stats
-  function animateCountUp(el: HTMLElement, target: number, duration: number = 800) {
+  function initPage() {
+    // Count-up animation for stats
+    function animateCountUp(el: HTMLElement, target: number, duration: number = 800) {
       const start = 0;
       const startTime = performance.now();
 
@@ -290,17 +291,21 @@ const allPeriodsData = {
       }
     });
 
-  // Period selector
-  const periodSelector = document.getElementById('period-selector') as HTMLSelectElement;
-  periodSelector?.addEventListener('change', () => {
-    const selectedPeriod = periodSelector.value;
-    document.querySelectorAll('[id^="chart-"]').forEach((section) => {
-      const chartPeriod = section.getAttribute('data-period');
-      if (chartPeriod === selectedPeriod) {
-        section.classList.remove('hidden');
-      } else {
-        section.classList.add('hidden');
-      }
+    // Period selector
+    const periodSelector = document.getElementById('period-selector') as HTMLSelectElement;
+    periodSelector?.addEventListener('change', () => {
+      const selectedPeriod = periodSelector.value;
+      document.querySelectorAll('[id^="chart-"]').forEach((section) => {
+        const chartPeriod = section.getAttribute('data-period');
+        if (chartPeriod === selectedPeriod) {
+          section.classList.remove('hidden');
+        } else {
+          section.classList.add('hidden');
+        }
+      });
     });
-  });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

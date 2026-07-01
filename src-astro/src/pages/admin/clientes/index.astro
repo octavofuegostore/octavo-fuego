@@ -63,20 +63,25 @@ const customers = await svc.clientes.listar();
 </AdminLayout>
 
 <script>
-  const nuevoClienteBtn = document.getElementById('nuevo-cliente-btn');
+  function initPage() {
+    const nuevoClienteBtn = document.getElementById('nuevo-cliente-btn');
 
-  // "Nuevo Cliente" button opens the form modal
-  nuevoClienteBtn?.addEventListener('click', () => {
-    window.dispatchEvent(new CustomEvent('edit-customer', { detail: null }));
-  });
+    // "Nuevo Cliente" button opens the form modal
+    nuevoClienteBtn?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('edit-customer', { detail: null }));
+    });
 
-  // Listen for save events to refresh
-  window.addEventListener('cliente-saved', () => {
-    // Refresh trigger handled by React island
-    const toastMsg = document.createElement('div');
-    toastMsg.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
-    toastMsg.textContent = 'Cliente guardado correctamente';
-    document.body.appendChild(toastMsg);
-    setTimeout(() => toastMsg.remove(), 3000);
-  });
+    // Listen for save events to refresh
+    window.addEventListener('cliente-saved', () => {
+      // Refresh trigger handled by React island
+      const toastMsg = document.createElement('div');
+      toastMsg.className = 'fixed bottom-4 right-4 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in';
+      toastMsg.textContent = 'Cliente guardado correctamente';
+      document.body.appendChild(toastMsg);
+      setTimeout(() => toastMsg.remove(), 3000);
+    });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

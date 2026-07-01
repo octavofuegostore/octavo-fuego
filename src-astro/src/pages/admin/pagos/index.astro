@@ -223,67 +223,72 @@ const cobradoBRL = confirmados
 </AdminLayout>
 
 <script>
-  // Client-side search and filter
-  const searchInput = document.getElementById('search-pagos') as HTMLInputElement;
-  const metodoFilter = document.getElementById('filter-metodo') as HTMLSelectElement;
-  const estadoFilter = document.getElementById('filter-estado') as HTMLSelectElement;
-  const tbody = document.getElementById('pagos-tbody');
-  const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
+  function initPage() {
+    // Client-side search and filter
+    const searchInput = document.getElementById('search-pagos') as HTMLInputElement;
+    const metodoFilter = document.getElementById('filter-metodo') as HTMLSelectElement;
+    const estadoFilter = document.getElementById('filter-estado') as HTMLSelectElement;
+    const tbody = document.getElementById('pagos-tbody');
+    const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
 
-  function applyFilters() {
-    const query = (searchInput?.value || '').toLowerCase();
-    const metodo = metodoFilter?.value || '';
-    const estado = estadoFilter?.value || '';
+    function applyFilters() {
+      const query = (searchInput?.value || '').toLowerCase();
+      const metodo = metodoFilter?.value || '';
+      const estado = estadoFilter?.value || '';
 
-    let visibleCount = 0;
+      let visibleCount = 0;
 
-    rows.forEach((row) => {
-      const el = row as HTMLElement;
-      const id = (el.dataset.id || '').toLowerCase();
-      const orden = (el.dataset.orden || '').toLowerCase();
-      const rowMetodo = el.dataset.metodo || '';
-      const rowEstado = el.dataset.estado || '';
+      rows.forEach((row) => {
+        const el = row as HTMLElement;
+        const id = (el.dataset.id || '').toLowerCase();
+        const orden = (el.dataset.orden || '').toLowerCase();
+        const rowMetodo = el.dataset.metodo || '';
+        const rowEstado = el.dataset.estado || '';
 
-      const matchesSearch = !query || id.includes(query) || orden.includes(query);
-      const matchesMetodo = !metodo || rowMetodo === metodo;
-      const matchesEstado = !estado || rowEstado === estado;
+        const matchesSearch = !query || id.includes(query) || orden.includes(query);
+        const matchesMetodo = !metodo || rowMetodo === metodo;
+        const matchesEstado = !estado || rowEstado === estado;
 
-      if (matchesSearch && matchesMetodo && matchesEstado) {
-        el.style.display = '';
-        visibleCount++;
+        if (matchesSearch && matchesMetodo && matchesEstado) {
+          el.style.display = '';
+          visibleCount++;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      // Show/hide empty state
+      const emptyState = document.getElementById('empty-state');
+      const tableContainer = document.getElementById('table-container');
+      if (visibleCount === 0 && rows.length > 0) {
+        emptyState?.classList.remove('hidden');
+        tableContainer?.classList.add('hidden');
       } else {
-        el.style.display = 'none';
+        emptyState?.classList.add('hidden');
+        tableContainer?.classList.remove('hidden');
       }
+    }
+
+    searchInput?.addEventListener('input', applyFilters);
+    metodoFilter?.addEventListener('change', applyFilters);
+    estadoFilter?.addEventListener('change', applyFilters);
+
+    // Row navigation
+    rows.forEach((row) => {
+      row.addEventListener('click', (event) => {
+        const target = event.target as HTMLElement;
+        if (target.closest('[data-stop-propagation]')) return;
+        const href = (row as HTMLElement).dataset.href;
+        if (href) window.location.href = href;
+      });
     });
 
-    // Show/hide empty state
-    const emptyState = document.getElementById('empty-state');
-    const tableContainer = document.getElementById('table-container');
-    if (visibleCount === 0 && rows.length > 0) {
-      emptyState?.classList.remove('hidden');
-      tableContainer?.classList.add('hidden');
-    } else {
-      emptyState?.classList.add('hidden');
-      tableContainer?.classList.remove('hidden');
-    }
+    // Generate link button
+    document.getElementById('generate-link-btn')?.addEventListener('click', () => {
+      window.location.href = '/admin/pagos/generate-link';
+    });
   }
 
-  searchInput?.addEventListener('input', applyFilters);
-  metodoFilter?.addEventListener('change', applyFilters);
-  estadoFilter?.addEventListener('change', applyFilters);
-
-  // Row navigation
-  rows.forEach((row) => {
-    row.addEventListener('click', (event) => {
-      const target = event.target as HTMLElement;
-      if (target.closest('[data-stop-propagation]')) return;
-      const href = (row as HTMLElement).dataset.href;
-      if (href) window.location.href = href;
-    });
-  });
-
-  // Generate link button
-  document.getElementById('generate-link-btn')?.addEventListener('click', () => {
-    window.location.href = '/admin/pagos/generate-link';
-  });
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

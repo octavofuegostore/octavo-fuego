@@ -254,77 +254,82 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
 <script>
   import { toast } from 'sonner';
 
-  // Toggle button wiring
-  document.querySelectorAll('.toggle-btn').forEach(btn => {
-    btn?.addEventListener('click', () => {
-      const toggleBtn = btn as HTMLButtonElement;
-      const indicator = toggleBtn.querySelector('.toggle-indicator') as HTMLElement;
-      const isEnabled = toggleBtn.getAttribute('data-enabled') === 'true';
-      const newEnabled = !isEnabled;
-
-      toggleBtn.setAttribute('data-enabled', String(newEnabled));
-      toggleBtn.classList.toggle('bg-tabacco', newEnabled);
-      toggleBtn.classList.toggle('bg-papel', !newEnabled);
-
-      if (newEnabled) {
-        indicator.classList.remove('translate-x-1');
-        indicator.classList.add('translate-x-6');
-      } else {
-        indicator.classList.remove('translate-x-6');
-        indicator.classList.add('translate-x-1');
-      }
-
-      const toggleName = toggleBtn.getAttribute('data-toggle');
-      toast.info(`${toggleName} ${newEnabled ? 'habilitado' : 'deshabilitado'}`);
-    });
-  });
-
-  // Save button wiring
-  const guardarBtn = document.getElementById('guardar-cambios-btn');
-
-  guardarBtn?.addEventListener('click', async () => {
-    const btn = guardarBtn as HTMLButtonElement;
-    const originalText = btn.innerHTML;
-
-    // Set loading state
-    btn.disabled = true;
-    btn.innerHTML = `
-      <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-      </svg>
-      Guardando...
-    `;
-
-    // Collect form data
-    const config = {
-      nombre: (document.getElementById('config-nombre') as HTMLInputElement)?.value,
-      email: (document.getElementById('config-email') as HTMLInputElement)?.value,
-      telefono: (document.getElementById('config-telefono') as HTMLInputElement)?.value,
-      moneda: (document.getElementById('config-moneda') as HTMLSelectElement)?.value,
-      unidad: (document.getElementById('config-unidad') as HTMLSelectElement)?.value,
-      stockMin: (document.getElementById('config-stock-min') as HTMLInputElement)?.value,
-      reservaTiempo: (document.getElementById('config-reserva-tiempo') as HTMLInputElement)?.value,
-      envioCosto: (document.getElementById('config-envio-costo') as HTMLInputElement)?.value,
-      toggles: {} as Record<string, boolean>
-    };
-
-    // Collect toggle states
+  function initPage() {
+    // Toggle button wiring
     document.querySelectorAll('.toggle-btn').forEach(btn => {
-      const toggleBtn = btn as HTMLButtonElement;
-      const name = toggleBtn.getAttribute('data-toggle');
-      if (name) {
-        config.toggles[name] = toggleBtn.getAttribute('data-enabled') === 'true';
-      }
+      btn?.addEventListener('click', () => {
+        const toggleBtn = btn as HTMLButtonElement;
+        const indicator = toggleBtn.querySelector('.toggle-indicator') as HTMLElement;
+        const isEnabled = toggleBtn.getAttribute('data-enabled') === 'true';
+        const newEnabled = !isEnabled;
+
+        toggleBtn.setAttribute('data-enabled', String(newEnabled));
+        toggleBtn.classList.toggle('bg-tabacco', newEnabled);
+        toggleBtn.classList.toggle('bg-papel', !newEnabled);
+
+        if (newEnabled) {
+          indicator.classList.remove('translate-x-1');
+          indicator.classList.add('translate-x-6');
+        } else {
+          indicator.classList.remove('translate-x-6');
+          indicator.classList.add('translate-x-1');
+        }
+
+        const toggleName = toggleBtn.getAttribute('data-toggle');
+        toast.info(`${toggleName} ${newEnabled ? 'habilitado' : 'deshabilitado'}`);
+      });
     });
 
-    // Simulate save (mock API call)
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // Save button wiring
+    const guardarBtn = document.getElementById('guardar-cambios-btn');
 
-    // Restore button
-    btn.disabled = false;
-    btn.innerHTML = originalText;
+    guardarBtn?.addEventListener('click', async () => {
+      const btn = guardarBtn as HTMLButtonElement;
+      const originalText = btn.innerHTML;
 
-    // Show success toast
-    toast.success('Configuración guardada correctamente');
-  });
+      // Set loading state
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        Guardando...
+      `;
+
+      // Collect form data
+      const config = {
+        nombre: (document.getElementById('config-nombre') as HTMLInputElement)?.value,
+        email: (document.getElementById('config-email') as HTMLInputElement)?.value,
+        telefono: (document.getElementById('config-telefono') as HTMLInputElement)?.value,
+        moneda: (document.getElementById('config-moneda') as HTMLSelectElement)?.value,
+        unidad: (document.getElementById('config-unidad') as HTMLSelectElement)?.value,
+        stockMin: (document.getElementById('config-stock-min') as HTMLInputElement)?.value,
+        reservaTiempo: (document.getElementById('config-reserva-tiempo') as HTMLInputElement)?.value,
+        envioCosto: (document.getElementById('config-envio-costo') as HTMLInputElement)?.value,
+        toggles: {} as Record<string, boolean>
+      };
+
+      // Collect toggle states
+      document.querySelectorAll('.toggle-btn').forEach(btn => {
+        const toggleBtn = btn as HTMLButtonElement;
+        const name = toggleBtn.getAttribute('data-toggle');
+        if (name) {
+          config.toggles[name] = toggleBtn.getAttribute('data-enabled') === 'true';
+        }
+      });
+
+      // Simulate save (mock API call)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Restore button
+      btn.disabled = false;
+      btn.innerHTML = originalText;
+
+      // Show success toast
+      toast.success('Configuración guardada correctamente');
+    });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

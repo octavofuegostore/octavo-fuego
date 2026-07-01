@@ -186,73 +186,79 @@ function estadoBadge(estado: string): { bg: string; text: string; label: string 
 
 <script>
   // ─── Approve / Reject flow ──────────────────────────────────────────────
-  let pendingAction: { id: string; action: 'approve' | 'reject' } | null = null;
 
-  const modal = document.getElementById('notas-modal')!;
-  const modalTitle = document.getElementById('notas-modal-title')!;
-  const notasInput = document.getElementById('notas-input') as HTMLTextAreaElement;
-  const cancelBtn = document.getElementById('notas-cancel')!;
-  const confirmBtn = document.getElementById('notas-confirm')!;
+  function initPage() {
+    let pendingAction: { id: string; action: 'approve' | 'reject' } | null = null;
 
-  function openModal(id: string, action: 'approve' | 'reject') {
-    pendingAction = { id, action };
-    modalTitle.textContent = action === 'approve' ? 'Aprobar solicitud' : 'Rechazar solicitud';
-    notasInput.value = '';
-    modal.classList.remove('hidden');
-  }
+    const modal = document.getElementById('notas-modal')!;
+    const modalTitle = document.getElementById('notas-modal-title')!;
+    const notasInput = document.getElementById('notas-input') as HTMLTextAreaElement;
+    const cancelBtn = document.getElementById('notas-cancel')!;
+    const confirmBtn = document.getElementById('notas-confirm')!;
 
-  function closeModal() {
-    modal.classList.add('hidden');
-    pendingAction = null;
-    notasInput.value = '';
-  }
-
-  // Delegate clicks
-  document.addEventListener('click', (e) => {
-    const target = e.target as HTMLElement;
-    const btn = target.closest('.approve-btn, .reject-btn') as HTMLElement | null;
-    if (btn) {
-      const id = btn.dataset.id!;
-      const action = btn.dataset.action as 'approve' | 'reject';
-      openModal(id, action);
+    function openModal(id: string, action: 'approve' | 'reject') {
+      pendingAction = { id, action };
+      modalTitle.textContent = action === 'approve' ? 'Aprobar solicitud' : 'Rechazar solicitud';
+      notasInput.value = '';
+      modal.classList.remove('hidden');
     }
-  });
 
-  cancelBtn.addEventListener('click', closeModal);
+    function closeModal() {
+      modal.classList.add('hidden');
+      pendingAction = null;
+      notasInput.value = '';
+    }
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  confirmBtn.addEventListener('click', async () => {
-    if (!pendingAction) return;
-
-    const { id, action } = pendingAction;
-    const notas = notasInput.value.trim();
-    const endpoint = action === 'approve' ? '/api/admin/b2b/approve' : '/api/admin/b2b/reject';
-
-    confirmBtn.textContent = 'Procesando...';
-    (confirmBtn as HTMLButtonElement).disabled = true;
-
-    try {
-      const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, notas: notas || undefined }),
-      });
-
-      if (res.ok) {
-        window.location.reload();
-      } else {
-        const data = await res.json();
-        alert(`Error: ${data.error || 'No se pudo procesar'}`);
+    // Delegate clicks
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest('.approve-btn, .reject-btn') as HTMLElement | null;
+      if (btn) {
+        const id = btn.dataset.id!;
+        const action = btn.dataset.action as 'approve' | 'reject';
+        openModal(id, action);
       }
-    } catch {
-      alert('Error de conexión');
-    } finally {
-      confirmBtn.textContent = 'Confirmar';
-      (confirmBtn as HTMLButtonElement).disabled = false;
-      closeModal();
-    }
-  });
+    });
+
+    cancelBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      if (!pendingAction) return;
+
+      const { id, action } = pendingAction;
+      const notas = notasInput.value.trim();
+      const endpoint = action === 'approve' ? '/api/admin/b2b/approve' : '/api/admin/b2b/reject';
+
+      confirmBtn.textContent = 'Procesando...';
+      (confirmBtn as HTMLButtonElement).disabled = true;
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id, notas: notas || undefined }),
+        });
+
+        if (res.ok) {
+          window.location.reload();
+        } else {
+          const data = await res.json();
+          alert(`Error: ${data.error || 'No se pudo procesar'}`);
+        }
+      } catch {
+        alert('Error de conexión');
+      } finally {
+        confirmBtn.textContent = 'Confirmar';
+        (confirmBtn as HTMLButtonElement).disabled = false;
+        closeModal();
+      }
+    });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

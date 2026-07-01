@@ -169,245 +169,246 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     { id: '15', fecha: '2026-04-15', descripcion: 'Pago IVA bimestral', categoria: 'Impuestos', tipo: 'Egreso', monto: 420000 },
   ];
 
-  const allTransacciones = [...mockTransacciones];
+  function initPage() {
+    const allTransacciones = [...mockTransacciones];
 
-  // Pagination state
-  let currentPage = 1;
-  const pageSize = 7;
-  let filteredTransacciones = [...allTransacciones];
+    // Pagination state
+    let currentPage = 1;
+    const pageSize = 7;
+    let filteredTransacciones = [...allTransacciones];
 
-  // DOM elements
-  const searchInput = document.getElementById('search-transaccion') as HTMLInputElement;
-  const tipoFilter = document.getElementById('tipo-filter') as HTMLSelectElement;
-  const mesFilter = document.getElementById('mes-filter') as HTMLSelectElement;
-  const tbody = document.getElementById('transaccion-tbody') as HTMLHTMLTableSectionElement;
-  const emptyState = document.getElementById('empty-state') as HTMLDivElement;
-  const paginationInfo = document.getElementById('pagination-info') as HTMLParagraphElement;
-  const paginationControls = document.getElementById('pagination-controls') as HTMLDivElement;
-  const nuevaBtn = document.getElementById('nueva-transaccion-btn');
-  const modal = document.getElementById('transaccion-modal');
-  const closeBtn = document.getElementById('close-transaccion-modal');
-  const cancelBtn = document.getElementById('cancel-transaccion-form');
-  const form = document.getElementById('transaccion-form') as HTMLFormElement;
-  const tipoSelect = document.getElementById('transaccion-tipo') as HTMLSelectElement;
-  const categoriaSelect = document.getElementById('transaccion-categoria') as HTMLSelectElement;
+    // DOM elements
+    const searchInput = document.getElementById('search-transaccion') as HTMLInputElement;
+    const tipoFilter = document.getElementById('tipo-filter') as HTMLSelectElement;
+    const mesFilter = document.getElementById('mes-filter') as HTMLSelectElement;
+    const tbody = document.getElementById('transaccion-tbody') as HTMLHTMLTableSectionElement;
+    const emptyState = document.getElementById('empty-state') as HTMLDivElement;
+    const paginationInfo = document.getElementById('pagination-info') as HTMLParagraphElement;
+    const paginationControls = document.getElementById('pagination-controls') as HTMLDivElement;
+    const nuevaBtn = document.getElementById('nueva-transaccion-btn');
+    const modal = document.getElementById('transaccion-modal');
+    const closeBtn = document.getElementById('close-transaccion-modal');
+    const cancelBtn = document.getElementById('cancel-transaccion-form');
+    const form = document.getElementById('transaccion-form') as HTMLFormElement;
+    const tipoSelect = document.getElementById('transaccion-tipo') as HTMLSelectElement;
+    const categoriaSelect = document.getElementById('transaccion-categoria') as HTMLSelectElement;
 
-  // Categories
-  const categoriasIngreso = ['Venta Rapé', 'Venta Sananga', 'Venta Kuripe/Tepi', 'Distribución B2B', 'Servicios'];
-  const categoriasEgreso = ['Amazonía / Comunidades', 'Producción', 'Logística y Envíos', 'Marketing', 'Infraestructura', 'Nómina', 'Impuestos', 'Otros Egresos'];
+    // Categories
+    const categoriasIngreso = ['Venta Rapé', 'Venta Sananga', 'Venta Kuripe/Tepi', 'Distribución B2B', 'Servicios'];
+    const categoriasEgreso = ['Amazonía / Comunidades', 'Producción', 'Logística y Envíos', 'Marketing', 'Infraestructura', 'Nómina', 'Impuestos', 'Otros Egresos'];
 
-  function filterTransacciones() {
-    const query = searchInput?.value.toLowerCase() || '';
-    const tipo = tipoFilter?.value || '';
-    const mes = mesFilter?.value || '';
+    function filterTransacciones() {
+      const query = searchInput?.value.toLowerCase() || '';
+      const tipo = tipoFilter?.value || '';
+      const mes = mesFilter?.value || '';
 
-    filteredTransacciones = allTransacciones.filter(t => {
-      const matchesSearch = t.descripcion.toLowerCase().includes(query) || t.categoria.toLowerCase().includes(query);
-      const matchesTipo = !tipo || t.tipo === tipo;
-      const transactionMonth = new Date(t.fecha).getMonth();
-      const matchesMes = !mes || String(transactionMonth) === mes;
-      return matchesSearch && matchesTipo && matchesMes;
+      filteredTransacciones = allTransacciones.filter(t => {
+        const matchesSearch = t.descripcion.toLowerCase().includes(query) || t.categoria.toLowerCase().includes(query);
+        const matchesTipo = !tipo || t.tipo === tipo;
+        const transactionMonth = new Date(t.fecha).getMonth();
+        const matchesMes = !mes || String(transactionMonth) === mes;
+        return matchesSearch && matchesTipo && matchesMes;
+      });
+
+      currentPage = 1;
+      renderTransacciones();
+      renderPagination();
+    }
+
+    function formatCOP(amount: number): string {
+      return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
+    }
+
+    function formatDate(dateStr: string): string {
+      return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+
+    function renderTransacciones() {
+      if (!tbody) return;
+
+      const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageData = filteredTransacciones.slice(start, end);
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = '';
+        emptyState?.classList.remove('hidden');
+        return;
+      }
+
+      emptyState?.classList.add('hidden');
+
+      tbody.innerHTML = pageData.map(t => `
+        <tr class="hover:bg-papel/30 transition-colors cursor-pointer" data-transaccion-id="${t.id}">
+          <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
+          <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
+          <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
+          </td>
+          <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
+          <td class="px-6 py-4 text-right">
+            <div class="flex items-center justify-end gap-2">
+              <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors edit-btn" title="Editar" data-id="${t.id}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      // Wire row click to edit
+      tbody.querySelectorAll('tr[data-transaccion-id]').forEach(row => {
+        row.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('.edit-btn')) return;
+          const id = row.getAttribute('data-transaccion-id');
+          if (id) {
+            const transaccion = allTransacciones.find(t => t.id === id);
+            if (transaccion) {
+              openEditModal(transaccion);
+            }
+          }
+        });
+      });
+
+      // Wire edit buttons
+      tbody.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+          if (id) {
+            const transaccion = allTransacciones.find(t => t.id === id);
+            if (transaccion) {
+              openEditModal(transaccion);
+            }
+          }
+        });
+      });
+
+      // Update pagination info
+      if (paginationInfo) {
+        const total = filteredTransacciones.length;
+        paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, total)} de ${total} transacciones`;
+      }
+    }
+
+    function renderPagination() {
+      if (!paginationControls) return;
+      const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
+
+      let html = `
+        <button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors prev-btn" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
+      `;
+
+      for (let i = 1; i <= totalPages; i++) {
+        html += `<button class="px-3 py-1.5 text-sm rounded-lg transition-colors page-btn ${i === currentPage ? 'bg-tabacco text-white' : 'border border-papel text-humo hover:bg-papel'}" data-page="${i}">${i}</button>`;
+      }
+
+      html += `<button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors next-btn" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`;
+
+      paginationControls.innerHTML = html;
+
+      // Wire pagination buttons
+      paginationControls.querySelectorAll('.page-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const page = parseInt((btn as HTMLButtonElement).getAttribute('data-page') || '1', 10);
+          currentPage = page;
+          renderTransacciones();
+          renderPagination();
+        });
+      });
+
+      const prevBtn = paginationControls.querySelector('.prev-btn');
+      prevBtn?.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderTransacciones();
+          renderPagination();
+        }
+      });
+
+      const nextBtn = paginationControls.querySelector('.next-btn');
+      nextBtn?.addEventListener('click', () => {
+        if (currentPage < Math.ceil(filteredTransacciones.length / pageSize)) {
+          currentPage++;
+          renderTransacciones();
+          renderPagination();
+        }
+      });
+    }
+
+    function openEditModal(t: Transaccion) {
+      toast.info(`Editando transacción ${t.id}: ${t.descripcion}`);
+    }
+
+    // Wire search and filters
+    searchInput?.addEventListener('input', filterTransacciones);
+    tipoFilter?.addEventListener('change', filterTransacciones);
+    mesFilter?.addEventListener('change', filterTransacciones);
+
+    // Wire "Nueva Transaccion" button
+    nuevaBtn?.addEventListener('click', () => {
+      if (!modal) return;
+      (form)?.reset();
+      updateCategoriaOptions('');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
     });
 
-    currentPage = 1;
+    function updateCategoriaOptions(tipo: string) {
+      if (!categoriaSelect) return;
+      const options = tipo === 'Ingreso' ? categoriasIngreso : tipo === 'Egreso' ? categoriasEgreso : [];
+      categoriaSelect.innerHTML = '<option value="">Seleccionar...</option>' + options.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    tipoSelect?.addEventListener('change', () => {
+      updateCategoriaOptions(tipoSelect.value);
+    });
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const tipo = (document.getElementById('transaccion-tipo') as HTMLSelectElement)?.value;
+      const descripcion = (document.getElementById('transaccion-descripcion') as HTMLInputElement)?.value;
+      const categoria = (document.getElementById('transaccion-categoria') as HTMLSelectElement)?.value;
+      const monto = parseInt((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0', 10);
+      const fecha = (document.getElementById('transaccion-fecha') as HTMLInputElement)?.value;
+
+      const newTransaccion: Transaccion = {
+        id: String(allTransacciones.length + 1),
+        fecha: fecha || new Date().toISOString().split('T')[0],
+        descripcion: descripcion || '',
+        categoria: categoria || '',
+        tipo: tipo as 'Ingreso' | 'Egreso',
+        monto
+      };
+
+      allTransacciones.unshift(newTransaccion);
+      closeModal();
+      filterTransacciones();
+      toast.success('Transacción creada correctamente');
+    });
+
+    // Initial render
     renderTransacciones();
     renderPagination();
   }
 
-  function formatCOP(amount: number): string {
-    return new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(amount);
-  }
-
-  function formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  function renderTransacciones() {
-    if (!tbody) return;
-
-    const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
-    const start = (currentPage - 1) * pageSize;
-    const end = start + pageSize;
-    const pageData = filteredTransacciones.slice(start, end);
-
-    if (pageData.length === 0) {
-      tbody.innerHTML = '';
-      emptyState?.classList.remove('hidden');
-      return;
-    }
-
-    emptyState?.classList.add('hidden');
-
-    tbody.innerHTML = pageData.map(t => `
-      <tr class="hover:bg-papel/30 transition-colors cursor-pointer" data-transaccion-id="${t.id}">
-        <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
-        <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
-        <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
-        <td class="px-6 py-4 text-center">
-          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
-        </td>
-        <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
-        <td class="px-6 py-4 text-right">
-          <div class="flex items-center justify-end gap-2">
-            <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors edit-btn" title="Editar" data-id="${t.id}">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `).join('');
-
-    // Wire row click to edit (task 8.4)
-    tbody.querySelectorAll('tr[data-transaccion-id]').forEach(row => {
-      row.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        // Don't trigger if clicking the edit button
-        if (target.closest('.edit-btn')) return;
-        const id = row.getAttribute('data-transaccion-id');
-        if (id) {
-          const transaccion = allTransacciones.find(t => t.id === id);
-          if (transaccion) {
-            openEditModal(transaccion);
-          }
-        }
-      });
-    });
-
-    // Wire edit buttons
-    tbody.querySelectorAll('.edit-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
-        if (id) {
-          const transaccion = allTransacciones.find(t => t.id === id);
-          if (transaccion) {
-            openEditModal(transaccion);
-          }
-        }
-      });
-    });
-
-    // Update pagination info
-    if (paginationInfo) {
-      const total = filteredTransacciones.length;
-      paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, total)} de ${total} transacciones`;
-    }
-  }
-
-  function renderPagination() {
-    if (!paginationControls) return;
-    const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
-
-    let html = `
-      <button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors prev-btn" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
-    `;
-
-    for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="px-3 py-1.5 text-sm rounded-lg transition-colors page-btn ${i === currentPage ? 'bg-tabacco text-white' : 'border border-papel text-humo hover:bg-papel'}" data-page="${i}">${i}</button>`;
-    }
-
-    html += `<button class="px-3 py-1.5 text-sm rounded-lg border border-papel text-ceniza hover:bg-papel transition-colors next-btn" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>`;
-
-    paginationControls.innerHTML = html;
-
-    // Wire pagination buttons
-    paginationControls.querySelectorAll('.page-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const page = parseInt((btn as HTMLButtonElement).getAttribute('data-page') || '1', 10);
-        currentPage = page;
-        renderTransacciones();
-        renderPagination();
-      });
-    });
-
-    const prevBtn = paginationControls.querySelector('.prev-btn');
-    prevBtn?.addEventListener('click', () => {
-      if (currentPage > 1) {
-        currentPage--;
-        renderTransacciones();
-        renderPagination();
-      }
-    });
-
-    const nextBtn = paginationControls.querySelector('.next-btn');
-    nextBtn?.addEventListener('click', () => {
-      if (currentPage < Math.ceil(filteredTransacciones.length / pageSize)) {
-        currentPage++;
-        renderTransacciones();
-        renderPagination();
-      }
-    });
-  }
-
-  function openEditModal(t: Transaccion) {
-    toast.info(`Editando transacción ${t.id}: ${t.descripcion}`);
-    // In a full implementation, this would populate and open the modal
-  }
-
-  // Wire search and filters (tasks 8.1 and 8.2)
-  searchInput?.addEventListener('input', filterTransacciones);
-  tipoFilter?.addEventListener('change', filterTransacciones);
-  mesFilter?.addEventListener('change', filterTransacciones);
-
-  // Wire "Nueva Transaccion" button (task 8.3)
-  nuevaBtn?.addEventListener('click', () => {
-    if (!modal) return;
-    // Reset form
-    (form)?.reset();
-    // Update categoria options based on tipo
-    updateCategoriaOptions('');
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-  });
-
-  function updateCategoriaOptions(tipo: string) {
-    if (!categoriaSelect) return;
-    const options = tipo === 'Ingreso' ? categoriasIngreso : tipo === 'Egreso' ? categoriasEgreso : [];
-    categoriaSelect.innerHTML = '<option value="">Seleccionar...</option>' + options.map(c => `<option value="${c}">${c}</option>`).join('');
-  }
-
-  tipoSelect?.addEventListener('change', () => {
-    updateCategoriaOptions(tipoSelect.value);
-  });
-
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-  }
-
-  closeBtn?.addEventListener('click', closeModal);
-  cancelBtn?.addEventListener('click', closeModal);
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const tipo = (document.getElementById('transaccion-tipo') as HTMLSelectElement)?.value;
-    const descripcion = (document.getElementById('transaccion-descripcion') as HTMLInputElement)?.value;
-    const categoria = (document.getElementById('transaccion-categoria') as HTMLSelectElement)?.value;
-    const monto = parseInt((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0', 10);
-    const fecha = (document.getElementById('transaccion-fecha') as HTMLInputElement)?.value;
-
-    const newTransaccion: Transaccion = {
-      id: String(allTransacciones.length + 1),
-      fecha: fecha || new Date().toISOString().split('T')[0],
-      descripcion: descripcion || '',
-      categoria: categoria || '',
-      tipo: tipo as 'Ingreso' | 'Egreso',
-      monto
-    };
-
-    allTransacciones.unshift(newTransaccion);
-    closeModal();
-    filterTransacciones();
-    toast.success('Transacción creada correctamente');
-  });
-
-  // Initial render
-  renderTransacciones();
-  renderPagination();
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

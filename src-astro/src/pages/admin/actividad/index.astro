@@ -187,31 +187,36 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
 </AdminLayout>
 
 <script>
-  // Client-side filter pills
-  const pills = document.querySelectorAll('.filter-pill');
-  const items = document.querySelectorAll('.evento-item');
+  function initPage() {
+    // Client-side filter pills
+    const pills = document.querySelectorAll('.filter-pill');
+    const items = document.querySelectorAll('.evento-item');
 
-  pills.forEach((pill) => {
-    pill.addEventListener('click', () => {
-      const filter = (pill as HTMLElement).dataset.filter;
+    pills.forEach((pill) => {
+      pill.addEventListener('click', () => {
+        const filter = (pill as HTMLElement).dataset.filter;
 
-      // Update active pill styles
-      pills.forEach((p) => {
-        p.classList.remove('bg-tabacco', 'text-white', 'border-tabacco');
-        p.classList.add('border-papel', 'text-ceniza');
-      });
-      pill.classList.add('bg-tabacco', 'text-white', 'border-tabacco');
-      pill.classList.remove('border-papel', 'text-ceniza');
+        // Update active pill styles
+        pills.forEach((p) => {
+          p.classList.remove('bg-tabacco', 'text-white', 'border-tabacco');
+          p.classList.add('border-papel', 'text-ceniza');
+        });
+        pill.classList.add('bg-tabacco', 'text-white', 'border-tabacco');
+        pill.classList.remove('border-papel', 'text-ceniza');
 
-      // Filter events
-      items.forEach((item) => {
-        const tipo = (item as HTMLElement).dataset.tipo;
-        if (filter === 'all' || tipo === filter) {
-          (item as HTMLElement).style.display = '';
-        } else {
-          (item as HTMLElement).style.display = 'none';
-        }
+        // Filter events
+        items.forEach((item) => {
+          const tipo = (item as HTMLElement).dataset.tipo;
+          if (filter === 'all' || tipo === filter) {
+            (item as HTMLElement).style.display = '';
+          } else {
+            (item as HTMLElement).style.display = 'none';
+          }
+        });
       });
     });
-  });
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>

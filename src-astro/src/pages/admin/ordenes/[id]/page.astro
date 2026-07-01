@@ -48,48 +48,53 @@ if (Astro.request.method === 'POST') {
 <script>
   import { toast } from 'sonner';
 
-  const orderId = window.location.pathname.split('/').pop();
+  function initPage() {
+    const orderId = window.location.pathname.split('/').pop();
 
-  async function updateStatus(status: string, successMessage: string) {
-    if (!orderId) return;
+    async function updateStatus(status: string, successMessage: string) {
+      if (!orderId) return;
 
-    try {
-      const response = await fetch('/api/admin/ordenes/status', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: orderId, status }),
-      });
+      try {
+        const response = await fetch('/api/admin/ordenes/status', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: orderId, status }),
+        });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({ error: 'Error desconocido' }));
-        toast.error(data.error || 'Error al actualizar la orden');
-        return;
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({ error: 'Error desconocido' }));
+          toast.error(data.error || 'Error al actualizar la orden');
+          return;
+        }
+
+        toast.success(successMessage);
+        setTimeout(() => window.location.href = '/admin/ordenes', 1000);
+      } catch {
+        toast.error('Error de conexión');
       }
+    }
 
-      toast.success(successMessage);
-      setTimeout(() => window.location.href = '/admin/ordenes', 1000);
-    } catch {
-      toast.error('Error de conexión');
+    // Wire status update buttons — scoped to #order-actions only
+    const actionsDiv = document.getElementById('order-actions');
+    if (actionsDiv) {
+      actionsDiv.querySelectorAll('button').forEach(btn => {
+        const text = btn.textContent?.trim();
+
+        if (text?.includes('Confirmar Orden')) {
+          btn.addEventListener('click', () => updateStatus('confirmada', 'Orden confirmada correctamente'));
+        }
+
+        if (text?.includes('Cancelar Orden')) {
+          btn.addEventListener('click', () => updateStatus('cancelada', 'Orden cancelada'));
+        }
+
+        if (text?.includes('Marcar como Enviada')) {
+          btn.addEventListener('click', () => updateStatus('enviada', 'Orden marcada como enviada'));
+        }
+      });
     }
   }
 
-  // Wire status update buttons — scoped to #order-actions only
-  const actionsDiv = document.getElementById('order-actions');
-  if (actionsDiv) {
-    actionsDiv.querySelectorAll('button').forEach(btn => {
-      const text = btn.textContent?.trim();
-
-      if (text?.includes('Confirmar Orden')) {
-        btn.addEventListener('click', () => updateStatus('confirmada', 'Orden confirmada correctamente'));
-      }
-
-      if (text?.includes('Cancelar Orden')) {
-        btn.addEventListener('click', () => updateStatus('cancelada', 'Orden cancelada'));
-      }
-
-      if (text?.includes('Marcar como Enviada')) {
-        btn.addEventListener('click', () => updateStatus('enviada', 'Orden marcada como enviada'));
-      }
-    });
-  }
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
 </script>
