@@ -252,3 +252,11 @@ playwright       # e2e
 | `architecture/trust-badges-section-dark-background` | Trust Badges design |
 | `debt/brl-currency-schema-coupling` | Deuda: si se agrega BRL → actualizar schema al mismo tiempo |
 | `sdd/footer-bg-tabaco/*` | SDD cycle completo |
+| `sdd/admin-hydration-fix/*` | Admin hydration + sidebar + astro:page-load fixes |
+| `sdd/contabilidad-real-data/*` | Contabilidad mock → real Supabase data |
+| `sdd/admin-real-data-complete/*` | Eliminación total de mock data |
+| `sdd/dashboard-blank-after-login/*` | Blank page fix (BodegaSwitcher SSR + icons) |
+| `sdd/seo-transactional-architecture/*` | SEO architecture (FAQ, OG, hreflang, canonical) |
+
+### Versión actual
+`v0.9.1` — Judgment Day fixes applied. Último commit: `5780118`

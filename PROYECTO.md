@@ -384,5 +384,33 @@ mem_get_observation(id: <ID>)  ← contenido completo
 ---
 
 *Documento maestro generado: Junio 15, 2026*
-*Última actualización: Junio 15, 2026*
-*Último commit en main: `44ec78d`*
+*Última actualización: Julio 1, 2026*
+*Último commit en main: `5780118`*
+
+---
+
+## 🆕 ACTUALIZACIÓN v0.9.1 — Julio 1, 2026
+
+**Estado:** Pre-lanzamiento. Admin panel 100% funcional con data real de Supabase.
+
+### Hitos alcanzados
+| Área | Status |
+|------|--------|
+| Admin panel (dashboard, órdenes, clientes, pagos, contabilidad, inventario) | ✅ Data real Supabase |
+| SEO (hasVariant, FAQPage, hreflang, canonical, OG, meta transaccional) | ✅ Implementado |
+| Hydration (13 páginas admin, sidebar, BodegaSwitcher) | ✅ `astro:page-load` |
+| Auth (JWT, API routes protegidas, bcrypt async) | ✅ Seguro |
+| Multi-user (edison@octavofuego.com) | ✅ 2 admins |
+| Cart/Checkout i18n | ✅ ES/EN/PT |
+
+### Versiones
+`v0.4.0` → `v0.9.1` (13 tags)
+
+### Conexión Supabase
+- 5 productos, 15 variantes, 30 niveles stock
+- 3 tablas contables (categorías, subcategorías, transacciones)
+- Auth con usuarios y bcrypt
+- Migraciones 001→010 aplicadas
+
+### Branches
+`main`: `5780118` — sincronizado con `develop` y `origin`

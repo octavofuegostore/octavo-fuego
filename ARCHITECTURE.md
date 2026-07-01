@@ -741,3 +741,46 @@ STRIPE_WEBHOOK_SECRET=whsec_...                     # Privada: Validación Firma
 
 *Manifiesto generado: Junio 15, 2026*
 *Engram Topic Key: `architecture/manifesto-v1`*
+
+---
+
+## 🆕 ACTUALIZACIÓN v0.9.1 (Julio 1, 2026)
+
+### Decisiones de arquitectura tomadas
+
+| Decisión | Alternativa descartada | Razón |
+|----------|----------------------|-------|
+| **Supabase Free Tier + Vercel** | MedusaJS, Railway | Sin presupuesto para servidores pagos |
+| **Auth: JWT con fallback hardcodeado eliminado** | Fallback `'octavo-fuego-dev-secret-2026'` | Seguridad: cualquiera podía forjar tokens |
+| **API routes: solo `/api/auth/` público** | Todas las `/api/*` públicas | Evitar endpoints admin expuestos |
+| **Admin hydration: `astro:page-load`** | `DOMContentLoaded` | ClientRouter no re-ejecuta scripts ESM |
+| **Cart/checkout i18n** | Hardcodeado español | Soporte EN/PT desde el inicio |
+| **Contabilidad: tabla `transacciones` propia** | Mock data de mock.ts | Data real persistida en Supabase |
+| **hasVariant → `offers` array** | `hasVariant` con `Offer[]` inválido | Schema.org exige `@type: Product` en hasVariant |
+
+### Stack actual
+| Capa | Tecnología | Versión |
+|------|-----------|---------|
+| Framework | Astro | 6.1.3 |
+| UI | React islands, TailwindCSS 4, shadcn/ui | — |
+| DB | Supabase (Free Tier) | — |
+| Auth | JWT (jose) + bcryptjs | — |
+| Deploy | Vercel (@astrojs/vercel, hybrid) | — |
+| SEO | JSON-LD schema, hreflang, canonical, sitemap | — |
+
+### Estado del admin panel
+| Módulo | Data real | Mock |
+|--------|-----------|------|
+| Dashboard | ✅ Desde Supabase | ❌ Eliminado |
+| Órdenes | ✅ Desde Supabase | ❌ Eliminado |
+| Clientes + B2B | ✅ Desde Supabase | ❌ Eliminado |
+| Pagos | ✅ Desde Supabase | ❌ Eliminado |
+| Contabilidad | ✅ Desde Supabase (tablas nuevas) | ❌ Eliminado (`mock.ts` borrado) |
+| Inventario/Stock | ✅ Desde `gramos_disponibles` view | ❌ Eliminado |
+| Inventario/Transferencias | ✅ Desde `transferencias` table | ❌ JS mock eliminado |
+| Actividad | ✅ Desde `eventos` table | ❌ Eliminado |
+
+### Documentación relacionada
+- `PENDIENTES.md` — Sprint tracking + JD findings
+- `PROYECTO.md` — Single source of truth actualizado
+- `AGENTS.md` — Instrucciones para AI agents
