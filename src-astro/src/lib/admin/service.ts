@@ -92,7 +92,7 @@ function generarMockClientes(): Cliente[] {
   ];
 }
 
-function generarMockProductos(): Producto[] {
+export function generarMockProductos(): Producto[] {
   const productos: Producto[] = [];
   RAPES.forEach((rape, rapeIdx) => {
     PESOS.forEach((peso, pesoIdx) => {
