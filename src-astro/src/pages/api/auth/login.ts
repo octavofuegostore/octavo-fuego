@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import { authenticateUser, COOKIE_CONFIG } from '@/lib/auth';
+import { authenticateUser, validateCredentials, signJWT, COOKIE_CONFIG } from '@/lib/auth';
+import type { AuthUser } from '@/lib/auth';
 
 export const prerender = false;
 
@@ -18,7 +19,21 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       );
     }
 
-    const result = await authenticateUser(email, password);
+    // Try Supabase first (usuarios table with bcrypt)
+    let result = await authenticateUser(email, password);
+
+    // Fallback: hardcoded admin credentials (for dev / no Supabase)
+    if (!result && validateCredentials(email, password)) {
+      const user: AuthUser = {
+        id: 'admin-hardcoded',
+        email,
+        nombre: 'Admin',
+        role: 'admin',
+        bodega_id: null,
+      };
+      const token = await signJWT(user);
+      result = { user, token };
+    }
 
     if (!result) {
       return new Response(
