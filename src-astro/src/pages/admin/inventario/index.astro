@@ -6,6 +6,7 @@ import ProductTable from '@/components/admin/inventory/ProductTable.astro';
 import ProductForm from '@/components/admin/inventory/ProductForm.astro';
 import { crearServicios } from '@/lib/admin/provider';
 import { CrearProductoSchema, CrearVarianteSchema } from '@/lib/admin/schemas/producto';
+import { supabase } from '@/lib/supabase';
 
 const svc = crearServicios();
 const action = Astro.url.searchParams.get('action');
@@ -57,13 +58,39 @@ if (Astro.request.method === 'POST') {
   }
 }
 
-// Load product if editing
+// Load product + variantes if editing
+let variantes: any[] = [];
 if (action === 'edit' && editId) {
   try {
     editProduct = await svc.productos.obtenerPorId(editId);
+    // Load variantes from Supabase
+    const { data: v } = await supabase
+      .from('variantes')
+      .select('*')
+      .eq('producto_id', editId)
+      .order('gramos');
+    variantes = v ?? [];
   } catch {
     editProduct = null;
   }
+}
+
+// Handle variant price update
+if (Astro.request.method === 'POST' && editId) {
+  const form = await Astro.request.formData();
+  const prices: Record<string, any> = {};
+  for (const [key, val] of form.entries()) {
+    if (key.startsWith('precio_cop_') || key.startsWith('precio_brl_') || key.startsWith('precio_usd_')) {
+      const variantId = key.replace('precio_cop_', '').replace('precio_brl_', '').replace('precio_usd_', '');
+      const col = key.startsWith('precio_cop_') ? 'precio_cop' : key.startsWith('precio_brl_') ? 'precio_brl' : 'precio_usd';
+      if (!prices[variantId]) prices[variantId] = { id: variantId };
+      (prices[variantId] as any)[col] = val ? Number(val) : null;
+    }
+  }
+  for (const p of Object.values(prices)) {
+    await supabase.from('variantes').update(p).eq('id', (p as any).id);
+  }
+  return Astro.redirect('/admin/inventario');
 }
 
 const products = await svc.productos.listar();
@@ -74,6 +101,8 @@ const products = await svc.productos.listar();
     <ProductForm
       mode={action === 'edit' ? 'edit' : 'create'}
       product={editProduct ?? undefined}
+      variantes={variantes}
+      errors={errors}
     />
   ) : (
     <>
