@@ -21,7 +21,35 @@
 
 ---
 
-## 🏁 Último Sprint — SDD F1-F33: Admin Service Layer + Page Migration (Julio 1, 2026)
+## 🏁 Último Sprint — Astro 6 Improvements (Julio 1, 2026)
+
+> **Tags:** `v0.4.2` | **Commits:** ee7c999 | **Build:** ✅ 0 errores
+> **PR:** #25
+> **Fuente:** `astro-docs` MCP — documentación oficial de Astro 6
+
+### ✅ F40: Astro Actions
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 40.1 Actions Setup | `src/actions/index.ts` | defineAction() para form submission tipado |
+| 40.2 Validation | Reusa F1 Zod schemas | CrearProductoSchema + ActualizarEstadoSchema |
+
+### ✅ F41: View Transitions
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 41.1 ClientRouter | `AdminLayout.astro` | Navegación SPA en admin |
+| 41.2 Persist Sidebar | `AdminLayout.astro` | transition:persist mantiene estado |
+| 41.3 Scripts | `AdminLayout.astro` | astro:page-load para re-ejecución |
+
+### ✅ F42: Middleware Composition
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 42.1 Locale Handler | `middleware/auth.ts` | defineMiddleware separado |
+| 42.2 Auth Handler | `middleware/auth.ts` | JWT + getActionContext gating |
+| 42.3 Composition | `middleware/auth.ts` | sequence() para orden |
+
+---
+
+## 🏁 Sprint Anterior — SDD F1-F33: Admin Service Layer + Page Migration (Julio 1, 2026)
 
 > **Tags:** `v0.4.0` | **Commits:** 20 (ebc2cff..0f8d44a) | **Build:** ✅ 0 errores
 > **PRs:** #4 → #23 (chained, feature-branch-chain)
@@ -360,6 +388,13 @@
 - [ ] Integrar ProductForm en inventario (F17)
 - [ ] Contabilidad mock → service (F32-F33, Phase 4+)
 - [ ] Charts dashboard: mock → service aggregation
+
+### 3.16 Astro 6 Improvements ✅ (Jul 1, 2026)
+> **v0.4.2** — Basado en documentación oficial de Astro consultada via `astro-docs` MCP
+
+- [x] **F40 Astro Actions** — `src/actions/index.ts` con defineAction() + validación Zod
+- [x] **F41 View Transitions** — `<ClientRouter />` + `transition:persist` + `astro:page-load`
+- [x] **F42 Middleware Composition** — `sequence()` + `defineMiddleware()` + `getActionContext()`
 
 #### Credenciales (hardcoded)
 ```
@@ -750,6 +785,10 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
+| Jul 01 | `f397893` | `main` | **v0.4.2** — Astro 6 improvements: Actions, View Transitions, Middleware |
+| Jul 01 | `ee7c999` | `develop` | feat: F42 middleware composition with sequence + getActionContext |
+| Jul 01 | `4bd0254` | `develop` | feat: F41 View Transitions with ClientRouter + persisted sidebar |
+| Jul 01 | `55263ff` | `develop` | feat: F40 Astro Actions infrastructure |
 | Jul 01 | `f397893` | `main` | **v0.4.0** — SDD F1-F33 foundation, services, admin migration |
 | Jul 01 | `c087898` | `develop` | feat: SDD F1-F33 foundation, services, and page migration |
 | Jul 01 | `0f8d44a` | `feature/...` | feat: F26-F33 cross-cutting (EventTimeline, sidebar store wiring) |
@@ -789,7 +828,7 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Julio 1, 2026 — v0.4.0 SDD F1-F33 completado*
+*Actualizado: Julio 1, 2026 — v0.4.2 Astro 6 improvements completado*
 
 ---
 
