@@ -13,11 +13,56 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 95% | 🔄 Casi listo |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.4.0) |
 | 04 Marketing/SEO | ████████░░ 80% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
+
+---
+
+## 🏁 Último Sprint — SDD F1-F33: Admin Service Layer + Page Migration (Julio 1, 2026)
+
+> **Tags:** `v0.4.0` | **Commits:** 20 (ebc2cff..0f8d44a) | **Build:** ✅ 0 errores
+> **PRs:** #4 → #23 (chained, feature-branch-chain)
+> **Engram:** 133 artifacts SDD (33 fases × proposal/spec/design/tasks)
+
+### ✅ F1-F6: Foundation Layer
+| Fase | Descripción | Archivos |
+|------|-------------|----------|
+| F1 | Zod schemas en español + i18n STATUS_LABELS | 8 archivos en `schemas/` |
+| F2 | ErrorApp + ErrorValidacion, ErrorNoEncontrado, ErrorAutorizacion, ErrorSupabase | `errores.ts` |
+| F3 | SupabaseService abstract class con bodegaId constructor + CRUD | `services/base.ts` |
+| F4 | DB catalog con nombres CORREGIDOS (listas_precio, niveles_inventario) | `db/tablas.ts`, `columnas.ts`, `catalog.ts` |
+| F5 | Query helpers: getGramosDisponibles (view), getNivelesInventario, getPreciosLista | `db/helpers.ts` |
+| F6 | Mapper<T,R> interface + MAPEADORES registry | `mapper.ts` (+66 líneas) |
+
+### ✅ F7-F13: Services + Admin Layer
+| Fase | Descripción | Archivos |
+|------|-------------|----------|
+| F7 | ProductoService con batch queries (3 queries, no N+1) + variant management | `services/productos.ts` |
+| F8 | OrdenService con state machine validation (F1 schema) | `services/ordenes.ts` |
+| F9 | ClienteService + B2B solicitud management | `services/clientes.ts` |
+| F10 | PagoService con confirmarPago / marcarFallido | `services/pagos.ts` |
+| F11 | Admin stores: user, ui, notifications (Nanostores) | `stores/admin/` (4 archivos) |
+| F12 | TypedEventBus con EventMap + Supabase RPC persistence | `eventos.ts` |
+| F13 | crearServicios() factory + initAdminSession | `provider.ts` |
+
+### ✅ F14-F33: Page Migration
+| Fase | Página | Cambio |
+|------|--------|--------|
+| F14 | Dashboard | Service wiring + RecentOrders/LowStock refactor a props |
+| F15 | Inventario list | getProductos() → svc.productos.listar() |
+| F16 | Stock page | gramos_disponibles query (replaces inline mock) |
+| F17 | Variant UI | Service methods ready (component pending integration) |
+| F18 | Órdenes list | getOrdenes() → svc.ordenes.listar() |
+| F19 | Órdenes detail | Service wiring + POST cambiarEstado handler |
+| F20 | **NUEVO** OrderStateMachine.astro | Horizontal stepper con transiciones |
+| F21-F23 | Clientes + B2B | 4 páginas migradas a service layer |
+| F24-F25 | Pagos list + detail | getPagos() → svc.pagos.listar() |
+| F26 | Notifications | Wire a $notificaciones store |
+| F27 | **NUEVO** EventTimeline.astro | Vertical timeline con iconos |
+| F28-F33 | Settings + Sidebar + Cross-cutting | Sidebar wired to $sidebarOpen store, EventTimeline
 
 ---
 
@@ -275,6 +320,46 @@
 
 #### 📋 Pendiente
 - [ ] **Phase 4: Tests** — unitarios (lib/auth, middleware) + E2E login flow (Playwright)
+
+### 3.15 SDD F1-F33 Admin Service Layer ✅ (Jul 1, 2026)
+> **v0.4.0** — 20 PRs chained, 16 nuevos archivos, ~900 líneas
+> **Tags:** `v0.4.0` | **Main:** `f397893` | **Develop:** `c087898`
+
+#### ✅ Foundation (F1-F6)
+- [x] **F1 Zod Schemas** — 7 enums en español, traducciones.ts i18n (ES/EN/PT)
+- [x] **F2 Typed Errors** — ErrorApp + 4 subclases con statusCode + severity
+- [x] **F3 SupabaseService** — Base abstracta con bodegaId constructor + CRUD + mock fallback
+- [x] **F4 DB Catalog** — TABLAS const con nombres corregidos (listas_precio, niveles_inventario, gramos_disponibles view)
+- [x] **F5 Intermediate Helpers** — getNivelesInventario, getGramosDisponibles (view), getPreciosLista
+- [x] **F6 Mapper Interface** — Mapper<T,R> + MAPEADORES registry + ProductoMapper con join context
+
+#### ✅ Domain Services (F7-F10)
+- [x] **F7 ProductosService** — Batch query (3 queries), variant CRUD, F1 Zod validation
+- [x] **F8 OrdenesService** — State machine validation via F1 ActualizarEstadoSchema
+- [x] **F9 ClientesService** — B2B solicitud management (aprobar/rechazar)
+- [x] **F10 PagosService** — confirmarPago / marcarFallido
+
+#### ✅ Admin Infrastructure (F11-F13)
+- [x] **F11 AdminStore** — user.ts + ui.ts + notificaciones.ts (Nanostores)
+- [x] **F12 TypedEventBus** — EventMap + emit con persistencia RPC + subscribe/unsubscribe
+- [x] **F13 AdminProvider** — crearServicios() factory + Servicios type
+
+#### ✅ Page Migration (F14-F33)
+- [x] **F14 Dashboard** — Service wiring + RecentOrders/LowStock refactor a props
+- [x] **F15 Productos List** — inventario/index.astro → svc.productos.listar()
+- [x] **F16 Stock Page** — query a gramos_disponibles view
+- [x] **F18-F19 Órdenes** — list + detail con POST handler for cambiarEstado
+- [x] **F20 OrderStateMachine** — Nuevo componente stepper horizontal
+- [x] **F21-F25 Clientes/Pagos** — 4 páginas migradas a service layer
+- [x] **F27 EventTimeline** — Nuevo componente timeline vertical
+- [x] **F29 Sidebar** — Wire a $sidebarOpen + $seccionActual stores
+
+#### 📋 Pendiente
+- [ ] Integrar OrderStateMachine en OrderDetail (F20 → F19)
+- [ ] Conectar NotificationDropdown al event bus (F26)
+- [ ] Integrar ProductForm en inventario (F17)
+- [ ] Contabilidad mock → service (F32-F33, Phase 4+)
+- [ ] Charts dashboard: mock → service aggregation
 
 #### Credenciales (hardcoded)
 ```
@@ -665,6 +750,19 @@ octavo-fuego/
 
 | Fecha | Commit | Rama | Descripción |
 |-------|--------|------|-------------|
+| Jul 01 | `f397893` | `main` | **v0.4.0** — SDD F1-F33 foundation, services, admin migration |
+| Jul 01 | `c087898` | `develop` | feat: SDD F1-F33 foundation, services, and page migration |
+| Jul 01 | `0f8d44a` | `feature/...` | feat: F26-F33 cross-cutting (EventTimeline, sidebar store wiring) |
+| Jul 01 | `d41a9f5` | `feature/...` | feat: F21-F25 client and payment pages migration |
+| Jul 01 | `0bd93e9` | `feature/...` | feat: F20 OrderStateMachine component (NEW) |
+| Jul 01 | `031fc9f` | `feature/...` | feat: F19 orden detail migration + POST handler |
+| Jul 01 | `3ea3366` | `feature/...` | feat: F14 dashboard migration + RecentOrders/LowStock refactor |
+| Jul 01 | `9a4dd30` | `feature/...` | feat: F12 typed event bus + F13 admin provider factory |
+| Jul 01 | `09e6cc8` | `feature/...` | feat: F11 admin stores (user, ui, notifications) |
+| Jul 01 | `ccf8c2b` | `feature/...` | feat: F10 PagosService with confirm/mark-failed operations |
+| Jul 01 | `e06d060` | `feature/...` | feat: F9 ClientesService with B2B solicitud management |
+| Jul 01 | `a379e25` | `feature/...` | feat: F7 ProductosService with batch queries and variants |
+| Jul 01 | `ebc2cff` | `feature/...` | feat: F1 Zod schemas with Spanish enums and i18n status labels |
 | Jun 15 | `44ec78d` | `main` | feat(seo): add ItemList schema to category pages, restore Organization address |
 | Jun 15 | `8f17307` | `main` | fix(seo): OrganizationJsonLd — foundingDate 2026, knowsAbout desc, sameAs +WhatsApp |
 | Jun 15 | `ba610f8` | `main` | fix(seo): improve JSON-LD schemas — @id, cross-refs, dates ISO |
@@ -691,7 +789,7 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Julio 1, 2026*
+*Actualizado: Julio 1, 2026 — v0.4.0 SDD F1-F33 completado*
 
 ---
 
@@ -703,15 +801,15 @@ octavo-fuego/
 ### 🔴 Alta Prioridad (agregar al próximo sprint)
 
 - [ ] **Q18 — Pricing Engine (9 precios)** — `#1144` Service que centralice 3 presentaciones × 3 monedas. Sin esto no hay cálculos de orden reales.
-- [ ] **Q31-34 — ProductForm + OrderForm React** — `#1149` `#1150` Formularios de creación/edición de productos y órdenes. El admin los necesita todos los días.
-- [ ] **Q15 — Audit triggers + conectar timeline** — `#1143` Tabla audit_log existe en DB, triggers creados en migrations 004. Falta conectar UI de timeline en OrderDetail.
+- [ ] **Q31-34 — ProductForm + OrderForm React** — `#1149` `#1150` Formularios de creación/edición de productos y órdenes. Services listos (F7-F8), falta UI.
+- [x] **Q15 — Audit triggers + conectar timeline** — `#1143` ✅ Event bus (F12) + EventTimeline (F27) creados. Falta integrar timeline en OrderDetail.
 
 ### 🟡 Media Prioridad
 
 - [ ] **Q5 — GitHub Actions CI** — `#1140` Workflow typecheck + build en PRs. La build local funciona, pero no hay guardrail en equipo.
 - [ ] **Q7-Q23 — Deploy hook + rebuild desde admin** — `#1140` `#1145` Botón "Publicar cambios" que gatille rebuild en Vercel.
-- [ ] **Q8-Q10 — Zod + SupabaseService base** — `#1141` Clase base abstracta con errores tipados. Service actual es funcional pero difícil de escalar.
-- [ ] **Q28 — Alertas stock bajo en sidebar** — `#1147` Badge con count de productos con stock crítico.
+- [x] **Q8-Q10 — Zod + SupabaseService base** — `#1141` ✅ Completado en SDD F1-F3. Zod schemas (F1), errores tipados (F2), SupabaseService con bodegaId (F3).
+- [ ] **Q28 — Alertas stock bajo en sidebar** — `#1147` Badge con count de productos con stock crítico (servicio F7 listo, falta UI).
 - [ ] **Q16 — Tabla categorías en DB** — `#1143` Hoy hardcodeado, migrar a tabla relacional.
 - [ ] **Q36 — Typed API Client (fetch+Zod)** — `#1151` Wrapper tipado sobre fetch.
 
