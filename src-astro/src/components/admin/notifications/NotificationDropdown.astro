@@ -1,0 +1,34 @@
+---
+/**
+ * NotificationDropdown.astro — SSR wrapper for the React notification island.
+ *
+ * Fetches notifications server-side and passes them to the React component.
+ * Handles the case where the user is not logged in (no notifications shown).
+ */
+import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown';
+import { getNotificaciones } from '@/lib/admin/service';
+
+interface Props {
+  usuarioId?: string;
+}
+
+const { usuarioId } = Astro.props;
+
+let notificaciones: Array<{
+  id: string;
+  tipo: string;
+  titulo: string;
+  mensaje: string | null;
+  link: string | null;
+  leida: boolean;
+  creado_en: string;
+}> = [];
+
+try {
+  notificaciones = await getNotificaciones(usuarioId);
+} catch {
+  // User not logged in or service error — render empty dropdown
+}
+---
+
+<NotificationDropdown client:load notificaciones={notificaciones} />

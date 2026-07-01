@@ -33,7 +33,7 @@ export interface Customer {
   name: string;
   email: string;
   phone: string;
-  location: "CO" | "BR" | "EU" | "US";
+  location: "CO" | "BR";
   type: "retail" | "wholesale";
   status: "active" | "inactive";
   totalOrders: number;
@@ -50,8 +50,6 @@ const locationConfig: Record<
 > = {
   CO: { flag: "🇨🇴", label: "Colombia", bg: "bg-info/10", text: "text-info" },
   BR: { flag: "🇧🇷", label: "Brasil", bg: "bg-success/10", text: "text-success" },
-  EU: { flag: "🇪🇺", label: "Europa", bg: "bg-accent/10", text: "text-accent" },
-  US: { flag: "🇺🇸", label: "USA", bg: "bg-warning/10", text: "text-warning" },
 };
 
 const typeConfig = {
@@ -175,8 +173,6 @@ export default function CustomerTableClient({
               <option value="">Todas las ubicaciones</option>
               <option value="CO">Colombia</option>
               <option value="BR">Brasil</option>
-              <option value="EU">Europa</option>
-              <option value="US">USA</option>
             </select>
 
             {/* Type Filter */}

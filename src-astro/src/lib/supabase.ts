@@ -16,18 +16,27 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 // ─── Server-side client (with service role key) ──────────────────────────────
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_KEY;
+const supabaseServiceKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.warn(
-    '⚠️ Supabase credentials not configured. Using mock data instead.'
-  );
+function createDummyClient(): SupabaseClient {
+  const errorMessage =
+    '[supabase] Cannot use Supabase client: SUPABASE_SERVICE_ROLE_KEY is not configured. ' +
+    'Add PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to your .env file.';
+
+  return new Proxy({} as SupabaseClient, {
+    get() {
+      return () => {
+        console.error(errorMessage);
+        throw new Error(errorMessage);
+      };
+    },
+  });
 }
 
-export const supabase: SupabaseClient = createClient(
-  supabaseUrl || 'https://placeholder.supabase.co',
-  supabaseServiceKey || 'placeholder-key'
-);
+export const supabase: SupabaseClient =
+  supabaseUrl && supabaseServiceKey
+    ? createClient(supabaseUrl, supabaseServiceKey)
+    : createDummyClient();
 
 // ─── Client-side client (with anon key) ──────────────────────────────────────
 
@@ -38,10 +47,10 @@ export function getSupabaseClient(): SupabaseClient {
 
   const anonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
-  _clientSide = createClient(
-    supabaseUrl || 'https://placeholder.supabase.co',
-    anonKey || 'placeholder-key'
-  );
+  _clientSide =
+    supabaseUrl && anonKey
+      ? createClient(supabaseUrl, anonKey)
+      : createDummyClient();
 
   return _clientSide;
 }
@@ -143,6 +152,28 @@ export type Database = {
           total_usd: number | null;
           canal: string;
           notas: string | null;
+          creado_en: string;
+        };
+      };
+      usuarios: {
+        Row: {
+          id: string;
+          email: string;
+          password_hash: string;
+          nombre: string;
+          role: string;
+          bodega_id: string | null;
+          activo: boolean;
+          creado_en: string;
+        };
+      };
+      eventos: {
+        Row: {
+          id: string;
+          bodega_id: string | null;
+          tipo: string;
+          payload: Record<string, unknown> | null;
+          usuario_id: string | null;
           creado_en: string;
         };
       };

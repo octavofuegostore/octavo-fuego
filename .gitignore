@@ -3,6 +3,7 @@ dist/
 .astro/
 .env*
 .DS_Store
+supabase/.temp/
 .atl-backup*/
 *.log
 .idea/

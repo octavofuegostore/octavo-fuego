@@ -1,0 +1,259 @@
+---
+export const prerender = false;
+// B2B Approval Queue — Solicitudes de clientes mayoristas
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { getSolicitudes } from '@/lib/admin/service';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const solicitudes = await getSolicitudes(bodegaId || undefined);
+
+const pendientes = solicitudes.filter((s) => s.estado === 'pendiente');
+const aprobadas = solicitudes.filter((s) => s.estado === 'aprobada');
+const rechazadas = solicitudes.filter((s) => s.estado === 'rechazada');
+
+function formatDate(iso: string): string {
+  return new Date(iso).toLocaleDateString('es-CO', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+
+function estadoBadge(estado: string): { bg: string; text: string; label: string } {
+  switch (estado) {
+    case 'pendiente':
+      return { bg: 'bg-amber-100', text: 'text-amber-800', label: 'Pendiente' };
+    case 'aprobada':
+      return { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Aprobada' };
+    case 'rechazada':
+      return { bg: 'bg-red-100', text: 'text-red-800', label: 'Rechazada' };
+    default:
+      return { bg: 'bg-gray-100', text: 'text-gray-800', label: estado };
+  }
+}
+---
+
+<AdminLayout title="Solicitudes B2B" description="Cola de aprobación de clientes mayoristas">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Solicitudes B2B</h1>
+        <p class="text-ceniza mt-1">Gestiona las solicitudes de clientes mayoristas</p>
+      </div>
+      <a
+        href="/admin/clientes"
+        class="inline-flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Volver a Clientes
+      </a>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Pendientes</p>
+      <p class="text-2xl font-bold text-amber-600 font-display">{pendientes.length}</p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Aprobadas</p>
+      <p class="text-2xl font-bold text-success font-display">{aprobadas.length}</p>
+    </div>
+    <div class="bg-white rounded-xl p-4 shadow-card">
+      <p class="text-sm text-ceniza">Rechazadas</p>
+      <p class="text-2xl font-bold text-error font-display">{rechazadas.length}</p>
+    </div>
+  </div>
+
+  <!-- Solicitudes Table -->
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    {solicitudes.length === 0 ? (
+      <!-- Empty State -->
+      <div class="p-12 text-center">
+        <svg class="w-16 h-16 mx-auto text-ceniza/40 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h3 class="text-lg font-display font-semibold text-humo mb-1">No hay solicitudes</h3>
+        <p class="text-ceniza text-sm">No hay solicitudes B2B registradas aún.</p>
+      </div>
+    ) : (
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="border-b border-papel">
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Empresa</th>
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Contacto</th>
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Email</th>
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Bodega</th>
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Estado</th>
+              <th class="text-left px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Fecha</th>
+              <th class="text-right px-6 py-4 text-xs font-medium text-ceniza uppercase tracking-wider">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-papel">
+            {solicitudes.map((sol) => {
+              const badge = estadoBadge(sol.estado);
+              return (
+                <tr class="hover:bg-papel/30 transition-colors">
+                  <td class="px-6 py-4">
+                    <a href={`/admin/clientes/b2b/${sol.id}`} class="font-medium text-humo hover:text-tabacco transition-colors">
+                      {sol.nombre_empresa}
+                    </a>
+                  </td>
+                  <td class="px-6 py-4 text-sm text-ceniza">{sol.nombre_contacto}</td>
+                  <td class="px-6 py-4 text-sm text-ceniza">{sol.email}</td>
+                  <td class="px-6 py-4 text-sm text-ceniza">{sol.bodega_nombre || sol.bodega_id}</td>
+                  <td class="px-6 py-4">
+                    <span class:list={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', badge.bg, badge.text]}>
+                      {badge.label}
+                    </span>
+                  </td>
+                  <td class="px-6 py-4 text-sm text-ceniza">{formatDate(sol.creado_en)}</td>
+                  <td class="px-6 py-4 text-right">
+                    <div class="flex items-center justify-end gap-2">
+                      <a
+                        href={`/admin/clientes/b2b/${sol.id}`}
+                        class="text-sm text-tabacco hover:text-tabacco/80 font-medium transition-colors"
+                      >
+                        Ver
+                      </a>
+                      {sol.estado === 'pendiente' && (
+                        <>
+                          <button
+                            class="approve-btn inline-flex items-center gap-1 px-3 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg text-xs font-medium hover:bg-emerald-100 transition-colors"
+                            data-id={sol.id}
+                            data-action="approve"
+                          >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                            Aprobar
+                          </button>
+                          <button
+                            class="reject-btn inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 text-red-700 rounded-lg text-xs font-medium hover:bg-red-100 transition-colors"
+                            data-id={sol.id}
+                            data-action="reject"
+                          >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Rechazar
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </div>
+
+  <!-- Notas Modal (hidden by default) -->
+  <div id="notas-modal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
+      <h3 id="notas-modal-title" class="text-lg font-display font-bold text-humo mb-4"></h3>
+      <textarea
+        id="notas-input"
+        rows="3"
+        placeholder="Notas opcionales (opcional)..."
+        class="w-full px-3 py-2 border border-papel rounded-xl text-sm text-humo placeholder:text-ceniza/60 focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco resize-none"
+      ></textarea>
+      <div class="flex justify-end gap-3 mt-4">
+        <button
+          id="notas-cancel"
+          class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          id="notas-confirm"
+          class="px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  // ─── Approve / Reject flow ──────────────────────────────────────────────
+  let pendingAction: { id: string; action: 'approve' | 'reject' } | null = null;
+
+  const modal = document.getElementById('notas-modal')!;
+  const modalTitle = document.getElementById('notas-modal-title')!;
+  const notasInput = document.getElementById('notas-input') as HTMLTextAreaElement;
+  const cancelBtn = document.getElementById('notas-cancel')!;
+  const confirmBtn = document.getElementById('notas-confirm')!;
+
+  function openModal(id: string, action: 'approve' | 'reject') {
+    pendingAction = { id, action };
+    modalTitle.textContent = action === 'approve' ? 'Aprobar solicitud' : 'Rechazar solicitud';
+    notasInput.value = '';
+    modal.classList.remove('hidden');
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    pendingAction = null;
+    notasInput.value = '';
+  }
+
+  // Delegate clicks
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const btn = target.closest('.approve-btn, .reject-btn') as HTMLElement | null;
+    if (btn) {
+      const id = btn.dataset.id!;
+      const action = btn.dataset.action as 'approve' | 'reject';
+      openModal(id, action);
+    }
+  });
+
+  cancelBtn.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  confirmBtn.addEventListener('click', async () => {
+    if (!pendingAction) return;
+
+    const { id, action } = pendingAction;
+    const notas = notasInput.value.trim();
+    const endpoint = action === 'approve' ? '/api/admin/b2b/approve' : '/api/admin/b2b/reject';
+
+    confirmBtn.textContent = 'Procesando...';
+    (confirmBtn as HTMLButtonElement).disabled = true;
+
+    try {
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, notas: notas || undefined }),
+      });
+
+      if (res.ok) {
+        window.location.reload();
+      } else {
+        const data = await res.json();
+        alert(`Error: ${data.error || 'No se pudo procesar'}`);
+      }
+    } catch {
+      alert('Error de conexión');
+    } finally {
+      confirmBtn.textContent = 'Confirmar';
+      (confirmBtn as HTMLButtonElement).disabled = false;
+      closeModal();
+    }
+  });
+</script>

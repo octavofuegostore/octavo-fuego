@@ -52,12 +52,10 @@ export const MOCK_REVENUE_TREND = {
     { label: 'Jun', value: 201000 },
   ],
   trimestre: [
-    { label: 'Ene', value: 125000 },
-    { label: 'Feb', value: 148000 },
-    { label: 'Mar', value: 132000 },
-    { label: 'Abr', value: 167000 },
-    { label: 'May', value: 189000 },
-    { label: 'Jun', value: 201000 },
+    { label: 'Q1', value: 405000 },
+    { label: 'Q2', value: 557000 },
+    { label: 'Q3', value: 647000 },
+    { label: 'Q4', value: 846000 },
   ],
   ano: [
     { label: 'Ene', value: 125000 },

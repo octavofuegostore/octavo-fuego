@@ -170,75 +170,6 @@ create table listas_precio (
   min_gramos  integer default 0,           -- MOQ: mínimo de compra en gramos
   unique(grupo_id, variante_id)
 );
-
--- ─────────────────────────────────────────
--- CARRITO (Lógica canibalizada de Medusa)
--- ─────────────────────────────────────────
-
-create table carritos (
-  id          uuid primary key default gen_random_uuid(),
-  cliente_id  uuid references clientes(id),
-  region_id   uuid references regiones(id),
-  pais        char(2) not null default 'CO',
-  moneda      char(3) not null default 'COP',
-  estado      text default 'activo',       -- 'activo' | 'completado' | 'abandonado'
-  creado_en   timestamptz default now(),
-  actualizado timestamptz default now()
-);
-
-create table items_carrito (
-  id          uuid primary key default gen_random_uuid(),
-  carrito_id  uuid references carritos(id),
-  variante_id uuid references variantes(id),
-  gramos      integer not null,
-  precio_unit integer not null,            -- Precio al momento de agregar
-  reserva_id  uuid references reservas(id)
-);
-
--- ─────────────────────────────────────────
--- ÓRDENES (Lógica canibalizada de Medusa)
--- ─────────────────────────────────────────
-
-create table ordenes (
-  id              uuid primary key default gen_random_uuid(),
-  display_id      serial,                  -- #001, #002 — número visible al cliente
-  cliente_id      uuid references clientes(id),
-  carrito_id      uuid references carritos(id),
-  estado          text default 'pendiente',
-  -- 'pendiente' | 'pagado' | 'preparando' | 'enviado' | 'entregado' | 'cancelado'
-  total_cop       integer,
-  total_brl       numeric(10,2),
-  total_usd       numeric(10,2),
-  canal           text default 'whatsapp', -- 'whatsapp' | 'web'
-  notas           text,
-  creado_en       timestamptz default now()
-);
-
-create table items_orden (
-  id          uuid primary key default gen_random_uuid(),
-  orden_id    uuid references ordenes(id),
-  variante_id uuid references variantes(id),
-  gramos      integer not null,
-  precio_unit integer not null,
-  subtotal    integer not null
-);
-
--- ─────────────────────────────────────────
--- MOVIMIENTOS — Auditoría completa
--- ─────────────────────────────────────────
-
-create table movimientos_inventario (
-  id          uuid primary key default gen_random_uuid(),
-  item_id     uuid references items_inventario(id),
-  bodega_id   uuid references bodegas(id),
-  tipo        text not null,
-  -- 'entrada' | 'venta' | 'reserva' | 'liberacion' | 'transferencia_salida' | 'transferencia_entrada' | 'ajuste'
-  gramos      integer not null,            -- positivo = entrada, negativo = salida
-  referencia  text,                        -- orden_id, transferencia_id, etc.
-  notas       text,
-  creado_en   timestamptz default now()
-);
-
 -- ─────────────────────────────────────────
 -- REGIONES Y DETECCIÓN DE CLIENTE
 -- ─────────────────────────────────────────
@@ -312,6 +243,75 @@ insert into tarifas_envio (region_id, min_gramos, max_gramos, tarifa_fija, tarif
   ((select id from regiones where codigo = 'EU'), 501, 2000, 35.00, 0.05, '7-14 días hábiles'),
   ((select id from regiones where codigo = 'US'), 1, 500, 25.00, 0.10, '7-14 días hábiles'),
   ((select id from regiones where codigo = 'US'), 501, 2000, 35.00, 0.05, '7-14 días hábiles');
+
+-- ─────────────────────────────────────────
+-- CARRITO (Lógica canibalizada de Medusa)
+-- ─────────────────────────────────────────
+
+create table carritos (
+  id          uuid primary key default gen_random_uuid(),
+  cliente_id  uuid references clientes(id),
+  region_id   uuid references regiones(id),
+  pais        char(2) not null default 'CO',
+  moneda      char(3) not null default 'COP',
+  estado      text default 'activo',       -- 'activo' | 'completado' | 'abandonado'
+  creado_en   timestamptz default now(),
+  actualizado timestamptz default now()
+);
+
+create table items_carrito (
+  id          uuid primary key default gen_random_uuid(),
+  carrito_id  uuid references carritos(id),
+  variante_id uuid references variantes(id),
+  gramos      integer not null,
+  precio_unit integer not null,            -- Precio al momento de agregar
+  reserva_id  uuid references reservas(id)
+);
+
+-- ─────────────────────────────────────────
+-- ÓRDENES (Lógica canibalizada de Medusa)
+-- ─────────────────────────────────────────
+
+create table ordenes (
+  id              uuid primary key default gen_random_uuid(),
+  display_id      serial,                  -- #001, #002 — número visible al cliente
+  cliente_id      uuid references clientes(id),
+  carrito_id      uuid references carritos(id),
+  estado          text default 'pendiente',
+  -- 'pendiente' | 'pagado' | 'preparando' | 'enviado' | 'entregado' | 'cancelado'
+  total_cop       integer,
+  total_brl       numeric(10,2),
+  total_usd       numeric(10,2),
+  canal           text default 'whatsapp', -- 'whatsapp' | 'web'
+  notas           text,
+  creado_en       timestamptz default now()
+);
+
+create table items_orden (
+  id          uuid primary key default gen_random_uuid(),
+  orden_id    uuid references ordenes(id),
+  variante_id uuid references variantes(id),
+  gramos      integer not null,
+  precio_unit integer not null,
+  subtotal    integer not null
+);
+
+-- ─────────────────────────────────────────
+-- MOVIMIENTOS — Auditoría completa
+-- ─────────────────────────────────────────
+
+create table movimientos_inventario (
+  id          uuid primary key default gen_random_uuid(),
+  item_id     uuid references items_inventario(id),
+  bodega_id   uuid references bodegas(id),
+  tipo        text not null,
+  -- 'entrada' | 'venta' | 'reserva' | 'liberacion' | 'transferencia_salida' | 'transferencia_entrada' | 'ajuste'
+  gramos      integer not null,            -- positivo = entrada, negativo = salida
+  referencia  text,                        -- orden_id, transferencia_id, etc.
+  notas       text,
+  creado_en   timestamptz default now()
+);
+
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- RPC FUNCTIONS (para llamadas desde la app)

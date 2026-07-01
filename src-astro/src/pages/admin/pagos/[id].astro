@@ -1,0 +1,306 @@
+---
+export const prerender = false;
+// Pago detail page — [id]
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { getPagoById, getOrdenes } from '@/lib/admin/service';
+import { formatCurrency } from '@/lib/formatCurrency';
+
+const { id } = Astro.params;
+
+const pago = id ? await getPagoById(id) : undefined;
+const ordenes = pago ? await getOrdenes() : [];
+const orden = ordenes.find((o) => o.id === pago?.orden_id);
+
+// ─── Config maps ────────────────────────────────────────────────────────────
+const metodoConfig: Record<string, { label: string; icon: string; class: string }> = {
+  wompi_link: { label: 'Link Wompi', icon: '🔗', class: 'bg-info/10 text-info' },
+  pix_qr: { label: 'Pix QR', icon: '📱', class: 'bg-success/10 text-success' },
+  pix_copia_cola: { label: 'Pix Copia y Pega', icon: '📋', class: 'bg-success/10 text-success' },
+};
+
+const estadoConfig: Record<string, { label: string; class: string }> = {
+  pendiente: { label: 'Pendiente', class: 'bg-warning/10 text-warning' },
+  procesando: { label: 'Procesando', class: 'bg-info/10 text-info' },
+  confirmado: { label: 'Confirmado', class: 'bg-success/10 text-success' },
+  fallido: { label: 'Fallido', class: 'bg-error/10 text-error' },
+  reembolsado: { label: 'Reembolsado', class: 'bg-ceniza/10 text-ceniza' },
+};
+
+// Timeline states
+const timelineSteps = ['pendiente', 'procesando', 'confirmado'];
+const currentStepIndex = pago ? timelineSteps.indexOf(pago.estado === 'fallido' ? 'procesando' : pago.estado) : -1;
+const isFailed = pago?.estado === 'fallido';
+const isReembolsado = pago?.estado === 'reembolsado';
+---
+
+<AdminLayout title={pago ? `Pago #${pago.id}` : 'Pago no encontrado'} description="Detalle del pago">
+  <!-- Back link -->
+  <div class="mb-6">
+    <a
+      href="/admin/pagos"
+      class="inline-flex items-center gap-2 text-sm text-ceniza hover:text-humo transition-colors"
+    >
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      Volver a Pagos
+    </a>
+  </div>
+
+  {!pago ? (
+    <!-- 404 State -->
+    <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+      <svg class="w-20 h-20 text-ceniza/30 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      <h2 class="text-xl font-display font-bold text-humo mb-2">Pago no encontrado</h2>
+      <p class="text-ceniza mb-6">El pago con ID <span class="font-mono text-humo">#{id}</span> no existe o fue eliminado.</p>
+      <a
+        href="/admin/pagos"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+      >
+        Ver todos los pagos
+      </a>
+    </div>
+  ) : (
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Pago Header -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <div class="flex items-start justify-between">
+            <div>
+              <h2 class="text-xl font-display font-bold text-humo">Pago #{pago.id}</h2>
+              <p class="text-sm text-ceniza mt-1">
+                Creado el{' '}
+                {new Date(pago.creado_en).toLocaleDateString('es-CO', {
+                  day: '2-digit', month: 'long', year: 'numeric',
+                  hour: '2-digit', minute: '2-digit',
+                })}
+              </p>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class:list={[
+                "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                metodoConfig[pago.metodo]?.class || 'bg-papel text-ceniza',
+              ]}>
+                {metodoConfig[pago.metodo]?.label || pago.metodo}
+              </span>
+              <span class:list={[
+                "inline-flex items-center px-3 py-1 rounded-full text-sm font-medium",
+                estadoConfig[pago.estado]?.class || 'bg-papel text-ceniza',
+              ]}>
+                {estadoConfig[pago.estado]?.label || pago.estado}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estado Timeline -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-display text-lg font-bold text-humo mb-6">Estado del Pago</h3>
+
+          <div class="relative">
+            {/* Timeline line */}
+            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-papel" />
+
+            {/* Pendiente */}
+            <div class="relative flex items-start gap-4 pb-8">
+              <div class:list={[
+                "w-8 h-8 rounded-full flex items-center justify-center z-10 shrink-0",
+                currentStepIndex >= 0 ? 'bg-success' : 'bg-papel',
+              ]}>
+                {currentStepIndex >= 0 ? (
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <span class="w-2 h-2 bg-ceniza rounded-full" />
+                )}
+              </div>
+              <div class="pt-1">
+                <p class:list={[
+                  "font-medium",
+                  currentStepIndex >= 0 ? 'text-humo' : 'text-ceniza',
+                ]}>Pendiente</p>
+                <p class="text-xs text-ceniza mt-0.5">Pago registrado, esperando procesamiento</p>
+              </div>
+            </div>
+
+            {/* Procesando */}
+            <div class="relative flex items-start gap-4 pb-8">
+              <div class:list={[
+                "w-8 h-8 rounded-full flex items-center justify-center z-10 shrink-0",
+                currentStepIndex >= 1 ? 'bg-success' :
+                currentStepIndex === 0 && !isFailed ? 'bg-info animate-pulse' : 'bg-papel',
+              ]}>
+                {currentStepIndex >= 1 ? (
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : currentStepIndex === 0 && !isFailed ? (
+                  <span class="w-2 h-2 bg-white rounded-full" />
+                ) : (
+                  <span class="w-2 h-2 bg-ceniza rounded-full" />
+                )}
+              </div>
+              <div class="pt-1">
+                <p class:list={[
+                  "font-medium",
+                  currentStepIndex >= 1 ? 'text-humo' : 'text-ceniza',
+                ]}>Procesando</p>
+                <p class="text-xs text-ceniza mt-0.5">En proceso de validación con el gateway</p>
+              </div>
+            </div>
+
+            {/* Confirmado / Fallido */}
+            <div class="relative flex items-start gap-4">
+              <div class:list={[
+                "w-8 h-8 rounded-full flex items-center justify-center z-10 shrink-0",
+                isFailed ? 'bg-error' :
+                isReembolsado ? 'bg-ceniza' :
+                currentStepIndex >= 2 ? 'bg-success' : 'bg-papel',
+              ]}>
+                {isFailed ? (
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : isReembolsado ? (
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+                  </svg>
+                ) : currentStepIndex >= 2 ? (
+                  <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                ) : (
+                  <span class="w-2 h-2 bg-ceniza rounded-full" />
+                )}
+              </div>
+              <div class="pt-1">
+                <p class:list={[
+                  "font-medium",
+                  isFailed ? 'text-error' : isReembolsado ? 'text-ceniza' : currentStepIndex >= 2 ? 'text-humo' : 'text-ceniza',
+                ]}>
+                  {isFailed ? 'Fallido' : isReembolsado ? 'Reembolsado' : 'Confirmado'}
+                </p>
+                <p class="text-xs text-ceniza mt-0.5">
+                  {isFailed
+                    ? 'El pago no pudo ser procesado'
+                    : isReembolsado
+                    ? 'El pago fue reembolsado al cliente'
+                    : pago.confirmado_en
+                    ? `Confirmado el ${new Date(pago.confirmado_en).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+                    : 'Pago exitoso, fondos recibidos'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Referencia Externa -->
+        {pago.referencia_externa && (
+          <div class="bg-white rounded-2xl shadow-card p-6">
+            <h3 class="font-display text-lg font-bold text-humo mb-4">Referencia Externa</h3>
+            <div class="bg-papel/50 rounded-lg p-4">
+              <code class="text-sm text-humo font-mono break-all">{pago.referencia_externa}</code>
+            </div>
+          </div>
+        )}
+
+        <!-- Metadata -->
+        {pago.metadata && Object.keys(pago.metadata).length > 0 && (
+          <div class="bg-white rounded-2xl shadow-card p-6">
+            <h3 class="font-display text-lg font-bold text-humo mb-4">Metadata</h3>
+            <div class="bg-papel/50 rounded-lg p-4 overflow-x-auto">
+              <pre class="text-sm text-humo font-mono whitespace-pre-wrap">{JSON.stringify(pago.metadata, null, 2)}</pre>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Monto -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-display text-lg font-bold text-humo mb-4">Monto</h3>
+          <p class="text-3xl font-bold text-tabacco font-display">
+            {formatCurrency(pago.monto, pago.moneda as 'COP' | 'BRL')}
+          </p>
+          <p class="text-sm text-ceniza mt-1">{pago.moneda}</p>
+        </div>
+
+        <!-- Orden Relacionada -->
+        {orden && (
+          <div class="bg-white rounded-2xl shadow-card p-6">
+            <h3 class="font-display text-lg font-bold text-humo mb-4">Orden Relacionada</h3>
+            <div class="space-y-3">
+              <div>
+                <p class="text-sm text-ceniza">ID Orden</p>
+                <a href={`/admin/ordenes/${orden.id}`} class="text-sm font-medium text-tabacco hover:text-tabacco/80 transition-colors">
+                  {orden.id}
+                </a>
+              </div>
+              <div>
+                <p class="text-sm text-ceniza">Total</p>
+                <p class="text-sm font-medium text-humo">{formatCurrency(orden.total, orden.currency as any)}</p>
+              </div>
+              <div>
+                <p class="text-sm text-ceniza">Estado</p>
+                <p class="text-sm font-medium text-humo capitalize">{orden.status}</p>
+              </div>
+              <div>
+                <p class="text-sm text-ceniza">Canal</p>
+                <p class="text-sm font-medium text-humo capitalize">{orden.channel}</p>
+              </div>
+            </div>
+            <div class="mt-4 pt-4 border-t border-papel">
+              <a href={`/admin/ordenes/${orden.id}`} class="text-sm text-tabacco hover:text-tabacco/80 font-medium transition-colors">
+                Ver detalle de orden →
+              </a>
+            </div>
+          </div>
+        )}
+
+        <!-- Fechas -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-display text-lg font-bold text-humo mb-4">Fechas</h3>
+          <div class="space-y-3">
+            <div>
+              <p class="text-sm text-ceniza">Creado</p>
+              <p class="text-sm font-medium text-humo">
+                {new Date(pago.creado_en).toLocaleDateString('es-CO', {
+                  day: '2-digit', month: 'short', year: 'numeric',
+                  hour: '2-digit', minute: '2-digit',
+                })}
+              </p>
+            </div>
+            {pago.confirmado_en && (
+              <div>
+                <p class="text-sm text-ceniza">Confirmado</p>
+                <p class="text-sm font-medium text-success">
+                  {new Date(pago.confirmado_en).toLocaleDateString('es-CO', {
+                    day: '2-digit', month: 'short', year: 'numeric',
+                    hour: '2-digit', minute: '2-digit',
+                  })}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Bodega -->
+        <div class="bg-white rounded-2xl shadow-card p-6">
+          <h3 class="font-display text-lg font-bold text-humo mb-4">Bodega</h3>
+          <div class="flex items-center gap-3">
+            <span class:list={[
+              "w-3 h-3 rounded-full",
+              pago.bodega_id === 'CO-BOGOTA' ? 'bg-info' : 'bg-success',
+            ]} />
+            <span class="text-sm font-medium text-humo">{pago.bodega_id}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )}
+</AdminLayout>
