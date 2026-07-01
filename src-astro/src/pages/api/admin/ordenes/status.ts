@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 
 export const prerender = false;
 
-const VALID_STATUSES = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'] as const;
+const VALID_STATUSES = ['pendiente', 'confirmada', 'enviada', 'entregada', 'cancelada'] as const;
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
