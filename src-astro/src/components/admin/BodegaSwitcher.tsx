@@ -38,7 +38,7 @@ function setCookie(name: string, value: string): void {
 export default function BodegaSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
   const [selected, setSelected] = useState<BodegaOption>(() => {
-    const cookie = getCookie('of_admin_bodega');
+    const cookie = typeof document !== 'undefined' ? getCookie('of_admin_bodega') : '';
     return BODEGAS.find((b) => b.id === cookie) || BODEGAS[0];
   });
 

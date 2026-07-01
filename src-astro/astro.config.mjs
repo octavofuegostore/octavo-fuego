@@ -41,6 +41,16 @@ export default defineConfig({
           'alt-arrow-down-bold-duotone',
           'global-bold-duotone',
           'bag-2-bold-duotone',
+          // Admin Sidebar
+          'chart-square-bold',
+          'box-bold',
+          'cart-large-2-bold',
+          'card-bold',
+          'users-group-rounded-bold',
+          'clipboard-list-bold',
+          'settings-bold',
+          'clock-circle-bold',
+          'logout-2-bold',
         ],
         ph: [
           'instagram-logo-duotone',
