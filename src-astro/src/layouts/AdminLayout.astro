@@ -1,6 +1,9 @@
 ---
 import '../styles/global.css';
+import { Icon } from 'astro-icon/components';
 import ToasterClient from '@/components/admin/ToasterClient';
+import BodegaSwitcher from '@/components/admin/BodegaSwitcher';
+import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown.astro';
 
 interface Props {
   title: string;
@@ -9,6 +12,19 @@ interface Props {
 
 const { title, description = 'Panel de administración de Octavo Fuego' } = Astro.props;
 const currentPath = Astro.url.pathname;
+const user = Astro.locals.user;
+
+function getInitials(nameOrEmail?: string): string {
+  if (!nameOrEmail) return 'OF';
+  const parts = nameOrEmail.trim().split(/\s+/);
+  if (parts.length === 1) {
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+const userName = user?.nombre || user?.email || 'Administrador';
+const userInitials = getInitials(user?.nombre || user?.email || undefined);
 ---
 
 <html lang="es">
@@ -52,9 +68,7 @@ const currentPath = Astro.url.pathname;
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                </svg>
+                <Icon name="solar:chart-square-bold" class="w-5 h-5" />
                 <span class="font-medium">Dashboard</span>
               </a>
             </li>
@@ -71,9 +85,7 @@ const currentPath = Astro.url.pathname;
                 ]}
               >
                 <div class="flex items-center gap-3">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                  </svg>
+                  <Icon name="solar:box-bold" class="w-5 h-5" />
                   <span class="font-medium">Inventario</span>
                 </div>
                 <svg class="w-4 h-4 transition-transform duration-200 inventario-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -137,29 +149,77 @@ const currentPath = Astro.url.pathname;
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+                <Icon name="solar:cart-large-2-bold" class="w-5 h-5" />
                 <span class="font-medium">Órdenes</span>
+              </a>
+            </li>
+
+            <!-- Pagos -->
+            <li>
+              <a
+                href="/admin/pagos"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath.startsWith("/admin/pagos")
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <Icon name="solar:card-bold" class="w-5 h-5" />
+                <span class="font-medium">Pagos</span>
               </a>
             </li>
 
             <!-- Clientes -->
             <li>
-              <a
-                href="/admin/clientes"
+              <button
+                id="clientes-toggle"
                 class:list={[
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/clientes")
                     ? "bg-tabacco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                <div class="flex items-center gap-3">
+                  <Icon name="solar:users-group-rounded-bold" class="w-5 h-5" />
+                  <span class="font-medium">Clientes</span>
+                </div>
+                <svg class="w-4 h-4 transition-transform duration-200 clientes-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                 </svg>
-                <span class="font-medium">Clientes</span>
-              </a>
+              </button>
+              <ul id="clientes-submenu" class:list={[
+                "mt-1 ml-8 space-y-1 overflow-hidden transition-all duration-200",
+                currentPath.startsWith("/admin/clientes") ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+              ]}>
+                <li>
+                  <a
+                    href="/admin/clientes"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath === "/admin/clientes"
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >
+                    Todos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/admin/clientes/b2b"
+                    class:list={[
+                      "block px-3 py-2 rounded-lg text-sm transition-colors",
+                      currentPath.startsWith("/admin/clientes/b2b")
+                        ? "bg-tabacco/20 text-tabacco"
+                        : "text-papel/60 hover:bg-humo/60 hover:text-papel"
+                    ]}
+                  >
+                    Solicitudes B2B
+                  </a>
+                </li>
+              </ul>
             </li>
 
             <!-- Contabilidad -->
@@ -174,9 +234,7 @@ const currentPath = Astro.url.pathname;
                 ]}
               >
                 <div class="flex items-center gap-3">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                  </svg>
+                  <Icon name="solar:clipboard-list-bold" class="w-5 h-5" />
                   <span class="font-medium">Contabilidad</span>
                 </div>
                 <svg class="w-4 h-4 transition-transform duration-200 contabilidad-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,11 +292,24 @@ const currentPath = Astro.url.pathname;
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
+                <Icon name="solar:settings-bold" class="w-5 h-5" />
                 <span class="font-medium">Configuración</span>
+              </a>
+            </li>
+
+            <!-- Actividad -->
+            <li>
+              <a
+                href="/admin/actividad"
+                class:list={[
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
+                  currentPath === "/admin/actividad"
+                    ? "bg-tabacco text-white"
+                    : "text-papel/70 hover:bg-humo/80 hover:text-papel"
+                ]}
+              >
+                <Icon name="solar:clock-circle-bold" class="w-5 h-5" />
+                <span class="font-medium">Actividad</span>
               </a>
             </li>
           </ul>
@@ -248,20 +319,18 @@ const currentPath = Astro.url.pathname;
         <div class="p-4 border-t border-humo/50">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 bg-tabacco/20 rounded-full flex items-center justify-center">
-              <span class="text-tabacco font-medium text-sm">JD</span>
+              <span class="text-tabacco font-medium text-sm">{userInitials}</span>
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-medium text-papel truncate">Josue Calderon</p>
-              <p class="text-xs text-ceniza truncate">Admin</p>
+              <p class="text-sm font-medium text-papel truncate">{userName}</p>
+              <p class="text-xs text-ceniza truncate">{user?.role || 'Admin'}</p>
             </div>
             <a
               href="/api/auth/logout"
               class="flex items-center gap-2 px-3 py-2 rounded-lg text-papel/70 hover:text-papel hover:bg-humo/80 transition-colors"
               title="Cerrar sesión"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-              </svg>
+              <Icon name="solar:logout-2-bold" class="w-5 h-5" />
               <span class="text-sm font-medium">Cerrar Sesión</span>
             </a>
           </div>
@@ -283,6 +352,7 @@ const currentPath = Astro.url.pathname;
           </button>
 
           <!-- Search -->
+          <!-- TODO: implement search across products, orders, and clients -->
           <div class="flex-1 max-w-md mx-4">
             <div class="relative">
               <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -298,18 +368,17 @@ const currentPath = Astro.url.pathname;
 
           <!-- Right section -->
           <div class="flex items-center gap-4">
+            <!-- Bodega Switcher -->
+            <BodegaSwitcher client:load />
+
             <!-- Notifications -->
-            <button class="relative text-humo hover:text-tabacco transition-colors">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-              </svg>
-              <span class="absolute -top-1 -right-1 w-4 h-4 bg-tabacco text-white text-xs rounded-full flex items-center justify-center">
-                3
-              </span>
-            </button>
+            <NotificationDropdown usuarioId={user?.sub} />
 
             <!-- Quick actions -->
-            <button class="flex items-center gap-2 px-3 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors">
+            <button
+              id="admin-quick-create-btn"
+              class="flex items-center gap-2 px-3 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+            >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
@@ -363,6 +432,19 @@ const currentPath = Astro.url.pathname;
         inventarioArrow?.classList.toggle('rotate-180');
       });
 
+      // Clientes submenu toggle
+      const clientesToggle = document.getElementById('clientes-toggle');
+      const clientesSubmenu = document.getElementById('clientes-submenu');
+      const clientesArrow = document.querySelector('.clientes-arrow');
+
+      clientesToggle?.addEventListener('click', () => {
+        clientesSubmenu?.classList.toggle('max-h-0');
+        clientesSubmenu?.classList.toggle('max-h-40');
+        clientesSubmenu?.classList.toggle('opacity-0');
+        clientesSubmenu?.classList.toggle('opacity-100');
+        clientesArrow?.classList.toggle('rotate-180');
+      });
+
       // Contabilidad submenu toggle
       const contabilidadToggle = document.getElementById('contabilidad-toggle');
       const contabilidadSubmenu = document.getElementById('contabilidad-submenu');
@@ -382,6 +464,14 @@ const currentPath = Astro.url.pathname;
           sidebar?.classList.add('-translate-x-full');
           overlay?.classList.add('hidden');
         }
+      });
+
+      // Quick create button
+      const quickCreateBtn = document.getElementById('admin-quick-create-btn');
+      quickCreateBtn?.addEventListener('click', () => {
+        import('sonner')
+          .then(({ toast }) => toast('Próximamente'))
+          .catch(() => window.alert('Próximamente'));
       });
     </script>
   </body>

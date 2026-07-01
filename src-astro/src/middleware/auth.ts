@@ -3,13 +3,24 @@
  *
  * 1. Strips locale prefixes (`/en/`, `/pt/`) from admin and API paths
  *    so auth checks always run on canonical URLs.
- * 2. Reads the `of_admin_token` cookie and validates it via SHA-256.
- * 3. Skips auth for `/admin/login` and `/api/*`.
- * 4. Redirects unauthenticated requests to `/admin/login`.
+ * 2. Reads the `of_admin_token` cookie and validates it via JWT (jose).
+ * 3. Sets `context.locals.user` with decoded payload (email, role, bodega_id).
+ * 4. Skips auth for `/admin/login` and `/api/*`.
+ * 5. Redirects unauthenticated requests to `/admin/login`.
  */
 
 import type { MiddlewareHandler } from 'astro';
-import { verifyToken } from '@/lib/auth';
+import { verifyJWT, verifyToken } from '@/lib/auth';
+import type { AuthPayload } from '@/lib/auth';
+
+// Extend Astro.Locals so TypeScript knows about `user`
+declare global {
+  namespace App {
+    interface Locals {
+      user?: AuthPayload;
+    }
+  }
+}
 
 const LOCALE_ADMIN_REGEX = /^\/(es|en|pt)\/(admin|api)/;
 
@@ -21,16 +32,13 @@ function isAdminRoute(pathname: string): boolean {
 }
 
 export const onRequest: MiddlewareHandler = async (context, next) => {
-  const { request, redirect, cookies } = context;
+  const { request, redirect, cookies, locals } = context;
   const url = new URL(request.url);
   const pathname = url.pathname;
 
   // ---------------------------------------------------------------------------
   // Step 1 — Strip locale prefix from admin / API paths
   // ---------------------------------------------------------------------------
-  // Astro i18n config: defaultLocale 'es' (no prefix), 'en' and 'pt' are prefixed.
-  // Redirect `/en/admin/*` and `/pt/admin/*` → `/admin/*` so auth checks and
-  // redirects always land on canonical (es) paths.
   const localeMatch = pathname.match(LOCALE_ADMIN_REGEX);
   if (localeMatch) {
     const cleanPath = pathname.replace(/^\/(es|en|pt)/, '');
@@ -49,9 +57,19 @@ export const onRequest: MiddlewareHandler = async (context, next) => {
   // ---------------------------------------------------------------------------
   if (isAdminRoute(pathname)) {
     const token = cookies.get('of_admin_token')?.value;
-    const valid = await verifyToken(token);
 
-    if (!valid) {
+    // Try JWT verification first
+    const payload = await verifyJWT(token);
+
+    if (payload) {
+      locals.user = payload;
+      return next();
+    }
+
+    // Fallback: legacy SHA-256 token (for users who haven't logged in again)
+    const legacyValid = await verifyToken(token);
+
+    if (!legacyValid) {
       return redirect('/admin/login', 302);
     }
   }

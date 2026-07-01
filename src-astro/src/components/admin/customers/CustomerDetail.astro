@@ -1,50 +1,18 @@
 ---
-// CustomerDetail.astro — Customer detail view with order history
+// CustomerDetail.astro — Customer detail view
+import { getClienteById } from '@/lib/admin/service';
+
 interface Props {
   customerId: string;
 }
 
 const { customerId } = Astro.props;
 
-// Mock customer data
-const customer = {
-  id: '1',
-  name: 'María García',
-  email: 'maria@email.com',
-  phone: '+57 300 123 4567',
-  address: 'Calle 123 #45-67, Bogotá, Colombia',
-  location: 'CO',
-  type: 'retail',
-  status: 'active',
-  totalOrders: 5,
-  totalSpent: 225000,
-  currency: 'COP',
-  averageOrderValue: 45000,
-  firstOrder: '2026-01-15',
-  lastOrder: '2026-06-16',
-  notes: 'Cliente frecuente, prefiere envío rápido',
-  orders: [
-    { id: 'OF-2026-001', date: '2026-06-16', total: 125000, status: 'pending' },
-    { id: 'OF-2026-005', date: '2026-05-20', total: 45000, status: 'delivered' },
-    { id: 'OF-2026-012', date: '2026-04-10', total: 90000, status: 'delivered' },
-    { id: 'OF-2026-018', date: '2026-03-05', total: 35000, status: 'delivered' },
-    { id: 'OF-2026-025', date: '2026-01-15', total: 45000, status: 'delivered' }
-  ]
-};
-
-const statusConfig = {
-  pending: { bg: 'bg-warning/10', text: 'text-warning', label: 'Pendiente' },
-  confirmed: { bg: 'bg-info/10', text: 'text-info', label: 'Confirmada' },
-  shipped: { bg: 'bg-accent/10', text: 'text-accent', label: 'Enviada' },
-  delivered: { bg: 'bg-success/10', text: 'text-success', label: 'Entregada' },
-  cancelled: { bg: 'bg-error/10', text: 'text-error', label: 'Cancelada' }
-};
+const customer = await getClienteById(customerId);
 
 const locationConfig = {
   CO: { flag: '🇨🇴', label: 'Colombia' },
-  BR: { flag: '🇧🇷', label: 'Brasil' },
-  EU: { flag: '🇪🇺', label: 'Europa' },
-  US: { flag: '🇺🇸', label: 'USA' }
+  BR: { flag: '🇧🇷', label: 'Brasil' }
 };
 
 const typeConfig = {
@@ -67,9 +35,13 @@ function formatDate(dateStr: string): string {
     year: 'numeric'
   });
 }
+
+const averageOrderValue = customer && customer.totalOrders > 0
+  ? Math.round(customer.totalSpent / customer.totalOrders)
+  : 0;
 ---
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+{customer ? (<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
   <!-- Main Info -->
   <div class="lg:col-span-2 space-y-6">
     <!-- Customer Header -->
@@ -113,57 +85,6 @@ function formatDate(dateStr: string): string {
       </div>
     </div>
 
-    <!-- Order History -->
-    <div class="bg-white rounded-2xl shadow-card overflow-hidden">
-      <div class="p-6 border-b border-papel">
-        <div class="flex items-center justify-between">
-          <h3 class="font-display text-lg font-bold text-humo">Historial de Órdenes</h3>
-          <span class="text-sm text-ceniza">{customer.totalOrders} órdenes</span>
-        </div>
-      </div>
-      
-      <div class="divide-y divide-papel">
-        {customer.orders.map((order) => {
-          const status = statusConfig[order.status];
-          
-          return (
-            <div class="p-4 hover:bg-papel/30 transition-colors">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                  <div class="w-10 h-10 bg-papel rounded-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p class="text-sm font-medium text-humo">{order.id}</p>
-                    <p class="text-xs text-ceniza">{formatDate(order.date)}</p>
-                  </div>
-                </div>
-                
-                <div class="flex items-center gap-4">
-                  <span class:list={[
-                    "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-                    status.bg,
-                    status.text
-                  ]}>
-                    {status.label}
-                  </span>
-                  <p class="text-sm font-medium text-humo w-24 text-right">
-                    {formatPrice(order.total, customer.currency)}
-                  </p>
-                  <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </div>
   </div>
 
   <!-- Sidebar -->
@@ -183,11 +104,7 @@ function formatDate(dateStr: string): string {
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm text-ceniza">Valor Promedio</span>
-          <span class="text-sm font-bold text-humo">{formatPrice(customer.averageOrderValue, customer.currency)}</span>
-        </div>
-        <div class="flex items-center justify-between">
-          <span class="text-sm text-ceniza">Primera Orden</span>
-          <span class="text-sm font-medium text-humo">{formatDate(customer.firstOrder)}</span>
+          <span class="text-sm font-bold text-humo">{formatPrice(averageOrderValue, customer.currency)}</span>
         </div>
         <div class="flex items-center justify-between">
           <span class="text-sm text-ceniza">Última Orden</span>
@@ -209,20 +126,8 @@ function formatDate(dateStr: string): string {
           <p class="text-sm text-ceniza">Teléfono</p>
           <p class="text-sm font-medium text-humo">{customer.phone}</p>
         </div>
-        <div>
-          <p class="text-sm text-ceniza">Dirección</p>
-          <p class="text-sm font-medium text-humo">{customer.address}</p>
-        </div>
       </div>
     </div>
-
-    <!-- Notes -->
-    {customer.notes && (
-      <div class="bg-white rounded-2xl shadow-card p-6">
-        <h3 class="font-display text-lg font-bold text-humo mb-4">Notas</h3>
-        <p class="text-sm text-ceniza">{customer.notes}</p>
-      </div>
-    )}
 
     <!-- Actions -->
     <div class="bg-white rounded-2xl shadow-card p-6">
@@ -244,4 +149,14 @@ function formatDate(dateStr: string): string {
       </div>
     </div>
   </div>
-</div>
+</div>) : (
+  <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+    <div class="w-16 h-16 bg-papel rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg class="w-8 h-8 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      </svg>
+    </div>
+    <h2 class="text-lg font-display font-bold text-humo mb-2">Cliente no encontrado</h2>
+    <p class="text-sm text-ceniza">No se encontró información para el cliente solicitado.</p>
+  </div>
+)}

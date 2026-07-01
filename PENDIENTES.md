@@ -691,7 +691,52 @@ octavo-fuego/
 
 ---
 
-*Actualizado: Junio 17, 2026*
+*Actualizado: Julio 1, 2026*
+
+---
+
+## 🗄️ Deuda Técnica Diferida — Para Después del Sprint Actual
+
+> Engram: `sdd/octavo-fuego/deuda-diferida` (obs #1238)
+> Estas tareas están identificadas pero se postergan — no bloquean el sprint actual.
+
+### 🔴 Alta Prioridad (agregar al próximo sprint)
+
+- [ ] **Q18 — Pricing Engine (9 precios)** — `#1144` Service que centralice 3 presentaciones × 3 monedas. Sin esto no hay cálculos de orden reales.
+- [ ] **Q31-34 — ProductForm + OrderForm React** — `#1149` `#1150` Formularios de creación/edición de productos y órdenes. El admin los necesita todos los días.
+- [ ] **Q15 — Audit triggers + conectar timeline** — `#1143` Tabla audit_log existe en DB, triggers creados en migrations 004. Falta conectar UI de timeline en OrderDetail.
+
+### 🟡 Media Prioridad
+
+- [ ] **Q5 — GitHub Actions CI** — `#1140` Workflow typecheck + build en PRs. La build local funciona, pero no hay guardrail en equipo.
+- [ ] **Q7-Q23 — Deploy hook + rebuild desde admin** — `#1140` `#1145` Botón "Publicar cambios" que gatille rebuild en Vercel.
+- [ ] **Q8-Q10 — Zod + SupabaseService base** — `#1141` Clase base abstracta con errores tipados. Service actual es funcional pero difícil de escalar.
+- [ ] **Q28 — Alertas stock bajo en sidebar** — `#1147` Badge con count de productos con stock crítico.
+- [ ] **Q16 — Tabla categorías en DB** — `#1143` Hoy hardcodeado, migrar a tabla relacional.
+- [ ] **Q36 — Typed API Client (fetch+Zod)** — `#1151` Wrapper tipado sobre fetch.
+
+### 🟢 Baja Prioridad (post-MVP)
+
+- [ ] **Q37-Q38 — Testing (vitest + setup)** — `#1152` Configurar vitest, tests de PricingService y schemas.
+- [ ] **Q20 — Tasa de cambio automática** — `#1144` API externa vs fija manual.
+- [ ] **Q22 — Supabase Storage para imágenes** — `#1145` Hoy URLs externas, migrar a Storage.
+- [ ] **Q24 — Integración Bold/Wompi/Pix real** — `#1146` Hoy link de pago manual.
+- [ ] **Q33 — Delete suave (activo=false)** — `#1149` Hoy hard delete.
+
+### 🔗 Referencias Engram
+
+| Artifact | Obs ID | Descripción |
+|----------|--------|-------------|
+| Pricing Engine SDD | #1144 | Spec + design + tasks |
+| Product Pages SDD | #1149 | ProductForm + tabla real |
+| Orders+Customers SDD | #1150 | OrderForm + timeline |
+| DB Schema II SDD | #1143 | Audit triggers + categorías |
+| Infraestructura SDD | #1140 | CI/CD + deploy hooks |
+| Foundation Core SDD | #1141 | Zod + errors + service base |
+| Inventory Service SDD | #1147 | Alertas + stock bajo |
+| API Client SDD | #1151 | Fetch+Zod wrapper |
+| Testing SDD | #1152 | Vitest setup |
+| 38 Preguntas Originales | #1134 | Decisiones pendientes originales |
 
 ---
 

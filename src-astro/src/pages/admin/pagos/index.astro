@@ -1,0 +1,290 @@
+---
+export const prerender = false;
+// Pagos — Payment tracking dashboard
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { getPagos, getOrdenes } from '@/lib/admin/service';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+import { formatCurrency } from '@/lib/formatCurrency';
+
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const [pagos, ordenes] = await Promise.all([
+  getPagos(bodegaId || undefined),
+  getOrdenes(bodegaId || undefined),
+]);
+
+// ─── Stats ──────────────────────────────────────────────────────────────────
+const confirmados = pagos.filter((p) => p.estado === 'confirmado');
+const pendientes = pagos.filter((p) => p.estado === 'pendiente');
+const procesando = pagos.filter((p) => p.estado === 'procesando');
+const fallidos = pagos.filter((p) => p.estado === 'fallido');
+const totalConfirmados = confirmados.length;
+const totalPendientes = pendientes.length + procesando.length;
+const tasaExito = pagos.length > 0
+  ? Math.round((totalConfirmados / pagos.length) * 100)
+  : 0;
+const tasaExitoClass = 'text-2xl font-bold font-display mt-1 ' + (tasaExito >= 80 ? 'text-success' : tasaExito >= 50 ? 'text-warning' : 'text-error');
+const emptyStateClass = 'p-12 text-center ' + (pagos.length > 0 ? 'hidden' : '');
+const tableContainerClass = 'overflow-x-auto ' + (pagos.length === 0 ? 'hidden' : '');
+
+// Sum by currency
+const cobradoCOP = confirmados
+  .filter((p) => p.moneda === 'COP')
+  .reduce((sum, p) => sum + p.monto, 0);
+const cobradoBRL = confirmados
+  .filter((p) => p.moneda === 'BRL')
+  .reduce((sum, p) => sum + p.monto, 0);
+
+
+---
+
+<AdminLayout title="Pagos" description="Seguimiento de pagos y cobros">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Pagos</h1>
+        <p class="text-ceniza mt-1">Seguimiento de cobros y transacciones</p>
+      </div>
+      <button
+        id="generate-link-btn"
+        class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+        </svg>
+        Generar Link de Pago
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-2xl shadow-card p-5">
+      <p class="text-sm text-ceniza">Total Cobrado (COP)</p>
+      <p class="text-2xl font-bold text-humo font-display mt-1">
+        {cobradoCOP > 0 ? formatCurrency(cobradoCOP, 'COP') : '$0'}
+      </p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-card p-5">
+      <p class="text-sm text-ceniza">Total Cobrado (BRL)</p>
+      <p class="text-2xl font-bold text-humo font-display mt-1">
+        {cobradoBRL > 0 ? formatCurrency(cobradoBRL, 'BRL') : 'R$0'}
+      </p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-card p-5">
+      <p class="text-sm text-ceniza">Pagos Pendientes</p>
+      <p class="text-2xl font-bold text-warning font-display mt-1">{totalPendientes}</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow-card p-5">
+      <p class="text-sm text-ceniza">Tasa de Éxito</p>
+      <p class={tasaExitoClass}>
+        {tasaExito}%
+      </p>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white rounded-2xl shadow-card p-4 mb-6">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+      <div class="relative flex-1 w-full sm:max-w-xs">
+        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          type="text"
+          id="search-pagos"
+          placeholder="Buscar por ID u orden..."
+          class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+        />
+      </div>
+      <select
+        id="filter-metodo"
+        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+      >
+        <option value="">Todos los métodos</option>
+        <option value="wompi_link">Link Wompi</option>
+        <option value="pix_qr">Pix QR</option>
+        <option value="pix_copia_cola">Pix Copia</option>
+      </select>
+      <select
+        id="filter-estado"
+        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+      >
+        <option value="">Todos los estados</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="procesando">Procesando</option>
+        <option value="confirmado">Confirmado</option>
+        <option value="fallido">Fallido</option>
+        <option value="reembolsado">Reembolsado</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Pagos Table -->
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <!-- Loading skeleton -->
+    <div id="loading-skeleton" class="hidden">
+      <div class="divide-y divide-papel">
+        {Array.from({ length: 5 }).map(() => (
+          <div class="p-4 flex items-center gap-4 animate-pulse">
+            <div class="h-4 bg-papel rounded w-16" />
+            <div class="h-4 bg-papel rounded w-28" />
+            <div class="h-4 bg-papel rounded w-24" />
+            <div class="h-4 bg-papel rounded w-20" />
+            <div class="h-4 bg-papel rounded w-16" />
+            <div class="h-4 bg-papel rounded w-20" />
+            <div class="h-4 bg-papel rounded w-24" />
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="empty-state" class={emptyStateClass}>
+      <svg class="w-16 h-16 text-ceniza/40 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+      <p class="text-ceniza text-lg font-medium">No hay pagos registrados</p>
+      <p class="text-ceniza/60 text-sm mt-1">Los pagos aparecerán aquí cuando se confirmen transacciones</p>
+    </div>
+
+    <!-- Table -->
+    <div id="table-container" class={tableContainerClass}>
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-papel bg-papel/30">
+            <th class="text-left py-3 px-4 font-medium text-ceniza">ID</th>
+            <th class="text-left py-3 px-4 font-medium text-ceniza">Orden</th>
+            <th class="text-left py-3 px-4 font-medium text-ceniza">Método</th>
+            <th class="text-right py-3 px-4 font-medium text-ceniza">Monto</th>
+            <th class="text-left py-3 px-4 font-medium text-ceniza">Moneda</th>
+            <th class="text-left py-3 px-4 font-medium text-ceniza">Estado</th>
+            <th class="text-left py-3 px-4 font-medium text-ceniza">Fecha</th>
+          </tr>
+        </thead>
+        <tbody id="pagos-tbody" class="divide-y divide-papel">
+          {pagos.map((pago) => {
+            const metodoConfig = {
+              wompi_link: { label: 'Link Wompi', style: 'bg-info/10 text-info' },
+              pix_qr: { label: 'Pix QR', style: 'bg-success/10 text-success' },
+              pix_copia_cola: { label: 'Pix Copia', style: 'bg-success/10 text-success' },
+            } as const;
+            const estadoConfig = {
+              pendiente: { label: 'Pendiente', style: 'bg-warning/10 text-warning' },
+              procesando: { label: 'Procesando', style: 'bg-info/10 text-info' },
+              confirmado: { label: 'Confirmado', style: 'bg-success/10 text-success' },
+              fallido: { label: 'Fallido', style: 'bg-error/10 text-error' },
+              reembolsado: { label: 'Reembolsado', style: 'bg-ceniza/10 text-ceniza' },
+            } as const;
+            const metodo = metodoConfig[pago.metodo] || { label: pago.metodo, style: 'bg-papel text-ceniza' };
+            const estado = estadoConfig[pago.estado] || { label: pago.estado, style: 'bg-papel text-ceniza' };
+            const fecha = new Date(pago.creado_en).toLocaleDateString('es-CO', {
+              day: '2-digit',
+              month: 'short',
+              year: 'numeric',
+            });
+
+            return (
+              <tr
+                class="hover:bg-papel/30 cursor-pointer transition-colors"
+                data-metodo={pago.metodo}
+                data-estado={pago.estado}
+                data-id={pago.id}
+                data-orden={pago.orden_id}
+                data-href={'/admin/pagos/' + pago.id}
+              >
+                <td class="py-3 px-4 font-medium text-humo">#{pago.id}</td>
+                <td class="py-3 px-4">
+                  <a href={'/admin/ordenes/' + pago.orden_id} class="text-tabacco hover:text-tabacco/80 font-medium" data-stop-propagation>
+                    {pago.orden_id}
+                  </a>
+                </td>
+                <td class="py-3 px-4">
+                  <span class={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', metodo.style].join(' ')}>
+                    {metodo.label}
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-right font-medium text-humo">
+                  {formatCurrency(pago.monto, pago.moneda as 'COP' | 'BRL')}
+                </td>
+                <td class="py-3 px-4 text-ceniza">{pago.moneda}</td>
+                <td class="py-3 px-4">
+                  <span class={['inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium', estado.style].join(' ')}>
+                    {estado.label}
+                  </span>
+                </td>
+                <td class="py-3 px-4 text-ceniza">{fecha}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  // Client-side search and filter
+  const searchInput = document.getElementById('search-pagos') as HTMLInputElement;
+  const metodoFilter = document.getElementById('filter-metodo') as HTMLSelectElement;
+  const estadoFilter = document.getElementById('filter-estado') as HTMLSelectElement;
+  const tbody = document.getElementById('pagos-tbody');
+  const rows = tbody ? Array.from(tbody.querySelectorAll('tr')) : [];
+
+  function applyFilters() {
+    const query = (searchInput?.value || '').toLowerCase();
+    const metodo = metodoFilter?.value || '';
+    const estado = estadoFilter?.value || '';
+
+    let visibleCount = 0;
+
+    rows.forEach((row) => {
+      const el = row as HTMLElement;
+      const id = (el.dataset.id || '').toLowerCase();
+      const orden = (el.dataset.orden || '').toLowerCase();
+      const rowMetodo = el.dataset.metodo || '';
+      const rowEstado = el.dataset.estado || '';
+
+      const matchesSearch = !query || id.includes(query) || orden.includes(query);
+      const matchesMetodo = !metodo || rowMetodo === metodo;
+      const matchesEstado = !estado || rowEstado === estado;
+
+      if (matchesSearch && matchesMetodo && matchesEstado) {
+        el.style.display = '';
+        visibleCount++;
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    // Show/hide empty state
+    const emptyState = document.getElementById('empty-state');
+    const tableContainer = document.getElementById('table-container');
+    if (visibleCount === 0 && rows.length > 0) {
+      emptyState?.classList.remove('hidden');
+      tableContainer?.classList.add('hidden');
+    } else {
+      emptyState?.classList.add('hidden');
+      tableContainer?.classList.remove('hidden');
+    }
+  }
+
+  searchInput?.addEventListener('input', applyFilters);
+  metodoFilter?.addEventListener('change', applyFilters);
+  estadoFilter?.addEventListener('change', applyFilters);
+
+  // Row navigation
+  rows.forEach((row) => {
+    row.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('[data-stop-propagation]')) return;
+      const href = (row as HTMLElement).dataset.href;
+      if (href) window.location.href = href;
+    });
+  });
+
+  // Generate link button
+  document.getElementById('generate-link-btn')?.addEventListener('click', () => {
+    window.location.href = '/admin/pagos/generate-link';
+  });
+</script>

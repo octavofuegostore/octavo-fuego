@@ -1,0 +1,217 @@
+---
+export const prerender = false;
+// Activity Log — Admin Panel audit trail
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { getEventos } from '@/lib/admin/service';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+import type { Evento } from '@/types/admin';
+
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const eventos = await getEventos(bodegaId || undefined);
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function relativeTime(isoDate: string): string {
+  const now = Date.now();
+  const then = new Date(isoDate).getTime();
+  const diffMs = now - then;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHr = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHr / 24);
+
+  if (diffSec < 60) return 'hace un momento';
+  if (diffMin < 60) return `hace ${diffMin} min`;
+  if (diffHr < 24) return `hace ${diffHr}h`;
+  if (diffDay === 1) return 'ayer';
+  if (diffDay < 7) return `hace ${diffDay} días`;
+  return new Date(isoDate).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' });
+}
+
+function eventoIcon(tipo: string): string {
+  if (tipo.startsWith('orden')) return 'M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z';
+  if (tipo.startsWith('b2b')) return 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z';
+  if (tipo.startsWith('stock')) return 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4';
+  if (tipo.startsWith('pago')) return 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z';
+  return 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z';
+}
+
+function eventoColor(tipo: string): string {
+  if (tipo.startsWith('orden')) return 'bg-tabacco/10 text-tabacco';
+  if (tipo.startsWith('b2b')) return 'bg-blue-50 text-blue-600';
+  if (tipo.startsWith('stock')) return 'bg-amber-50 text-amber-600';
+  if (tipo.startsWith('pago')) return 'bg-green-50 text-green-600';
+  return 'bg-papel text-ceniza';
+}
+
+function tipoLabel(tipo: string): string {
+  const map: Record<string, string> = {
+    'orden:creada': 'Orden creada',
+    'orden:pagada': 'Orden pagada',
+    'orden:enviada': 'Orden enviada',
+    'orden:cancelada': 'Orden cancelada',
+    'b2b:solicitud:creada': 'Solicitud B2B',
+    'b2b:solicitud:aprobada': 'B2B aprobada',
+    'b2b:solicitud_rechazada': 'B2B rechazada',
+    'stock:actualizado': 'Stock actualizado',
+    'stock:bajo': 'Stock bajo',
+    'pago:recibido': 'Pago recibido',
+    'pago:fallido': 'Pago fallido',
+    'login': 'Inicio de sesión',
+    'logout': 'Cierre de sesión',
+    'inventario.ajuste': 'Ajuste de inventario',
+    'inventario.transferencia': 'Transferencia',
+    'cliente.creado': 'Cliente creado',
+    'configuracion.cambiada': 'Configuración',
+  };
+  return map[tipo] || tipo;
+}
+
+function payloadSummary(payload: Record<string, unknown>): string {
+  const keys = Object.keys(payload).filter(k => k !== 'mock' && k !== 'index');
+  if (keys.length === 0) return '';
+  const parts = keys.slice(0, 2).map(k => {
+    const val = payload[k];
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number') return String(val);
+    return '';
+  }).filter(Boolean);
+  return parts.join(' — ');
+}
+
+// Group events by date
+const grouped = eventos.reduce<Record<string, Evento[]>>((acc, ev) => {
+  const date = new Date(ev.creado_en).toLocaleDateString('es-CO', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  });
+  if (!acc[date]) acc[date] = [];
+  acc[date].push(ev);
+  return acc;
+}, {});
+
+// Unique event types for filter
+const tipos = [...new Set(eventos.map(e => e.tipo))];
+---
+
+<AdminLayout title="Actividad" description="Registro de actividad del sistema">
+  <div class="mb-8 flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-display font-bold text-humo">Actividad</h1>
+      <p class="text-ceniza mt-1">Registro de eventos del sistema</p>
+    </div>
+  </div>
+
+  <!-- Filter pills -->
+  <div class="flex flex-wrap gap-2 mb-6" id="filter-pills">
+    <button
+      data-filter="all"
+      class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border transition-colors bg-tabacco text-white border-tabacco"
+    >
+      Todos
+    </button>
+    {tipos.map((tipo) => (
+      <button
+        data-filter={tipo}
+        class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border border-papel text-ceniza hover:border-tabacco/30 hover:text-tabacco transition-colors"
+      >
+        {tipoLabel(tipo)}
+      </button>
+    ))}
+  </div>
+
+  <!-- Timeline -->
+  {eventos.length === 0 ? (
+    <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+      <div class="w-16 h-16 bg-papel rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <h3 class="text-lg font-display font-bold text-humo mb-1">No hay eventos registrados</h3>
+      <p class="text-sm text-ceniza">Los eventos del sistema aparecerán aquí</p>
+    </div>
+  ) : (
+    <div class="space-y-8">
+      {Object.entries(grouped).map(([fecha, eventosGrupo]) => (
+        <div>
+          <h2 class="text-sm font-medium text-ceniza mb-3 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            {fecha}
+          </h2>
+          <div class="bg-white rounded-2xl shadow-card divide-y divide-papel">
+            {eventosGrupo.map((ev) => (
+              <div
+                class="flex items-start gap-4 p-4 hover:bg-papel/30 transition-colors evento-item"
+                data-tipo={ev.tipo}
+              >
+                <!-- Icon -->
+                <div class:list={[
+                  'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
+                  eventoColor(ev.tipo),
+                ]}>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={eventoIcon(ev.tipo)} />
+                  </svg>
+                </div>
+
+                <!-- Content -->
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <span class="font-medium text-humo text-sm">{tipoLabel(ev.tipo)}</span>
+                    <span class="text-xs text-ceniza">·</span>
+                    <span class="text-xs text-ceniza">{ev.bodega_id}</span>
+                  </div>
+                  {payloadSummary(ev.payload) && (
+                    <p class="text-sm text-ceniza truncate">{payloadSummary(ev.payload)}</p>
+                  )}
+                  {ev.orden_id && (
+                    <a href={`/admin/ordenes/${ev.orden_id}`} class="text-xs text-tabacco hover:underline mt-1 inline-block">
+                      {ev.orden_id}
+                    </a>
+                  )}
+                </div>
+
+                <!-- Time -->
+                <span class="text-xs text-ceniza whitespace-nowrap flex-shrink-0">
+                  {relativeTime(ev.creado_en)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</AdminLayout>
+
+<script>
+  // Client-side filter pills
+  const pills = document.querySelectorAll('.filter-pill');
+  const items = document.querySelectorAll('.evento-item');
+
+  pills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const filter = (pill as HTMLElement).dataset.filter;
+
+      // Update active pill styles
+      pills.forEach((p) => {
+        p.classList.remove('bg-tabacco', 'text-white', 'border-tabacco');
+        p.classList.add('border-papel', 'text-ceniza');
+      });
+      pill.classList.add('bg-tabacco', 'text-white', 'border-tabacco');
+      pill.classList.remove('border-papel', 'text-ceniza');
+
+      // Filter events
+      items.forEach((item) => {
+        const tipo = (item as HTMLElement).dataset.tipo;
+        if (filter === 'all' || tipo === filter) {
+          (item as HTMLElement).style.display = '';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
