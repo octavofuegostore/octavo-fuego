@@ -9,14 +9,14 @@ import DashboardSkeleton from '@/components/admin/dashboard/DashboardSkeleton.as
 import GraficaLíneas from '@/components/admin/contabilidad/GraficaLíneas.astro';
 import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
 import GraficaBarrasH from '@/components/admin/charts/GraficaBarrasH.astro';
-import {
-  MOCK_ORDERS_BY_STATUS,
-  MOCK_TOP_PRODUCTS,
-  MOCK_REVENUE_TREND,
-} from '@/lib/admin/dashboard/mockCharts';
 import { crearServicios } from '@/lib/admin/provider';
 import { formatCurrency } from '@/lib/formatCurrency';
 import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+import {
+  computeOrdenesPorEstado,
+  computeTendenciaIngresos,
+  computeTopProductos,
+} from '@/lib/admin/dashboard/chart-data';
 
 // Compute real stats from service layer (falls back to mock when no Supabase)
 const bodegaId = getBodegaSeleccionada(Astro.cookies);
@@ -39,11 +39,31 @@ const ordenesActivas = ordenes.filter(
 const totalProductos = productos.filter(p => p.status !== 'inactivo').length;
 const totalClientesActivos = clientes.filter(c => c.status === 'activo').length;
 
-// Default period
+// Chart data (computed from real ordenes per period)
 const defaultPeriod = 'mes';
-const ordersData = MOCK_ORDERS_BY_STATUS[defaultPeriod];
-const revenueData = MOCK_REVENUE_TREND[defaultPeriod];
-const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
+const periods = ['mes', 'trimestre', 'ano'] as const
+const ordersData = computeOrdenesPorEstado(ordenes, defaultPeriod)
+const revenueData = computeTendenciaIngresos(ordenes, defaultPeriod)
+const productsData = computeTopProductos(ordenes, defaultPeriod)
+
+// Pre-compute all periods for the period selector
+const allPeriodsData = {
+  mes: {
+    revenue: computeTendenciaIngresos(ordenes, 'mes'),
+    orders: computeOrdenesPorEstado(ordenes, 'mes'),
+    products: computeTopProductos(ordenes, 'mes'),
+  },
+  trimestre: {
+    revenue: computeTendenciaIngresos(ordenes, 'trimestre'),
+    orders: computeOrdenesPorEstado(ordenes, 'trimestre'),
+    products: computeTopProductos(ordenes, 'trimestre'),
+  },
+  ano: {
+    revenue: computeTendenciaIngresos(ordenes, 'ano'),
+    orders: computeOrdenesPorEstado(ordenes, 'ano'),
+    products: computeTopProductos(ordenes, 'ano'),
+  },
+}
 ---
 
 <AdminLayout title="Dashboard" description="Panel de administración de Octavo Fuego">
@@ -86,7 +106,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
             class={period !== defaultPeriod ? 'hidden' : ''}
           >
             <GraficaLíneas
-              data={MOCK_REVENUE_TREND[period].map(d => ({ label: d.label, value: d.value }))}
+              data={allPeriodsData[period].revenue}
               title={`Tendencia de Ingresos (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
               height={220}
               color="#8B4513"
@@ -103,7 +123,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
             class={period !== defaultPeriod ? 'hidden' : ''}
           >
             <GraficaTorta
-              data={MOCK_ORDERS_BY_STATUS[period]}
+              data={allPeriodsData[period].orders}
               title={`Órdenes por Estado (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
               size={280}
             />
@@ -120,7 +140,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
           class={period !== defaultPeriod ? 'hidden' : ''}
         >
           <GraficaBarrasH
-            data={MOCK_TOP_PRODUCTS[period]}
+            data={allPeriodsData[period].products}
             title={`Top 5 Productos (${period === 'mes' ? 'Mes' : period === 'trimestre' ? 'Trimestre' : 'Año'})`}
             barHeight={32}
             barGap={10}
