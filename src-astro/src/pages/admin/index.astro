@@ -5,7 +5,6 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
 import StatsCard from '@/components/admin/dashboard/StatsCard.astro';
 import RecentOrders from '@/components/admin/dashboard/RecentOrders.astro';
 import LowStock from '@/components/admin/dashboard/LowStock.astro';
-import DashboardSkeleton from '@/components/admin/dashboard/DashboardSkeleton.astro';
 import GraficaLíneas from '@/components/admin/contabilidad/GraficaLíneas.astro';
 import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
 import GraficaBarrasH from '@/components/admin/charts/GraficaBarrasH.astro';
@@ -67,13 +66,8 @@ const allPeriodsData = {
 ---
 
 <AdminLayout title="Dashboard" description="Panel de administración de Octavo Fuego">
-  <!-- Loading State -->
-  <div id="dashboard-loading">
-    <DashboardSkeleton />
-  </div>
-
-  <!-- Content State (hidden initially) -->
-  <div id="dashboard-content" class="hidden">
+  <!-- Content State (visible immediately — no artificial loading) -->
+  <div id="dashboard-content">
     <!-- Page Header -->
     <div class="mb-8 flex items-center justify-between">
       <div>
@@ -252,15 +246,8 @@ const allPeriodsData = {
 </AdminLayout>
 
 <script>
-  const loadingEl = document.getElementById('dashboard-loading');
-  const contentEl = document.getElementById('dashboard-content');
-
-  setTimeout(() => {
-    loadingEl?.classList.add('hidden');
-    contentEl?.classList.remove('hidden');
-
-    // Count-up animation
-    function animateCountUp(el: HTMLElement, target: number, duration: number = 800) {
+  // Count-up animation for stats
+  function animateCountUp(el: HTMLElement, target: number, duration: number = 800) {
       const start = 0;
       const startTime = performance.now();
 
@@ -291,7 +278,6 @@ const allPeriodsData = {
         animateCountUp(el as HTMLElement, target);
       }
     });
-  }, 800);
 
   // Period selector
   const periodSelector = document.getElementById('period-selector') as HTMLSelectElement;
