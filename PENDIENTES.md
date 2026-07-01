@@ -65,8 +65,28 @@
 ## 🏁 Sprint Anterior v0.4.2 — Astro 6 Improvements (Julio 1, 2026)
 
 > **Tags:** `v0.4.2` | **Commits:** ee7c999 | **Build:** ✅ 0 errores
+> **PR:** #25
+> **Fuente:** `astro-docs` MCP — documentación oficial de Astro 6
 
-### ✅ F40-F42: Actions, View Transitions, Middleware
+### ✅ F40: Astro Actions
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 40.1 Actions Setup | `src/actions/index.ts` | defineAction() para form submission tipado |
+| 40.2 Validation | Reusa F1 Zod schemas | CrearProductoSchema + ActualizarEstadoSchema |
+
+### ✅ F41: View Transitions
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 41.1 ClientRouter | `AdminLayout.astro` | Navegación SPA en admin |
+| 41.2 Persist Sidebar | `AdminLayout.astro` | transition:persist mantiene estado |
+| 41.3 Scripts | `AdminLayout.astro` | astro:page-load para re-ejecución |
+
+### ✅ F42: Middleware Composition
+| Tarea | Archivo | Cambio |
+|-------|---------|--------|
+| 42.1 Locale Handler | `middleware/auth.ts` | defineMiddleware separado |
+| 42.2 Auth Handler | `middleware/auth.ts` | JWT + getActionContext gating |
+| 42.3 Composition | `middleware/auth.ts` | sequence() para orden |
 
 ---
 
