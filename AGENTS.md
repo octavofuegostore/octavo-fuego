@@ -94,7 +94,7 @@ npm run preview  # preview production build
 ### Styling
 - TailwindCSS 4.x utility classes
 - Custom CSS variables in `:root` of global.css
-- **Colors**: Usar tokens funcionales (`--color-action-primary`, `--color-surface-*`, etc.) en nuevo código. Legacy tokens (`--verde-botanico`, `--humo`, `--papel`) siguen funcionando pero están deprecated.
+- **Colors**: Usar tokens funcionales (`--color-action-primary`, `--color-surface-*`, etc.) en nuevo código. Legacy tokens (`--humo`, `--papel`) siguen funcionando pero están deprecated.
 - Shadows: 3-layer Airbnb system (--shadow-card, --shadow-hover)
 - Border radius: 0px default, 8px buttons, 20px cards, 14px badges
 - Fonts: Playfair Display (display), Inter (body)
@@ -162,17 +162,14 @@ npm run preview  # preview production build
 | `--ceniza` | #7b8084 | Textos secundarios | ✅ |
 | `--humo` | #2A2A2A | Footer | ✅ → usar `--color-surface-dark` |
 | `--papel` | #F5F5F0 | Secciones contrastadas | ✅ → usar `--color-surface-warm` |
-| `--verde-botanico` | #6d5e4d | Acento principal | ⚠️ **DEPRECATED** |
+| `--color-action-primary` | #6d5e4d | Acento principal | ✅ Token activo |
 
 ### Functional Token System (Híbrido)
 ```css
 /* Base semánticamente correcto */
 --tabaco-base: #6d5e4d;
 
-/* Alias backwards-compatible */
---verde-botanico: var(--tabaco-base); /* @deprecated */
-
-/* Action tokens (para nuevo código) */
+/* Action tokens (token activo) */
 --color-action-primary: var(--tabaco-base);
 --color-action-hover: #5a4d3f;
 --color-action-subtle: #C4956A;
@@ -197,9 +194,31 @@ npm run preview  # preview production build
 ```
 
 **Migration path:**
-1. `--verde-botanico` sigue funcionando (alias)
-2. Nuevo código usa `--color-action-primary`
-3. Post-launch: find-replace `--verde-botanico` → `--color-action-primary`
+1. Nuevo código usa `--color-action-primary`
+2. Post-launch: eliminar el alias deprecated de global.css
+
+## Work Decomposition (OBLIGATORIO)
+
+Todo trabajo que involucre múltiples cambios se desglosa con esta estructura granular:
+
+**Formato:** `{Fase}.{Grupo}.{Tarea}`
+
+```
+Fase 1: Fix Critical Bugs
+  1.1 CustomerDetail
+    1.1.1 Conexión real a service.getClienteById()
+    1.1.2 Reemplazar data mock con props dinámicas
+    1.1.3 Mostrar órdenes reales del cliente
+  1.2 OrderDetail
+    1.2.1 ...
+```
+
+**Reglas:**
+- Cada `X.Y.Z` es una unidad atómica — se implementa, verifica y commitea independientemente
+- Las tareas se ejecutan en orden numérico estricto (dependencias respetadas)
+- Una tarea `X.Y.Z` no depende de nada fuera de lo ya implementado en `X.Y.Z-1`
+- Siempre que se delega a un sub-agente, se pasa la tarea exacta con su contexto mínimo necesario (archivos involucrados, no el proyecto entero)
+- Esto aplica tanto a SDD como a trabajo directo (no-SDD)
 
 ## Testing
 ```bash

@@ -1,39 +1,14 @@
 ---
 // OrderDetail.astro — Order detail view with status timeline
+import { getOrdenById } from '@/lib/admin/service';
+
 interface Props {
   orderId: string;
 }
 
 const { orderId } = Astro.props;
 
-// Mock order data
-const order = {
-  id: 'OF-2026-001',
-  customer: {
-    name: 'María García',
-    email: 'maria@email.com',
-    phone: '+57 300 123 4567',
-    address: 'Calle 123 #45-67, Bogotá, Colombia'
-  },
-  items: [
-    { name: 'Cera de Ducha - Cacao', quantity: 2, price: 45000, unit: 'g' },
-    { name: 'Sabonete - Lavanda', quantity: 1, price: 35000, unit: 'uds' }
-  ],
-  subtotal: 125000,
-  shipping: 8000,
-  total: 133000,
-  currency: 'COP',
-  status: 'pending',
-  channel: 'whatsapp',
-  location: 'CO-BOGOTA',
-  notes: 'Cliente solicita envío rápido',
-  createdAt: '2026-06-16T10:30:00Z',
-  updatedAt: '2026-06-16T10:30:00Z',
-  timeline: [
-    { status: 'created', date: '2026-06-16T10:30:00Z', label: 'Orden creada' },
-    { status: 'pending', date: '2026-06-16T10:30:00Z', label: 'Esconfirmación de pago' }
-  ]
-};
+const order = await getOrdenById(orderId);
 
 const statusConfig = {
   pending: { bg: 'bg-warning/10', text: 'text-warning', label: 'Pendiente' },
@@ -66,9 +41,12 @@ function formatDate(dateStr: string): string {
     minute: '2-digit'
   });
 }
+
+const subtotal = order ? order.items.reduce((sum, item) => sum + item.price * item.quantity, 0) : 0;
+const shipping = order ? order.total - subtotal : 0;
 ---
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+{order ? (<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
   <!-- Main Info -->
   <div class="lg:col-span-2 space-y-6">
     <!-- Order Header -->
@@ -128,11 +106,11 @@ function formatDate(dateStr: string): string {
         <div class="space-y-2">
           <div class="flex justify-between text-sm">
             <span class="text-ceniza">Subtotal</span>
-            <span class="text-humo">{formatPrice(order.subtotal, order.currency)}</span>
+            <span class="text-humo">{formatPrice(subtotal, order.currency)}</span>
           </div>
           <div class="flex justify-between text-sm">
             <span class="text-ceniza">Envío</span>
-            <span class="text-humo">{formatPrice(order.shipping, order.currency)}</span>
+            <span class="text-humo">{formatPrice(shipping, order.currency)}</span>
           </div>
           <div class="flex justify-between text-lg font-bold border-t border-papel pt-2">
             <span class="text-humo">Total</span>
@@ -142,13 +120,6 @@ function formatDate(dateStr: string): string {
       </div>
     </div>
 
-    <!-- Notes -->
-    {order.notes && (
-      <div class="bg-white rounded-2xl shadow-card p-6">
-        <h3 class="font-display text-lg font-bold text-humo mb-4">Notas</h3>
-        <p class="text-sm text-ceniza">{order.notes}</p>
-      </div>
-    )}
   </div>
 
   <!-- Sidebar -->
@@ -169,10 +140,6 @@ function formatDate(dateStr: string): string {
         <div>
           <p class="text-sm text-ceniza">Teléfono</p>
           <p class="text-sm font-medium text-humo">{order.customer.phone}</p>
-        </div>
-        <div>
-          <p class="text-sm text-ceniza">Dirección</p>
-          <p class="text-sm font-medium text-humo">{order.customer.address}</p>
         </div>
       </div>
       
@@ -236,4 +203,14 @@ function formatDate(dateStr: string): string {
       </div>
     </div>
   </div>
-</div>
+</div>) : (
+  <div class="bg-white rounded-2xl shadow-card p-12 text-center">
+    <div class="w-16 h-16 bg-papel rounded-full flex items-center justify-center mx-auto mb-4">
+      <svg class="w-8 h-8 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2h-5m-1 7l-3 3m0 0l3 3m-3-3h12" />
+      </svg>
+    </div>
+    <h2 class="text-lg font-display font-bold text-humo mb-2">Orden no encontrada</h2>
+    <p class="text-sm text-ceniza">No se encontró información para la orden solicitada.</p>
+  </div>
+)}

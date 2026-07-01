@@ -14,6 +14,30 @@ import {
   MOCK_TOP_PRODUCTS,
   MOCK_REVENUE_TREND,
 } from '@/lib/admin/dashboard/mockCharts';
+import { crearServicios } from '@/lib/admin/provider';
+import { formatCurrency } from '@/lib/formatCurrency';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
+
+// Compute real stats from service layer (falls back to mock when no Supabase)
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const svc = crearServicios(bodegaId);
+const [ordenes, clientes, productos] = await Promise.all([
+  svc.ordenes.listar(),
+  svc.clientes.listar(),
+  svc.productos.listar(),
+]);
+
+// Stats
+const ventasHoy = ordenes
+  .filter(o => o.status !== 'cancelada')
+  .reduce((sum, o) => sum + o.total, 0);
+
+const ordenesActivas = ordenes.filter(
+  o => o.status === 'pendiente' || o.status === 'confirmada'
+).length;
+
+const totalProductos = productos.filter(p => p.status !== 'inactivo').length;
+const totalClientesActivos = clientes.filter(c => c.status === 'activo').length;
 
 // Default period
 const defaultPeriod = 'mes';
@@ -54,7 +78,6 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
     <div class="mb-8 space-y-6">
       <!-- Top Row: Line Chart + Donut Chart -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Revenue Trend Line Chart (one per period) -->
         {(['mes', 'trimestre', 'ano'] as const).map((period) => (
           <div
             id={`chart-revenue-${period}`}
@@ -72,7 +95,6 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
           </div>
         ))}
 
-        <!-- Orders by Status Donut Chart (one per period) -->
         {(['mes', 'trimestre', 'ano'] as const).map((period) => (
           <div
             id={`chart-orders-${period}`}
@@ -89,7 +111,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
         ))}
       </div>
 
-      <!-- Bottom Row: Top Products Horizontal Bar Chart (one per period) -->
+      <!-- Bottom Row: Top Products -->
       {(['mes', 'trimestre', 'ano'] as const).map((period) => (
         <div
           id={`chart-products-${period}`}
@@ -111,7 +133,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
       <StatsCard
         title="Ventas Hoy"
-        value="$485.000"
+        value={formatCurrency(ventasHoy, 'COP')}
         change={12.5}
         trend="up"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
@@ -119,7 +141,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 
       <StatsCard
         title="Órdenes Activas"
-        value="12"
+        value={String(ordenesActivas)}
         change={8.3}
         trend="up"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>'
@@ -127,7 +149,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 
       <StatsCard
         title="Productos"
-        value="24"
+        value={String(totalProductos)}
         change={4}
         trend="up"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>'
@@ -135,7 +157,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 
       <StatsCard
         title="Clientes"
-        value="156"
+        value={String(totalClientesActivos)}
         change={15}
         trend="up"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>'
@@ -144,14 +166,11 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 
     <!-- Content Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Recent Orders (2 cols) -->
       <div class="lg:col-span-2">
-        <RecentOrders />
+        <RecentOrders ordenes={ordenes} />
       </div>
-
-      <!-- Low Stock (1 col) -->
       <div>
-        <LowStock />
+        <LowStock productos={productos} />
       </div>
     </div>
 
@@ -159,10 +178,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
     <div class="mt-8">
       <h2 class="text-lg font-display font-bold text-humo mb-4">Acciones Rápidas</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <a
-          href="/admin/inventario"
-          class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
-        >
+        <a href="/admin/inventario" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group">
           <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
             <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
@@ -174,10 +190,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
           </div>
         </a>
 
-        <a
-          href="/admin/ordenes"
-          class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
-        >
+        <a href="/admin/ordenes" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group">
           <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
             <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -189,10 +202,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
           </div>
         </a>
 
-        <a
-          href="/admin/clientes"
-          class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
-        >
+        <a href="/admin/clientes" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group">
           <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
             <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -204,10 +214,7 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
           </div>
         </a>
 
-        <a
-          href="/admin/configuracion"
-          class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group"
-        >
+        <a href="/admin/configuracion" class="flex items-center gap-3 p-4 bg-white rounded-xl shadow-card hover:shadow-hover transition-all duration-300 group">
           <div class="w-10 h-10 bg-tabacco/10 rounded-lg flex items-center justify-center group-hover:bg-tabacco group-hover:text-white transition-colors">
             <svg class="w-5 h-5 text-tabacco group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -225,16 +232,14 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
 </AdminLayout>
 
 <script>
-  // Dashboard loading simulation
   const loadingEl = document.getElementById('dashboard-loading');
   const contentEl = document.getElementById('dashboard-content');
 
-  // Simulate loading delay (mock data fetch)
   setTimeout(() => {
     loadingEl?.classList.add('hidden');
     contentEl?.classList.remove('hidden');
 
-    // Count-up animation for stat values
+    // Count-up animation
     function animateCountUp(el: HTMLElement, target: number, duration: number = 800) {
       const start = 0;
       const startTime = performance.now();
@@ -260,7 +265,6 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
       return String(num);
     }
 
-    // Animate stats on load
     document.querySelectorAll('[data-count-value]').forEach((el) => {
       const target = parseInt(el.getAttribute('data-count-value') || '0', 10);
       if (target > 0) {
@@ -269,13 +273,11 @@ const productsData = MOCK_TOP_PRODUCTS[defaultPeriod];
     });
   }, 800);
 
-  // Period selector for charts
+  // Period selector
   const periodSelector = document.getElementById('period-selector') as HTMLSelectElement;
-  const chartSections = document.querySelectorAll('[id^="chart-"]');
-
   periodSelector?.addEventListener('change', () => {
     const selectedPeriod = periodSelector.value;
-    chartSections.forEach((section) => {
+    document.querySelectorAll('[id^="chart-"]').forEach((section) => {
       const chartPeriod = section.getAttribute('data-period');
       if (chartPeriod === selectedPeriod) {
         section.classList.remove('hidden');

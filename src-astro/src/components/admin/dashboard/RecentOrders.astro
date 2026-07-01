@@ -1,85 +1,30 @@
 ---
-// RecentOrders.astro — Recent orders table for dashboard
-interface Order {
-  id: string;
-  customer: string;
-  product: string;
-  amount: number;
-  currency: string;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
-  date: string;
+import type { Orden } from '@/types/admin'
+import { getStatusLabel } from '@/lib/admin/schemas/traducciones'
+
+interface Props {
+  ordenes: Orden[]
 }
 
-const mockOrders: Order[] = [
-  {
-    id: 'OF-2026-001',
-    customer: 'María García',
-    product: 'Cera de Ducha 100g',
-    amount: 45000,
-    currency: 'COP',
-    status: 'pending',
-    date: '2026-06-16'
-  },
-  {
-    id: 'OF-2026-002',
-    customer: 'João Silva',
-    product: 'Sabonete Artesanal 75g',
-    amount: 89,
-    currency: 'BRL',
-    status: 'confirmed',
-    date: '2026-06-15'
-  },
-  {
-    id: 'OF-2026-003',
-    customer: 'Andrés López',
-    product: 'Pack 3 Jabones',
-    amount: 120000,
-    currency: 'COP',
-    status: 'shipped',
-    date: '2026-06-14'
-  },
-  {
-    id: 'OF-2026-004',
-    customer: 'Sarah Johnson',
-    product: 'Candle Collection',
-    amount: 89,
-    currency: 'USD',
-    status: 'delivered',
-    date: '2026-06-13'
-  },
-  {
-    id: 'OF-2026-005',
-    customer: 'Lucas Fernandes',
-    product: 'Cera de Ducha 100g',
-    amount: 89,
-    currency: 'BRL',
-    status: 'pending',
-    date: '2026-06-12'
-  }
-];
+const { ordenes } = Astro.props
+const recent = ordenes.slice(0, 5)
 
-const statusColors = {
-  pending: 'bg-warning/10 text-warning',
-  confirmed: 'bg-info/10 text-info',
-  shipped: 'bg-accent/10 text-accent',
-  delivered: 'bg-success/10 text-success',
-  cancelled: 'bg-error/10 text-error'
-};
-
-const statusLabels = {
-  pending: 'Pendiente',
-  confirmed: 'Confirmada',
-  shipped: 'Enviada',
-  delivered: 'Entregada',
-  cancelled: 'Cancelada'
-};
+const statusColors: Record<string, string> = {
+  pendiente: 'bg-warning/10 text-warning',
+  confirmada: 'bg-info/10 text-info',
+  pagada: 'bg-success/10 text-success',
+  preparando: 'bg-accent/10 text-accent',
+  enviada: 'bg-accent/10 text-accent',
+  entregada: 'bg-success/10 text-success',
+  cancelada: 'bg-error/10 text-error',
+}
 
 function formatCurrency(amount: number, currency: string): string {
   return new Intl.NumberFormat('es-CO', {
     style: 'currency',
     currency: currency,
-    minimumFractionDigits: 0
-  }).format(amount);
+    minimumFractionDigits: 0,
+  }).format(amount)
 }
 ---
 
@@ -106,23 +51,23 @@ function formatCurrency(amount: number, currency: string): string {
         </tr>
       </thead>
       <tbody class="divide-y divide-papel">
-        {mockOrders.map((order) => (
+        {recent.map((orden) => (
           <tr class="hover:bg-papel/30 transition-colors">
-            <td class="px-6 py-4 text-sm font-medium text-humo">{order.id}</td>
-            <td class="px-6 py-4 text-sm text-humo">{order.customer}</td>
-            <td class="px-6 py-4 text-sm text-ceniza">{order.product}</td>
+            <td class="px-6 py-4 text-sm font-medium text-humo">{orden.id.slice(0, 8)}</td>
+            <td class="px-6 py-4 text-sm text-humo">{orden.customer.name}</td>
+            <td class="px-6 py-4 text-sm text-ceniza">{orden.items[0]?.name ?? '—'}</td>
             <td class="px-6 py-4 text-sm font-medium text-humo text-right">
-              {formatCurrency(order.amount, order.currency)}
+              {formatCurrency(orden.total, orden.currency)}
             </td>
             <td class="px-6 py-4 text-center">
               <span class:list={[
                 "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium",
-                statusColors[order.status]
+                statusColors[orden.status] ?? 'bg-ceniza/10 text-ceniza',
               ]}>
-                {statusLabels[order.status]}
+                {getStatusLabel(orden.status, 'es')}
               </span>
             </td>
-            <td class="px-6 py-4 text-sm text-ceniza">{order.date}</td>
+            <td class="px-6 py-4 text-sm text-ceniza">{orden.createdAt?.slice(0, 10)}</td>
           </tr>
         ))}
       </tbody>

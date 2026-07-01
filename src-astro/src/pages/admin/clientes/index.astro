@@ -4,9 +4,10 @@ export const prerender = false;
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import CustomerTable from '@/components/admin/customers/CustomerTable.astro';
 import ClienteForm from '@/components/admin/customers/ClienteForm.astro';
-import { getClientes } from '@/lib/admin/service';
+import { crearServicios } from '@/lib/admin/provider';
 
-const customers = getClientes();
+const svc = crearServicios();
+const customers = await svc.clientes.listar();
 ---
 
 <AdminLayout title="Clientes" description="Gestiona tu base de clientes">

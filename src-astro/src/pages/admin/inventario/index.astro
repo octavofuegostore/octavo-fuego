@@ -3,9 +3,12 @@ export const prerender = false;
 // Inventory page — Products management
 import AdminLayout from '@/layouts/AdminLayout.astro';
 import ProductTable from '@/components/admin/inventory/ProductTable.astro';
-import { getProductos } from '@/lib/admin/service';
+import { crearServicios } from '@/lib/admin/provider';
+import { getBodegaSeleccionada } from '@/lib/admin/bodega';
 
-const products = getProductos();
+const bodegaId = getBodegaSeleccionada(Astro.cookies);
+const svc = crearServicios(bodegaId);
+const products = await svc.productos.listar();
 ---
 
 <AdminLayout title="Inventario" description="Gestiona tu catálogo de productos">
