@@ -20,7 +20,7 @@ export interface Orden {
   items: Array<{ name: string; quantity: number; price: number }>;
   total: number;
   currency: string;
-  status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
+  status: 'pendiente' | 'confirmada' | 'pagada' | 'preparando' | 'enviada' | 'entregada' | 'cancelada';
   channel: 'whatsapp' | 'web' | 'manual';
   location: 'CO-BOGOTA' | 'BR-ACRE';
   createdAt: string;
@@ -37,7 +37,7 @@ export interface Producto {
   priceUSD: number;
   stockCO: number;
   stockBR: number;
-  status: 'active' | 'inactive' | 'out_of_stock';
+  status: 'activo' | 'inactivo' | 'sin_stock';
 }
 
 export interface Transaccion {
@@ -47,7 +47,7 @@ export interface Transaccion {
   tipo: 'ingreso' | 'egreso';
   categoria: string;
   fecha: string;
-  estado: 'pending' | 'confirmed' | 'cancelled';
+  estado: 'pendiente' | 'confirmada' | 'cancelada';
 }
 
 export interface KPI {
