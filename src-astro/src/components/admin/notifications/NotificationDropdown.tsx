@@ -6,6 +6,9 @@
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { useStore } from '@nanostores/react';
+import { $notificaciones, $noLeidas, marcarLeida } from '@/stores/admin';
+import { eventBus } from '@/lib/admin/eventos';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -21,6 +24,7 @@ interface Notificacion {
 
 interface Props {
   notificaciones: Notificacion[];
+  noLeidas?: number;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -60,13 +64,16 @@ function notificationColor(tipo: string): string {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function NotificationDropdown({ notificaciones: initial }: Props) {
+export default function NotificationDropdown({ notificaciones: initial, noLeidas: initialCount }: Props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [notificaciones, setNotificaciones] = useState(initial);
+  const [notificaciones, setLocalNotis] = useState(initial);
+  const notisFromStore = useStore($notificaciones);
   const panelRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const unreadCount = notificaciones.filter((n) => !n.leida).length;
+  // Sync from store when updated server-side
+  const activeNotis = notisFromStore.length > 0 ? notisFromStore : notificaciones;
+  const unreadCount = notisFromStore.length > 0 ? useStore($noLeidas) : (initialCount ?? 0);
 
   // Close on click outside
   useEffect(() => {
@@ -95,7 +102,8 @@ export default function NotificationDropdown({ notificaciones: initial }: Props)
 
   const markAsRead = useCallback(async (id: string) => {
     // Optimistic update
-    setNotificaciones((prev) =>
+    marcarLeida(id);
+    setLocalNotis((prev) =>
       prev.map((n) => (n.id === id ? { ...n, leida: true } : n))
     );
     try {
@@ -108,6 +116,22 @@ export default function NotificationDropdown({ notificaciones: initial }: Props)
       // Silent fail — optimistic update already applied
     }
   }, []);
+
+  // Subscribe to event bus for live notifications
+  useEffect(() => {
+    const unsub = eventBus.on('orden:creada', (payload) => {
+      setLocalNotis((prev) => [{
+        id: `notif-${payload.ordenId}`,
+        tipo: 'orden:creada',
+        titulo: 'Nueva orden creada',
+        mensaje: null,
+        link: `/admin/ordenes/${payload.ordenId}`,
+        leida: false,
+        creado_en: new Date().toISOString(),
+      }, ...prev])
+    })
+    return unsub
+  }, [])
 
   const markAllAsRead = useCallback(async () => {
     setNotificaciones((prev) => prev.map((n) => ({ ...n, leida: true })));
@@ -173,7 +197,7 @@ export default function NotificationDropdown({ notificaciones: initial }: Props)
 
           {/* List */}
           <div className="max-h-96 overflow-y-auto">
-            {notificaciones.length === 0 ? (
+            {activeNotis.length === 0 ? (
               <div className="py-8 text-center">
                 <svg className="w-8 h-8 text-ceniza mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -181,7 +205,7 @@ export default function NotificationDropdown({ notificaciones: initial }: Props)
                 <p className="text-sm text-ceniza">No hay notificaciones</p>
               </div>
             ) : (
-              notificaciones.map((notif) => (
+              activeNotis.map((notif) => (
                 <button
                   key={notif.id}
                   onClick={() => handleClick(notif)}

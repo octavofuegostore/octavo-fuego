@@ -7,6 +7,7 @@
  */
 import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown';
 import { getNotificaciones } from '@/lib/admin/service';
+import { setNotificaciones, $noLeidas } from '@/stores/admin';
 
 interface Props {
   usuarioId?: string;
@@ -26,9 +27,17 @@ let notificaciones: Array<{
 
 try {
   notificaciones = await getNotificaciones(usuarioId);
+  setNotificaciones(notificaciones.map(n => ({
+    id: n.id,
+    titulo: n.titulo,
+    leida: n.leida,
+    creado_en: n.creado_en,
+  })));
 } catch {
   // User not logged in or service error — render empty dropdown
 }
+
+const noLeidas = $noLeidas.value;
 ---
 
-<NotificationDropdown client:load notificaciones={notificaciones} />
+<NotificationDropdown client:load notificaciones={notificaciones} noLeidas={noLeidas} />

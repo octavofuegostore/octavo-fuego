@@ -5,6 +5,17 @@ import ToasterClient from '@/components/admin/ToasterClient';
 import BodegaSwitcher from '@/components/admin/BodegaSwitcher';
 import NotificationDropdown from '@/components/admin/notifications/NotificationDropdown.astro';
 import { $sidebarOpen, $seccionActual } from '@/stores/admin';
+import { supabase } from '@/lib/supabase';
+
+const SUPABASE_CONFIGURED = !!(import.meta.env.PUBLIC_SUPABASE_URL)
+let stockAlertCount = 0
+if (SUPABASE_CONFIGURED) {
+  const { count } = await supabase
+    .from('gramos_disponibles')
+    .select('*', { count: 'exact', head: true })
+    .eq('alerta_stock_bajo', true)
+  stockAlertCount = count ?? 0
+}
 
 interface Props {
   title: string;
@@ -88,6 +99,11 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 <div class="flex items-center gap-3">
                   <Icon name="solar:box-bold" class="w-5 h-5" />
                   <span class="font-medium">Inventario</span>
+                  {stockAlertCount > 0 && (
+                    <span class="ml-2 w-5 h-5 bg-error text-white text-xs rounded-full flex items-center justify-center font-medium">
+                      {stockAlertCount > 9 ? '9+' : stockAlertCount}
+                    </span>
+                  )}
                 </div>
                 <svg class="w-4 h-4 transition-transform duration-200 inventario-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

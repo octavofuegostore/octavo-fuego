@@ -1,6 +1,7 @@
 ---
 // OrderDetail.astro — Order detail view with status timeline
 import { getOrdenById } from '@/lib/admin/service';
+import OrderStateMachine from '@/components/admin/orders/OrderStateMachine.astro';
 
 interface Props {
   orderId: string;
@@ -10,12 +11,28 @@ const { orderId } = Astro.props;
 
 const order = await getOrdenById(orderId);
 
-const statusConfig = {
-  pending: { bg: 'bg-warning/10', text: 'text-warning', label: 'Pendiente' },
-  confirmed: { bg: 'bg-info/10', text: 'text-info', label: 'Confirmada' },
-  shipped: { bg: 'bg-accent/10', text: 'text-accent', label: 'Enviada' },
-  delivered: { bg: 'bg-success/10', text: 'text-success', label: 'Entregada' },
-  cancelled: { bg: 'bg-error/10', text: 'text-error', label: 'Cancelada' }
+// Valid transitions from F1 schema
+const TRANSICIONES: Record<string, string[]> = {
+  pendiente: ['confirmada', 'cancelada'],
+  confirmada: ['pagada', 'cancelada'],
+  pagada: ['preparando', 'cancelada'],
+  preparando: ['enviada', 'cancelada'],
+  enviada: ['entregada', 'cancelada'],
+  entregada: [],
+  cancelada: [],
+}
+const validTransitions = TRANSICIONES[order?.status ?? ''] ?? []
+
+import { getStatusLabel } from '@/lib/admin/schemas/traducciones'
+
+const statusConfig: Record<string, { bg: string; text: string; label: string }> = {
+  pendiente: { bg: 'bg-warning/10', text: 'text-warning', label: getStatusLabel('pendiente', 'es') },
+  confirmada: { bg: 'bg-info/10', text: 'text-info', label: getStatusLabel('confirmada', 'es') },
+  pagada: { bg: 'bg-success/10', text: 'text-success', label: getStatusLabel('pagada', 'es') },
+  preparando: { bg: 'bg-accent/10', text: 'text-accent', label: getStatusLabel('preparando', 'es') },
+  enviada: { bg: 'bg-accent/10', text: 'text-accent', label: getStatusLabel('enviada', 'es') },
+  entregada: { bg: 'bg-success/10', text: 'text-success', label: getStatusLabel('entregada', 'es') },
+  cancelada: { bg: 'bg-error/10', text: 'text-error', label: getStatusLabel('cancelada', 'es') }
 };
 
 const channelConfig = {
@@ -74,6 +91,9 @@ const shipping = order ? order.total - subtotal : 0;
         </div>
       </div>
     </div>
+
+    <!-- Order State Machine -->
+    <OrderStateMachine currentState={order.status} validTransitions={validTransitions} ordenId={orderId} />
 
     <!-- Order Items -->
     <div class="bg-white rounded-2xl shadow-card overflow-hidden">
