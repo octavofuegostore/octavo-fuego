@@ -1,6 +1,6 @@
 ---
 /**
- * Product detail page — renders at /tienda/rape/[slug] × 3 locales = 15 paths
+ * Product detail page — renders at /tienda/rape/[slug], /en/tienda/rape/[slug], /pt/tienda/rape/[slug]
  * Uses: PricingTable (SELECTABLE BUTTONS), WhatsAppButton
  *
  * @source Octavofuego_Catalogo_ESP (1).html — variety items
@@ -14,25 +14,15 @@ import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
 import { products } from '@/data/products';
-import { useTranslations } from '@/i18n';
-import type { Locale } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  const paths = [];
-  const locales: Locale[] = ['es', 'en', 'pt'];
-  for (const locale of locales) {
-    for (const product of products) {
-      paths.push({ params: { locale, category: 'rape', product: product.slug } });
-    }
-  }
-  return paths;
-}
+export const prerender = false;
 
-const { locale, category, product: productSlug } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
 const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
+const productSlug = Astro.params.product;
 const product = products.find((p) => p.slug === productSlug);
 if (!product) {
   return Astro.redirect('/404');

@@ -1,23 +1,16 @@
 ---
 /**
- * Informational page — /[locale]/rape-do-acre-origen/
+ * Informational page — /rape-do-acre-origen, /en/rape-do-acre-origen, /pt/rape-do-acre-origen
  * Article schema. Origin and traceability of rapé do Acre.
  */
 import Layout from '@/layouts/Layout.astro';
 import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es' } },
-    { params: { locale: 'en' } },
-    { params: { locale: 'pt' } },
-  ];
-}
+export const prerender = false;
 
-const { locale } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const content = {
   es: {
@@ -99,7 +92,6 @@ const articleSchema = {
     <!-- ¿Por qué el Acre? -->
     <section class="mb-16" id="por-que-acre">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.porqueAcre}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         El estado de Acre, en el oeste de Brasil, es uno de los territorios más vivos de la tradición del rapé. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sus comunidades indígenas han preservado las recetas originales durante generaciones.
       </p>
@@ -111,7 +103,6 @@ const articleSchema = {
     <!-- Empaque al Vacío -->
     <section class="mb-16" id="empaque-vacio">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.empaque}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         Empacamos nuestros rapés al vacío en origen para preservar aroma, frescura y propiedades durante todo el transporte. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
@@ -123,7 +114,6 @@ const articleSchema = {
     <!-- Rapé Brasileño vs Colombiano -->
     <section class="mb-16" id="comparacion">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.comparacion}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         El rapé do Acre se distingue por sus cenizas específicas, la calidad del tabaco y la tradición ceremonial de sus comunidades. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
@@ -135,7 +125,6 @@ const articleSchema = {
     <!-- Nuestras Comunidades -->
     <section class="mb-16" id="comunidades">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.comunidades}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         Trabajamos respetuosamente con comunidades como Yawanawá, Nukini, Kaxinawá y Shanenawa. Cada una aporta su propia sabiduría, recetas y cuidado en la elaboración de la medicina.
       </p>

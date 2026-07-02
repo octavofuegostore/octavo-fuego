@@ -9,19 +9,11 @@
 import Layout from '@/layouts/Layout.astro';
 import ProphecyContent from '@/components/prophecy/ProphecyContent.astro';
 import { prophecy } from '@/data/prophecy';
-import { useTranslations } from '@/i18n';
-import type { Locale } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es' } },
-    { params: { locale: 'en' } },
-    { params: { locale: 'pt' } },
-  ];
-}
+export const prerender = false;
 
-const { locale } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
 ---
 

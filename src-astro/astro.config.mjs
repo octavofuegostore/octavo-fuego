@@ -85,6 +85,5 @@ export default defineConfig({
     '/catalogo/parika': '/tienda/rape/parika',
     '/catalogo/cumaru-de-cheiro': '/tienda/rape/cumaru-de-cheiro',
     '/catalogo/vena-de-paje': '/tienda/rape/vena-de-paje',
-    '/profecia': '/profecia',
   },
 });

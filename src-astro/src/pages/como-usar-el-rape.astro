@@ -1,23 +1,16 @@
 ---
 /**
- * Informational page — /[locale]/como-usar-el-rape/
+ * Informational page — /como-usar-el-rape, /en/como-usar-el-rape, /pt/como-usar-el-rape
  * HowTo + Article schema. Step-by-step rapé usage guide.
  */
 import Layout from '@/layouts/Layout.astro';
 import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es' } },
-    { params: { locale: 'en' } },
-    { params: { locale: 'pt' } },
-  ];
-}
+export const prerender = false;
 
-const { locale } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const content = {
   es: {
@@ -152,7 +145,6 @@ const articleSchema = {
     <!-- ¿Qué necesitas? -->
     <section class="mb-16" id="que-necesitas">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.necesitas}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <ul class="list-disc list-inside text-[var(--ceniza)] space-y-2 mb-4">
         <li>Un kuripe limpio y en buen estado.</li>
         <li>Rapé do Acre de tu preferencia.</li>
@@ -173,7 +165,6 @@ const articleSchema = {
             <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2">
               {index + 1}. {step.name}
             </h3>
-            <!-- 🖊️ USUARIO: reemplazar este texto -->
             <p class="text-[var(--ceniza)] leading-relaxed">{step.text}</p>
           </li>
         ))}
@@ -183,7 +174,6 @@ const articleSchema = {
     <!-- Dosis recomendada -->
     <section class="mb-16" id="dosis-recomendada">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.dosis}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         Se recomienda empezar con una cantidad pequeña, aproximadamente la cuarta parte de lo que usarías con otros rapés. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
@@ -195,7 +185,6 @@ const articleSchema = {
     <!-- Consejos -->
     <section class="mb-16" id="consejos-principiantes">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.consejos}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         Respira profundamente antes de aplicar, mantén la calma y evita usar rapé si tienes molestias respiratorias agudas. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
