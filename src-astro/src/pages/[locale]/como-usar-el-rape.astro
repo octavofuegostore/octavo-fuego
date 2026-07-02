@@ -1,0 +1,214 @@
+---
+/**
+ * Informational page — /[locale]/como-usar-el-rape/
+ * HowTo + Article schema. Step-by-step rapé usage guide.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { useTranslations, type Locale } from '@/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+    { params: { locale: 'pt' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const locale_ = locale as Locale;
+const t = useTranslations(locale_);
+const baseUrl = `/${locale_}`;
+
+const content = {
+  es: {
+    title: '¿Cómo Usar el Rapé?',
+    description: 'Guía paso a paso para usar rapé de forma consciente y segura. Kuripe, dosis, consejos y precauciones.',
+    sections: {
+      necesitas: '¿Qué necesitas?',
+      pasoAPaso: 'Paso a paso',
+      dosis: 'Dosis recomendada',
+      consejos: 'Consejos para principiantes',
+    },
+    cta: 'Ver productos en la tienda',
+  },
+  en: {
+    title: 'How to Use Rapé?',
+    description: 'A step-by-step guide to using rapé consciously and safely. Kuripe, dosage, tips and precautions.',
+    sections: {
+      necesitas: 'What You Need',
+      pasoAPaso: 'Step by Step',
+      dosis: 'Recommended Dosage',
+      consejos: 'Tips for Beginners',
+    },
+    cta: 'View products in store',
+  },
+  pt: {
+    title: 'Como Usar o Rapé?',
+    description: 'Guia passo a passo para usar rapé de forma consciente e segura. Kuripe, dosagem, dicas e precauções.',
+    sections: {
+      necesitas: 'O que você precisa?',
+      pasoAPaso: 'Passo a passo',
+      dosis: 'Dosagem recomendada',
+      consejos: 'Dicas para iniciantes',
+    },
+    cta: 'Ver produtos na loja',
+  },
+};
+
+const steps = {
+  es: [
+    { name: 'Prepara tu kuripe', text: 'Limpia tu kuripe y asegúrate de estar en un lugar tranquilo y cómodo.' },
+    { name: 'Toma una pequeña cantidad', text: 'Coloca una dosis pequeña de rapé en el extremo del kuripe.' },
+    { name: 'Sopla suavemente', text: 'Introduce el kuripe en una fosa nasal y sopla con suavidad y intención.' },
+    { name: 'Repite en la otra fosa nasal', text: 'Repite el proceso en la otra fosa nasal para equilibrar la aplicación.' },
+    { name: 'Siéntate y respira', text: 'Quédate en calma, respira profundamente y observa la experiencia.' },
+  ],
+  en: [
+    { name: 'Prepare your kuripe', text: 'Clean your kuripe and make sure you are in a quiet, comfortable place.' },
+    { name: 'Take a small amount', text: 'Place a small dose of rapé into the end of the kuripe.' },
+    { name: 'Blow gently', text: 'Insert the kuripe into one nostril and blow gently with intention.' },
+    { name: 'Repeat on the other nostril', text: 'Repeat the process on the other nostril to balance the application.' },
+    { name: 'Sit and breathe', text: 'Stay calm, breathe deeply, and observe the experience.' },
+  ],
+  pt: [
+    { name: 'Prepare o seu kuripe', text: 'Limpe o seu kuripe e certifique-se de estar em um lugar tranquilo e confortável.' },
+    { name: 'Pegue uma pequena quantidade', text: 'Coloque uma pequena dose de rapé na ponta do kuripe.' },
+    { name: 'Sople suavemente', text: 'Introduza o kuripe em uma narina e sopre suavemente com intenção.' },
+    { name: 'Repita na outra narina', text: 'Repita o processo na outra narina para equilibrar a aplicação.' },
+    { name: 'Sente-se e respire', text: 'Fique em calma, respire fundo e observe a experiência.' },
+  ],
+};
+
+const c = content[locale_];
+const currentSteps = steps[locale_];
+const canonicalUrl = `https://octavofuego.com${baseUrl}/como-usar-el-rape`;
+
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: c.title,
+  description: c.description,
+  totalTime: 'PT10M',
+  estimatedCost: {
+    '@type': 'MonetaryAmount',
+    currency: 'COP',
+    value: '0',
+  },
+  supply: [
+    { '@type': 'HowToSupply', name: 'Rapé do Acre' },
+    { '@type': 'HowToSupply', name: 'Kuripe' },
+  ],
+  tool: [
+    { '@type': 'HowToTool', name: 'Kuripe' },
+  ],
+  step: currentSteps.map((step, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: step.name,
+    text: step.text,
+    url: `${canonicalUrl}#paso-${index + 1}`,
+  })),
+};
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': `${canonicalUrl}#article`,
+  url: canonicalUrl,
+  headline: c.title,
+  description: c.description,
+  datePublished: '2026-07-01',
+  dateModified: '2026-07-01',
+  author: {
+    '@type': 'Organization',
+    '@id': 'https://octavofuego.com/#organization',
+    name: 'Octavo Fuego',
+  },
+  publisher: {
+    '@type': 'Organization',
+    '@id': 'https://octavofuego.com/#organization',
+    name: 'Octavo Fuego',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://octavofuego.com/images/octavofuego-logo.png',
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+};
+---
+
+<Layout title={c.title} description={c.description} locale={locale_} ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(howToSchema)} />
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      {c.title}
+    </h1>
+
+    <!-- ¿Qué necesitas? -->
+    <section class="mb-16" id="que-necesitas">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.necesitas}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <ul class="list-disc list-inside text-[var(--ceniza)] space-y-2 mb-4">
+        <li>Un kuripe limpio y en buen estado.</li>
+        <li>Rapé do Acre de tu preferencia.</li>
+        <li>Un espacio tranquilo para la aplicación.</li>
+        <li>Intención clara y respeto por la medicina.</li>
+      </ul>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </section>
+
+    <!-- Paso a paso -->
+    <section class="mb-16" id="paso-a-paso">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-6">{c.sections.pasoAPaso}</h2>
+      <ol class="space-y-8">
+        {currentSteps.map((step, index) => (
+          <li id={`paso-${index + 1}`} class="p-6 border border-[var(--color-border-subtle)] rounded-[var(--radius-card)]">
+            <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2">
+              {index + 1}. {step.name}
+            </h3>
+            <!-- 🖊️ USUARIO: reemplazar este texto -->
+            <p class="text-[var(--ceniza)] leading-relaxed">{step.text}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- Dosis recomendada -->
+    <section class="mb-16" id="dosis-recomendada">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.dosis}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Se recomienda empezar con una cantidad pequeña, aproximadamente la cuarta parte de lo que usarías con otros rapés. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      </p>
+    </section>
+
+    <!-- Consejos -->
+    <section class="mb-16" id="consejos-principiantes">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.consejos}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Respira profundamente antes de aplicar, mantén la calma y evita usar rapé si tienes molestias respiratorias agudas. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="text-center py-12 border-t border-[var(--color-border-subtle)]">
+      <a href={`${baseUrl}/tienda`} class="inline-block bg-[var(--color-action-primary)] text-white px-8 py-4 rounded-[var(--radius-button)] font-medium hover:bg-[var(--color-action-hover)] transition-colors">
+        {c.cta} →
+      </a>
+    </section>
+  </div>
+</Layout>

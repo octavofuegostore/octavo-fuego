@@ -1,0 +1,92 @@
+---
+/**
+ * Privacy policy page — /privacidad
+ * Trust Foundation SEO page based on Colombia's Ley 1581 de 2012.
+ */
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Política de Privacidad — Octavo Fuego';
+const description = 'Política de privacidad y tratamiento de datos personales de Octavo Fuego. Cumplimos con la Ley 1581 de 2012 de Colombia.';
+const canonicalUrl = 'https://octavofuego.com/privacidad';
+
+const webpageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#webpage`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  isPartOf: {
+    '@id': 'https://octavofuego.com/#website',
+  },
+  about: {
+    '@id': 'https://octavofuego.com/#organization',
+  },
+};
+---
+
+<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      Política de Privacidad — Octavo Fuego
+    </h1>
+
+    <section class="mb-12">
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-lg text-[var(--ceniza)] leading-relaxed">
+        En Octavo Fuego respetamos tu privacidad. Esta política describe cómo recolectamos, usamos y protegemos tus datos personales de acuerdo con la Ley 1581 de 2012 de Colombia.
+      </p>
+    </section>
+
+    <!-- Datos Recopilados -->
+    <section class="mb-16" id="datos-recopilados">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Datos recopilados</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Para procesar tus pedidos y brindarte atención, podemos recolectar: nombre completo, número de identificación, dirección de envío, número de teléfono, correo electrónico e información de pago. Lorem ipsum dolor sit amet.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </p>
+    </section>
+
+    <!-- Finalidad -->
+    <section class="mb-16" id="finalidad">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Finalidad del tratamiento</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Usamos tus datos para gestionar compras, realizar envíos, responder preguntas y, si así lo autorizas, enviarte novedades sobre medicina ancestral y productos. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      </p>
+    </section>
+
+    <!-- Derechos ARCO -->
+    <section class="mb-16" id="derechos-arco">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Derechos ARCO</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Como titular de tus datos tienes derecho a Acceder, Rectificar, Cancelar y Oponerte al tratamiento de tu información personal. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Para ejercer estos derechos, escríbenos a hola@octavofuego.com indicando tu solicitud. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </section>
+
+    <!-- Contacto -->
+    <section class="mb-16" id="contacto-privacidad">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Contacto</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Si tienes preguntas sobre esta política o sobre el tratamiento de tus datos, puedes contactarnos por los siguientes medios:
+      </p>
+      <ul class="list-disc list-inside text-[var(--ceniza)] space-y-2">
+        <li>Email: hola@octavofuego.com</li>
+        <li>WhatsApp: +57 317 213 7932</li>
+      </ul>
+    </section>
+  </div>
+</Layout>

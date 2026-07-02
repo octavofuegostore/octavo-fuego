@@ -1,0 +1,154 @@
+---
+/**
+ * Informational page — /[locale]/rape-do-acre-origen/
+ * Article schema. Origin and traceability of rapé do Acre.
+ */
+import Layout from '@/layouts/Layout.astro';
+import { useTranslations, type Locale } from '@/i18n';
+
+export async function getStaticPaths() {
+  return [
+    { params: { locale: 'es' } },
+    { params: { locale: 'en' } },
+    { params: { locale: 'pt' } },
+  ];
+}
+
+const { locale } = Astro.params;
+const locale_ = locale as Locale;
+const t = useTranslations(locale_);
+const baseUrl = `/${locale_}`;
+
+const content = {
+  es: {
+    title: 'Rapé do Acre — Origen y Trazabilidad',
+    description: 'Descubre por qué el rapé do Acre es reconocido mundialmente: origen amazónico, empaque al vacío y comunidades tradicionales.',
+    sections: {
+      porqueAcre: '¿Por qué el Acre?',
+      empaque: 'El Empaque al Vacío',
+      comparacion: 'Rapé Brasileño vs Colombiano',
+      comunidades: 'Nuestras Comunidades',
+    },
+    cta: 'Conoce nuestras variedades',
+  },
+  en: {
+    title: 'Rapé do Acre — Origin & Traceability',
+    description: 'Discover why rapé do Acre is globally recognized: Amazonian origin, vacuum sealing, and traditional communities.',
+    sections: {
+      porqueAcre: 'Why Acre?',
+      empaque: 'Vacuum Sealing',
+      comparacion: 'Brazilian vs Colombian Rapé',
+      comunidades: 'Our Communities',
+    },
+    cta: 'Explore our varieties',
+  },
+  pt: {
+    title: 'Rapé do Acre — Origem e Rastreabilidade',
+    description: 'Descubra por que o rapé do Acre é reconhecido mundialmente: origem amazônica, embalagem a vácuo e comunidades tradicionais.',
+    sections: {
+      porqueAcre: 'Por que o Acre?',
+      empaque: 'A Embalagem a Vácuo',
+      comparacion: 'Rapé Brasileiro vs Colombiano',
+      comunidades: 'Nossas Comunidades',
+    },
+    cta: 'Conheça nossas variedades',
+  },
+};
+
+const c = content[locale_];
+const canonicalUrl = `https://octavofuego.com${baseUrl}/rape-do-acre-origen`;
+
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  '@id': `${canonicalUrl}#article`,
+  url: canonicalUrl,
+  headline: c.title,
+  description: c.description,
+  datePublished: '2026-07-01',
+  dateModified: '2026-07-01',
+  author: {
+    '@type': 'Organization',
+    '@id': 'https://octavofuego.com/#organization',
+    name: 'Octavo Fuego',
+  },
+  publisher: {
+    '@type': 'Organization',
+    '@id': 'https://octavofuego.com/#organization',
+    name: 'Octavo Fuego',
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://octavofuego.com/images/octavofuego-logo.png',
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonicalUrl,
+  },
+};
+---
+
+<Layout title={c.title} description={c.description} locale={locale_} ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(articleSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      {c.title}
+    </h1>
+
+    <!-- ¿Por qué el Acre? -->
+    <section class="mb-16" id="por-que-acre">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.porqueAcre}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        El estado de Acre, en el oeste de Brasil, es uno de los territorios más vivos de la tradición del rapé. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sus comunidades indígenas han preservado las recetas originales durante generaciones.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </p>
+    </section>
+
+    <!-- Empaque al Vacío -->
+    <section class="mb-16" id="empaque-vacio">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.empaque}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Empacamos nuestros rapés al vacío en origen para preservar aroma, frescura y propiedades durante todo el transporte. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+      </p>
+    </section>
+
+    <!-- Rapé Brasileño vs Colombiano -->
+    <section class="mb-16" id="comparacion">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.comparacion}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        El rapé do Acre se distingue por sus cenizas específicas, la calidad del tabaco y la tradición ceremonial de sus comunidades. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </section>
+
+    <!-- Nuestras Comunidades -->
+    <section class="mb-16" id="comunidades">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.comunidades}</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Trabajamos respetuosamente con comunidades como Yawanawá, Nukini, Kaxinawá y Shanenawa. Cada una aporta su propia sabiduría, recetas y cuidado en la elaboración de la medicina.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </section>
+
+    <!-- CTA -->
+    <section class="text-center py-12 border-t border-[var(--color-border-subtle)]">
+      <a href={`${baseUrl}/tienda`} class="inline-block bg-[var(--color-action-primary)] text-white px-8 py-4 rounded-[var(--radius-button)] font-medium hover:bg-[var(--color-action-hover)] transition-colors">
+        {c.cta} →
+      </a>
+    </section>
+  </div>
+</Layout>

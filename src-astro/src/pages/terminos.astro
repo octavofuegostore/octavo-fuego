@@ -1,0 +1,149 @@
+---
+/**
+ * Terms and conditions page — /terminos
+ * Trust Foundation SEO page with WebPage schema.
+ * Adapted legal structure for Octavo Fuego (plant medicine ecommerce).
+ */
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Términos y Condiciones — Octavo Fuego';
+const description = 'Términos y condiciones de uso, compra y privacidad de Octavo Fuego. Regulado bajo la Ley 1480 de 2011 y la Ley 1581 de 2012 de Colombia.';
+const canonicalUrl = 'https://octavofuego.com/terminos';
+
+const sections = [
+  { id: 'disposiciones-generales', label: '1. Disposiciones Generales' },
+  { id: 'privacidad', label: '2. Privacidad y Tratamiento de Datos' },
+  { id: 'condiciones-compra', label: '3. Condiciones de Compra' },
+  { id: 'politica-envios', label: '4. Política de Envíos' },
+  { id: 'retracto', label: '5. Derecho de Retracto' },
+  { id: 'limitacion', label: '6. Limitación de Responsabilidad' },
+];
+
+const webpageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#webpage`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  isPartOf: {
+    '@id': 'https://octavofuego.com/#website',
+  },
+  about: {
+    '@id': 'https://octavofuego.com/#organization',
+  },
+};
+---
+
+<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
+
+  <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-4">
+      Términos y Condiciones — Octavo Fuego
+    </h1>
+    <p class="text-sm text-[var(--ceniza)] mb-12">Última actualización: julio 2026</p>
+
+    <!-- Table of Contents -->
+    <nav aria-labelledby="toc-heading" class="mb-16 p-6 bg-[var(--color-surface-warm)] rounded-[var(--radius-card)]">
+      <h2 id="toc-heading" class="font-display heading-md font-bold text-[var(--near-black)] mb-4">Contenido</h2>
+      <ol class="space-y-2">
+        {sections.map((section) => (
+          <li>
+            <a href={`#${section.id}`} class="text-[var(--color-action-primary)] hover:underline">
+              {section.label}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+
+    <!-- 1. Disposiciones Generales -->
+    <section class="mb-16" id="disposiciones-generales">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">1. Disposiciones Generales</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Los presentes Términos y Condiciones regulan el acceso y uso del sitio web octavofuego.com y las compras realizadas a través del mismo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">1.1 Aceptación de los términos</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Al navegar o realizar una compra en Octavo Fuego, declaras conocer y aceptar estos términos. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">1.2 Uso permitido del sitio</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        El sitio está destinado a personas mayores de edad que buscan información y productos de medicina ancestral. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
+      </p>
+    </section>
+
+    <!-- 2. Privacidad y Tratamiento de Datos -->
+    <section class="mb-16" id="privacidad">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">2. Privacidad y Tratamiento de Datos</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Octavo Fuego cumple con la Ley 1581 de 2012 y el Decreto 1377 de 2013 de Colombia para el tratamiento responsable de datos personales. Lorem ipsum dolor sit amet.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">2.1 Datos recolectados</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Recolectamos únicamente los datos necesarios para procesar tu pedido: nombre, dirección, teléfono y correo electrónico. Duis aute irure dolor in reprehenderit.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">2.2 Finalidad del tratamiento</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Los datos se utilizan para gestionar compras, envíos, comunicaciones sobre pedidos y, de forma opcional, envío de novedades si autorizas el newsletter. Excepteur sint occaecat cupidatat non proident.
+      </p>
+    </section>
+
+    <!-- 3. Condiciones de Compra -->
+    <section class="mb-16" id="condiciones-compra">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">3. Condiciones de Compra</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Los productos ofrecidos en Octavo Fuego son medicinas ancestrales destinadas a uso ceremonial. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">3.1 Precios y pagos</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Los precios están publicados en pesos colombianos (COP) e incluyen impuestos cuando aplique. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">3.2 Confirmación de pedido</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Una vez confirmado el pago, enviaremos la confirmación del pedido al correo registrado. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
+      </p>
+    </section>
+
+    <!-- 4. Política de Envíos -->
+    <section class="mb-16" id="politica-envios">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">4. Política de Envíos</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Los envíos se gestionan a través de transportadoras confiables. Para conocer cobertura, tiempos y costos, consulta nuestra <a href="/envios" class="text-[var(--color-action-primary)] hover:underline">Política de Envíos</a>.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+      </p>
+    </section>
+
+    <!-- 5. Derecho de Retracto -->
+    <section class="mb-16" id="retracto">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">5. Derecho de Retracto</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        De acuerdo con la Ley 1480 de 2011, los consumidores tienen derecho a retractarse de su compra dentro de los cinco (5) días hábiles siguientes a la recepción del producto. Lorem ipsum dolor sit amet.
+      </p>
+      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">5.1 Excepciones</h3>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        No aplican retracto en productos perecederos o de higiene personal que hayan sido abiertos. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </section>
+
+    <!-- 6. Limitación de Responsabilidad -->
+    <section class="mb-16" id="limitacion">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">6. Limitación de Responsabilidad</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Octavo Fuego vende sus productos como inciensos ceremoniales. El uso responsable de la medicina es decisión de quien la adquiere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </section>
+  </div>
+</Layout>
