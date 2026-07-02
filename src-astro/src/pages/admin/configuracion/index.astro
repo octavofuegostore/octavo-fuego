@@ -280,6 +280,58 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
       });
     });
 
+    // Load config from API
+    async function loadConfig() {
+      try {
+        const res = await fetch('/api/admin/configuracion');
+        if (!res.ok) return;
+        const { data } = await res.json();
+        if (!data) return;
+
+        const inputMap: Record<string, string> = {
+          nombre: 'config-nombre',
+          email: 'config-email',
+          telefono: 'config-telefono',
+          moneda: 'config-moneda',
+          unidad: 'config-unidad',
+          stock_min: 'config-stock-min',
+          reserva_tiempo: 'config-reserva-tiempo',
+          envio_costo: 'config-envio-costo',
+        };
+
+        for (const [key, elId] of Object.entries(inputMap)) {
+          const el = document.getElementById(elId) as HTMLInputElement | HTMLSelectElement | null;
+          if (el && data[key] !== undefined) {
+            el.value = data[key];
+          }
+        }
+
+        // Toggles
+        const toggleMap: Record<string, string> = {
+          alertas_stock: 'alertas-stock',
+          checkout_whatsapp: 'checkout-whatsapp',
+          modo_mayorista: 'modo-mayorista',
+        };
+
+        for (const [key, toggleName] of Object.entries(toggleMap)) {
+          const toggleBtn = document.querySelector(`[data-toggle="${toggleName}"]`) as HTMLButtonElement | null;
+          if (toggleBtn && data[key] !== undefined) {
+            const enabled = data[key] === 'true';
+            const indicator = toggleBtn.querySelector('.toggle-indicator') as HTMLElement;
+            toggleBtn.setAttribute('data-enabled', String(enabled));
+            toggleBtn.classList.toggle('bg-tabacco', enabled);
+            toggleBtn.classList.toggle('bg-papel', !enabled);
+            if (indicator) {
+              indicator.classList.toggle('translate-x-6', enabled);
+              indicator.classList.toggle('translate-x-1', !enabled);
+            }
+          }
+        }
+      } catch {
+        // Silent fail — keeps defaults
+      }
+    }
+
     // Save button wiring
     const guardarBtn = document.getElementById('guardar-cambios-btn');
 
@@ -296,40 +348,57 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
         Guardando...
       `;
 
-      // Collect form data
-      const config = {
-        nombre: (document.getElementById('config-nombre') as HTMLInputElement)?.value,
-        email: (document.getElementById('config-email') as HTMLInputElement)?.value,
-        telefono: (document.getElementById('config-telefono') as HTMLInputElement)?.value,
-        moneda: (document.getElementById('config-moneda') as HTMLSelectElement)?.value,
-        unidad: (document.getElementById('config-unidad') as HTMLSelectElement)?.value,
-        stockMin: (document.getElementById('config-stock-min') as HTMLInputElement)?.value,
-        reservaTiempo: (document.getElementById('config-reserva-tiempo') as HTMLInputElement)?.value,
-        envioCosto: (document.getElementById('config-envio-costo') as HTMLInputElement)?.value,
-        toggles: {} as Record<string, boolean>
+      // Collect form data — match API keys
+      const config: Record<string, string> = {
+        nombre: (document.getElementById('config-nombre') as HTMLInputElement)?.value || '',
+        email: (document.getElementById('config-email') as HTMLInputElement)?.value || '',
+        telefono: (document.getElementById('config-telefono') as HTMLInputElement)?.value || '',
+        moneda: (document.getElementById('config-moneda') as HTMLSelectElement)?.value || 'COP',
+        unidad: (document.getElementById('config-unidad') as HTMLSelectElement)?.value || 'g',
+        stock_min: (document.getElementById('config-stock-min') as HTMLInputElement)?.value || '100',
+        reserva_tiempo: (document.getElementById('config-reserva-tiempo') as HTMLInputElement)?.value || '15',
+        envio_costo: (document.getElementById('config-envio-costo') as HTMLInputElement)?.value || '8000',
       };
 
       // Collect toggle states
-      document.querySelectorAll('.toggle-btn').forEach(btn => {
-        const toggleBtn = btn as HTMLButtonElement;
-        const name = toggleBtn.getAttribute('data-toggle');
+      document.querySelectorAll('.toggle-btn').forEach(toggleBtn => {
+        const btn = toggleBtn as HTMLButtonElement;
+        const name = btn.getAttribute('data-toggle');
         if (name) {
-          config.toggles[name] = toggleBtn.getAttribute('data-enabled') === 'true';
+          const key = name.replace(/-/g, '_');
+          config[key] = btn.getAttribute('data-enabled') === 'true' ? 'true' : 'false';
         }
       });
 
-      // Simulate save (mock API call)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      try {
+        const res = await fetch('/api/admin/configuracion', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(config),
+        });
 
-      // Restore button
-      btn.disabled = false;
-      btn.innerHTML = originalText;
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Error al guardar');
+        }
 
-      // Show success toast
-      toast.success('Configuración guardada correctamente');
+        toast.success('Configuración guardada correctamente');
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error de red';
+        toast.error(message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
+      }
     });
+
+    // Load config on init
+    loadConfig();
   }
 
   initPage();
-  document.addEventListener('astro:page-load', initPage);
+  if (!(window as any).__configInitDone) {
+    (window as any).__configInitDone = true;
+    document.addEventListener('astro:page-load', initPage);
+  }
 </script>

@@ -28,15 +28,16 @@ export class ProductoService extends SupabaseService<LMProductoRow> {
     }))
   }
 
-  async listar(opts?: { bodegaId?: string }): Promise<Producto[]> {
+  async listar(opts?: { bodegaId?: string; limit?: number }): Promise<Producto[]> {
     if (!this.supabaseConfigurado) {
       await this.mockDelay()
       return generarMockProductos()
     }
 
     // Batch: 3 queries, not N+1
-    const { data: productos } = await supabase
-      .from('productos').select('*').order('slug')
+    let productosQuery = supabase.from('productos').select('*').order('slug')
+    if (opts?.limit) productosQuery = productosQuery.limit(opts.limit)
+    const { data: productos } = await productosQuery
 
     if (!productos?.length) return []
 

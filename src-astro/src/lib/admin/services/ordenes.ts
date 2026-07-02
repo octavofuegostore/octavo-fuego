@@ -16,17 +16,21 @@ export class OrdenService extends SupabaseService<LMOrdenRow> {
     return []
   }
 
-  async listar(opts?: { bodegaId?: string }): Promise<Orden[]> {
+  async listar(opts?: { bodegaId?: string; limit?: number }): Promise<Orden[]> {
     if (!this.supabaseConfigurado) {
       await this.mockDelay()
       return []
     }
 
-    const { data, error } = await supabase
+    let query = supabase
       .from('ordenes')
       .select('*, clientes!inner(nombre_empresa, email, telefono)')
       .order('creado_en', { ascending: false })
 
+    if (opts?.bodegaId) query = query.eq('bodega_id', opts.bodegaId)
+    if (opts?.limit) query = query.limit(opts.limit)
+
+    const { data, error } = await query
     if (error) throw error
 
     return ((data ?? []) as LMOrdenRow[]).map(mapToAdminOrden)

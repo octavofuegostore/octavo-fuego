@@ -23,9 +23,9 @@ const svc = crearServicios(bodegaId);
 let ordenes = [], clientes = [], productos = [];
 try {
   const results = await Promise.all([
-    svc.ordenes.listar(),
-    svc.clientes.listar(),
-    svc.productos.listar(),
+    svc.ordenes.listar({ limit: 100 }),
+    svc.clientes.listar({ limit: 100 }),
+    svc.productos.listar({ limit: 50 }),
   ]);
   ordenes = results[0] ?? [];
   clientes = results[1] ?? [];
@@ -307,5 +307,8 @@ const allPeriodsData = {
   }
 
   initPage();
-  document.addEventListener('astro:page-load', initPage);
+  if (!(window as any).__dashboardInitDone) {
+    (window as any).__dashboardInitDone = true;
+    document.addEventListener('astro:page-load', initPage);
+  }
 </script>
