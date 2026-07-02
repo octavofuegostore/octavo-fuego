@@ -91,6 +91,18 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     </div>
   </div>
 
+  <!-- Delete Confirmation Dialog -->
+  <div id="delete-confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-sm w-full p-6">
+      <h3 class="text-lg font-display font-bold text-humo mb-2">Eliminar Transacción</h3>
+      <p class="text-sm text-ceniza mb-6">¿Estás seguro de eliminar esta transacción? Esta acción no se puede deshacer.</p>
+      <div class="flex items-center justify-end gap-3">
+        <button id="cancel-delete-btn" class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors">Cancelar</button>
+        <button id="confirm-delete-btn" class="px-4 py-2 bg-error text-white rounded-lg text-sm font-medium hover:bg-error/90 transition-colors">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Pagination -->
   <div class="flex items-center justify-between">
     <p id="pagination-info" class="text-sm text-ceniza">Mostrando 1-{Math.min(total, 200)} de {total} transacciones</p>
@@ -99,14 +111,14 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     </div>
   </div>
 
-  <!-- Nueva Transaccion Modal -->
+  <!-- Transaccion Modal (Create/Edit) -->
   <div id="transaccion-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4">
     <div class="bg-white rounded-2xl shadow-xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
       <div class="p-6 border-b border-papel">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-xl font-display font-bold text-humo">Nueva Transacción</h2>
-            <p class="text-sm text-ceniza mt-1">Agrega una nueva transacción al registro</p>
+            <h2 id="transaccion-modal-title" class="text-xl font-display font-bold text-humo">Nueva Transacción</h2>
+            <p id="transaccion-modal-desc" class="text-sm text-ceniza mt-1">Agrega una nueva transacción al registro</p>
           </div>
           <button id="close-transaccion-modal" class="p-2 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,6 +128,7 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
         </div>
       </div>
       <form id="transaccion-form" class="p-6 space-y-4">
+        <input type="hidden" id="transaccion-editing-id" value="" />
         <div>
           <label class="block text-sm font-medium text-humo mb-2">Tipo *</label>
           <select id="transaccion-tipo" required class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco">
@@ -167,12 +180,13 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
   }
 
   function initPage() {
-    const allTransacciones: TransaccionItem[] = (transacciones as TransaccionItem[]) || [];
+    let allTransacciones: TransaccionItem[] = (transacciones as TransaccionItem[]) || [];
 
     // Pagination state
     let currentPage = 1;
     const pageSize = 7;
     let filteredTransacciones = [...allTransacciones];
+    let editingId: string | null = null;
 
     // DOM elements
     const searchInput = document.getElementById('search-transaccion') as HTMLInputElement;
@@ -189,6 +203,14 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     const form = document.getElementById('transaccion-form') as HTMLFormElement;
     const tipoSelect = document.getElementById('transaccion-tipo') as HTMLSelectElement;
     const categoriaSelect = document.getElementById('transaccion-categoria') as HTMLSelectElement;
+    const modalTitle = document.getElementById('transaccion-modal-title');
+    const modalDesc = document.getElementById('transaccion-modal-desc');
+    const editingIdInput = document.getElementById('transaccion-editing-id') as HTMLInputElement;
+    const deleteConfirmModal = document.getElementById('delete-confirm-modal');
+    const confirmDeleteBtn = document.getElementById('confirm-delete-btn');
+    const cancelDeleteBtn = document.getElementById('cancel-delete-btn');
+
+    let pendingDeleteId: string | null = null;
 
     function filterTransacciones() {
       const query = searchInput?.value.toLowerCase() || '';
@@ -349,6 +371,7 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
     });
 
     const categoriasList = (categorias as Array<{ nombre: string; tipo: string; subcategorias: string[] }>) || [];
+    const categoriaNameToId = new Map(categoriasList.map(c => [c.nombre, c.id]));
 
     function updateCategoriaOptions(tipo: string) {
       if (!categoriaSelect) return;
@@ -374,32 +397,295 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
       if (e.target === modal) closeModal();
     });
 
-    form?.addEventListener('submit', (e) => {
+    // ════════════════════════════════════════════════════════════════════
+    // API helpers
+    // ════════════════════════════════════════════════════════════════════
+
+    async function crearTransaccion(data: {
+      tipo: string; descripcion: string; categoria: string; monto: number; fecha: string;
+    }) {
+      const categoriaId = categoriaNameToId.get(data.categoria);
+      const res = await fetch('/api/admin/contabilidad/transacciones', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tipo: data.tipo === 'Ingreso' ? 'ingreso' : 'egreso',
+          descripcion: data.descripcion,
+          categoria_id: categoriaId,
+          monto: data.monto,
+          fecha: data.fecha,
+          moneda: 'COP',
+        }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Error al crear transacción');
+      }
+      return res.json();
+    }
+
+    async function actualizarTransaccion(id: string, data: {
+      tipo?: string; descripcion?: string; categoria?: string; monto?: number; fecha?: string;
+    }) {
+      const body: Record<string, unknown> = {};
+      if (data.tipo) body.tipo = data.tipo === 'Ingreso' ? 'ingreso' : 'egreso';
+      if (data.descripcion) body.descripcion = data.descripcion;
+      if (data.categoria) {
+        const categoriaId = categoriaNameToId.get(data.categoria);
+        if (categoriaId) body.categoria_id = categoriaId;
+      }
+      if (data.monto !== undefined) body.monto = data.monto;
+      if (data.fecha) body.fecha = data.fecha;
+
+      const res = await fetch(`/api/admin/contabilidad/transacciones/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Error al actualizar transacción');
+      }
+      return res.json();
+    }
+
+    async function eliminarTransaccion(id: string) {
+      const res = await fetch(`/api/admin/contabilidad/transacciones/${id}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Error al eliminar transacción');
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // Form submit — create or update
+    // ════════════════════════════════════════════════════════════════════
+
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const tipo = (document.getElementById('transaccion-tipo') as HTMLSelectElement)?.value;
       const descripcion = (document.getElementById('transaccion-descripcion') as HTMLInputElement)?.value;
       const categoria = (document.getElementById('transaccion-categoria') as HTMLSelectElement)?.value;
-      const monto = parseInt((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0', 10);
+      const monto = parseFloat((document.getElementById('transaccion-monto') as HTMLInputElement)?.value || '0');
       const fecha = (document.getElementById('transaccion-fecha') as HTMLInputElement)?.value;
+      const editingIdVal = editingIdInput?.value;
 
-      // Optimistic local add
-      const newTransaccion: TransaccionItem = {
-        id: crypto.randomUUID(),
-        fecha: fecha || new Date().toISOString().split('T')[0],
-        descripcion: descripcion || '',
-        categoria: categoria || '',
-        tipo: tipo as 'Ingreso' | 'Egreso',
-        monto,
-        moneda: 'COP',
-      };
+      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      const originalText = submitBtn?.innerHTML || 'Guardar';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Guardando...';
+      }
 
-      allTransacciones.unshift(newTransaccion);
-      closeModal();
-      filterTransacciones();
-      toast.success('Transacción creada correctamente (local)');
-
-      // TODO: POST to API endpoint when available
+      try {
+        if (editingIdVal) {
+          // UPDATE existing transaction
+          await actualizarTransaccion(editingIdVal, {
+            tipo, descripcion, categoria, monto, fecha,
+          });
+          // Reload page to reflect server-side changes
+          window.location.reload();
+        } else {
+          // CREATE new transaction
+          const result = await crearTransaccion({
+            tipo, descripcion, categoria, monto, fecha,
+          });
+          // Add returned data to local list
+          const newTx: TransaccionItem = {
+            id: result.data.id,
+            fecha: result.data.fecha,
+            descripcion: result.data.descripcion,
+            categoria: categoria || '',
+            tipo: tipo as 'Ingreso' | 'Egreso',
+            monto: result.data.monto,
+            moneda: result.data.moneda || 'COP',
+          };
+          allTransacciones.unshift(newTx);
+          closeModal();
+          filterTransacciones();
+          toast.success('Transacción creada correctamente');
+        }
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error de red';
+        toast.error(message);
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      }
     });
+
+    // ════════════════════════════════════════════════════════════════════
+    // Open modal in CREATE mode
+    // ════════════════════════════════════════════════════════════════════
+
+    nuevaBtn?.addEventListener('click', () => {
+      if (!modal) return;
+      editingId = null;
+      if (editingIdInput) editingIdInput.value = '';
+      if (modalTitle) modalTitle.textContent = 'Nueva Transacción';
+      if (modalDesc) modalDesc.textContent = 'Agrega una nueva transacción al registro';
+      form?.reset();
+      updateCategoriaOptions('');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // Open modal in EDIT mode
+    // ════════════════════════════════════════════════════════════════════
+
+    function openEditModal(id: string) {
+      const t = allTransacciones.find((tx: TransaccionItem) => tx.id === id);
+      if (!t || !modal) return;
+
+      editingId = id;
+      if (editingIdInput) editingIdInput.value = id;
+      if (modalTitle) modalTitle.textContent = 'Editar Transacción';
+      if (modalDesc) modalDesc.textContent = 'Modifica los datos de la transacción';
+
+      (document.getElementById('transaccion-tipo') as HTMLSelectElement).value = t.tipo;
+      (document.getElementById('transaccion-descripcion') as HTMLInputElement).value = t.descripcion;
+      updateCategoriaOptions(t.tipo);
+      // Wait for options to populate, then select
+      setTimeout(() => {
+        const opts = (document.getElementById('transaccion-categoria') as HTMLSelectElement)?.options;
+        if (opts) {
+          for (let i = 0; i < opts.length; i++) {
+            if (opts[i].value === t.categoria) {
+              opts.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }, 0);
+      (document.getElementById('transaccion-monto') as HTMLInputElement).value = String(t.monto);
+      (document.getElementById('transaccion-fecha') as HTMLInputElement).value = t.fecha.split('T')[0];
+
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // Delete handlers
+    // ════════════════════════════════════════════════════════════════════
+
+    function openDeleteConfirm(id: string) {
+      pendingDeleteId = id;
+      deleteConfirmModal?.classList.remove('hidden');
+      deleteConfirmModal?.classList.add('flex');
+    }
+
+    cancelDeleteBtn?.addEventListener('click', () => {
+      pendingDeleteId = null;
+      deleteConfirmModal?.classList.add('hidden');
+      deleteConfirmModal?.classList.remove('flex');
+    });
+
+    confirmDeleteBtn?.addEventListener('click', async () => {
+      if (!pendingDeleteId) return;
+      const id = pendingDeleteId;
+      pendingDeleteId = null;
+      deleteConfirmModal?.classList.add('hidden');
+      deleteConfirmModal?.classList.remove('flex');
+
+      try {
+        await eliminarTransaccion(id);
+        allTransacciones = allTransacciones.filter((t: TransaccionItem) => t.id !== id);
+        filterTransacciones();
+        toast.success('Transacción eliminada correctamente');
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : 'Error de red';
+        toast.error(message);
+      }
+    });
+
+    deleteConfirmModal?.addEventListener('click', (e) => {
+      if (e.target === deleteConfirmModal) {
+        pendingDeleteId = null;
+        deleteConfirmModal.classList.add('hidden');
+        deleteConfirmModal.classList.remove('flex');
+      }
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // Update table template — full override with edit + delete
+    // ════════════════════════════════════════════════════════════════════
+
+    renderTransacciones = function () {
+      if (!tbody) return;
+
+      const totalPages = Math.ceil(filteredTransacciones.length / pageSize);
+      const start = (currentPage - 1) * pageSize;
+      const end = start + pageSize;
+      const pageData = filteredTransacciones.slice(start, end);
+
+      if (pageData.length === 0) {
+        tbody.innerHTML = '';
+        emptyState?.classList.remove('hidden');
+        return;
+      }
+
+      emptyState?.classList.add('hidden');
+
+      tbody.innerHTML = pageData.map((t: TransaccionItem) => `
+        <tr class="hover:bg-papel/30 transition-colors cursor-pointer" data-transaccion-id="${t.id}">
+          <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
+          <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
+          <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
+          <td class="px-6 py-4 text-center">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
+          </td>
+          <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
+          <td class="px-6 py-4 text-right">
+            <div class="flex items-center justify-end gap-1">
+              <button class="p-1.5 text-ceniza hover:text-error hover:bg-error/5 rounded-lg transition-colors delete-btn" title="Eliminar" data-id="${t.id}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+              </button>
+              <button class="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors edit-btn" title="Editar" data-id="${t.id}">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      // Wire actions
+      tbody.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+          if (id) openDeleteConfirm(id);
+        });
+      });
+      tbody.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = (e.currentTarget as HTMLElement).getAttribute('data-id');
+          if (id) openEditModal(id);
+        });
+      });
+      tbody.querySelectorAll('tr[data-transaccion-id]').forEach(row => {
+        row.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (target.closest('.edit-btn') || target.closest('.delete-btn')) return;
+          const id = row.getAttribute('data-transaccion-id');
+          if (id) openEditModal(id);
+        });
+      });
+
+      if (paginationInfo) {
+        const totalItems = filteredTransacciones.length;
+        paginationInfo.textContent = `Mostrando ${start + 1}-${Math.min(end, totalItems)} de ${totalItems} transacciones`;
+      }
+    };
 
     // Initial render
     renderTransacciones();
@@ -407,5 +693,8 @@ const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', '
   }
 
   initPage();
-  document.addEventListener('astro:page-load', initPage);
+  if (!(window as any).__transaccionesInitDone) {
+    (window as any).__transaccionesInitDone = true;
+    document.addEventListener('astro:page-load', initPage);
+  }
 </script>

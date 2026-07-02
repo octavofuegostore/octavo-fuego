@@ -46,7 +46,7 @@ export abstract class SupabaseService<T extends { id: string }> {
 
   protected abstract generarMock(): T[]
 
-  async listar(opts?: { bodegaId?: string }): Promise<T[]> {
+  async listar(opts?: { bodegaId?: string; limit?: number }): Promise<T[]> {
     if (!this.supabaseConfigurado) {
       await this.mockDelay()
       return this.generarMock()
@@ -57,7 +57,10 @@ export abstract class SupabaseService<T extends { id: string }> {
       query = query.eq('bodega_id', opts.bodegaId)
     }
 
-    const { data, error } = await query.order('creado_en', { ascending: false })
+    query = query.order('creado_en', { ascending: false })
+    if (opts?.limit) query = query.limit(opts.limit)
+
+    const { data, error } = await query
     if (error) throw new ErrorSupabase(`Error al listar ${this.tableName}`, error)
     return (data ?? []) as T[]
   }
