@@ -102,6 +102,22 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
     }
   }, [$refreshTrigger, orders]);
 
+  // Listen for orden-creada event and append the new order without page reload
+  useEffect(() => {
+    const handleOrdenCreada = (event: Event) => {
+      const customEvent = event as CustomEvent<Order>;
+      const nuevaOrden = customEvent.detail;
+      if (nuevaOrden?.id) {
+        setLocalOrders((prev) => [nuevaOrden, ...prev]);
+        refreshTrigger.set(Date.now());
+        toast.success(`Orden ${nuevaOrden.id} creada y añadida a la lista`);
+      }
+    };
+
+    window.addEventListener('orden-creada', handleOrdenCreada);
+    return () => window.removeEventListener('orden-creada', handleOrdenCreada);
+  }, []);
+
   // Handle search with debounce
   const handleSearchChange = (value: string) => {
     searchQuery.set(value);

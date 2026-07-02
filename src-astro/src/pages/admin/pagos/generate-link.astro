@@ -1,0 +1,291 @@
+---
+export const prerender = false;
+// Payment link generation page
+import AdminLayout from '@/layouts/AdminLayout.astro';
+import { crearServicios } from '@/lib/admin/provider';
+
+const svc = crearServicios();
+const todasOrdenes = await svc.ordenes.listar();
+const ordenesPendientes = todasOrdenes.filter(o => o.status === 'pendiente');
+---
+
+<AdminLayout title="Generar Link de Pago" description="Crea un link de pago para una orden pendiente">
+  <!-- Page Header -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between">
+      <div>
+        <h1 class="text-2xl font-display font-bold text-humo">Generar Link de Pago</h1>
+        <p class="text-ceniza mt-1">Crea un link de pago seguro para una orden pendiente</p>
+      </div>
+      <a
+        href="/admin/pagos"
+        class="flex items-center gap-2 px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Volver a Pagos
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-2xl">
+    <!-- Form Section -->
+    <div id="link-form-section" class="bg-white rounded-2xl shadow-card p-6 mb-6">
+      <form id="generate-link-form" class="space-y-6">
+        <div>
+          <label for="orden-select" class="block text-sm font-medium text-humo mb-2">
+            Orden pendiente *
+          </label>
+          <select
+            id="orden-select"
+            name="orden_id"
+            required
+            class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white"
+          >
+            <option value="">Selecciona una orden...</option>
+            {ordenesPendientes.map((orden) => (
+              <option value={orden.id}>
+                {orden.id} — {orden.customer.name} — {new Intl.NumberFormat('es-CO', {
+                  style: 'currency',
+                  currency: orden.currency || 'COP',
+                  minimumFractionDigits: 0,
+                }).format(orden.total)}
+              </option>
+            ))}
+          </select>
+          <p id="orden-error" class="hidden mt-2 text-sm text-error">Selecciona una orden</p>
+          {ordenesPendientes.length === 0 && (
+            <p class="mt-2 text-sm text-ceniza">No hay órdenes pendientes disponibles.</p>
+          )}
+        </div>
+
+        <div>
+          <span class="block text-sm font-medium text-humo mb-3">Método de pago *</span>
+          <div class="space-y-3">
+            <label class="flex items-center gap-3 p-4 border border-papel rounded-lg cursor-pointer hover:bg-papel/30 transition-colors">
+              <input
+                type="radio"
+                name="metodo"
+                value="wompi_link"
+                checked
+                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+              />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-humo">Link Wompi</p>
+                <p class="text-xs text-ceniza">Pago con tarjeta o PSE en Colombia</p>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-3 p-4 border border-papel rounded-lg cursor-pointer hover:bg-papel/30 transition-colors">
+              <input
+                type="radio"
+                name="metodo"
+                value="pix_qr"
+                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+              />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-humo">Pix QR</p>
+                <p class="text-xs text-ceniza">Pago instantáneo con QR en Brasil</p>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-3 p-4 border border-papel rounded-lg cursor-pointer hover:bg-papel/30 transition-colors">
+              <input
+                type="radio"
+                name="metodo"
+                value="pix_copia_cola"
+                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+              />
+              <div class="flex-1">
+                <p class="text-sm font-medium text-humo">Pix Copia y Cola</p>
+                <p class="text-xs text-ceniza">Código Pix para copiar y pegar</p>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-papel">
+          <a
+            href="/admin/pagos"
+            class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+          >
+            Cancelar
+          </a>
+          <button
+            type="submit"
+            id="submit-btn"
+            class="px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Generar Link
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Result Section -->
+    <div id="link-result-section" class="hidden bg-white rounded-2xl shadow-card p-6">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+          <svg class="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-lg font-display font-bold text-humo">Link generado correctamente</h2>
+          <p class="text-sm text-ceniza">Comparte este link con el cliente para completar el pago</p>
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-humo mb-2">Link de pago</label>
+          <div class="flex items-center gap-2">
+            <input
+              id="link-pago-url"
+              type="text"
+              readonly
+              class="flex-1 px-4 py-2.5 border border-papel rounded-lg text-sm bg-papel/30 text-humo focus:outline-none"
+            />
+            <button
+              id="copy-link-btn"
+              type="button"
+              class="px-4 py-2.5 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="p-4 bg-papel/30 rounded-lg">
+            <p class="text-xs text-ceniza uppercase">Método</p>
+            <p id="result-metodo" class="text-sm font-medium text-humo mt-1">—</p>
+          </div>
+          <div class="p-4 bg-papel/30 rounded-lg">
+            <p class="text-xs text-ceniza uppercase">Expira en</p>
+            <p id="result-expires" class="text-sm font-medium text-humo mt-1">—</p>
+          </div>
+        </div>
+
+        <div class="pt-4 border-t border-papel">
+          <button
+            id="generate-another-btn"
+            type="button"
+            class="text-sm font-medium text-tabacco hover:text-tabacco/80 transition-colors"
+          >
+            Generar otro link
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</AdminLayout>
+
+<script>
+  import { toast } from 'sonner';
+
+  function initPage() {
+    const form = document.getElementById('generate-link-form') as HTMLFormElement;
+    const formSection = document.getElementById('link-form-section');
+    const resultSection = document.getElementById('link-result-section');
+    const ordenSelect = document.getElementById('orden-select') as HTMLSelectElement;
+    const ordenError = document.getElementById('orden-error');
+    const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+    const linkUrlInput = document.getElementById('link-pago-url') as HTMLInputElement;
+    const copyBtn = document.getElementById('copy-link-btn') as HTMLButtonElement;
+    const resultMetodo = document.getElementById('result-metodo');
+    const resultExpires = document.getElementById('result-expires');
+    const generateAnotherBtn = document.getElementById('generate-another-btn');
+
+    function showForm() {
+      formSection?.classList.remove('hidden');
+      resultSection?.classList.add('hidden');
+      form?.reset();
+      if (ordenError) ordenError.classList.add('hidden');
+    }
+
+    function showResult(data: { link_pago: string; metodo: string; expires_at: string }) {
+      formSection?.classList.add('hidden');
+      resultSection?.classList.remove('hidden');
+
+      if (linkUrlInput) linkUrlInput.value = data.link_pago;
+      if (resultMetodo) {
+        const labels: Record<string, string> = {
+          wompi_link: 'Link Wompi',
+          pix_qr: 'Pix QR',
+          pix_copia_cola: 'Pix Copia y Cola',
+        };
+        resultMetodo.textContent = labels[data.metodo] || data.metodo;
+      }
+      if (resultExpires) {
+        const expiresAt = new Date(data.expires_at);
+        resultExpires.textContent = expiresAt.toLocaleString('es-CO', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+      }
+    }
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!ordenSelect?.value) {
+        ordenError?.classList.remove('hidden');
+        return;
+      }
+      ordenError?.classList.add('hidden');
+
+      const formData = new FormData(form);
+      const orden_id = formData.get('orden_id') as string;
+      const metodo = formData.get('metodo') as string;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Generando...';
+
+      try {
+        const response = await fetch('/api/admin/pagos/generate-link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orden_id, metodo }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          toast.error(data.error || 'Error al generar el link de pago');
+          return;
+        }
+
+        showResult(data);
+        toast.success('Link de pago generado correctamente');
+      } catch (err) {
+        toast.error('Error de conexión al generar el link');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Generar Link';
+      }
+    });
+
+    copyBtn?.addEventListener('click', async () => {
+      if (!linkUrlInput?.value) return;
+      try {
+        await navigator.clipboard.writeText(linkUrlInput.value);
+        toast.success('Link copiado al portapapeles');
+      } catch {
+        toast.error('No se pudo copiar el link');
+      }
+    });
+
+    generateAnotherBtn?.addEventListener('click', showForm);
+  }
+
+  initPage();
+  document.addEventListener('astro:page-load', initPage);
+</script>

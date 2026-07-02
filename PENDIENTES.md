@@ -14,12 +14,54 @@
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.7.1) |
-| 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
+| 04 Marketing/SEO | █████████░ 92% | 🔄 En progreso |
 | 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
 | 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
+
+## 🏁 Sprint Actual — v0.10.0: SEO Infrastructure Foundation (Julio 1, 2026)
+
+> **PR:** #33 | **Branch:** `feat/seo-foundation` → `main` | **Build:** ✅ 0 errores
+> **Commits:** ac59e4a (develop), 4067984 (main) | **Fuente:** SDD seo-complete-architecture
+> **Arquitectura guardada en Engram:** `seo/architecture-complete-audit`, `seo/dual-pillar-architecture`, `seo/phased-implementation-plan`, `seo/content-audit-matrix`
+
+### ✅ Fundación Técnica (Fase 1)
+| Código | Tarea | Archivos |
+|--------|-------|----------|
+| F1.2.2 | Fluid typography — `clamp()` en headings (11 páginas) | `global.css` + 10 `.astro` |
+| F1.1.4 | IndexNow Protocol — endpoint + key file | `src/pages/api/index-now.ts`, `public/...txt` |
+
+### ✅ On-Page SEO (Fase 2)
+| Código | Tarea | Archivos |
+|--------|-------|----------|
+| F2.1.1 | Homepage H1 + meta locale-aware ($3.500/g) | `[locale]/index.astro` |
+| F2.1.2 | 5 PDPs — meta con precio/g y keywords | `[locale]/tienda/rape/[product].astro`, `products.ts` |
+| F2.2 | og:image SVG template + componente + Layout wiring | `og-default.svg`, `OgImage.astro`, `Layout.astro` |
+
+### ✅ Schema Markup (Fase 4)
+| Código | Tarea | Archivos |
+|--------|-------|----------|
+| F4.1 | FAQPage schema en 15 PDPs (5 prod × 3 locales) | `FAQPageJsonLd.astro` |
+| F4.2 | @graph en homepage (Organization + WebPage + WebSite) | `GraphSchema.astro` |
+| F4.2 | OrganizationJsonLd enriquecido (hasOfferCatalog, knowsAbout) | `GraphSchema.astro` |
+
+### ⏳ Pendiente en develop (necesita copy real)
+| Código | Tarea | Archivo |
+|--------|-------|---------|
+| F5 | Landing Mayoristas — crear + 14 fixes | `mayoristas.astro` (develop) |
+| F3.1.1 | /nosotros — historia, comunidades, misión | `nosotros.astro` (develop) |
+| F3.1.2 | /contacto — formulario + WhatsApp | `contacto.astro` (develop) |
+| F3.1.3 | /faq — preguntas frecuentes (FAQ Schema listo) | `faq.astro` (develop) |
+| F3.1.4 | /envios — política de envíos | `envios.astro` (develop) |
+| F3.1.5 | /terminos — términos y condiciones | `terminos.astro` (develop) |
+| F3.1.6 | /privacidad — política de privacidad | `privacidad.astro` (develop) |
+| F3.2.1 | /es/que-es-el-rape/ (Article Schema listo) | `[locale]/que-es-el-rape.astro` (develop) |
+| F3.2.2 | /es/como-usar-el-rape/ (HowTo Schema listo) | `[locale]/como-usar-el-rape.astro` (develop) |
+| F3.2.3 | /es/rape-do-acre-origen/ (Article Schema listo) | `[locale]/rape-do-acre-origen.astro` (develop) |
+
+> **Instrucciones:** Buscar `🖊️ USUARIO` en cada archivo para reemplazar copy placeholder por texto real. Luego commit → push → PR.
 
 ## 🏁 Último Sprint — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
 

@@ -2,7 +2,83 @@
 
 ---
 
-## 🔍 PRUEBA MANUAL PENDIENTE — TODO JUNTO
+## 🏁 v0.10.0: SEO Infrastructure — MERGED ✅ (Julio 1, 2026)
+
+> **PR:** #33 | **Branch:** `feat/seo-foundation` → `main`
+> **Build:** ✅ 0 errores | **19 files, 498 additions**
+
+### ✅ En producción (main)
+- [x] Fluid typography — `clamp()` en headings de 11 páginas
+- [x] IndexNow Protocol — endpoint `/api/index-now` + verification key
+- [x] H1 + meta descriptions locale-aware con precio $3.500/g (Home, 5 PDPs, categorías)
+- [x] og:image SVG template 1200×630 + componente reutilizable
+- [x] FAQPage schema en 15 PDPs (5 productos × 3 locales)
+- [x] @graph schema en homepage (Org + WebPage + WebSite)
+- [x] OrganizationJsonLd enriquecido
+
+### ⏳ Pendiente en develop (necesita escribir copy real)
+Buscar `🖊️ USUARIO` en cada archivo y reemplazar placeholder:
+- [ ] `/nosotros` — AboutPage schema listo
+- [ ] `/contacto` — ContactPage schema listo
+- [ ] `/faq` — FAQPage schema listo
+- [ ] `/envios` — estructura lista
+- [ ] `/terminos` — estructura legal lista (adaptado de Pipod)
+- [ ] `/privacidad` — estructura Ley 1581 lista
+- [ ] `/es/que-es-el-rape/` — Article schema listo
+- [ ] `/es/como-usar-el-rape/` — HowTo schema listo
+- [ ] `/es/rape-do-acre-origen/` — Article schema listo
+- [ ] `/mayoristas/` — B2B landing con 14 fixes
+
+---
+
+## 🏁 v0.10.0 / v0.10.1 / v0.10.2 — Admin Speed + Features + SDD Remaining — MERGED ✅ (Julio 1-2, 2026)
+
+> **PRs:** #32 (v0.10.0 speed+features), #34 (v0.10.1 verify fixes), #36 (v0.10.2 SDD features)
+> **Build:** ✅ 0 errores
+
+### Fase 1 — Velocidad Admin
+- [x] StockAlertCount movido de SSR a cliente-side fetch (`/api/admin/inventario/stock-alert-count`)
+- [x] Límites en queries del dashboard (100 órdenes, 100 clientes, 50 productos)
+- [x] BodegaSwitcher `client:load` → `client:idle`
+- [x] Init guard en `astro:page-load` (previene listener leak)
+
+### Fase 2 — Funcionalidades faltantes
+- [x] API CRUD transacciones: `POST/PUT/DELETE /api/admin/contabilidad/transacciones`
+- [x] Modal transacciones conectado a API real (crear, editar, eliminar con confirmación)
+- [x] Header botón "Nuevo" → dropdown: Producto, Cliente, Transacción, Orden
+- [x] Header búsqueda global funcional (Enter → orden por ID/SKU/clientes)
+- [x] Configuración persiste en Supabase (`GET/POST /api/admin/configuracion`)
+
+### Judgment Day — Dual blind review (7 fixes)
+- [x] Auth bypass: `verifyToken` async sin `await` → `getUser()` async + await en 4 endpoints
+- [x] `const allTransacciones` reasignado → `let`
+- [x] Listener leak en `astro:page-load` → init guard window flag
+- [x] DELETE handler sin `.single()` → 404 nunca se disparaba
+- [x] Config POST enmascaraba fallos → tracking real saved/errors
+- [x] `parseInt` truncaba decimales → `parseFloat`
+- [x] Error `detail` leak en respuestas API → removido
+
+### SDD `admin-remaining-features` (Explore → Propose → Spec → Design → Tasks → Apply → Verify)
+- [x] **Tendencias reales** en Dashboard — `computeTendencia()` con guard división por cero
+- [x] **Página de link de pago** — `/admin/pagos/generate-link` con formulario SSR + 3 métodos + copiar al portapapeles
+- [x] **Export PDF real** — jsPDF + jspdf-autotable en Contabilidad Informes (mensual + anual)
+- [x] **Crear Orden modal + API** — `OrdenForm.astro` + `POST /api/admin/ordenes/crear`
+- [x] `bodega_id` schema fix: UUID → string para formato CO-BOGOTA
+- [x] Verify: 3 CRITICALS encontrados y fixeados (build 0 errores)
+
+### Archivos nuevos
+- `src/pages/api/admin/inventario/stock-alert-count.ts`
+- `src/pages/api/admin/contabilidad/transacciones.ts`
+- `src/pages/api/admin/contabilidad/transacciones/[id].ts`
+- `src/pages/api/admin/configuracion.ts`
+- `src/pages/api/admin/ordenes/crear.ts`
+- `src/pages/admin/pagos/generate-link.astro`
+- `src/components/admin/orders/OrdenForm.astro`
+
+### Tags
+- `v0.10.0` — Speed + features + JD fixes
+- `v0.10.1` — Verify CRITICALS fixes
+- `v0.10.2` — SDD remaining features (trends, PDF, payment link, create order)
 
 > Ejecutar: `npm run dev` → http://localhost:4321/admin → hacer login → probar todo.
 
@@ -290,7 +366,12 @@
 | Contabilidad UI tasks | `sdd/contabilidad-ui-module/tasks` |
 | Contabilidad UI apply progress | `sdd/contabilidad-ui-module/apply-progress` |
 | Contabilidad integration plan | `Contabilidad Integration — SDD Proposal complete` |
-| Admin UI complete (wiring) | `sdd/admin-ui-complete/proposal` (#610) |
+| Admin remaining features — trends | `sdd/admin-remaining-features/design` |
+| Admin remaining features — tasks | `sdd/admin-remaining-features/tasks` |
+| Admin remaining features — apply | `sdd/admin-remaining-features/apply-progress` |
+| Admin remaining features — verify | `sdd/admin-remaining-features/verify-report` |
+| Speed optimization F1 | `speed/admin-optimization-f1` |
+| Missing features F2 | `features/missing-admin-features-f2` |
 | Admin UI tasks (39 tasks) | `sdd/admin-ui-complete/tasks` (#613) |
 | Foundation Phase 0 proposal | `sdd/admin-foundation-phase-0/proposal` (#617) |
 | Foundation checkpoint (mañana) | `sdd/admin-ui-complete/verify-checkpoint` (#618) |

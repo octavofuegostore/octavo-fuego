@@ -354,15 +354,108 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
       toast.success('CSV exportado correctamente');
     }
 
-    function exportPDF(filename: string) {
+    async function loadPdfLibraries(): Promise<{ jsPDF: typeof import('jspdf').jsPDF }> {
+      const [{ jsPDF }] = await Promise.all([
+        import('jspdf'),
+        import('jspdf-autotable'),
+      ]);
+      return { jsPDF };
+    }
+
+    async function exportPDFMensual(mes: number, year: number) {
+      const monthName = (meses as string[])[mes];
+      const filename = `informe_mensual_${monthName.toLowerCase()}_${year}.pdf`;
       toast.info(`Generando PDF: ${filename}...`);
-      setTimeout(() => toast.success('PDF exportado correctamente'), 1000);
+
+      try {
+        const { jsPDF } = await loadPdfLibraries();
+        const doc = new jsPDF();
+
+        const data = (monthlyKpis as Array<{ ingresos: number; egresos: number; balance: number }>)[mes] || { ingresos: 0, egresos: 0, balance: 0 };
+        const txns = (monthlyTransactions as Array<Array<{ fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }>>)[mes] || [];
+
+        // Header
+        doc.setFontSize(18);
+        doc.text(`Informe Mensual - ${monthName} ${year}`, 14, 20);
+
+        // KPIs
+        doc.setFontSize(11);
+        doc.text(`Ingresos: ${formatCOP(data.ingresos)}`, 14, 35);
+        doc.text(`Egresos: ${formatCOP(data.egresos)}`, 14, 43);
+        doc.text(`Balance: ${formatCOP(data.balance)}`, 14, 51);
+
+        // Transactions table
+        const body = txns.length > 0
+          ? txns.map(t => [formatDate(t.fecha), t.descripcion, t.categoria, t.tipo, formatCOP(t.monto)])
+          : [['-', 'No hay transacciones', '-', '-', '-']];
+
+        (doc as any).autoTable({
+          startY: 60,
+          head: [['Fecha', 'Descripción', 'Categoría', 'Tipo', 'Monto']],
+          body,
+          headStyles: { fillColor: [139, 69, 19] },
+          alternateRowStyles: { fillColor: [245, 245, 240] },
+        });
+
+        doc.save(filename);
+        toast.success('PDF exportado correctamente');
+      } catch (err) {
+        console.error('[exportPDFMensual]', err);
+        toast.error('Error al generar el PDF');
+      }
+    }
+
+    async function exportPDFAnual(year: number) {
+      const filename = `informe_anual_${year}.pdf`;
+      toast.info(`Generando PDF: ${filename}...`);
+
+      try {
+        const { jsPDF } = await loadPdfLibraries();
+        const doc = new jsPDF();
+
+        const kpis = (monthlyKpis as Array<{ ingresos: number; egresos: number; balance: number }>);
+        const totalIngresos = kpis.reduce((sum, m) => sum + m.ingresos, 0);
+        const totalEgresos = kpis.reduce((sum, m) => sum + m.egresos, 0);
+        const totalBalance = kpis.reduce((sum, m) => sum + m.balance, 0);
+
+        // Header
+        doc.setFontSize(18);
+        doc.text(`Informe Anual - ${year}`, 14, 20);
+
+        // Annual totals
+        doc.setFontSize(11);
+        doc.text(`Total Ingresos: ${formatCOP(totalIngresos)}`, 14, 35);
+        doc.text(`Total Egresos: ${formatCOP(totalEgresos)}`, 14, 43);
+        doc.text(`Balance Anual: ${formatCOP(totalBalance)}`, 14, 51);
+
+        // Monthly summary table
+        const body = (meses as string[]).map((m, i) => [
+          m,
+          formatCOP(kpis[i]?.ingresos ?? 0),
+          formatCOP(kpis[i]?.egresos ?? 0),
+          formatCOP(kpis[i]?.balance ?? 0),
+        ]);
+
+        (doc as any).autoTable({
+          startY: 60,
+          head: [['Mes', 'Ingresos', 'Egresos', 'Balance']],
+          body,
+          headStyles: { fillColor: [139, 69, 19] },
+          alternateRowStyles: { fillColor: [245, 245, 240] },
+        });
+
+        doc.save(filename);
+        toast.success('PDF exportado correctamente');
+      } catch (err) {
+        console.error('[exportPDFAnual]', err);
+        toast.error('Error al generar el PDF');
+      }
     }
 
     document.getElementById('export-mensual-pdf-btn')?.addEventListener('click', () => {
       const mes = parseInt(mesSelect?.value || String(currentMes), 10);
       const year = parseInt(yearSelect?.value || String(currentAño), 10);
-      exportPDF(`informe_mensual_${(meses as string[])[mes].toLowerCase()}_${year}.pdf`);
+      exportPDFMensual(mes, year);
     });
 
     document.getElementById('export-mensual-csv-btn')?.addEventListener('click', () => {
@@ -378,7 +471,7 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
 
     document.getElementById('export-anual-pdf-btn')?.addEventListener('click', () => {
       const year = parseInt(yearSelect?.value || String(currentAño), 10);
-      exportPDF(`informe_anual_${year}.pdf`);
+      exportPDFAnual(year);
     });
 
     document.getElementById('export-anual-csv-btn')?.addEventListener('click', () => {
