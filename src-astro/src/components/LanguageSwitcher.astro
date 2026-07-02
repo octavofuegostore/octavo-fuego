@@ -1,6 +1,7 @@
 ---
 import { useTranslations, languageNames } from '@/i18n';
 import type { Locale } from '@/i18n';
+import { getLocaleUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -12,22 +13,6 @@ const t = useTranslations(locale);
 
 const locales: Locale[] = ['es', 'en', 'pt'];
 const currentUrl = Astro.url.pathname;
-
-function getLocaleUrl(targetLocale: Locale): string {
-  const path = Astro.url.pathname;
-  const segments = path.split('/').filter(Boolean);
-
-  // Remove current locale prefix if present
-  if (segments.length > 0 && locales.includes(segments[0] as Locale)) {
-    segments.shift();
-  }
-
-  // Add target locale prefix (except for 'es' which is default)
-  if (targetLocale === 'es') {
-    return '/' + segments.join('/');
-  }
-  return '/' + targetLocale + '/' + segments.join('/');
-}
 ---
 
 <div class="relative group">
@@ -46,7 +31,7 @@ function getLocaleUrl(targetLocale: Locale): string {
     <div class="bg-white border border-gray-200 shadow-[var(--shadow-hover)] py-1 min-w-[120px] rounded-[var(--radius-card)]">
       {locales.map((loc) => (
         <a
-          href={getLocaleUrl(loc)}
+          href={getLocaleUrl(loc, currentUrl)}
           class={`block px-4 py-2 text-sm transition-colors ${
             loc === locale
               ? 'text-[var(--color-action-primary)] font-semibold bg-gray-50'

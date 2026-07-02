@@ -10,13 +10,13 @@ import ProphecyTeaser from '@/components/prophecy/ProphecyTeaser.astro';
 import GraphSchema from '@/components/seo/GraphSchema.astro';
 import { prophecy } from '@/data/prophecy';
 import { useTranslations, type Locale } from '@/i18n';
+import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 
 export const prerender = false;
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 // F2.1: Homepage title + meta descriptions per locale
 const homeTitles: Record<Locale, string> = {
@@ -90,7 +90,7 @@ const iconNames: Record<string, string> = {
         </p>
         
         <a 
-          href={`${baseUrl}/tienda`}
+          href={localeUrl('/tienda', locale_)}
           class="inline-block bg-[var(--near-black)] text-white px-8 py-4 text-lg font-medium tracking-wide hover:bg-[var(--color-action-primary)] transition-colors rounded-[var(--radius-button)]"
         >
           {t.home.hero.cta} →
@@ -164,7 +164,7 @@ const iconNames: Record<string, string> = {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {intentions.map((intent) => (
           <a
-            href={`${baseUrl}/tienda/rape/${intent.slug}`}
+            href={localeUrl(`/tienda/rape/${intent.slug}`, locale_)}
             class="group border border-gray-200 p-6 hover:border-[var(--color-action-primary)] hover:bg-[var(--papel)] transition-all rounded-[var(--radius-card)] shadow-[var(--shadow-card)] text-left"
           >
             <span class="inline-flex items-center justify-center w-12 h-12 mb-4 rounded-full bg-[var(--papel)] group-hover:bg-white transition-colors">
@@ -191,7 +191,7 @@ const iconNames: Record<string, string> = {
       </div>
       
       <div class="text-center mt-12">
-        <a href={`${baseUrl}/tienda`} class="inline-block border border-[var(--color-action-primary)] text-[var(--color-action-primary)] px-8 py-4 hover:bg-[var(--color-action-primary)] hover:text-white transition-colors rounded-[var(--radius-button)]">
+        <a href={localeUrl('/tienda', locale_)} class="inline-block border border-[var(--color-action-primary)] text-[var(--color-action-primary)] px-8 py-4 hover:bg-[var(--color-action-primary)] hover:text-white transition-colors rounded-[var(--radius-button)]">
           {t.home.productos.verTodos} →
         </a>
       </div>

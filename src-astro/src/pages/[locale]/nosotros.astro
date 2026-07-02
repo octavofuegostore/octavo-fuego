@@ -1,13 +1,18 @@
 ---
 /**
- * About page — /nosotros
+ * About page — renders at /nosotros, /en/nosotros, /pt/nosotros
  * Trust Foundation SEO page with AboutPage schema.
  */
 import Layout from '@/layouts/Layout.astro';
+import { type Locale } from '@/i18n';
+
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 
 const title = 'Nosotros — Octavo Fuego';
 const description = 'Conoce la historia, misión y comunidades aliadas de Octavo Fuego. Rapé do Acre de origen amazónico.';
-const canonicalUrl = 'https://octavofuego.com/nosotros';
+const canonicalUrl = `https://octavofuego.com${Astro.url.pathname}`;
 
 const aboutSchema = {
   '@context': 'https://schema.org',
@@ -38,7 +43,7 @@ const aboutSchema = {
 };
 ---
 
-<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+<Layout title={title} description={description} locale={locale_} ogImage="/images/og-default.svg">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutSchema)} />
 
   <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">

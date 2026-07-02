@@ -1,10 +1,13 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import WholesaleStoreJsonLd from '@/components/seo/WholesaleStoreJsonLd.astro';
-import { useTranslations } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
+import { localeUrl } from '@/i18n/links';
 
-const locale = 'es';
-const t = useTranslations(locale);
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
+const t = useTranslations(locale_);
 
 const title = 'Rapé por Mayor Colombia — Distribuidor Rapé do Acre';
 const description =
@@ -27,7 +30,7 @@ const keywords = [
 ].join(', ');
 ---
 
-<Layout title={title} description={description} locale={locale}>
+<Layout title={title} description={description} locale={locale_}>
   <Fragment slot="head">
     <meta name="robots" content="index, follow" />
     <meta name="keywords" content={keywords} />
@@ -48,7 +51,7 @@ const keywords = [
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="/tienda/"
+          href={localeUrl('/tienda', locale_)}
           class="inline-block bg-[var(--tabaco-base)] text-white px-8 py-3 rounded-lg font-semibold hover:bg-[var(--color-action-hover)] transition-colors"
         >
           {t.mayoristas.cta_catalogo}

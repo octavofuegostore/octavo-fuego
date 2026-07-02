@@ -1,14 +1,21 @@
 ---
 /**
- * Terms and conditions page — /terminos
+ * Terms and conditions page — /terminos, /en/terminos, /pt/terminos
  * Trust Foundation SEO page with WebPage schema.
  * Adapted legal structure for Octavo Fuego (plant medicine ecommerce).
+ * Schema stays ES-only (Colombian law — Ley 1480 de 2011, Ley 1581 de 2012).
  */
 import Layout from '@/layouts/Layout.astro';
+import { type Locale } from '@/i18n';
+import { localeUrl } from '@/i18n/links';
+
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 
 const title = 'Términos y Condiciones — Octavo Fuego';
 const description = 'Términos y condiciones de uso, compra y privacidad de Octavo Fuego. Regulado bajo la Ley 1480 de 2011 y la Ley 1581 de 2012 de Colombia.';
-const canonicalUrl = 'https://octavofuego.com/terminos';
+const canonicalUrl = `https://octavofuego.com${Astro.url.pathname}`;
 
 const sections = [
   { id: 'disposiciones-generales', label: '1. Disposiciones Generales' },
@@ -35,7 +42,7 @@ const webpageSchema = {
 };
 ---
 
-<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+<Layout title={title} description={description} locale={locale_} ogImage="/images/og-default.svg">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
 
   <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
@@ -114,7 +121,7 @@ const webpageSchema = {
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">4. Política de Envíos</h2>
       <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los envíos se gestionan a través de transportadoras confiables. Para conocer cobertura, tiempos y costos, consulta nuestra <a href="/envios" class="text-[var(--color-action-primary)] hover:underline">Política de Envíos</a>.
+        Los envíos se gestionan a través de transportadoras confiables. Para conocer cobertura, tiempos y costos, consulta nuestra <a href={localeUrl('/envios', locale_)} class="text-[var(--color-action-primary)] hover:underline">Política de Envíos</a>.
       </p>
       <p class="text-[var(--ceniza)] leading-relaxed">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.

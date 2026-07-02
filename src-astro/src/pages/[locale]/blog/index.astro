@@ -1,8 +1,13 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { Badge } from '@/components/ui/badge';
+import { useTranslations, type Locale } from '@/i18n';
 
-const t = await import('@/i18n/es.json').then(m => m.default);
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
+const t = useTranslations(locale_);
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const allPosts = [
   {
@@ -61,7 +66,7 @@ function getCategoryLabel(category: string) {
 }
 ---
 
-<Layout title="Blog" description="Artículos sobre Rapé, Sananga y Kuripes. Medicina ancestral amazónica, ceremonias y tradiciones.">
+<Layout title="Blog" description="Artículos sobre Rapé, Sananga y Kuripes. Medicina ancestral amazónica, ceremonias y tradiciones." locale={locale_}>
   <section class="py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <!-- Header -->
@@ -76,7 +81,7 @@ function getCategoryLabel(category: string) {
 
       <!-- Featured Post -->
       {allPosts[0] && (
-        <a href={`/blog/${allPosts[0].slug}`} class="block mb-12 group">
+        <a href={`${baseUrl}/blog/${allPosts[0].slug}`} class="block mb-12 group">
           <article class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
             <div class="aspect-video md:aspect-auto overflow-hidden">
               <img 
@@ -108,7 +113,7 @@ function getCategoryLabel(category: string) {
       <!-- Post Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {allPosts.slice(1).map((post) => (
-          <a href={`/blog/${post.slug}`} class="group">
+          <a href={`${baseUrl}/blog/${post.slug}`} class="group">
             <article class="h-full bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
               <div class="aspect-video overflow-hidden">
                 <img 

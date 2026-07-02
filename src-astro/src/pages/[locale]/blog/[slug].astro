@@ -1,15 +1,13 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { Badge } from '@/components/ui/badge';
+import { useTranslations, type Locale } from '@/i18n';
 
-export function getStaticPaths() {
-  return [
-    { params: { slug: 'guia-rape-principiantes' } },
-    { params: { slug: 'historia-sananga' } },
-    { params: { slug: 'ceremonia-rape-amazonia' } },
-    { params: { slug: 'beneficios-spiritus' } },
-  ];
-}
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
+const t = useTranslations(locale_);
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const { slug } = Astro.params;
 
@@ -143,7 +141,7 @@ El Rapé puede complementar:
 
 ## Respeto y responsabilidad
 
-任何使用 Rapé 的人都必须以尊重和责任的态度来进行。This medicine is not a toy but a powerful ally that demands respect.
+Cualquier uso del Rapé debe realizarse con respeto y responsabilidad. This medicine is not a toy but a powerful ally that demands respect.
     `.trim(),
     publishedAt: '2026-02-28',
     author: 'Octavo Fuego',
@@ -186,12 +184,12 @@ function renderMarkdown(content: string): string {
 }
 ---
 
-<Layout title={post.title} description={post.excerpt}>
+<Layout title={post.title} description={post.excerpt} locale={locale_}>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    '@id': `https://octavofuego.com/blog/${post.slug}#article`,
-    'mainEntityOfPage': `https://octavofuego.com/blog/${post.slug}`,
+    '@id': `https://octavofuego.com${Astro.url.pathname}#article`,
+    'mainEntityOfPage': `https://octavofuego.com${Astro.url.pathname}`,
     'headline': post.title,
     'description': post.excerpt,
     'image': post.coverImage,
@@ -244,9 +242,9 @@ function renderMarkdown(content: string): string {
       <!-- Breadcrumb -->
       <nav class="mb-8 text-sm">
         <ol class="flex items-center gap-2 text-ceniza">
-          <li><a href="/" class="hover:text-white transition-colors">Inicio</a></li>
+          <li><a href={`${baseUrl || '/'}`} class="hover:text-white transition-colors">Inicio</a></li>
           <li>/</li>
-          <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
+          <li><a href={`${baseUrl}/blog`} class="hover:text-white transition-colors">Blog</a></li>
           <li>/</li>
           <li class="text-white">{post.title}</li>
         </ol>
@@ -283,7 +281,7 @@ function renderMarkdown(content: string): string {
               const related = posts[relatedSlug];
               if (!related) return null;
               return (
-                <a href={`/blog/${related.slug}`} class="group">
+                <a href={`${baseUrl}/blog/${related.slug}`} class="group">
                   <article class="flex gap-4">
                     <div class="w-24 h-24 flex-shrink-0 overflow-hidden">
                       <img 
