@@ -15,6 +15,7 @@ import {
   computeOrdenesPorEstado,
   computeTendenciaIngresos,
   computeTopProductos,
+  computeTendencia,
 } from '@/lib/admin/dashboard/chart-data';
 
 // Compute real stats from service layer (falls back to mock when no Supabase)
@@ -74,6 +75,43 @@ const allPeriodsData = {
     products: computeTopProductos(ordenes, 'ano'),
   },
 }
+
+// ─── Real Trends ──────────────────────────────────────────────────
+const ahora = new Date()
+const mesActual = ahora.getMonth()
+const añoActual = ahora.getFullYear()
+
+function ventasEnPeriodo(mes: number, año: number): number {
+  const inicio = new Date(año, mes, 1)
+  const fin = new Date(año, mes + 1, 1)
+  return ordenes
+    .filter(o => o.status !== 'cancelada' && new Date(o.createdAt) >= inicio && new Date(o.createdAt) < fin)
+    .reduce((s, o) => s + o.total, 0)
+}
+
+function ordenesActivasEnPeriodo(mes: number, año: number): number {
+  const inicio = new Date(año, mes, 1)
+  const fin = new Date(año, mes + 1, 1)
+  return ordenes.filter(
+    o => (o.status === 'pendiente' || o.status === 'confirmada')
+      && new Date(o.createdAt) >= inicio && new Date(o.createdAt) < fin
+  ).length
+}
+
+const mesAnterior = mesActual === 0 ? 11 : mesActual - 1
+const añoAnterior = mesActual === 0 ? añoActual - 1 : añoActual
+
+const ventasEsteMes = ventasEnPeriodo(mesActual, añoActual)
+const ventasMesAnterior = ventasEnPeriodo(mesAnterior, añoAnterior)
+const trendVentas = computeTendencia(ventasEsteMes, ventasMesAnterior)
+
+const ordenesActivasEsteMes = ordenesActivasEnPeriodo(mesActual, añoActual)
+const ordenesActivasMesAnterior = ordenesActivasEnPeriodo(mesAnterior, añoAnterior)
+const trendOrdenes = computeTendencia(ordenesActivasEsteMes, ordenesActivasMesAnterior)
+
+// Productos y clientes no tienen periodo anterior fácil — usamos neutral
+const trendProductos = computeTendencia(totalProductos, 0)
+const trendClientes = computeTendencia(totalClientesActivos, 0)
 ---
 
 <AdminLayout title="Dashboard" description="Panel de administración de Octavo Fuego">
@@ -159,32 +197,32 @@ const allPeriodsData = {
       <StatsCard
         title="Ventas Hoy"
         value={formatCurrency(ventasHoy, 'COP')}
-        change={12.5}
-        trend="up"
+        change={trendVentas.change}
+        trend={trendVentas.trend}
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
       />
 
       <StatsCard
         title="Órdenes Activas"
         value={String(ordenesActivas)}
-        change={8.3}
-        trend="up"
+        change={trendOrdenes.change}
+        trend={trendOrdenes.trend}
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>'
       />
 
       <StatsCard
         title="Productos"
         value={String(totalProductos)}
-        change={4}
-        trend="up"
+        change={0}
+        trend="neutral"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>'
       />
 
       <StatsCard
         title="Clientes"
         value={String(totalClientesActivos)}
-        change={15}
-        trend="up"
+        change={0}
+        trend="neutral"
         icon='<svg class="w-6 h-6 text-tabacco" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>'
       />
     </div>
