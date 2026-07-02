@@ -1,0 +1,57 @@
+---
+interface Props {
+  title?: string;
+  product?: string;
+  locale?: 'es' | 'en' | 'pt';
+}
+
+const { title, product, locale = 'es' } = Astro.props;
+
+const subtitle = locale === 'es'
+  ? 'Rapé do Acre — Medicina Ancestral Amazónica'
+  : locale === 'en'
+    ? 'Rapé do Acre — Amazonian Sacred Snuff'
+    : 'Rapé do Acre — Medicina Ancestral Amazônica';
+
+const tagline = locale === 'es'
+  ? 'Directo de la Amazonía, con propósito'
+  : locale === 'en'
+    ? 'Direct from the Amazon, with purpose'
+    : 'Direto da Amazônia, com propósito';
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="ogBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1C1410;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3D2E22;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ogBg)" />
+
+  <!-- Decorative line -->
+  <line x1="80" y1="220" x2="400" y2="220" stroke="#C4956A" stroke-width="2" />
+
+  <!-- Brand name -->
+  <text x="80" y="150" font-family="'Playfair Display', Georgia, serif" font-size="56" font-weight="700" fill="#F2EFE8">Octavo Fuego</text>
+
+  <!-- Product title (if provided) -->
+  {product ? (
+    <text x="80" y="290" font-family="'Playfair Display', Georgia, serif" font-size="42" font-weight="600" fill="#F2EFE8">{product}</text>
+  ) : null}
+
+  {/* Generic title fallback */}
+  {title && !product ? (
+    <text x="80" y="290" font-family="Inter, Arial, sans-serif" font-size="36" font-weight="400" fill="#F2EFE8">{title}</text>
+  ) : null}
+
+  <!-- Subtitle -->
+  <text x="80" y={product ? "360" : "350"} font-family="Inter, Arial, sans-serif" font-size="26" font-weight="400" fill="#C4956A">{subtitle}</text>
+
+  <!-- Tagline -->
+  <text x="80" y="490" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="300" fill="#8C8680">{tagline}</text>
+
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="315" r="120" fill="none" stroke="#C4956A" stroke-width="1" opacity="0.3" />
+  <circle cx="1050" cy="315" r="80" fill="none" stroke="#C4956A" stroke-width="1" opacity="0.2" />
+</svg>

@@ -1,33 +1,117 @@
 ---
 /**
  * FAQPage JSON-LD Schema Component
- * 6 locale-aware questions per product for SEO (voice search + rich snippets).
+ * 4 locale-aware questions per product for SEO (voice search + rich snippets).
  */
-import type { Product } from '@/data/products';
-import type { Locale } from '@/i18n';
-import { buildFAQContent } from '@/lib/seo/faqContent';
-
-interface Props {
-  product: Product;
-  locale: Locale;
+export interface Props {
+  locale?: 'es' | 'en' | 'pt';
+  productName: string;
+  priceText: string;
 }
 
-const { product, locale } = Astro.props;
-const faqContent = buildFAQContent(product, locale);
+const { locale = 'es', productName, priceText } = Astro.props;
 
-const mainEntity = faqContent.map((q) => ({
-  '@type': 'Question',
-    'name': q.question,
-    'acceptedAnswer': {
-      '@type': 'Answer',
-      'text': q.answer,
-  },
-}));
+function benefitFor(productName: string, locale: 'es' | 'en' | 'pt'): string {
+  const lower = productName.toLowerCase();
+  const hasTisunu = lower.includes('tisunú') || lower.includes('tsunu');
+  const hasPixuri = lower.includes('pixurí') || lower.includes('pixuri');
+  const hasParika = lower.includes('pariká') || lower.includes('parika');
+  const hasCumaru = lower.includes('cumarú') || lower.includes('cumaru') || lower.includes('cumaru de cheiro');
+
+  if (locale === 'es') {
+    if (hasTisunu) return 'profundizar el enfoque y la claridad mental';
+    if (hasPixuri) return 'equilibrar la respiración y despejar la mente';
+    if (hasParika) return 'limpieza energética profunda y conexión espiritual';
+    if (hasCumaru) return 'protección energética y conexión con la tierra';
+    return 'despertar intuitivo y balance emocional';
+  }
+
+  if (locale === 'en') {
+    if (hasTisunu) return 'deepening focus and mental clarity';
+    if (hasPixuri) return 'balancing breath and clearing the mind';
+    if (hasParika) return 'energetic cleansing and spiritual connection';
+    if (hasCumaru) return 'energetic protection and grounding';
+    return 'intuitive awakening and emotional balance';
+  }
+
+  // pt
+  if (hasTisunu) return 'aprofundar o foco e a clareza mental';
+  if (hasPixuri) return 'equilibrar a respiração e clarear a mente';
+  if (hasParika) return 'limpeza energética profunda e conexão espiritual';
+  if (hasCumaru) return 'proteção energética e conexão com a terra';
+  return 'despertar intuitivo e equilíbrio emocional';
+}
+
+const faqs: Record<'es' | 'en' | 'pt', { question: string; answer: string }[]> = {
+  es: [
+    {
+      question: `¿Qué es ${productName}?`,
+      answer: `${productName} es un rapé amazónico del Acre, Brasil. Elaborado de forma tradicional por comunidades indígenas, es una medicina ancestral utilizada para enfoque, claridad y conexión espiritual.`,
+    },
+    {
+      question: `¿Cuánto cuesta ${productName}?`,
+      answer: `${priceText}. El rapé do Acre de Octavo Fuego ofrece el mejor precio por gramo de Colombia gracias a su origen directo del Amazonas y empaque al vacío que preserva la frescura.`,
+    },
+    {
+      question: `¿Cómo se usa el rapé?`,
+      answer: `El rapé se administra mediante un kuripe (aplicador personal) soplando suavemente en cada fosa nasal. Se recomienda empezar con una dosis pequeña (¼ de la cantidad que usarías con otros rapés) e ir aumentando según la experiencia.`,
+    },
+    {
+      question: `¿Para qué sirve ${productName}?`,
+      answer: `${productName} se utiliza en ceremonias y prácticas de meditación para ${benefitFor(productName, 'es')}. Es una herramienta de introspección y conexión con la sabiduría ancestral.`,
+    },
+  ],
+  en: [
+    {
+      question: `What is ${productName}?`,
+      answer: `${productName} is an Amazonian rapé from Acre, Brazil. Traditionally prepared by indigenous communities, it is an ancestral medicine used for focus, clarity, and spiritual connection.`,
+    },
+    {
+      question: `How much does ${productName} cost?`,
+      answer: `${priceText}. Octavo Fuego's rapé do Acre offers the best price per gram thanks to direct sourcing from the Amazon and vacuum-sealed packaging that preserves freshness.`,
+    },
+    {
+      question: `How do you use rapé?`,
+      answer: `Rapé is administered using a kuripe (personal applicator) by gently blowing into each nostril. Start with a small dose (¼ of what you might use with other rapés) and increase based on your experience.`,
+    },
+    {
+      question: `What is ${productName} used for?`,
+      answer: `${productName} is used in ceremonies and meditation practices for ${benefitFor(productName, 'en')}. It is a tool for introspection and connection with ancestral wisdom.`,
+    },
+  ],
+  pt: [
+    {
+      question: `O que é ${productName}?`,
+      answer: `${productName} é um rapé amazônico do Acre, Brasil. Preparado tradicionalmente por comunidades indígenas, é uma medicina ancestral usada para foco, clareza e conexão espiritual.`,
+    },
+    {
+      question: `Quanto custa ${productName}?`,
+      answer: `${priceText}. O rapé do Acre da Octavo Fuego oferece o melhor preço por grama graças à origem direta da Amazônia e embalagem a vácuo que preserva o frescor.`,
+    },
+    {
+      question: `Como usar o rapé?`,
+      answer: `O rapé é administrado com um kuripe (aplicador pessoal), soprando suavemente em cada narina. Comece com uma dose pequena (¼ da quantidade que usaria com outros rapés) e aumente conforme sua experiência.`,
+    },
+    {
+      question: `Para que serve ${productName}?`,
+      answer: `${productName} é usado em cerimônias e práticas de meditação para ${benefitFor(productName, 'pt')}. É uma ferramenta de introspecção e conexão com a sabedoria ancestral.`,
+    },
+  ],
+};
+
+const currentFaqs = faqs[locale] || faqs.es;
 
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  'mainEntity': mainEntity,
+  'mainEntity': currentFaqs.map((q) => ({
+    '@type': 'Question',
+    'name': q.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': q.answer,
+    },
+  })),
 };
 ---
 

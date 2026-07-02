@@ -163,5 +163,13 @@
     "bienestarFisico": "Bienestar Físico y Respiratorio",
     "proteccion": "Protección y Escudo",
     "conexionEspiritual": "Conexión Espiritual Profunda"
+  },
+  "mayoristas": {
+    "hero_title": "Distribución Institucional de Rapé do Acre para Facilitadores y Distribuidores en Colombia",
+    "hero_desc": "Origen directo del Amazonas brasileño. El mejor precio por gramo del mercado colombiano.",
+    "ventaja_origen": "Precio de Origen",
+    "ventaja_origen_desc": "Sin intermediarios. Trabajamos directamente con comunidades del Acre, Brasil.",
+    "cta_catalogo": "Ver Catálogo",
+    "cta_whatsapp": "Consultar por WhatsApp"
   }
 }

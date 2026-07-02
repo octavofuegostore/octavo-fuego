@@ -42,6 +42,7 @@ export interface Product {
   };
   imagenes: string[];
   metaDescription: Record<Locale, string>;
+  pageTitle: Record<Locale, string>;
 }
 
 // ─── Fixed Pricing (same for all 5 products) ────────────────────────────────
@@ -132,9 +133,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_TISUNU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Tisunú — rapé con la fuerza del árbol más poderoso de la selva. Limpieza energética profunda y purificación del aura.',
-      en: 'Tisunú — rapé with the strength of the rainforest\'s most powerful tree. Deep energetic cleansing and aura purification.',
-      pt: 'Tisunú — rapé com a força da árvore mais poderosa da floresta. Limpeza energética profunda e purificação da aura.',
+      es: 'Rapé Tisunú del Acre, Brasil. Ideal para meditación y enfoque profundo. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Tisunú rapé from Acre, Brazil. Ideal for meditation and deep focus. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Tisunú do Acre, Brasil. Ideal para meditação e foco profundo. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+    },
+    pageTitle: {
+      es: 'Comprar Rapé Tisunú — Enfoque y Claridad Mental',
+      en: 'Buy Rapé Tisunú — Focus and Mental Clarity',
+      pt: 'Comprar Rapé Tisunú — Foco e Clareza Mental',
     },
   },
 
@@ -200,9 +206,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_PIXURI],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Pixurí — rapé medicinal con aroma profundo, propiedades antisépticas y analgésicas. Ideal para uso diario y vías respiratorias.',
-      en: 'Pixurí — medicinal rapé with deep aroma, antiseptic and analgesic properties. Ideal for daily use and respiratory health.',
-      pt: 'Pixurí — rapé medicinal com aroma profundo, propriedades antissépticas e analgésicas. Ideal para uso diário e vias respiratórias.',
+      es: 'Rapé Pixurí del Acre, Brasil. Propiedades respiratorias y claridad mental. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Pixurí rapé from Acre, Brazil. Respiratory properties and mental clarity. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Pixurí do Acre, Brasil. Propriedades respiratórias e clareza mental. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+    },
+    pageTitle: {
+      es: 'Comprar Rapé Pixurí — Equilibrio y Claridad Respiratoria',
+      en: 'Buy Rapé Pixurí — Balance and Respiratory Clarity',
+      pt: 'Comprar Rapé Pixurí — Equilíbrio e Clareza Respiratória',
     },
   },
 
@@ -268,9 +279,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_PARIKA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Pariká — rapé ceremonial de conexión espiritual profunda. Tradición Kaxinawá, purificación energética y apertura de caminos.',
-      en: 'Pariká — ceremonial rapé for deep spiritual connection. Kaxinawá tradition, energetic purification and pathway opening.',
-      pt: 'Pariká — rapé cerimonial de conexão espiritual profunda. Tradição Kaxinawá, purificação energética e abertura de caminhos.',
+      es: 'Rapé Pariká del Acre, Brasil. Alta intensidad para ceremonias. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Pariká rapé from Acre, Brazil. High intensity for ceremonies. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Pariká do Acre, Brasil. Alta intensidade para cerimônias. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+    },
+    pageTitle: {
+      es: 'Comprar Rapé Pariká — Limpieza Energética Profunda',
+      en: 'Buy Rapé Pariká — Deep Energetic Cleansing',
+      pt: 'Comprar Rapé Pariká — Limpeza Energética Profunda',
     },
   },
 
@@ -336,9 +352,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_CUMARU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Cumarú de Cheiro — rapé de protección ancestral y escudo energético. Limpieza respiratoria y fortalecimiento del plexo solar.',
-      en: 'Cumarú de Cheiro — ancestral protection rapé and energetic shield. Respiratory cleansing and solar plexus strengthening.',
-      pt: 'Cumarú de Cheiro — rapé de proteção ancestral e escudo energético. Limpeza respiratória e fortalecimento do plexo solar.',
+      es: 'Rapé Cumarú de Cheiro del Acre, Brasil. Escudo energético y aroma balsámico. 20g por $70.000 COP ($3.500/g).',
+      en: 'Cumarú de Cheiro rapé from Acre, Brazil. Energetic shield and balsamic aroma. 20g for $19 USD ($0.95/g).',
+      pt: 'Rapé Cumarú de Cheiro do Acre, Brasil. Escudo energético e aroma balsâmico. 20g por R$95 BRL (R$4,75/g).',
+    },
+    pageTitle: {
+      es: 'Comprar Rapé Cumarú de Cheiro — Protección y Aroma',
+      en: 'Buy Rapé Cumarú de Cheiro — Protection and Aroma',
+      pt: 'Comprar Rapé Cumarú de Cheiro — Proteção e Aroma',
     },
   },
 
@@ -404,9 +425,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_VENA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Vena de Pajé — medicina para despertar la percepción y profundizar la meditación. Descalcificación pineal y limpieza de canales energéticos.',
-      en: 'Vena de Pajé — medicine to awaken perception and deepen meditation. Pineal decalcification and energetic channel cleansing.',
-      pt: 'Veia de Pajé — medicina para despertar a percepção e aprofundar a meditação. Descalcificação pineal e limpeza de canais energéticos.',
+      es: 'Rapé Vena de Pajé del Acre, Brasil. Mezcla equilibrada para integración emocional. 20g por $70.000 COP ($3.500/g).',
+      en: 'Vena de Pajé rapé from Acre, Brazil. Balanced blend for emotional integration. 20g for $19 USD ($0.95/g).',
+      pt: 'Rapé Veia de Pajé do Acre, Brasil. Mistura equilibrada para integração emocional. 20g por R$95 BRL (R$4,75/g).',
+    },
+    pageTitle: {
+      es: 'Comprar Rapé Vena de Pajé — Intuición y Balance',
+      en: 'Buy Rapé Vena de Pajé — Intuition and Balance',
+      pt: 'Comprar Rapé Veia de Pajé — Intuição e Equilíbrio',
     },
   },
 ];
