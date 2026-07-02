@@ -1,0 +1,105 @@
+---
+/**
+ * About page — /nosotros
+ * Trust Foundation SEO page with AboutPage schema.
+ */
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Nosotros — Octavo Fuego';
+const description = 'Conoce la historia, misión y comunidades aliadas de Octavo Fuego. Rapé do Acre de origen amazónico.';
+const canonicalUrl = 'https://octavofuego.com/nosotros';
+
+const aboutSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': `${canonicalUrl}#about`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  mainEntity: {
+    '@type': 'Organization',
+    '@id': 'https://octavofuego.com/#organization',
+    name: 'Octavo Fuego',
+    alternateName: 'Octavo Fuego — Rapé do Acre',
+    url: 'https://octavofuego.com',
+    foundingDate: '2026',
+    sameAs: [
+      'https://www.instagram.com/octavofuego',
+      'https://www.facebook.com/octavofuego',
+      'https://wa.me/573172137932',
+    ],
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+573172137932',
+      contactType: 'customer service',
+      availableLanguage: ['Spanish', 'English', 'Portuguese'],
+    },
+  },
+};
+---
+
+<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(aboutSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      Nosotros — Octavo Fuego
+    </h1>
+
+    <!-- Hero Section -->
+    <section class="mb-16">
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-lg text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Octavo Fuego nace como un puente entre la medicina ancestral amazónica y quienes buscan conectar con su propósito. Nuestro trabajo respeta los tiempos de la selva, las comunidades que la habitan y la sagrada relación con el rapé.
+      </p>
+    </section>
+
+    <!-- Nuestra Historia -->
+    <section class="mb-16" id="historia">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Nuestra Historia</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </section>
+
+    <!-- Comunidades -->
+    <section class="mb-16" id="comunidades">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Comunidades</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Trabajamos de la mano de comunidades tradicionales de la Amazonía, entre ellas Yawanawá, Nukini, Kaxinawá y Shanenawa. Cada una aporta su propia alquimia, conocimiento y respeto por la medicina.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+    </section>
+
+    <!-- Nuestra Misión -->
+    <section class="mb-16" id="mision">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Nuestra Misión</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Nuestra misión es ofrecer rapé do Acre de origen verificado, empacado al vacío y distribuido con respeto. Queremos que cada persona que reciba nuestra medicina sienta la intención con la que fue elaborada.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor.
+      </p>
+    </section>
+
+    <!-- Por qué el Acre -->
+    <section class="mb-16" id="acre">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Por qué el Acre</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        El estado de Acre, en la frontera occidental de Brasil, es reconocido mundialmente como uno de los territorios vivos de la medicina del rapé. Sus comunidades indígenas han preservado recetas, cantos y técnicas de preparación durante generaciones.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </p>
+    </section>
+  </div>
+</Layout>

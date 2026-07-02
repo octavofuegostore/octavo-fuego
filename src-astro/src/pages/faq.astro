@@ -1,0 +1,89 @@
+---
+/**
+ * FAQ page — /faq
+ * Trust Foundation SEO page with FAQPage schema.
+ */
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Preguntas Frecuentes — Octavo Fuego';
+const description = 'Resolvemos tus dudas sobre rapé do Acre, compras, envíos, conservación y envíos internacionales.';
+const canonicalUrl = 'https://octavofuego.com/faq';
+
+const faqs = [
+  {
+    question: '¿Qué es el rapé do Acre?',
+    answer: 'El rapé do Acre es una medicina ancestral elaborada con tabaco y cenizas específicas de la Amazonía brasileña. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+  },
+  {
+    question: '¿Cómo comprar en Octavo Fuego?',
+    answer: 'Puedes comprar a través de nuestra tienda online o escribirnos directamente por WhatsApp. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+  },
+  {
+    question: '¿Cuánto cuesta el envío?',
+    answer: 'El costo de envío depende de la ciudad de destino y el peso del pedido. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
+  },
+  {
+    question: '¿Cuánto tiempo tarda la entrega?',
+    answer: 'Los envíos nacionales suelen tardar entre 2 y 5 días hábiles dependiendo de la ubicación. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident.',
+  },
+  {
+    question: '¿Cómo se conserva el rapé?',
+    answer: 'Se recomienda conservar el rapé en un lugar fresco, seco y alejado de la luz directa. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nuestro empaque al vacío ayuda a preservar la frescura por más tiempo.',
+  },
+  {
+    question: '¿Hacen envíos internacionales?',
+    answer: 'Actualmente realizamos envíos a Colombia y Brasil. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Para otros países, escríbenos por WhatsApp y evaluamos caso a caso.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${canonicalUrl}#faq`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
+---
+
+<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(faqSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      Preguntas Frecuentes — Octavo Fuego
+    </h1>
+
+    <section class="mb-12">
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-lg text-[var(--ceniza)] leading-relaxed">
+        Aquí respondemos las preguntas más comunes sobre nuestros productos, el proceso de compra y el cuidado del rapé. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+    </section>
+
+    <section aria-labelledby="faq-list">
+      <h2 id="faq-list" class="sr-only">Listado de preguntas frecuentes</h2>
+      <div class="space-y-8">
+        {faqs.map((faq, index) => (
+          <article class="p-6 border border-[var(--color-border-subtle)] rounded-[var(--radius-card)]">
+            <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-3">
+              {faq.question}
+            </h3>
+            <!-- 🖊️ USUARIO: reemplazar este texto -->
+            <p class="text-[var(--ceniza)] leading-relaxed">
+              {faq.answer}
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>

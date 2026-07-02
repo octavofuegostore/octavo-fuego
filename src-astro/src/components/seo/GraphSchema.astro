@@ -1,0 +1,137 @@
+---
+/**
+ * GraphSchema — @graph JSON-LD for the homepage
+ *
+ * Combines Organization, WebPage, WebSite, and ItemList in a single
+ * <script type="application/ld+json"> block.
+ */
+import type { Locale } from '@/i18n';
+
+export interface Props {
+  locale?: Locale;
+}
+
+const { locale = 'es' } = Astro.props;
+
+const pageName = locale === 'es' ? 'Inicio' : locale === 'en' ? 'Home' : 'Início';
+const pageDescription =
+  locale === 'es'
+    ? 'Rapé do Acre directo desde Brasil — el mejor precio por gramo de Colombia'
+    : locale === 'en'
+      ? 'Rapé do Acre direct from Brazil — the best price per gram'
+      : 'Rapé do Acre direto do Brasil — o melhor preço por grama';
+
+const itemListName =
+  locale === 'es'
+    ? 'Rapé do Acre — listado completo'
+    : locale === 'en'
+      ? 'Rapé do Acre — complete list'
+      : 'Rapé do Acre — lista completa';
+
+const productList = [
+  {
+    position: 1,
+    url: 'https://octavofuego.com/tienda/rape/tisunu',
+    name: 'Tisunú',
+  },
+  {
+    position: 2,
+    url: 'https://octavofuego.com/tienda/rape/pixuri',
+    name: 'Pixurí',
+  },
+  {
+    position: 3,
+    url: 'https://octavofuego.com/tienda/rape/parika',
+    name: 'Pariká',
+  },
+  {
+    position: 4,
+    url: 'https://octavofuego.com/tienda/rape/cumaru-de-cheiro',
+    name: 'Cumarú de Cheiro',
+  },
+  {
+    position: 5,
+    url: 'https://octavofuego.com/tienda/rape/vena-de-paje',
+    name: 'Vena de Pajé',
+  },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://octavofuego.com/#organization',
+      name: 'Octavo Fuego',
+      url: 'https://octavofuego.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://octavofuego.com/images/octavofuego-logo.png',
+      },
+      description: 'Rapé do Acre, Sananga y Kuripes. Medicinas ancestrales amazónicas con propósito.',
+      foundingDate: '2026',
+      knowsAbout: [
+        'Rapé do Acre',
+        'Medicina ancestral amazónica',
+        'Rapé ceremonial',
+        'Kuripe artesanal',
+      ],
+      sameAs: ['https://wa.me/573172137932'],
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'BR',
+      },
+      hasOfferCatalog: {
+        '@type': 'OfferCatalog',
+        name: 'Rapé do Acre',
+        itemListElement: productList.map((p) => ({
+          '@type': 'Product',
+          name: p.name,
+        })),
+      },
+      potentialAction: {
+        '@type': 'CommunicateAction',
+        name: 'WhatsApp',
+        target: 'https://wa.me/573172137932',
+      },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': 'https://octavofuego.com/#webpage',
+      url: 'https://octavofuego.com',
+      name: `Octavo Fuego — ${pageName}`,
+      description: pageDescription,
+      isPartOf: {
+        '@id': 'https://octavofuego.com/#website',
+      },
+      about: {
+        '@id': 'https://octavofuego.com/#organization',
+      },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://octavofuego.com/#website',
+      url: 'https://octavofuego.com',
+      name: 'Octavo Fuego',
+      description: 'Rapé do Acre, Sananga y Kuripes. Medicinas ancestrales amazónicas con propósito.',
+      publisher: {
+        '@id': 'https://octavofuego.com/#organization',
+      },
+    },
+    {
+      '@type': 'ItemList',
+      '@id': 'https://octavofuego.com/#homepage-products',
+      name: itemListName,
+      numberOfItems: productList.length,
+      itemListElement: productList.map((p) => ({
+        '@type': 'ListItem',
+        position: p.position,
+        url: p.url,
+        name: p.name,
+      })),
+    },
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

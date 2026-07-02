@@ -1,0 +1,91 @@
+---
+/**
+ * Shipping policy page — /envios
+ * Trust Foundation SEO page with WebPage schema.
+ */
+import Layout from '@/layouts/Layout.astro';
+
+const title = 'Política de Envíos — Octavo Fuego';
+const description = 'Conoce las zonas de cobertura, tiempos de entrega, costos y empaque de Octavo Fuego. Enviamos rapé do Acre a todo Colombia.';
+const canonicalUrl = 'https://octavofuego.com/envios';
+
+const webpageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#webpage`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  isPartOf: {
+    '@id': 'https://octavofuego.com/#website',
+  },
+  about: {
+    '@id': 'https://octavofuego.com/#organization',
+  },
+};
+---
+
+<Layout title={title} description={description} locale="es" ogImage="/images/og-default.svg">
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
+
+  <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
+      Política de Envíos — Octavo Fuego
+    </h1>
+
+    <section class="mb-12">
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-lg text-[var(--ceniza)] leading-relaxed">
+        Empacamos cada pedido con cuidado ceremonial y lo enviamos de manera segura para que la medicina llegue en perfectas condiciones. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+    </section>
+
+    <!-- Zonas de Cobertura -->
+    <section class="mb-16" id="cobertura">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Zonas de Cobertura</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Realizamos envíos a todo Colombia: Bogotá, Medellín, Cali, Barranquilla, Cartagena, Bucaramanga y demás ciudades principales. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </section>
+
+    <!-- Tiempos de Entrega -->
+    <section class="mb-16" id="tiempos">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Tiempos de Entrega</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Los tiempos de entrega estándar son de 2 a 5 días hábiles para ciudades principales. Zonas remotas pueden requerir hasta 8 días hábiles. Lorem ipsum dolor sit amet.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+      </p>
+    </section>
+
+    <!-- Costos de Envío -->
+    <section class="mb-16" id="costos">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Costos de Envío</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        El costo de envío se calcula en el checkout según la ciudad de destino y el peso del paquete. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
+    </section>
+
+    <!-- Empaque -->
+    <section class="mb-16" id="empaque">
+      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Empaque</h2>
+      <!-- 🖊️ USUARIO: reemplazar este texto -->
+      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
+        Todos nuestros rapés se empacan al vacío para preservar aroma, frescura y propiedades durante el transporte. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+      </p>
+      <p class="text-[var(--ceniza)] leading-relaxed">
+        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. El empaque es discreto, resistente y pensado para proteger la medicina.
+      </p>
+    </section>
+  </div>
+</Layout>

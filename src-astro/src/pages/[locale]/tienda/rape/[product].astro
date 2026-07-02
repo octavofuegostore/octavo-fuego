@@ -41,20 +41,18 @@ if (!product) {
 const description = product.descripcion[locale_];
 const highlight = product.highlight[locale_];
 
-// F3: Transactional title prefix per locale
-const TITLE_PREFIX = { es: 'Comprar Rapé', en: 'Buy Rapé', pt: 'Comprar Rapé' } as const;
-const titlePrefix = TITLE_PREFIX[locale_];
+// F3: Transactional title — product-specific, falls back to generic prefix + name
+const transactionalTitle = product.pageTitle[locale_] ?? `${locale_ === 'en' ? 'Buy' : 'Comprar'} Rapé ${product.nombre[locale_]} | Octavo Fuego`;
 
-// F3: Transactional title — includes keyword for purchase-intent search traffic
-const transactionalTitle = `${titlePrefix} ${product.nombre[locale_]} | Rapé do Acre`;
+// F3: Meta description with price-per-g framing from products data
+const transactionalDescription = product.metaDescription[locale_];
 
-// F3: Lowest price-per-gram across all tiers (e.g. 10g at $35,000 = $3,500/g)
-const minPPG = Math.min(...product.pricing.map(p => p.precio / p.cantidad));
-const pricePerGramFormatted = minPPG.toLocaleString('es-CO');
-const priceFraming = locale_ === 'en'
-  ? ` From COP ${pricePerGramFormatted}/g.`
-  : ` Desde COP ${pricePerGramFormatted}/g.`;
-const transactionalDescription = `${product.metaDescription[locale_]}${priceFraming}`;
+// F4.1: Build a locale-aware price string for FAQPage schema
+const midPricing = product.pricing.find((p) => p.cantidad === 20) ?? product.pricing[0];
+const pricePerGram = Math.round(midPricing.precio / midPricing.cantidad).toLocaleString('es-CO');
+const priceText = locale_ === 'en'
+  ? `${midPricing.label} for $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`
+  : `${midPricing.label} por $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`;
 ---
 
 <Layout
@@ -62,6 +60,7 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
   description={transactionalDescription}
   locale={locale_}
   ogType="product"
+  ogImage="/images/og-default.svg"
 >
   <Fragment slot="head">
     <ProductJsonLd
@@ -85,7 +84,11 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
       { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
       { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
     ]} />
-    <FAQPageJsonLd product={product} locale={locale_} />
+    <FAQPageJsonLd
+      locale={locale_}
+      productName={product.nombre[locale_]}
+      priceText={priceText}
+    />
   </Fragment>
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
     <div class="max-w-4xl mx-auto px-6 md:px-12">
@@ -120,7 +123,7 @@ const transactionalDescription = `${product.metaDescription[locale_]}${priceFram
         <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[var(--color-action-primary)] font-bold block mb-3">
           {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
         </span>
-        <h1 class="font-display text-4xl md:text-5xl font-bold tracking-tight text-[var(--near-black)] mb-4">
+        <h1 class="font-display heading-xl font-bold tracking-tight text-[var(--near-black)] mb-4">
           {product.nombre[locale_]}
         </h1>
       </div>

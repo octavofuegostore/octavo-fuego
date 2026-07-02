@@ -177,3 +177,17 @@
     padding-bottom: 12px;
   }
 }
+
+/* Fluid Typography — responsive headings with clamp() */
+.heading-hero {
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+}
+.heading-xl {
+  font-size: clamp(2rem, 4vw + 0.5rem, 3rem);
+}
+.heading-lg {
+  font-size: clamp(1.5rem, 3vw + 0.5rem, 2.5rem);
+}
+.heading-md {
+  font-size: clamp(1.25rem, 2.5vw + 0.25rem, 2rem);
+}
