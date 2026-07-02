@@ -1,23 +1,16 @@
 ---
 /**
- * Informational page — /[locale]/que-es-el-rape/
+ * Informational page — /que-es-el-rape, /en/que-es-el-rape, /pt/que-es-el-rape
  * Article schema. Explains what rapé is.
  */
 import Layout from '@/layouts/Layout.astro';
 import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es' } },
-    { params: { locale: 'en' } },
-    { params: { locale: 'pt' } },
-  ];
-}
+export const prerender = false;
 
-const { locale } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const content = {
   es: {
@@ -99,7 +92,6 @@ const articleSchema = {
     <!-- Origen -->
     <section class="mb-16" id="origen">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.origen}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         El rapé es una medicina ancestral elaborada a partir de tabaco molido y cenizas específicas de árboles amazónicos. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Su uso se remonta a cientos de años entre pueblos indígenas de la Amazonía.
       </p>
@@ -111,7 +103,6 @@ const articleSchema = {
     <!-- Medicina Ancestral -->
     <section class="mb-16" id="medicina-ancestral">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.medicinal}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         En las tradiciones amazónicas, el rapé se utiliza como herramienta de claridad, limpieza energética y conexión espiritual. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>
@@ -123,7 +114,6 @@ const articleSchema = {
     <!-- Tipos -->
     <section class="mb-16" id="tipos">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.tipos}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         En Octavo Fuego ofrecemos cinco variedades de rapé do Acre: Tisunú, Pixurí, Pariká, Cumarú de Cheiro y Vena de Pajé. Cada una tiene su propia alquimia, aroma y orientación ceremonial.
       </p>
@@ -135,7 +125,6 @@ const articleSchema = {
     <!-- Uso -->
     <section class="mb-16" id="para-que-sirve">
       <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{c.sections.uso}</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-[var(--ceniza)] leading-relaxed mb-4">
         El rapé sirve para enfocar la mente, limpiar vías respiratorias, equilibrar energías y acompañar prácticas de meditación. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
       </p>

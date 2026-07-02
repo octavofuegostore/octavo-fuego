@@ -3,30 +3,20 @@
  * Locale-aware homepage — renders at /, /en, /pt
  * Preserves Hero + Trust Badges, REPLACES quiz with real intention categories,
  * adds ProphecyTeaser, updates product links to /tienda
- *
- * @source src/pages/index.astro (existing) + Octavofuego_Catalogo_ESP (1).html (intentions)
  */
 
 import Layout from '@/layouts/Layout.astro';
 import ProphecyTeaser from '@/components/prophecy/ProphecyTeaser.astro';
 import GraphSchema from '@/components/seo/GraphSchema.astro';
 import { prophecy } from '@/data/prophecy';
-import { useTranslations } from '@/i18n';
-import type { Locale } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
 import { Icon } from 'astro-icon/components';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es' } },
-    { params: { locale: 'en' } },
-    { params: { locale: 'pt' } },
-  ];
-}
+export const prerender = false;
 
-const { locale } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 // F2.1: Homepage title + meta descriptions per locale
 const homeTitles: Record<Locale, string> = {

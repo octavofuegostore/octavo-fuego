@@ -1,68 +1,39 @@
 ---
 /**
- * Rapé category listing — renders at /tienda/rape × 3 locales
- * Lists all 5 rapé varieties with ProductCard
+ * Catalog listing page — renders at /tienda, /en/tienda, /pt/tienda
+ * Uses: QuickReferenceTable, ProductCard ×5, IntentMap, IntensityProfile, Glossary
  *
  * @source Octavofuego_Catalogo_ESP (1).html
  */
 
 import Layout from '@/layouts/Layout.astro';
 import ProductCard from '@/components/product/ProductCard.astro';
-import CategoryPills from '@/components/product/CategoryPills.astro';
+import QuickReferenceTable from '@/components/tienda/QuickReferenceTable.astro';
+import IntentMap from '@/components/tienda/IntentMap.astro';
+import IntensityProfile from '@/components/tienda/IntensityProfile.astro';
+import Glossary from '@/components/tienda/Glossary.astro';
 import { products } from '@/data/products';
-import { useTranslations } from '@/i18n';
-import type { Locale } from '@/i18n';
+import { useTranslations, type Locale } from '@/i18n';
 
-export async function getStaticPaths() {
-  return [
-    { params: { locale: 'es', category: 'rape' } },
-    { params: { locale: 'en', category: 'rape' } },
-    { params: { locale: 'pt', category: 'rape' } },
-  ];
-}
+export const prerender = false;
 
-const { locale, category } = Astro.params;
-const locale_ = locale as Locale;
+const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
-const baseUrl = `/${locale_}`;
-
-const categoryTitle = locale_ === 'es' ? 'Rapé' : locale_ === 'en' ? 'Rapé' : 'Rapé';
-const categoryDescription = locale_ === 'es'
-  ? 'Cinco variedades sagradas de rapé amazónico, cada una con propiedades y usos ceremoniales únicos.'
-  : locale_ === 'en'
-  ? 'Five sacred Amazonian rapé varieties, each with unique properties and ceremonial uses.'
-  : 'Cinco variedades sagradas de rapé amazônico, cada uma com propriedades e usos cerimoniais únicos.';
-
-// Compute filter categories from product enfoques
-const currentFilter = Astro.url.searchParams.get('filter') || 'all';
-const enfoqueCounts = products.reduce((acc, p) => {
-  const enfoque = p.enfoque[locale_];
-  acc[enfoque] = (acc[enfoque] || 0) + 1;
-  return acc;
-}, {} as Record<string, number>);
-const filterCategories = [
-  { name: locale_ === 'es' ? 'Todos' : locale_ === 'en' ? 'All' : 'Todos', value: 'all', count: products.length },
-  ...Object.entries(enfoqueCounts)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([name, count]) => ({ name, value: name.toLowerCase(), count })),
-];
-const filteredProducts = currentFilter === 'all'
-  ? products
-  : products.filter((p) => p.enfoque[locale_].toLowerCase() === currentFilter);
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 ---
 
 <Layout
-  title={`${categoryTitle} | ${t.tienda.title}`}
-  description={categoryDescription}
+  title={t.tienda.title}
+  description={t.tienda.subtitle}
   locale={locale_}
 >
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    'name': categoryTitle,
-    'description': categoryDescription,
-    'numberOfItems': filteredProducts.length,
-    'itemListElement': filteredProducts
+    'name': t.tienda.title,
+    'description': t.tienda.subtitle,
+    'numberOfItems': products.length,
+    'itemListElement': products
       .sort((a, b) => a.varietyOrder - b.varietyOrder)
       .map((p, i) => ({
         '@type': 'ListItem',
@@ -89,45 +60,44 @@ const filteredProducts = currentFilter === 'all'
       <nav class="mb-8 text-sm">
         <ol class="flex items-center gap-2 text-[var(--ceniza)]">
           <li>
-            <a href={baseUrl} class="hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={`${baseUrl}/`} class="hover:text-[var(--color-action-primary)] transition-colors">
               {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
             </a>
           </li>
           <li>/</li>
-          <li>
-            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--color-action-primary)] transition-colors">
-              {t.nav.tienda}
-            </a>
-          </li>
-          <li>/</li>
-          <li class="text-[var(--near-black)]">{categoryTitle}</li>
+          <li class="text-[var(--near-black)]">{t.nav.tienda}</li>
         </ol>
       </nav>
 
+      <div class="text-center">
       <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--color-action-primary)] font-semibold block mb-4">
         {t.tienda.subtitle}
       </span>
       <h1 class="font-display heading-xl font-bold tracking-tight text-[var(--near-black)] mb-6">
-        {categoryTitle}
+        {t.tienda.title}
       </h1>
-      <p class="text-[var(--ceniza)] text-lg md:text-xl max-w-[700px] font-light italic leading-relaxed">
-        {categoryDescription}
+      <p class="text-[var(--ceniza)] text-lg md:text-xl max-w-[700px] mx-auto font-light italic leading-relaxed">
+        {locale_ === 'es'
+          ? 'Una guía integral para comprender las variedades sagradas de rapé, sus propiedades y aplicaciones ceremoniales en las tradiciones ancestrales de la Amazonía.'
+          : locale_ === 'en'
+          ? 'A comprehensive guide to understanding sacred rapé varieties, their properties, and ceremonial applications in ancestral Amazonian traditions.'
+          : 'Um guia abrangente para compreender as variedades sagradas de rapé, suas propriedades e aplicações cerimoniais nas tradições ancestrais da Amazônia.'}
       </p>
     </div>
   </section>
 
-  <!-- Category Pills Filter -->
-  <section class="py-8 bg-white border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-6 md:px-12">
-      <CategoryPills categories={filterCategories} currentFilter={currentFilter} baseUrl={`${baseUrl}/tienda/rape`} />
-    </div>
-  </section>
+  <!-- Quick Reference Table -->
+  <QuickReferenceTable locale={locale_} />
 
-  <!-- Product Grid -->
+  <!-- Product Varieties -->
   <section class="py-16 md:py-24 bg-white">
     <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-action-primary)] border-b border-gray-200 pb-3 mb-10 block">
+        {t.tienda.varieties}
+      </span>
+
       <div class="flex overflow-x-auto snap-x gap-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-8">
-        {filteredProducts
+        {products
           .sort((a, b) => a.varietyOrder - b.varietyOrder)
           .map((product) => (
             <div class="min-w-[280px] snap-center flex-shrink-0 md:min-w-0">
@@ -158,4 +128,13 @@ const filteredProducts = currentFilter === 'all'
       </p>
     </div>
   </section>
+
+  <!-- Intent Map -->
+  <IntentMap locale={locale_} />
+
+  <!-- Intensity Profile -->
+  <IntensityProfile locale={locale_} />
+
+  <!-- Glossary -->
+  <Glossary locale={locale_} />
 </Layout>
