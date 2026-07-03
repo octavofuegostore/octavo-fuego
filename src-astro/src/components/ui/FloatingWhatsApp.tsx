@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useTranslations } from '@/i18n';
 

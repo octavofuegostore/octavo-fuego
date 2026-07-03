@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, formatCOP, type CartItem } from '@/stores/cartStore';
