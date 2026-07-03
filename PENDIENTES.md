@@ -423,6 +423,17 @@
 - [x] Checkout (`/checkout`)
 - [x] Blog listing + 4 posts
 
+### ⚠️ Post i18n Routing Fix (Jul 2, 2026) — SDD archivado, 2 warnings pendientes
+
+> 17 páginas movidas a `[locale]/`, 34/34 tareas, build 0 errores. Engram: `sdd/i18n-routing-locale-fix/*`
+
+| Warning | Impacto |
+|---------|---------|
+| **Sitemap sin URLs EN/PT** — páginas info usan `prerender=false`, `@astrojs/sitemap` no las indexa | 🔴 Search engines no descubren automáticamente variantes EN/PT — depende de internal links |
+| **Link helpers inconsistentes** — algunas páginas usan `localeUrl()`, otras usan `baseUrl` inline | 🟡 Mantenimiento, no afecta funcionalidad |
+
+**Fix recomendado**: Convertir páginas info públicas (nosotros, contacto, faq, envios, terminos, privacidad, profecia) de vuelta a SSG con `getStaticPaths()` para restaurar cobertura de sitemap.
+
 ### 3.5 SEO ✅ (Audit + Fixes completados Junio 15, 2026)
 
 #### Schemas (100% cobertura)
