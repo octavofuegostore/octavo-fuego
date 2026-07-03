@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, formatCOP, clearCart } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useT, setLocale, type Locale } from '@/stores/localeStore';
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -33,9 +34,14 @@ const departamentosColombia = [
   'Valle del Cauca', 'Vaupés', 'Vichada'
 ];
 
-export function CheckoutForm() {
+export function CheckoutForm({ locale }: { locale?: Locale }) {
   const items = useStore(cartItems);
   const total = useStore(cartTotal);
+  const $t = useT();
+
+  useEffect(() => {
+    if (locale) setLocale(locale);
+  }, [locale]);
   
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [contactInfo, setContactInfo] = useState<ContactInfo>({

@@ -71,7 +71,11 @@
     "total": "Total",
     "irCheckout": "Ir para o Checkout",
     "vaciar": "Esvaziar carrinho",
-    "continuarComprando": "Continuar comprando"
+    "continuarComprando": "Continuar comprando",
+    "ariaCerrar": "Fechar carrinho",
+    "ariaReducir": "Diminuir quantidade",
+    "ariaAumentar": "Aumentar quantidade",
+    "ariaEliminar": "Remover item"
   },
   "checkout": {
     "info": "Informação",
