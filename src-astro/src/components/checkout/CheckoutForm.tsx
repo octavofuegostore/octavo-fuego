@@ -92,19 +92,19 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
 
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
-    if (!contactInfo.nombre.trim()) newErrors.nombre = 'El nombre es requerido';
-    if (!contactInfo.email.trim()) newErrors.email = 'El email es requerido';
-    else if (!validateEmail(contactInfo.email)) newErrors.email = 'Email inválido';
-    if (!contactInfo.telefono.trim()) newErrors.telefono = 'El teléfono es requerido';
+    if (!contactInfo.nombre.trim()) newErrors.nombre = $t('checkout.errNombreRequerido');
+    if (!contactInfo.email.trim()) newErrors.email = $t('checkout.errEmailRequerido');
+    else if (!validateEmail(contactInfo.email)) newErrors.email = $t('checkout.errEmailInvalido');
+    if (!contactInfo.telefono.trim()) newErrors.telefono = $t('checkout.errTelefonoRequerido');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const validateStep2 = () => {
     const newErrors: Record<string, string> = {};
-    if (!shippingInfo.direccion.trim()) newErrors.direccion = 'La dirección es requerida';
-    if (!shippingInfo.ciudad.trim()) newErrors.ciudad = 'La ciudad es requerida';
-    if (!shippingInfo.departamento) newErrors.departamento = 'El departamento es requerido';
+    if (!shippingInfo.direccion.trim()) newErrors.direccion = $t('checkout.errDireccionRequerida');
+    if (!shippingInfo.ciudad.trim()) newErrors.ciudad = $t('checkout.errCiudadRequerida');
+    if (!shippingInfo.departamento) newErrors.departamento = $t('checkout.errDepartamentoRequerido');
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -140,8 +140,8 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
   if (items.length === 0 && currentStep !== 4) {
     return (
       <div class="text-center py-12">
-        <p class="text-ceniza mb-4">Tu carrito está vacío</p>
-        <Button onClick={() => window.location.href='/es/tienda'}>Ir al catálogo</Button>
+        <p class="text-ceniza mb-4">{$t('cart.vacío')}</p>
+        <Button onClick={() => window.location.href='/es/tienda'}>{$t('checkout.irCatalogo')}</Button>
       </div>
     );
   }
@@ -151,10 +151,10 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
       {/* Step 1: Contact Information */}
       {currentStep === 1 && (
         <div class="space-y-6">
-          <h2 class="font-display text-xl font-semibold mb-6">Información de contacto</h2>
+          <h2 class="font-display text-xl font-semibold mb-6">{$t('checkout.info')}</h2>
           
           <div>
-            <label class="block text-sm mb-2">Nombre completo *</label>
+            <label class="block text-sm mb-2">{$t('checkout.nombre')} *</label>
             <Input
               type="text"
               value={contactInfo.nombre}
@@ -166,7 +166,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
           </div>
 
           <div>
-            <label class="block text-sm mb-2">Email *</label>
+            <label class="block text-sm mb-2">{$t('checkout.email')} *</label>
             <Input
               type="email"
               value={contactInfo.email}
@@ -178,7 +178,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
           </div>
 
           <div>
-            <label class="block text-sm mb-2">Teléfono *</label>
+            <label class="block text-sm mb-2">{$t('checkout.telefono')} *</label>
             <Input
               type="tel"
               value={contactInfo.telefono}
@@ -194,10 +194,10 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
       {/* Step 2: Shipping */}
       {currentStep === 2 && (
         <div class="space-y-6">
-          <h2 class="font-display text-xl font-semibold mb-6">Información de envío</h2>
+          <h2 class="font-display text-xl font-semibold mb-6">{$t('checkout.envio')}</h2>
           
           <div>
-            <label class="block text-sm mb-2">Dirección *</label>
+            <label class="block text-sm mb-2">{$t('checkout.direccion')} *</label>
             <Input
               type="text"
               value={shippingInfo.direccion}
@@ -210,7 +210,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
 
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm mb-2">Ciudad *</label>
+              <label class="block text-sm mb-2">{$t('checkout.ciudad')} *</label>
               <Input
                 type="text"
                 value={shippingInfo.ciudad}
@@ -222,13 +222,13 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
             </div>
 
             <div>
-              <label class="block text-sm mb-2">Departamento *</label>
+              <label class="block text-sm mb-2">{$t('checkout.departamento')} *</label>
               <select
                 value={shippingInfo.departamento}
                 onChange={(e) => setShippingInfo({ ...shippingInfo, departamento: e.target.value })}
                 className={`w-full h-11 px-2 bg-transparent border rounded-lg text-base md:text-sm transition-colors outline-none focus:border-tabacco ${errors.departamento ? 'border-error' : 'border-humo'}`}
               >
-                <option value="">Seleccionar...</option>
+                <option value="">{$t('checkout.seleccionar')}</option>
                 {departamentosColombia.map((dept) => (
                   <option key={dept} value={dept}>{dept}</option>
                 ))}
@@ -238,11 +238,11 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
           </div>
 
           <div>
-            <label class="block text-sm mb-2">Notas adicionales</label>
+            <label class="block text-sm mb-2">{$t('checkout.notasAdicionales')}</label>
             <textarea
               value={shippingInfo.notas}
               onChange={(e) => setShippingInfo({ ...shippingInfo, notas: e.target.value })}
-              placeholder="Indicaciones para la entrega..."
+              placeholder={$t('checkout.notasPlaceholder')}
               rows={3}
               className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-base md:text-sm resize-none focus:border-tabacco focus:outline-none"
             />
@@ -253,7 +253,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
       {/* Step 3: Payment */}
       {currentStep === 3 && (
         <div class="space-y-6">
-          <h2 class="font-display text-xl font-semibold mb-6">Método de pago</h2>
+          <h2 class="font-display text-xl font-semibold mb-6">{$t('checkout.metodoPago')}</h2>
           
           <div class="space-y-3">
             <label class={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'pse' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
@@ -267,9 +267,9 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               />
               <div class="flex-1">
                 <span class="font-medium">PSE</span>
-                <p class="text-xs text-ceniza">Pago con tu banco</p>
+                <p class="text-xs text-ceniza">{$t('checkout.pagoConBanco')}</p>
               </div>
-              <span class="text-sm text-ceniza">Transferencia</span>
+              <span class="text-sm text-ceniza">{$t('checkout.transferencia')}</span>
             </label>
 
             <label class={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'nequi' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
@@ -283,7 +283,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               />
               <div class="flex-1">
                 <span class="font-medium">Nequi</span>
-                <p class="text-xs text-ceniza">Pago móvil</p>
+                <p class="text-xs text-ceniza">{$t('checkout.pagoMovil')}</p>
               </div>
               <span class="text-ceniza font-semibold text-sm">Nequi</span>
             </label>
@@ -299,7 +299,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               />
               <div class="flex-1">
                 <span class="font-medium">Daviplata</span>
-                <p class="text-xs text-ceniza">Pago móvil</p>
+                <p class="text-xs text-ceniza">{$t('checkout.pagoMovil')}</p>
               </div>
               <span class="text-ceniza font-semibold text-sm">Daviplata</span>
             </label>
@@ -314,7 +314,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
                 class="accent-tabacco"
               />
               <div class="flex-1">
-                <span class="font-medium">Tarjeta de crédito</span>
+                <span class="font-medium">{$t('checkout.tarjeta')}</span>
                 <p class="text-xs text-ceniza">Visa, Mastercard, AMEX</p>
               </div>
               <div class="flex gap-2">
@@ -325,7 +325,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
           </div>
 
           <div class="bg-humo/30 p-4 text-sm text-ceniza">
-            <p>Al continuar, serás redirigido a la pasarela de pago segura de Bold para completar tu transacción.</p>
+            <p>{$t('checkout.seguridadBold')}</p>
           </div>
         </div>
       )}
@@ -338,27 +338,27 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 class="font-display text-2xl font-semibold mb-4">¡Pedido confirmado!</h2>
+          <h2 class="font-display text-2xl font-semibold mb-4">{$t('checkout.pedidoConfirmado')}</h2>
           <p class="text-ceniza mb-6">
-            Tu pedido ha sido recibido. Te enviamos un correo a <strong class="text-[var(--near-black)]">{contactInfo.email}</strong> con los detalles.
+            {$t('checkout.pedidoRecibido')} <strong class="text-[var(--near-black)]">{contactInfo.email}</strong> {$t('checkout.conDetalles')}
           </p>
           <div class="bg-papel/50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
-            <h3 class="font-semibold mb-4">Resumen del pedido</h3>
+            <h3 class="font-semibold mb-4">{$t('checkout.resumenPedido')}</h3>
             <div class="space-y-2 text-sm">
               <div class="flex justify-between">
-                <span class="text-ceniza">Nombre:</span>
+                <span class="text-ceniza">{$t('checkout.nombreLabel')}</span>
                 <span>{contactInfo.nombre}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-ceniza">Envío:</span>
+                <span class="text-ceniza">{$t('checkout.envioLabel')}</span>
                 <span>{shippingInfo.ciudad}, {shippingInfo.departamento}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-ceniza">Método de pago:</span>
+                <span class="text-ceniza">{$t('checkout.metodoPagoLabel')}</span>
                 <span class="capitalize">{paymentInfo.metodo}</span>
               </div>
               <div class="border-t border-humo/50 pt-2 mt-4 flex justify-between font-semibold">
-                <span>Total:</span>
+                <span>{$t('checkout.totalLabel')}</span>
                 <span class="text-tabacco">{formatCOP(total)}</span>
               </div>
             </div>
@@ -368,10 +368,10 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
-              Confirmar por WhatsApp
+              {$t('checkout.confirmarWhatsApp')}
             </Button>
             <Button variant="secondary" onClick={() => window.location.href='/es/tienda'}>
-              Continuar comprando
+              {$t('cart.continuarComprando')}
             </Button>
           </div>
         </div>
@@ -386,15 +386,15 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
             onClick={handleBack}
             disabled={currentStep === 1}
           >
-            ← Volver
+            ← {$t('checkout.volver')}
           </Button>
           <Button onClick={handleNext} disabled={isProcessing}>
             {isProcessing ? (
-              <span>Procesando...</span>
+              <span>{$t('checkout.procesando')}</span>
             ) : currentStep === 3 ? (
-              'Pagar ahora'
+              $t('checkout.pagar')
             ) : (
-              'Continuar →'
+              $t('checkout.continuar') + ' →'
             )}
           </Button>
         </div>
