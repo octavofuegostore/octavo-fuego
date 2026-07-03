@@ -13,10 +13,10 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.7.1) |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.10.0) |
 | 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
-| 05 Testing & Polish | ████░░░░░░ 30% | ⏳ Pendiente |
-| 06 Lanzamiento | ██░░░░░░░░ 10% | ⏳ Pendiente |
+| 05 Testing & Polish | ██████░░░░ 60% | ⏳ Pendiente (E4/E9 + a11y manual) |
+| 06 Lanzamiento | ██████░░░░ 60% | ⏳ Pendiente (E5 Fase 1 urgente) |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
@@ -25,8 +25,9 @@
 
 > **Engram:** `architecture/decision-record-v2` (#1702)
 > **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
-> **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Wompi, Stripe, Pix)
-> **Commits:** `XXXXXXX` | **Tag:** `v0.10.0` | **Build:** ✅ 0 errores
+> **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Bold CO, Stripe BR/Intl, MP opcional)
+> **Payment architecture:** `sdd/e5-checkout-payment/proposal` (#1833) — WhatsApp Provider → Bold → Stripe → MP
+> **Commits:** 16 PRs visual-frontend-audit | **Tag:** `v0.10.0` | **Build:** ✅ 0 errores
 
 ### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
 - [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
@@ -49,18 +50,76 @@
 - [x] T3.3 URL State Pattern: SlidePanel + usePanel (popstate, back button, ?panel=)
 - [x] T3.4 UI Components: EmptyState, Skeleton (4 variants), StatusBadge (9 estados)
 
-### 🟢 Tier 4 — Primera Pasarela Real 🔶 PLANEADO (no ejecutado)
-> SDD Proposal en `sdd/payment-gateway-wompi/proposal` (#1719)
-- [ ] T4.1 WompiGateway (implementar PagoGateway port)
-- [ ] T4.2 Integración con checkout (requiere credenciales Wompi)
-- [ ] T4.3 Webhook handler POST /api/webhooks/wompi
+### 🟢 Tier 4 — Primera Pasarela Real 🔶 PLANEADO (reevaluado Jul 3)
+> SDD Proposal en `sdd/e5-checkout-payment/proposal` (#1833)
+> **Arquitectura corregida:** WhatsApp Provider (Fase 1) → Bold CO (Fase 2) → Stripe BR/Intl (Fase 3) → MP (Fase 4)
+> **Wompi descartado** en favor de Bold (CO) + Stripe (BR/Intl) + Mercado Pago (opcional)
+- [ ] T4.1 WhatsApp Provider — guardar orden, copy honesto, clearCart() post-orden ✅ Fase 1: urgente
+- [ ] T4.2 Bold Provider — redirect + webhook (CO) ⏳ Fase 2: espera aprobación legal
+- [ ] T4.3 Stripe Provider — Pix/Boleto (BR), card (INT) ⏳ Fase 3: espera aprobación legal
 
 ### ❌ Decisiones NO tomadas (con causa en #1702)
 - Event Sourcing puro, CQRS con bus de mensajes, Monorepo + Medusa Server, GraphQL
 
 ---
 
-## 🏁 Último Sprint — v0.10.0: ADR v2 Stack Modernization + Domain Layer (Julio 3, 2026)
+## 🏁 Último Sprint — v0.10.0: Visual Frontend Audit (Julio 3, 2026)
+
+> **SDD:** `visual-frontend-audit` — 8 audits implementados de 12
+> **Commits:** 16 PRs en `feature/visual-frontend-audit`
+> **Build:** ✅ 0 errores
+
+### ✅ E7 — Astro Best Practices (5 PRs)
+- [x] PR1 — SSG: remove `prerender=false` de 19 páginas públicas
+- [x] PR2 — View Transitions: ClientRouter en Layout.astro
+- [x] PR3 — "use client" cleanup en 12 TSX componentes
+- [x] PR4 — CartStore `client:load` → `client:idle`
+- [x] PR5 — lucide-react removal
+
+### ✅ E6 — Tailwind + Design Tokens (2 PRs)
+- [x] PR1 — `--color-border-subtle`, `--font-heading`, brown unificado #6d5e4d
+- [x] PR2 — Spacing dedup + `--shadow-raised`
+
+### ✅ E8 — i18n / Locale (3 PRs)
+- [x] PR1 — Mayoristas crash fix (EN/PT keys)
+- [x] PR2 — CartDrawer i18n + `localeStore.ts`
+- [x] PR3 — CheckoutForm + OrderSummary i18n
+
+### ✅ E3 — Web Quality (3 PRs)
+- [x] PR1 — Playfair preload + hero LCP w/h
+- [x] PR2 — Skip-to-content, `:focus-visible`, dynamic lang, color contrast
+- [x] PR3 — noindex, CSP, lorem ipsum removal, garbled chars fix
+
+### ✅ E2 — UI/UX Accessibility (3 PRs)
+- [x] PR1 — Focus trap en CartDrawer + modales
+- [x] PR2 — Keyboard nav en dropdowns
+- [x] PR3 — Form a11y (htmlFor/id, aria-describedby, aria-live)
+
+### ✅ PaymentBanner (34 SVGs)
+- [x] 17 métodos × 2 variantes (dark/light) en `public/images/payment/`
+- [x] Componente `PaymentBanner.astro` — locale-aware
+- [x] Integrado en footer (dark) + checkout (light)
+
+### 🔶 E5 — Checkout & Payment Architecture (Proposal listo)
+> `sdd/e5-checkout-payment/proposal` (#1833)
+- [ ] Fase 1: WhatsApp Provider (guardar orden, copy honesto) — **urge implementar**
+- [ ] Fase 2: Bold Provider (CO) — espera aprobación legal
+- [ ] Fase 3: Stripe Provider (BR/Intl) — espera aprobación legal
+- [ ] Fase 4: Mercado Pago (CO+BR) — opcional
+
+### 🔶 Pendientes post-launch (proposal listo)
+- [ ] E4 — React Performance (#1733)
+- [ ] E9-P1 — Technical SEO (2 PRs)
+- [ ] E9-P2 — International SEO (#1746)
+- [ ] E9-P3 — On-Page SEO (#1745)
+- [ ] E9-P4 — Content/Schema (3 PRs)
+
+---
+
+## Sprint Anterior — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
+
+> **Tags:** `v0.9.1` | **Build:** ✅ 0 errores
+> **Fuente:** Judgment Day findings
 
 > **Tags:** `v0.10.0` | **Build:** ✅ 0 errores
 > **Fuente:** Judgment Day PASS WITH WARNINGS (0 CRITICAL, 4 WARNING corregidos)

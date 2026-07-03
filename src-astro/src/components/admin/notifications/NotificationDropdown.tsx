@@ -7,7 +7,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
-import { $notificaciones, $noLeidas, marcarLeida } from '@/stores/admin';
+import { $notificaciones, $noLeidas, marcarLeida } from '@/stores/admin/notificaciones';
 import { eventBus } from '@/lib/admin/eventos';
 
 // ─── Types ────────────────────────────────────────────────────────────────────

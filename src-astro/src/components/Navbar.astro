@@ -25,23 +25,31 @@ const t = useTranslations(locale);
     <!-- Desktop Navigation -->
     <div class="hidden md:flex items-center gap-8">
       <!-- Catálogo Dropdown -->
-      <div class="relative group">
+      <div class="relative" id="catalog-dropdown">
         <button
+          id="catalog-dropdown-btn"
           class="flex items-center gap-1 text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors"
           aria-expanded="false"
           aria-haspopup="true"
+          aria-controls="catalog-dropdown-menu"
         >
           {t.nav.tienda}
-          <Icon name="solar:alt-arrow-down-bold-duotone" class="w-4 h-4 transition-transform group-hover:rotate-180" />
+          <Icon name="solar:alt-arrow-down-bold-duotone" class="w-4 h-4 transition-transform" id="catalog-dropdown-arrow" />
         </button>
 
-        <div class="absolute top-full left-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+        <div
+          id="catalog-dropdown-menu"
+          role="menu"
+          aria-label={t.nav.tienda}
+          class="absolute top-full left-0 pt-2 opacity-0 invisible transition-all duration-300"
+        >
           <div class="bg-white border border-gray-200 shadow-[var(--shadow-hover)] py-2 min-w-[200px] rounded-[var(--radius-card)]">
             {products
               .sort((a, b) => a.varietyOrder - b.varietyOrder)
               .map((product) => (
                 <a
                   href={localeUrl(`/tienda/rape/${product.slug}`, locale)}
+                  role="menuitem"
                   class="block px-4 py-2 text-sm text-[var(--ceniza)] hover:text-[var(--near-black)] hover:bg-gray-50 transition-colors"
                 >
                   {product.nombre[locale]}
@@ -50,6 +58,7 @@ const t = useTranslations(locale);
             <div class="border-t border-gray-100 mt-2 pt-2">
               <a
                 href={localeUrl('/tienda', locale)}
+                role="menuitem"
                 class="block px-4 py-2 text-sm text-[var(--color-action-primary)] hover:text-[var(--near-black)] transition-colors"
               >
                 {t.nav.verTienda}
@@ -155,6 +164,97 @@ const t = useTranslations(locale);
     // Close on nav link click
     menu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeMenu);
+    });
+  });
+
+  // Catalog dropdown keyboard navigation
+  document.addEventListener('astro:page-load', () => {
+    const wrapper = document.getElementById('catalog-dropdown');
+    const btn = document.getElementById('catalog-dropdown-btn');
+    const menu = document.getElementById('catalog-dropdown-menu');
+    const arrow = document.getElementById('catalog-dropdown-arrow');
+
+    if (!wrapper || !btn || !menu) return;
+
+    const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+
+    function openDropdown() {
+      menu.classList.remove('opacity-0', 'invisible');
+      menu.classList.add('opacity-100', 'visible');
+      btn?.setAttribute('aria-expanded', 'true');
+      if (arrow) arrow.classList.add('rotate-180');
+    }
+
+    function closeDropdown() {
+      menu.classList.add('opacity-0', 'invisible');
+      menu.classList.remove('opacity-100', 'visible');
+      btn?.setAttribute('aria-expanded', 'false');
+      if (arrow) arrow.classList.remove('rotate-180');
+    }
+
+    function isOpen() {
+      return !menu.classList.contains('invisible');
+    }
+
+    // Hover support
+    wrapper.addEventListener('mouseenter', openDropdown);
+    wrapper.addEventListener('mouseleave', closeDropdown);
+
+    // Keyboard: Enter/Space toggle on button
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (isOpen()) {
+          closeDropdown();
+        } else {
+          openDropdown();
+          const firstItem = items[0] as HTMLElement | undefined;
+          firstItem?.focus();
+        }
+      }
+      if (e.key === 'ArrowDown' && isOpen()) {
+        e.preventDefault();
+        const firstItem = items[0] as HTMLElement | undefined;
+        firstItem?.focus();
+      }
+      if (e.key === 'ArrowUp' && isOpen()) {
+        e.preventDefault();
+        const lastItem = items[items.length - 1] as HTMLElement | undefined;
+        lastItem?.focus();
+      }
+      if (e.key === 'Escape' && isOpen()) {
+        e.preventDefault();
+        closeDropdown();
+        btn?.focus();
+      }
+    });
+
+    // Keyboard: Arrow keys within menu items
+    items.forEach((item, index) => {
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = items[index + 1] ?? items[0];
+          (next as HTMLElement).focus();
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = items[index - 1] ?? items[items.length - 1];
+          (prev as HTMLElement).focus();
+        }
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeDropdown();
+          btn?.focus();
+        }
+      });
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !wrapper.contains(e.target as Node)) {
+        closeDropdown();
+      }
     });
   });
 

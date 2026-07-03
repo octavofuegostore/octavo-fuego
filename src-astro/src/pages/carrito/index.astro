@@ -3,14 +3,12 @@ import Layout from '@/layouts/Layout.astro';
 import { Button } from '@/components/ui/button';
 import { useTranslations, getLocaleFromUrl } from '@/i18n';
 import { formatCOP } from '@/stores/cartStore';
-import { CartStore } from '@/components/cart/CartStore';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
 ---
 
 <Layout title={t.cart.titulo} description={t.common.tagline} locale={locale}>
-  <CartStore client:load />
   
   <section class="py-16 md:py-24">
     <div class="max-w-4xl mx-auto px-6 md:px-12">
