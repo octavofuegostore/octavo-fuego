@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import { supabase } from '@/lib/supabase'
-import { verifyToken } from '@/lib/auth'
+import { verifyJWT } from '@/lib/auth'
 
 export const prerender = false
 
@@ -12,7 +12,7 @@ const SUPABASE_CONFIGURED = !!(
 async function getUser(cookies: { get: (n: string) => { value?: string } | undefined }) {
   const token = cookies.get('of_admin_token')?.value
   if (!token) return null
-  return await verifyToken(token)
+  return await verifyJWT(token)
 }
 
 const DEFAULTS: Record<string, string> = {

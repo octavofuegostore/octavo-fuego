@@ -3,14 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import { toast } from "sonner";
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Check,
-  Package,
-} from "lucide-react";
+
 
 import {
   Table,
@@ -178,7 +171,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
           {/* Search */}
           <div className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza"
+              >
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               <input
                 type="text"
                 placeholder="Buscar órdenes..."
@@ -330,7 +334,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                           className="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors"
                           title="Ver detalles"
                         >
-                          <Eye className="w-4 h-4" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17a5 5 0 100-10 5 5 0 000 10z" />
+                            </svg>
                         </button>
                         {order.status === "pending" && (
                           <button
@@ -338,7 +353,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                             className="p-1.5 text-ceniza hover:text-success hover:bg-success/10 rounded-lg transition-colors"
                             title="Confirmar"
                           >
-                            <Check className="w-4 h-4" />
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
                           </button>
                         )}
                         {order.status === "confirmed" && (
@@ -347,7 +373,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                             className="p-1.5 text-ceniza hover:text-accent hover:bg-accent/10 rounded-lg transition-colors"
                             title="Marcar como enviada"
                           >
-                            <Package className="w-4 h-4" />
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
                           </button>
                         )}
                       </div>
@@ -374,7 +411,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 disabled={$currentPage === 1}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
 
               {getPageNumbers($currentPage, totalPages).map((page, index) =>
@@ -402,7 +450,18 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 disabled={$currentPage === totalPages}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronRight className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
           </div>

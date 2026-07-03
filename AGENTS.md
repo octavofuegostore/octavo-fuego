@@ -238,6 +238,20 @@ playwright       # e2e
 - Remote: `origin` → `https://github.com/octavofuegostore/octavo-fuego`
 - Author: Josue Calderon - Navio Azul `<luisjosue1205@gmail.com>`
 
+## Architecture Principles (ADR v2 — Jul 2026)
+> Source: Engram `architecture/decision-record-v2` (#1702)
+
+1. **UTC for all timestamps**: Toda fecha de orden/transacción en UTC. Frontend formatea al locale con Intl.DateTimeFormat. NUNCA `new Date().toString()`.
+2. **Cache first, query second**: SSR dashboard cacheado con TTL 5 min vía `conCache()` wrapper. Aceptar cold start de Vercel (primer request post-idle paga queries).
+3. **Port & Adapter ligero**: Interfaz + 2 implementaciones (Mock + Supabase) en el MISMO archivo. Provider (`crearServicios()`) elige UNA VEZ. No más `if (supabaseConfigurado)` dentro de métodos CRUD.
+4. **Anti-Corruption Layer**: Cada pasarela externa (Wompi, Stripe, Pix) tiene su ACL que traduce sus términos a los del dominio. El dominio nunca sabe que existe "transactionId" o "paymentIntent".
+5. **Repository interfaces en domain/**: Los contratos de persistencia viven en la capa pura. No cambian cuando agregues más backends.
+6. **Value Objects para todo lo que tenga reglas**: Divisa, Monto, TasaCambio, CodigoPasarela, Email. NO strings volando.
+7. **Domain events con error isolation**: EventBus con Promise.allSettled — un handler fallido no tumba los demás. Eventos críticos persistidos para auditoría cross-border.
+8. **Astro SSR clean**: El provider es una función llamada en frontmatter. Sin DI containers, sin context providers, sin server actions.
+9. **Sin lucide-react**: En `.astro` usar `<Icon>` de astro-icon. En `.tsx` islands usar inline SVG. Prohibido en componentes nuevos.
+10. **Zero branching en servicios**: La decisión mock/real se toma en el provider, no en cada query. Cada adaptador (Mock/Supabase) es puro.
+
 ## Engram
 - Project: `octavo-fuego`
 - **Documento maestro**: `PROYECTO.md` + `mem_search("docs/proyecto-md", project: "octavo-fuego")`
@@ -247,6 +261,8 @@ playwright       # e2e
 ### Key Topic Keys
 | Topic Key | What |
 |-----------|------|
+| `architecture/decision-record-v2` | ADR v2 — Multi-País, Multi-Pasarela + Domain layer + ACL |
+| `architecture/decision-record-v1` | ADR v1 — Stack modernization + Hexagonal pragmático + Pipod analysis |
 | `docs/proyecto-md` | PROYECTO.md single source of truth |
 | `architecture/footer-design` | Footer design decisions |
 | `architecture/trust-badges-section-dark-background` | Trust Badges design |
@@ -259,4 +275,4 @@ playwright       # e2e
 | `sdd/seo-transactional-architecture/*` | SEO architecture (FAQ, OG, hreflang, canonical) |
 
 ### Versión actual
-`v0.9.1` — Judgment Day fixes applied. Último commit: `5780118`
+`v0.10.0` — ADR v2 — Stack modernization + Domain Layer + multi-pasarela

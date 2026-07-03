@@ -21,7 +21,79 @@
 
 ---
 
-## 🏁 Último Sprint — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
+## 🏛️ Architectural Decision Record — ADR v2 (Julio 3, 2026)
+
+> **Engram:** `architecture/decision-record-v2` (#1702)
+> **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
+> **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Wompi, Stripe, Pix)
+> **Commits:** `XXXXXXX` | **Tag:** `v0.10.0` | **Build:** ✅ 0 errores
+
+### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
+- [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
+- [x] T1.2 `lucide-react` purgado → inline SVG en 4 archivos admin (~39MB liberados)
+- [x] T1.3 `process.env` → `import.meta.env` en `index-now.ts`
+- [x] T1.4 Timezone UTC rule documentada en AGENTS.md
+
+### 🟠 Tier 2 — Domain Layer ✅ COMPLETADO
+- [x] T2.1 Value Objects: Divisa, Monto, TasaCambio (pure TS, invariants, métodos)
+- [x] T2.1 Domain Entities: Producto, Orden, Cliente, Pago (pure interfaces)
+- [x] T2.2 Repository interfaces: 4 contratos en domain/repositories/
+- [x] T2.3 PagoGateway port + Anti-Corruption Layer pattern
+- [x] T2.4 EventBus 10/10: Promise.allSettled + registerHandler()
+- [x] T2.5 Mapper bidireccional: MapperBidireccional<D,R> + ProductoDomainMapper
+- [x] T2.6 ProductoServicio POC (port + mock + supabase + factory)
+
+### 🟡 Tier 3 — Admin UX + Integración ✅ COMPLETADO
+- [x] T3.1 Migrados 4 servicios: OrdenServicio, ClienteServicio, PagoServicio, ContabilidadServicio
+- [x] T3.2 Cache wrapper SSR: conCache() con 5 min TTL
+- [x] T3.3 URL State Pattern: SlidePanel + usePanel (popstate, back button, ?panel=)
+- [x] T3.4 UI Components: EmptyState, Skeleton (4 variants), StatusBadge (9 estados)
+
+### 🟢 Tier 4 — Primera Pasarela Real 🔶 PLANEADO (no ejecutado)
+> SDD Proposal en `sdd/payment-gateway-wompi/proposal` (#1719)
+- [ ] T4.1 WompiGateway (implementar PagoGateway port)
+- [ ] T4.2 Integración con checkout (requiere credenciales Wompi)
+- [ ] T4.3 Webhook handler POST /api/webhooks/wompi
+
+### ❌ Decisiones NO tomadas (con causa en #1702)
+- Event Sourcing puro, CQRS con bus de mensajes, Monorepo + Medusa Server, GraphQL
+
+---
+
+## 🏁 Último Sprint — v0.10.0: ADR v2 Stack Modernization + Domain Layer (Julio 3, 2026)
+
+> **Tags:** `v0.10.0` | **Build:** ✅ 0 errores
+> **Fuente:** Judgment Day PASS WITH WARNINGS (0 CRITICAL, 4 WARNING corregidos)
+
+### ✅ Stack Modernization
+| Tarea | Cambio | Archivos |
+|-------|--------|----------|
+| bcryptjs → Web Crypto PBKDF2 | SDD auth-web-crypto-migration (3 PRs) | auth.ts, middleware, login, 4 API routes, package.json |
+| Purgar lucide-react 38MB | 8 iconos → inline SVG | 4 componentes admin |
+| process.env → import.meta.env | index-now.ts Edge-safe | index-now.ts |
+| Timezone UTC rule | Nueva architecture principle | AGENTS.md |
+
+### ✅ Domain Layer (25+ archivos nuevos)
+| Tarea | Descripción |
+|-------|-------------|
+| Value Objects | Divisa, Monto, TasaCambio (pure TS) |
+| Domain Entities | Producto, Orden, Cliente, Pago |
+| Repository Interfaces | 4 contratos en domain/repositories/ |
+| PagoGateway port | Interfaz genérica Wompi/Stripe/Pix |
+| EventBus 10/10 | Promise.allSettled + registerHandler |
+| Mapper bidireccional | MapperBidireccional<D,R> |
+| 5 servicios hexagonal | Port + Mock + Supabase + Factory |
+
+### ✅ Admin UX
+| Tarea | Archivos |
+|-------|----------|
+| Cache wrapper SSR | conCache() 5 min TTL |
+| URL State Pattern | SlidePanel + usePanel |
+| UI Components | EmptyState, Skeleton, StatusBadge |
+
+---
+
+## 🏁 Sprint Anterior — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
 
 > **Tags:** `v0.9.1` | **Build:** ✅ 0 errores
 > **Commits:** 55a8007 | **Fuente:** Judgment Day findings

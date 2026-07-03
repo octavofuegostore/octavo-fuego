@@ -1,33 +1,27 @@
 ---
-// Skeleton.astro — Loading skeleton with animate-pulse
-interface Props {
-  variant?: 'text' | 'circular' | 'rectangular';
-  width?: string;
-  height?: string;
-  class?: string;
+export interface Props {
+  variant?: 'text' | 'card' | 'table-row' | 'chart'
+  rows?: number
+  height?: string
+  width?: string
+  class?: string
 }
 
-const { variant = 'text', width, height, class: className = '' } = Astro.props;
-
-const baseClasses = 'animate-pulse bg-papel/70';
-
-const variantClasses = {
-  text: 'rounded',
-  circular: 'rounded-full',
-  rectangular: 'rounded-lg'
-};
-
-const defaultDimensions = {
-  text: { width: 'w-full', height: 'h-4' },
-  circular: { width: 'w-10', height: 'h-10' },
-  rectangular: { width: 'w-full', height: 'h-20' }
-};
-
-const dim = defaultDimensions[variant];
-const finalWidth = width || dim.width;
-const finalHeight = height || dim.height;
+const { variant = 'text', rows = 1, height, width } = Astro.props
+const baseClass = 'animate-pulse bg-ceniza/10 rounded-lg'
+const variants: Record<string, string> = {
+  text: 'h-4 w-full',
+  card: 'h-32 w-full',
+  'table-row': 'h-12 w-full',
+  chart: 'h-64 w-full',
+}
 ---
 
-<div
-  class:list={[baseClasses, variantClasses[variant], finalWidth, finalHeight, className]}
-></div>
+<div class="space-y-3">
+  {Array.from({ length: rows }).map(() => (
+    <div
+      class:list={[baseClass, variants[variant], Astro.props.class]}
+      style={{ height, width }}
+    />
+  ))}
+</div>

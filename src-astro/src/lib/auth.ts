@@ -2,14 +2,14 @@
  * Auth library — JWT-based authentication with Supabase.
  *
  * Uses jose for cross-runtime JWT (Edge, Node, Workers) and
- * bcryptjs for password verification against the `usuarios` table.
+ * PBKDF2 (Web Crypto API) for password hashing/verification against
+ * the `usuarios` table.
  *
  * The JWT payload includes: sub (user id), email, role, bodega_id.
  * Token is set as httpOnly cookie (`of_admin_token`).
  */
 
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
-import bcrypt from 'bcryptjs';
 import { supabase } from '@/lib/supabase';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -42,10 +42,6 @@ const JWT_SECRET = new TextEncoder().encode(JWT_SECRET_RAW);
 const JWT_ISSUER = 'octavo-fuego';
 const JWT_AUDIENCE = 'octavo-fuego-admin';
 const JWT_EXPIRES_IN = '7d';
-
-// Admin credentials can be overridden via env vars for production.
-const ADMIN_EMAIL = import.meta.env.AUTH_ADMIN_EMAIL || 'admin@octavofuego.com';
-const ADMIN_PASSWORD = import.meta.env.AUTH_ADMIN_PASSWORD || 'octavo2026';
 
 export const COOKIE_CONFIG = {
   httpOnly: true,
@@ -94,6 +90,113 @@ export async function verifyJWT(token: string | undefined): Promise<AuthPayload 
   }
 }
 
+// ─── PBKDF2 Password Hashing (Web Crypto API) ─────────────────────────────
+
+const _encoder = new TextEncoder();
+
+function toHex(bytes: Uint8Array): string {
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+function fromHex(hex: string): Uint8Array {
+  const matches = hex.match(/.{1,2}/g);
+  return new Uint8Array(matches ? matches.map((byte) => parseInt(byte, 16)) : []);
+}
+
+/**
+ * Hash a password using PBKDF2 with Web Crypto API.
+ *
+ * Uses SHA-256, 600,000 iterations, random 16-byte salt, 32-byte derived key.
+ * Returns self-describing format: `pbkdf2:sha256:600000:{saltHex}:{hashHex}`
+ */
+export async function hashPassword(password: string): Promise<string> {
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const keyMaterial = await crypto.subtle.importKey(
+    'raw',
+    _encoder.encode(password),
+    'PBKDF2',
+    false,
+    ['deriveBits']
+  );
+  const hash = await crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt,
+      iterations: 600_000,
+      hash: 'SHA-256',
+    },
+    keyMaterial,
+    256
+  );
+  return `pbkdf2:sha256:600000:${toHex(salt)}:${toHex(new Uint8Array(hash))}`;
+}
+
+/**
+ * Verify a password against a stored PBKDF2 hash.
+ * Parses the self-describing format and performs constant-time comparison.
+ */
+async function pbkdf2Verify(password: string, stored: string): Promise<boolean> {
+  try {
+    const parts = stored.split(':');
+    if (parts.length !== 5) return false;
+    if (parts[0] !== 'pbkdf2') return false;
+
+    const iterations = parseInt(parts[2], 10);
+    if (isNaN(iterations) || iterations <= 0) return false;
+
+    const salt = fromHex(parts[3]);
+    const expectedHash = fromHex(parts[4]);
+
+    const keyMaterial = await crypto.subtle.importKey(
+      'raw',
+      _encoder.encode(password),
+      'PBKDF2',
+      false,
+      ['deriveBits']
+    );
+    const hash = await crypto.subtle.deriveBits(
+      {
+        name: 'PBKDF2',
+        salt,
+        iterations,
+        hash: 'SHA-256',
+      },
+      keyMaterial,
+      256
+    );
+
+    const derivedBytes = new Uint8Array(hash);
+    if (derivedBytes.length !== expectedHash.length) return false;
+
+    // Constant-time comparison to prevent timing attacks
+    let diff = 0;
+    for (let i = 0; i < derivedBytes.length; i++) {
+      diff |= derivedBytes[i] ^ expectedHash[i];
+    }
+    return diff === 0;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Verify a password against a stored hash.
+ *
+ * - `pbkdf2:` prefix → Web Crypto PBKDF2 verification
+ * - Unknown prefix → returns `{ valid: false }`
+ */
+export async function verifyPassword(
+  password: string,
+  stored: string
+): Promise<boolean> {
+  if (stored.startsWith('pbkdf2:')) {
+    return pbkdf2Verify(password, stored);
+  }
+  return false;
+}
+
 // ─── Auth helpers ────────────────────────────────────────────────────────────
 
 /**
@@ -115,9 +218,8 @@ export async function authenticateUser(
     if (error || !data) return null;
     if (!data.activo) return null;
 
-    // Compare password with bcrypt hash from DB
-    const valid = await bcrypt.compare(password, data.password_hash);
-    if (!valid) return null;
+    // Verify password using PBKDF2 (Web Crypto)
+    if (!await verifyPassword(password, data.password_hash)) return null;
 
     const user: AuthUser = {
       id: data.id,
@@ -134,62 +236,4 @@ export async function authenticateUser(
   }
 }
 
-// ─── Legacy SHA-256 fallback ─────────────────────────────────────────────────
 
-/**
- * @deprecated Will be removed once JWT auth is stable.
- * Kept for backward compatibility during migration.
- */
-export const CREDENTIALS = {
-  email: ADMIN_EMAIL,
-  password: ADMIN_PASSWORD,
-} as const;
-
-function getTokenPayload(email: string): string {
-  return `${email}:${JWT_ISSUER}:${JWT_AUDIENCE}:${JWT_SECRET_RAW}`;
-}
-
-/** @deprecated Use JWT-based auth instead. */
-export function validateCredentials(email: string, password: string): boolean {
-  if (
-    email.length !== CREDENTIALS.email.length ||
-    password.length !== CREDENTIALS.password.length
-  ) {
-    return false;
-  }
-
-  let result = 0;
-  for (let i = 0; i < CREDENTIALS.email.length; i++) {
-    result |= email.charCodeAt(i) ^ CREDENTIALS.email.charCodeAt(i);
-  }
-  for (let i = 0; i < CREDENTIALS.password.length; i++) {
-    result |= password.charCodeAt(i) ^ CREDENTIALS.password.charCodeAt(i);
-  }
-
-  return result === 0;
-}
-
-let _expectedToken: string | null = null;
-
-async function getExpectedToken(): Promise<string> {
-  if (!_expectedToken) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(getTokenPayload(ADMIN_EMAIL));
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    _expectedToken = hashArray.map((b) => b.toString(16).padStart(2, '0')).join('');
-  }
-  return _expectedToken;
-}
-
-/** @deprecated Use verifyJWT instead. */
-export async function verifyToken(token: string | undefined): Promise<boolean> {
-  if (!token) return false;
-  const expected = await getExpectedToken();
-  if (token.length !== expected.length) return false;
-  let result = 0;
-  for (let i = 0; i < token.length; i++) {
-    result |= token.charCodeAt(i) ^ expected.charCodeAt(i);
-  }
-  return result === 0;
-}

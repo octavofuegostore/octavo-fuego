@@ -26,8 +26,23 @@ class TypedEventBus {
     }
   }
 
+  /**
+   * Register a handler wrapped in try/catch for error isolation.
+   * Failed handlers are logged but never crash the caller.
+   */
+  registerHandler<E extends keyof EventMap>(event: E, handler: EventCallback<E>): () => void {
+    const wrappedHandler = async (payload: EventMap[E]) => {
+      try {
+        await handler(payload)
+      } catch (err) {
+        console.error(`[EventBus] Handler failed for "${event as string}":`, err)
+      }
+    }
+    return this.on(event, wrappedHandler as EventCallback<E>)
+  }
+
   async emit<E extends keyof EventMap>(event: E, payload: EventMap[E]): Promise<void> {
-    // Persist to eventos table via RPC
+    // Persist to eventos table via RPC (silent fail)
     try {
       const rpcPayload: Record<string, any> = {
         p_bodega_id: (payload as any).bodegaId ?? null,
@@ -45,11 +60,27 @@ class TypedEventBus {
       // Silent fail — event bus should never break the caller
     }
 
-    // Fire in-memory handlers
+    // Fire in-memory handlers with error isolation via Promise.allSettled
     const handlers = this.listeners.get(event as string)
     if (handlers) {
-      for (const handler of handlers) {
-        await handler(payload)
+      const results = await Promise.allSettled(
+        Array.from(handlers).map((handler) =>
+          (async () => {
+            try {
+              await handler(payload)
+            } catch (err) {
+              console.error(`[EventBus] Handler failed for "${event as string}":`, err)
+              throw err // Re-throw so allSettled marks it as rejected
+            }
+          })(),
+        ),
+      )
+
+      // Log rejected handlers but never throw
+      for (const result of results) {
+        if (result.status === 'rejected') {
+          console.error(`[EventBus] Unhandled rejection in "${event as string}" handler:`, result.reason)
+        }
       }
     }
   }
