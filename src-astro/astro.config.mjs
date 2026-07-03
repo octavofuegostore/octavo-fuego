@@ -5,10 +5,29 @@ import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
 import vercel from '@astrojs/vercel';
 
+// Security headers integration
+function securityHeaders() {
+  return {
+    name: 'security-headers',
+    hooks: {
+      'astro:server:setup': ({ server }) => {
+        server.middlewares.use((_req, res, next) => {
+          res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; connect-src 'self' https://*.supabase.co; frame-src 'none'; object-src 'none'");
+          res.setHeader('X-Content-Type-Options', 'nosniff');
+          res.setHeader('X-Frame-Options', 'DENY');
+          res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+          next();
+        });
+      },
+    },
+  };
+}
+
 export default defineConfig({
   adapter: vercel(),
   site: 'https://octavofuego.com',
   integrations: [
+    securityHeaders(),
     react(),
     icon({
       include: {

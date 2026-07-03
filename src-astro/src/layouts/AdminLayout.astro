@@ -46,6 +46,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>{title} | Admin Octavo Fuego</title>
     {description && <meta name="description" content={description} />}
     <ClientRouter />
