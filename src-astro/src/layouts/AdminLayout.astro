@@ -18,11 +18,16 @@ const stockAlertCount = 0
 interface Props {
   title: string;
   description?: string;
+  locale?: 'es' | 'en' | 'pt';
 }
 
 const { title, description = 'Panel de administración de Octavo Fuego' } = Astro.props;
 const currentPath = Astro.url.pathname;
 const user = Astro.locals.user;
+
+// Detect locale from URL path (admin pages may have /en/admin/... or /pt/admin/...)
+const adminLocaleMatch = currentPath.match(/^\/(es|en|pt)(\/.*)?$/i);
+const adminLocale = Astro.props.locale || (adminLocaleMatch ? adminLocaleMatch[1] : 'es');
 
 function getInitials(nameOrEmail?: string): string {
   if (!nameOrEmail) return 'OF';
@@ -37,10 +42,11 @@ const userName = user?.nombre || user?.email || 'Administrador';
 const userInitials = getInitials(user?.nombre || user?.email || undefined);
 ---
 
-<html lang="es">
+<html lang={adminLocale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
     <title>{title} | Admin Octavo Fuego</title>
     {description && <meta name="description" content={description} />}
     <ClientRouter />

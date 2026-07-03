@@ -88,6 +88,7 @@ const hreflangLocales = [
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&display=swap" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet" />
     <title>{fullTitle}</title>
     
@@ -109,8 +110,9 @@ const hreflangLocales = [
     </script>
   </head>
   <body class="min-h-screen flex flex-col bg-white text-black" style="padding-bottom: env(safe-area-inset-bottom,0px)">
+    <a href="#main-content" class="skip-link">Ir al contenido principal</a>
     <Navbar locale={locale} />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer locale={locale} />

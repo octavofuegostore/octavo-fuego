@@ -10,6 +10,7 @@ const t = useTranslations(locale);
 ---
 
 <Layout title={t.cart.titulo} description={t.common.tagline} locale={locale}>
+  <meta name="robots" content="noindex" slot="head" />
   <CartStore client:idle />
   
   <section class="py-16 md:py-24">
