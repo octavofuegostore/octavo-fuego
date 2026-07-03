@@ -163,5 +163,13 @@
     "bienestarFisico": "Bem-estar Físico e Respiratório",
     "proteccion": "Proteção e Escudo",
     "conexionEspiritual": "Conexão Espiritual Profunda"
+  },
+  "mayoristas": {
+    "hero_title": "Distribuição Institucional de Rapé do Acre para Facilitadores e Distribuidores na Colômbia",
+    "hero_desc": "Origem direta da Amazônia brasileira. O melhor preço por grama no mercado colombiano.",
+    "ventaja_origen": "Preço de Origem",
+    "ventaja_origen_desc": "Sem intermediários. Trabalhamos diretamente com comunidades do Acre, Brasil.",
+    "cta_catalogo": "Ver Catálogo",
+    "cta_whatsapp": "Consultar via WhatsApp"
   }
 }

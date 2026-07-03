@@ -163,5 +163,13 @@
     "bienestarFisico": "Physical and Respiratory Well-being",
     "proteccion": "Protection and Shield",
     "conexionEspiritual": "Deep Spiritual Connection"
+  },
+  "mayoristas": {
+    "hero_title": "Institutional Distribution of Rapé do Acre for Facilitators and Distributors in Colombia",
+    "hero_desc": "Direct source from the Brazilian Amazon. The best price per gram on the Colombian market.",
+    "ventaja_origen": "Source Price",
+    "ventaja_origen_desc": "No intermediaries. We work directly with communities in Acre, Brazil.",
+    "cta_catalogo": "View Catalog",
+    "cta_whatsapp": "Contact via WhatsApp"
   }
 }

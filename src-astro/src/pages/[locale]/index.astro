@@ -14,6 +14,10 @@ import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 
 
+import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+
+export async function getStaticPaths() { return getLocaleStaticPaths(); }
+
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
 

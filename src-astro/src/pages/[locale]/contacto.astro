@@ -7,6 +7,10 @@ import Layout from '@/layouts/Layout.astro';
 import { type Locale } from '@/i18n';
 
 
+import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+
+export async function getStaticPaths() { return getLocaleStaticPaths(); }
+
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 
 const title = 'Contacto — Octavo Fuego';
