@@ -274,5 +274,9 @@ playwright       # e2e
 | `sdd/dashboard-blank-after-login/*` | Blank page fix (BodegaSwitcher SSR + icons) |
 | `sdd/seo-transactional-architecture/*` | SEO architecture (FAQ, OG, hreflang, canonical) |
 
+### Documentación de logros
+- **LOGROS.md** — ADD ONLY. Nunca borrar ni reestructurar contenido existente. Solo agregar nuevas implementaciones al final de la sección correspondiente o crear nueva sección al final del archivo. El historial de sprints, decisiones y deuda técnica es permanente.
+- Cuando se complete una tarea de PENDIENTES.md, mover el ítem a LOGROS.md en la sección del sprint correspondiente, pero **nunca borrar** el ítem de PENDIENTES.md sin que el usuario lo confirme explícitamente.
+
 ### Versión actual
 `v0.10.0` — ADR v2 — Stack modernization + Domain Layer + multi-pasarela

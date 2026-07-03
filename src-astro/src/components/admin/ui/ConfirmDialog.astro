@@ -23,10 +23,16 @@ const isDanger = variant === 'danger';
 
 <dialog
   id={id}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`${id}-title`}
   class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
 >
-  <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200">
-    <h2 class="text-lg font-display font-bold text-humo mb-2">{title}</h2>
+  <div
+    class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-200 focus-outline-none"
+    tabindex="-1"
+  >
+    <h2 id={`${id}-title`} class="text-lg font-display font-bold text-humo mb-2">{title}</h2>
     <p class="text-sm text-ceniza mb-6">{message}</p>
     <div class="flex items-center justify-end gap-3">
       <button
@@ -52,6 +58,57 @@ const isDanger = variant === 'danger';
   const dialog = document.getElementById(id);
   const cancelBtn = dialog?.querySelector('.cancel-btn');
   const confirmBtn = dialog?.querySelector('.confirm-btn');
+  const panel = dialog?.querySelector('[tabindex="-1"]');
+
+  // Focus trap helper
+  function getFocusableElements() {
+    if (!dialog) return [];
+    return Array.from(
+      dialog.querySelectorAll(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+  }
+
+  function focusFirstElement() {
+    const focusable = getFocusableElements();
+    if (focusable.length > 0) {
+      (focusable[0] as HTMLElement).focus();
+    } else if (panel) {
+      (panel as HTMLElement).focus();
+    }
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      dialog?.removeAttribute('open');
+      dialog?.close();
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+
+    const focusable = getFocusableElements();
+    if (focusable.length === 0) {
+      e.preventDefault();
+      return;
+    }
+
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
 
   cancelBtn?.addEventListener('click', () => {
     dialog?.removeAttribute('open');
@@ -68,4 +125,23 @@ const isDanger = variant === 'danger';
       dialog.close();
     }
   });
+
+  // Focus management: use MutationObserver to detect when dialog opens
+  const observer = new MutationObserver(() => {
+    if (dialog?.hasAttribute('open')) {
+      focusFirstElement();
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  });
+
+  if (dialog) {
+    observer.observe(dialog, { attributes: true, attributeFilter: ['open'] });
+    // If already open on page load
+    if (dialog.hasAttribute('open')) {
+      focusFirstElement();
+      document.addEventListener('keydown', handleKeyDown);
+    }
+  }
 </script>

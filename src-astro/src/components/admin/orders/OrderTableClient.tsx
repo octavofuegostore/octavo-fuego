@@ -1,6 +1,6 @@
 
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import { toast } from "sonner";
 
@@ -109,8 +109,8 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
     }, 300);
   };
 
-  // Filter orders
-  const filteredOrders = localOrders.filter((order) => {
+  // Filter orders (memoized)
+  const filteredOrders = useMemo(() => localOrders.filter((order) => {
     const searchLower = debouncedSearch.toLowerCase();
     const matchesSearch =
       !debouncedSearch ||
@@ -124,7 +124,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
       !$locationFilter || order.location.startsWith($locationFilter);
 
     return matchesSearch && matchesStatus && matchesChannel && matchesLocation;
-  });
+  }), [localOrders, debouncedSearch, $statusFilter, $channelFilter, $locationFilter]);
 
   // Pagination
   const totalPages = Math.ceil(filteredOrders.length / PAGE_SIZE);
