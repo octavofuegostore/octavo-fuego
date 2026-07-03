@@ -11,7 +11,6 @@ import ProphecyContent from '@/components/prophecy/ProphecyContent.astro';
 import { prophecy } from '@/data/prophecy';
 import { useTranslations, type Locale } from '@/i18n';
 
-export const prerender = false;
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
