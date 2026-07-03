@@ -35,8 +35,11 @@ export function getLocaleFromUrl(url: URL): Locale {
   return defaultLocale;
 }
 
-export function changeLanguage(lang: Locale): string {
-  return `/${lang}`;
+export function changeLanguage(lang: Locale, currentPath: string): string {
+  // Strip existing locale prefix from currentPath
+  const pathWithoutLocale = currentPath.replace(/^\/(es|en|pt)(\/|$)/, '/');
+  if (lang === 'es') return pathWithoutLocale;
+  return `/${lang}${pathWithoutLocale}`;
 }
 
 export const languageNames: Record<Locale, string> = {

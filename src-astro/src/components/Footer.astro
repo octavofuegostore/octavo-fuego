@@ -1,6 +1,7 @@
 ---
 import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
+import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 
 interface Props {
@@ -9,7 +10,6 @@ interface Props {
 
 const { locale = 'es' } = Astro.props;
 const t = useTranslations(locale);
-const baseUrl = `/${locale}`;
 ---
 
 <footer class="bg-[var(--color-footer-bg)] text-white">
@@ -17,7 +17,7 @@ const baseUrl = `/${locale}`;
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
       <!-- Logo + Tagline -->
       <div class="lg:col-span-1">
-        <a href="/" class="font-display text-2xl font-bold mb-4 block text-white">
+        <a href={localeUrl('/', locale)} class="font-display text-2xl font-bold mb-4 block text-white">
           {t.common.brand}
         </a>
         <p class="text-[var(--color-text-on-dark)] text-sm mb-6">
@@ -35,12 +35,12 @@ const baseUrl = `/${locale}`;
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href={`${baseUrl}/tienda`} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/tienda', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.tienda}
             </a>
           </li>
           <li>
-            <a href={`${baseUrl}/profecia`} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/profecia', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               Profecía
             </a>
           </li>
@@ -54,27 +54,27 @@ const baseUrl = `/${locale}`;
         </h4>
         <ul class="space-y-3">
           <li>
-            <a href="/nosotros" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/nosotros', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.nosotros}
             </a>
           </li>
           <li>
-            <a href="/blog" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/blog', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.blog}
             </a>
           </li>
           <li>
-            <a href="/contacto" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/contacto', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.nav.contacto}
             </a>
           </li>
           <li>
-            <a href="/faq" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/faq', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.footer.faq}
             </a>
           </li>
           <li>
-            <a href="/envios" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
+            <a href={localeUrl('/envios', locale)} class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors">
               {t.footer.envios}
             </a>
           </li>
@@ -150,10 +150,10 @@ const baseUrl = `/${locale}`;
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href="/terminos" class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
+          <a href={localeUrl('/terminos', locale)} class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
             {t.footer.terminos}
           </a>
-          <a href="/privacidad" class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
+          <a href={localeUrl('/privacidad', locale)} class="text-[var(--color-text-on-dark)]/70 text-xs hover:text-white transition-colors">
             {t.footer.privacidad}
           </a>
         </div>

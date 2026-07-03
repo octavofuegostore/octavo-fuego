@@ -1,0 +1,153 @@
+---
+/**
+ * Rapé category listing — renders at /tienda/rape, /en/tienda/rape, /pt/tienda/rape
+ * Lists all 5 rapé varieties with ProductCard
+ *
+ * @source Octavofuego_Catalogo_ESP (1).html
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import ProductCard from '@/components/product/ProductCard.astro';
+import CategoryPills from '@/components/product/CategoryPills.astro';
+import { products } from '@/data/products';
+import { useTranslations, type Locale } from '@/i18n';
+
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
+const t = useTranslations(locale_);
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
+
+const categoryTitle = locale_ === 'es' ? 'Rapé' : locale_ === 'en' ? 'Rapé' : 'Rapé';
+const categoryDescription = locale_ === 'es'
+  ? 'Cinco variedades sagradas de rapé amazónico, cada una con propiedades y usos ceremoniales únicos.'
+  : locale_ === 'en'
+  ? 'Five sacred Amazonian rapé varieties, each with unique properties and ceremonial uses.'
+  : 'Cinco variedades sagradas de rapé amazônico, cada uma com propriedades e usos cerimoniais únicos.';
+
+// Compute filter categories from product enfoques
+const currentFilter = Astro.url.searchParams.get('filter') || 'all';
+const enfoqueCounts = products.reduce((acc, p) => {
+  const enfoque = p.enfoque[locale_];
+  acc[enfoque] = (acc[enfoque] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+const filterCategories = [
+  { name: locale_ === 'es' ? 'Todos' : locale_ === 'en' ? 'All' : 'Todos', value: 'all', count: products.length },
+  ...Object.entries(enfoqueCounts)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([name, count]) => ({ name, value: name.toLowerCase(), count })),
+];
+const filteredProducts = currentFilter === 'all'
+  ? products
+  : products.filter((p) => p.enfoque[locale_].toLowerCase() === currentFilter);
+---
+
+<Layout
+  title={`${categoryTitle} | ${t.tienda.title}`}
+  description={categoryDescription}
+  locale={locale_}
+>
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': categoryTitle,
+    'description': categoryDescription,
+    'numberOfItems': filteredProducts.length,
+    'itemListElement': filteredProducts
+      .sort((a, b) => a.varietyOrder - b.varietyOrder)
+      .map((p, i) => ({
+        '@type': 'ListItem',
+        'position': i + 1,
+        'item': {
+          '@type': 'Product',
+          '@id': `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${p.slug}#product`,
+          'name': p.nombre[locale_],
+          'url': `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${p.slug}`,
+          'image': p.imagenes[0],
+          'offers': {
+            '@type': 'Offer',
+            'priceCurrency': 'COP',
+            'price': p.pricing[0].precio.toFixed(2),
+            'availability': 'https://schema.org/InStock'
+          }
+        }
+      }))
+  })} />
+  <!-- Header -->
+  <section class="pt-24 md:pt-32 pb-12 md:pb-16 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <!-- Breadcrumb -->
+      <nav class="mb-8 text-sm">
+        <ol class="flex items-center gap-2 text-[var(--ceniza)]">
+          <li>
+            <a href={`${baseUrl}/`} class="hover:text-[var(--color-action-primary)] transition-colors">
+              {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--color-action-primary)] transition-colors">
+              {t.nav.tienda}
+            </a>
+          </li>
+          <li>/</li>
+          <li class="text-[var(--near-black)]">{categoryTitle}</li>
+        </ol>
+      </nav>
+
+      <span class="text-[0.75rem] uppercase tracking-[0.3em] text-[var(--color-action-primary)] font-semibold block mb-4">
+        {t.tienda.subtitle}
+      </span>
+      <h1 class="font-display heading-xl font-bold tracking-tight text-[var(--near-black)] mb-6">
+        {categoryTitle}
+      </h1>
+      <p class="text-[var(--ceniza)] text-lg md:text-xl max-w-[700px] font-light italic leading-relaxed">
+        {categoryDescription}
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Pills Filter -->
+  <section class="py-8 bg-white border-b border-gray-100">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <CategoryPills categories={filterCategories} currentFilter={currentFilter} baseUrl={`${baseUrl}/tienda/rape`} />
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
+      <div class="flex overflow-x-auto snap-x gap-4 pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 md:overflow-visible md:pb-0 md:gap-8">
+        {filteredProducts
+          .sort((a, b) => a.varietyOrder - b.varietyOrder)
+          .map((product) => (
+            <div class="min-w-[280px] snap-center flex-shrink-0 md:min-w-0">
+            <ProductCard
+              slug={product.slug}
+              varietyOrder={product.varietyOrder}
+              nombre={product.nombre[locale_]}
+              enfoque={product.enfoque[locale_]}
+              usoRecomendado={product.usoRecomendado[locale_]}
+              imagen={product.imagenes[0]}
+              pricing={product.pricing}
+              locale={locale_}
+              href={`${baseUrl}/tienda/rape/${product.slug}`}
+            />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- General Note -->
+  <section class="py-12 md:py-16 bg-[var(--papel)]">
+    <div class="max-w-3xl mx-auto px-6 md:px-12 text-center">
+      <p class="text-[var(--ceniza)] italic text-base md:text-lg leading-relaxed">
+        <strong>{locale_ === 'es' ? 'Nota general:' : locale_ === 'en' ? 'General note:' : 'Nota geral:'}</strong>{' '}
+        {t.tienda.generalNote}
+      </p>
+    </div>
+  </section>
+</Layout>

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import { toast } from "sonner";
-import { Search, ChevronLeft, ChevronRight, Eye, Pencil, Package } from "lucide-react";
+
 
 import {
   Table,
@@ -135,7 +135,18 @@ export default function ProductTableClient({ products }: ProductTableClientProps
           {/* Search */}
           <div className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza"
+              >
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               <input
                 type="text"
                 placeholder="Buscar productos..."
@@ -186,7 +197,18 @@ export default function ProductTableClient({ products }: ProductTableClientProps
       <div className="overflow-x-auto">
         {filteredProducts.length === 0 ? (
           <div className="py-12 text-center">
-            <Package className="w-12 h-12 text-ceniza mx-auto mb-3" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-12 h-12 text-ceniza mx-auto mb-3"
+            >
+              <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+            </svg>
             <p className="text-ceniza">
               {localProducts.length === 0
                 ? "No hay productos todavía"
@@ -219,7 +241,18 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-papel rounded-lg flex items-center justify-center flex-shrink-0">
-                          <Package className="w-5 h-5 text-ceniza" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-5 h-5 text-ceniza"
+                            >
+                              <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
                         </div>
                         <div>
                           <p className="font-medium text-humo">{product.name}</p>
@@ -267,14 +300,36 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                           className="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors"
                           title="Ver"
                         >
-                          <Eye className="w-4 h-4" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17a5 5 0 100-10 5 5 0 000 10z" />
+                            </svg>
                         </button>
                         <button
                           onClick={() => handleEditProduct(product.id)}
                           className="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
-                          <Pencil className="w-4 h-4" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
                         </button>
                       </div>
                     </TableCell>
@@ -300,7 +355,18 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 disabled={$productCurrentPage === 1}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
 
               {getPageNumbers($productCurrentPage, totalPages).map((page, index) =>
@@ -328,7 +394,18 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 disabled={$productCurrentPage === totalPages}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronRight className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
           </div>

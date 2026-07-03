@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro'
 import { supabase } from '@/lib/supabase'
-import { verifyToken } from '@/lib/auth'
+import { verifyJWT } from '@/lib/auth'
 
 export const prerender = false
 
@@ -10,7 +10,7 @@ export const GET: APIRoute = async ({ cookies }) => {
   if (!token) {
     return new Response(JSON.stringify({ error: 'No autorizado' }), { status: 401 })
   }
-  const user = await verifyToken(token)
+  const user = await verifyJWT(token)
   if (!user) {
     return new Response(JSON.stringify({ error: 'Sesión inválida' }), { status: 401 }, { headers: { 'Content-Type': 'application/json' } })
   }

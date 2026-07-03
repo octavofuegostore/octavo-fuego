@@ -21,49 +21,79 @@
 
 ---
 
-## 🏁 Sprint Actual — v0.10.0: SEO Infrastructure Foundation (Julio 1, 2026)
+## 🏛️ Architectural Decision Record — ADR v2 (Julio 3, 2026)
 
-> **PR:** #33 | **Branch:** `feat/seo-foundation` → `main` | **Build:** ✅ 0 errores
-> **Commits:** ac59e4a (develop), 4067984 (main) | **Fuente:** SDD seo-complete-architecture
-> **Arquitectura guardada en Engram:** `seo/architecture-complete-audit`, `seo/dual-pillar-architecture`, `seo/phased-implementation-plan`, `seo/content-audit-matrix`
+> **Engram:** `architecture/decision-record-v2` (#1702)
+> **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
+> **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Wompi, Stripe, Pix)
+> **Commits:** `XXXXXXX` | **Tag:** `v0.10.0` | **Build:** ✅ 0 errores
 
-### ✅ Fundación Técnica (Fase 1)
-| Código | Tarea | Archivos |
-|--------|-------|----------|
-| F1.2.2 | Fluid typography — `clamp()` en headings (11 páginas) | `global.css` + 10 `.astro` |
-| F1.1.4 | IndexNow Protocol — endpoint + key file | `src/pages/api/index-now.ts`, `public/...txt` |
+### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
+- [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
+- [x] T1.2 `lucide-react` purgado → inline SVG en 4 archivos admin (~39MB liberados)
+- [x] T1.3 `process.env` → `import.meta.env` en `index-now.ts`
+- [x] T1.4 Timezone UTC rule documentada en AGENTS.md
 
-### ✅ On-Page SEO (Fase 2)
-| Código | Tarea | Archivos |
-|--------|-------|----------|
-| F2.1.1 | Homepage H1 + meta locale-aware ($3.500/g) | `[locale]/index.astro` |
-| F2.1.2 | 5 PDPs — meta con precio/g y keywords | `[locale]/tienda/rape/[product].astro`, `products.ts` |
-| F2.2 | og:image SVG template + componente + Layout wiring | `og-default.svg`, `OgImage.astro`, `Layout.astro` |
+### 🟠 Tier 2 — Domain Layer ✅ COMPLETADO
+- [x] T2.1 Value Objects: Divisa, Monto, TasaCambio (pure TS, invariants, métodos)
+- [x] T2.1 Domain Entities: Producto, Orden, Cliente, Pago (pure interfaces)
+- [x] T2.2 Repository interfaces: 4 contratos en domain/repositories/
+- [x] T2.3 PagoGateway port + Anti-Corruption Layer pattern
+- [x] T2.4 EventBus 10/10: Promise.allSettled + registerHandler()
+- [x] T2.5 Mapper bidireccional: MapperBidireccional<D,R> + ProductoDomainMapper
+- [x] T2.6 ProductoServicio POC (port + mock + supabase + factory)
 
-### ✅ Schema Markup (Fase 4)
-| Código | Tarea | Archivos |
-|--------|-------|----------|
-| F4.1 | FAQPage schema en 15 PDPs (5 prod × 3 locales) | `FAQPageJsonLd.astro` |
-| F4.2 | @graph en homepage (Organization + WebPage + WebSite) | `GraphSchema.astro` |
-| F4.2 | OrganizationJsonLd enriquecido (hasOfferCatalog, knowsAbout) | `GraphSchema.astro` |
+### 🟡 Tier 3 — Admin UX + Integración ✅ COMPLETADO
+- [x] T3.1 Migrados 4 servicios: OrdenServicio, ClienteServicio, PagoServicio, ContabilidadServicio
+- [x] T3.2 Cache wrapper SSR: conCache() con 5 min TTL
+- [x] T3.3 URL State Pattern: SlidePanel + usePanel (popstate, back button, ?panel=)
+- [x] T3.4 UI Components: EmptyState, Skeleton (4 variants), StatusBadge (9 estados)
 
-### ⏳ Pendiente en develop (necesita copy real)
-| Código | Tarea | Archivo |
-|--------|-------|---------|
-| F5 | Landing Mayoristas — crear + 14 fixes | `mayoristas.astro` (develop) |
-| F3.1.1 | /nosotros — historia, comunidades, misión | `nosotros.astro` (develop) |
-| F3.1.2 | /contacto — formulario + WhatsApp | `contacto.astro` (develop) |
-| F3.1.3 | /faq — preguntas frecuentes (FAQ Schema listo) | `faq.astro` (develop) |
-| F3.1.4 | /envios — política de envíos | `envios.astro` (develop) |
-| F3.1.5 | /terminos — términos y condiciones | `terminos.astro` (develop) |
-| F3.1.6 | /privacidad — política de privacidad | `privacidad.astro` (develop) |
-| F3.2.1 | /es/que-es-el-rape/ (Article Schema listo) | `[locale]/que-es-el-rape.astro` (develop) |
-| F3.2.2 | /es/como-usar-el-rape/ (HowTo Schema listo) | `[locale]/como-usar-el-rape.astro` (develop) |
-| F3.2.3 | /es/rape-do-acre-origen/ (Article Schema listo) | `[locale]/rape-do-acre-origen.astro` (develop) |
+### 🟢 Tier 4 — Primera Pasarela Real 🔶 PLANEADO (no ejecutado)
+> SDD Proposal en `sdd/payment-gateway-wompi/proposal` (#1719)
+- [ ] T4.1 WompiGateway (implementar PagoGateway port)
+- [ ] T4.2 Integración con checkout (requiere credenciales Wompi)
+- [ ] T4.3 Webhook handler POST /api/webhooks/wompi
 
-> **Instrucciones:** Buscar `🖊️ USUARIO` en cada archivo para reemplazar copy placeholder por texto real. Luego commit → push → PR.
+### ❌ Decisiones NO tomadas (con causa en #1702)
+- Event Sourcing puro, CQRS con bus de mensajes, Monorepo + Medusa Server, GraphQL
 
-## 🏁 Último Sprint — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
+---
+
+## 🏁 Último Sprint — v0.10.0: ADR v2 Stack Modernization + Domain Layer (Julio 3, 2026)
+
+> **Tags:** `v0.10.0` | **Build:** ✅ 0 errores
+> **Fuente:** Judgment Day PASS WITH WARNINGS (0 CRITICAL, 4 WARNING corregidos)
+
+### ✅ Stack Modernization
+| Tarea | Cambio | Archivos |
+|-------|--------|----------|
+| bcryptjs → Web Crypto PBKDF2 | SDD auth-web-crypto-migration (3 PRs) | auth.ts, middleware, login, 4 API routes, package.json |
+| Purgar lucide-react 38MB | 8 iconos → inline SVG | 4 componentes admin |
+| process.env → import.meta.env | index-now.ts Edge-safe | index-now.ts |
+| Timezone UTC rule | Nueva architecture principle | AGENTS.md |
+
+### ✅ Domain Layer (25+ archivos nuevos)
+| Tarea | Descripción |
+|-------|-------------|
+| Value Objects | Divisa, Monto, TasaCambio (pure TS) |
+| Domain Entities | Producto, Orden, Cliente, Pago |
+| Repository Interfaces | 4 contratos en domain/repositories/ |
+| PagoGateway port | Interfaz genérica Wompi/Stripe/Pix |
+| EventBus 10/10 | Promise.allSettled + registerHandler |
+| Mapper bidireccional | MapperBidireccional<D,R> |
+| 5 servicios hexagonal | Port + Mock + Supabase + Factory |
+
+### ✅ Admin UX
+| Tarea | Archivos |
+|-------|----------|
+| Cache wrapper SSR | conCache() 5 min TTL |
+| URL State Pattern | SlidePanel + usePanel |
+| UI Components | EmptyState, Skeleton, StatusBadge |
+
+---
+
+## 🏁 Sprint Anterior — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
 
 > **Tags:** `v0.9.1` | **Build:** ✅ 0 errores
 > **Commits:** 55a8007 | **Fuente:** Judgment Day findings

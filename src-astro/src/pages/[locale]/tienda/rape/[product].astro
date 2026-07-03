@@ -1,0 +1,200 @@
+---
+/**
+ * Product detail page — renders at /tienda/rape/[slug], /en/tienda/rape/[slug], /pt/tienda/rape/[slug]
+ * Uses: PricingTable (SELECTABLE BUTTONS), WhatsAppButton
+ *
+ * @source Octavofuego_Catalogo_ESP (1).html — variety items
+ */
+
+import Layout from '@/layouts/Layout.astro';
+import PricingTable from '@/components/product/PricingTable.astro';
+import Testimonials from '@/components/tienda/Testimonials.astro';
+import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
+import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
+import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
+import FAQSection from '@/components/seo/FAQSection.astro';
+import { products } from '@/data/products';
+import { useTranslations, type Locale } from '@/i18n';
+
+export const prerender = false;
+
+const locale_ = (Astro.currentLocale || 'es') as Locale;
+const t = useTranslations(locale_);
+const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
+
+const productSlug = Astro.params.product;
+const product = products.find((p) => p.slug === productSlug);
+if (!product) {
+  return Astro.redirect('/404');
+}
+
+const description = product.descripcion[locale_];
+const highlight = product.highlight[locale_];
+
+// F3: Transactional title — product-specific, falls back to generic prefix + name
+const transactionalTitle = product.pageTitle[locale_] ?? `${locale_ === 'en' ? 'Buy' : 'Comprar'} Rapé ${product.nombre[locale_]} | Octavo Fuego`;
+
+// F3: Meta description with price-per-g framing from products data
+const transactionalDescription = product.metaDescription[locale_];
+
+// F4.1: Build a locale-aware price string for FAQPage schema
+const midPricing = product.pricing.find((p) => p.cantidad === 20) ?? product.pricing[0];
+const pricePerGram = Math.round(midPricing.precio / midPricing.cantidad).toLocaleString('es-CO');
+const priceText = locale_ === 'en'
+  ? `${midPricing.label} for $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`
+  : `${midPricing.label} por $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`;
+---
+
+<Layout
+  title={transactionalTitle}
+  description={transactionalDescription}
+  locale={locale_}
+  ogType="product"
+  ogImage="/images/og-default.svg"
+>
+  <Fragment slot="head">
+    <ProductJsonLd
+      product={{
+        id: product.slug,
+        nombre: product.nombre[locale_],
+        descripcion: product.descripcion[locale_],
+        imagen: product.imagenes[0],
+        pricing: product.pricing,
+        slug: product.slug,
+        etnia: '',
+        tipo: 'rape',
+        stock: 10,
+        url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`,
+        locale: locale_,
+      }}
+    />
+    <BreadcrumbJsonLd items={[
+      { name: locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início', url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}` },
+      { name: t.nav.tienda, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda` },
+      { name: t.nav.rape, url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape` },
+      { name: product.nombre[locale_], url: `https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}` },
+    ]} />
+    <FAQPageJsonLd
+      locale={locale_}
+      productName={product.nombre[locale_]}
+      priceText={priceText}
+    />
+  </Fragment>
+  <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
+    <div class="max-w-4xl mx-auto px-6 md:px-12">
+
+      <!-- Breadcrumb -->
+      <nav class="mb-8 text-sm">
+        <ol class="flex items-center gap-2 text-[var(--ceniza)]">
+          <li>
+            <a href={`${baseUrl}/`} class="hover:text-[var(--color-action-primary)] transition-colors">
+              {locale_ === 'es' ? 'Inicio' : locale_ === 'en' ? 'Home' : 'Início'}
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a href={`${baseUrl}/tienda`} class="hover:text-[var(--color-action-primary)] transition-colors">
+              {t.nav.tienda}
+            </a>
+          </li>
+          <li>/</li>
+          <li>
+            <a href={`${baseUrl}/tienda/rape`} class="hover:text-[var(--color-action-primary)] transition-colors">
+              {t.nav.rape}
+            </a>
+          </li>
+          <li>/</li>
+          <li class="text-[var(--near-black)]">{product.nombre[locale_]}</li>
+        </ol>
+      </nav>
+
+      <!-- Product Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10">
+        <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[var(--color-action-primary)] font-bold block mb-3">
+          {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
+        </span>
+        <h1 class="font-display heading-xl font-bold tracking-tight text-[var(--near-black)] mb-4">
+          {product.nombre[locale_]}
+        </h1>
+      </div>
+
+      <!-- Product Image -->
+      <div class="aspect-[4/3] bg-gray-50 rounded-[var(--radius-card)] overflow-hidden mb-12">
+        <img
+          src={product.imagenes[0]}
+          alt={product.nombre[locale_]}
+          class="w-full h-full object-cover"
+          width="1200"
+          height="900"
+          loading="eager"
+        />
+      </div>
+
+      <!-- Full Description -->
+      <div class="mb-10">
+        <p class="text-[var(--near-black)] text-base md:text-[1.05rem] leading-[1.8] text-left">
+          {description}
+        </p>
+      </div>
+
+      <!-- Highlight Quote -->
+      <div class="mb-12 bg-[var(--papel)] p-8 md:p-10 border-l-2 border-[var(--color-action-primary)]">
+        <p class="font-display text-lg md:text-xl italic text-[var(--near-black)] leading-relaxed">
+          {highlight}
+        </p>
+      </div>
+
+      <!-- Pricing Table (Selectable Buttons) -->
+      <div class="mb-12 border border-gray-200 rounded-[var(--radius-card)] p-6 md:p-8">
+        <PricingTable
+          pricing={product.pricing}
+          wholesale={product.wholesale}
+          locale={locale_}
+          productName={product.nombre[locale_]}
+        />
+      </div>
+
+      <!-- Intensity Profile (single product) -->
+      <div class="mb-12">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
+          {t.tienda.intensity}
+        </h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-[var(--papel)] p-4 rounded-lg">
+            <span class="text-xs text-[var(--ceniza)] block mb-1">
+              {t.tienda.intensityLabels.strength}
+            </span>
+            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.fuerza[locale_]}</span>
+          </div>
+          <div class="bg-[var(--papel)] p-4 rounded-lg">
+            <span class="text-xs text-[var(--ceniza)] block mb-1">
+              {t.tienda.intensityLabels.aroma}
+            </span>
+            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.aroma[locale_]}</span>
+          </div>
+          <div class="bg-[var(--papel)] p-4 rounded-lg">
+            <span class="text-xs text-[var(--ceniza)] block mb-1">
+              {t.tienda.intensityLabels.level}
+            </span>
+            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.nivel[locale_]}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Intent Map Badge -->
+      <div class="border-t border-gray-200 pt-6">
+        <p class="text-sm text-[var(--ceniza)]">
+          {t.tienda.categoryLabel}{' '}
+          <span class="text-[var(--color-action-primary)] font-semibold">
+            {product.intentMap}
+          </span>
+        </p>
+      </div>
+
+      <Testimonials locale={locale_} />
+
+      <FAQSection product={product} locale={locale_} />
+
+    </div>
+  </section>
+</Layout>
