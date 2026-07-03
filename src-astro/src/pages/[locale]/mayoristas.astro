@@ -12,25 +12,15 @@ export async function getStaticPaths() { return getLocaleStaticPaths(); }
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
 
-const title = 'Rapé por Mayor Colombia — Distribuidor Rapé do Acre';
-const description =
-  'Distribución institucional de Rapé do Acre para facilitadores y distribuidores en Colombia. Desde $3.500 COP/g. Origen directo del Acre, Brasil. Envío a todo Colombia.';
+const title = t.mayoristas.meta_title;
+const description = t.mayoristas.meta_desc;
 
 const phoneNumber = '573172137932';
 const whatsappMessage =
   'Hola, quiero información sobre compras mayoristas de Rapé do Acre para mi centro o distribución.';
 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
-const keywords = [
-  'rapé por mayor Colombia',
-  'distribuidor rapé do Acre',
-  'proveedor rapé Colombia',
-  'rapé mayorista Colombia',
-  'rapé para facilitadores Colombia',
-  'rapé para centros de retiro',
-  'proveedor medicina amazónica Colombia',
-  'rapé por kilo Colombia',
-].join(', ');
+const keywords = t.mayoristas.keywords.join(', ');
 ---
 
 <Layout title={title} description={description} locale={locale_}>

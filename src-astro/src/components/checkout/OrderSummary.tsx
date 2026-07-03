@@ -1,18 +1,25 @@
 
 
+import { useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, formatCOP } from '@/stores/cartStore';
+import { useT, setLocale, type Locale } from '@/stores/localeStore';
 
-export function OrderSummary() {
+export function OrderSummary({ locale }: { locale?: Locale }) {
   const items = useStore(cartItems);
   const total = useStore(cartTotal);
+  const $t = useT();
+
+  useEffect(() => {
+    if (locale) setLocale(locale);
+  }, [locale]);
 
   return (
     <div class="bg-humo/20 border border-humo/30 p-6 sticky top-24">
-      <h2 class="font-display text-lg font-semibold mb-6">Resumen del pedido</h2>
+      <h2 class="font-display text-lg font-semibold mb-6">{$t('checkout.resumenPedido')}</h2>
       
       {items.length === 0 ? (
-        <p class="text-ceniza text-sm">Tu carrito está vacío</p>
+        <p class="text-ceniza text-sm">{$t('cart.vacío')}</p>
       ) : (
         <>
           <div class="space-y-4 mb-6">
@@ -28,28 +35,28 @@ export function OrderSummary() {
               </div>
             ))}
             {items.length > 3 && (
-              <p class="text-xs text-ceniza">+ {items.length - 3} más</p>
+              <p class="text-xs text-ceniza">{$t('checkout.masItems').replace('{count}', String(items.length - 3))}</p>
             )}
           </div>
 
           <div class="space-y-3 border-t border-humo/30 pt-4">
             <div class="flex justify-between text-sm">
-              <span class="text-ceniza">Subtotal</span>
+              <span class="text-ceniza">{$t('cart.subtotal')}</span>
               <span>{formatCOP(total)}</span>
             </div>
             <div class="flex justify-between text-sm">
-              <span class="text-ceniza">Envío</span>
-              <span class="text-success">Gratis</span>
+              <span class="text-ceniza">{$t('cart.envio')}</span>
+              <span class="text-success">{$t('cart.envioGratis')}</span>
             </div>
             <div class="flex justify-between text-sm">
-              <span class="text-ceniza">Total</span>
+              <span class="text-ceniza">{$t('cart.total')}</span>
               <span class="font-semibold">{formatCOP(total)}</span>
             </div>
           </div>
 
           <div class="mt-6 p-4 bg-humo/30 rounded-lg">
             <p class="text-xs text-ceniza text-center">
-              Pago 100% seguro. Aceptamos PSE, Nequi, Daviplata y tarjetas.
+              {$t('checkout.pagoSeguro')}
             </p>
           </div>
         </>
