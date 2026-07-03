@@ -615,12 +615,12 @@
 - [x] **F27 EventTimeline** — Nuevo componente timeline vertical
 - [x] **F29 Sidebar** — Wire a $sidebarOpen + $seccionActual stores
 
-#### 📋 Pendiente
-- [ ] Integrar OrderStateMachine en OrderDetail (F20 → F19)
-- [ ] Conectar NotificationDropdown al event bus (F26)
-- [ ] Integrar ProductForm en inventario (F17)
-- [ ] Contabilidad mock → service (F32-F33, Phase 4+)
-- [ ] Charts dashboard: mock → service aggregation
+#### 📋 Pendiente (verificado Jul 3, 2026)
+- [x] ~~Integrar OrderStateMachine en OrderDetail (F20 → F19)~~ ✅ Ya estaba integrado
+- [x] ~~Conectar NotificationDropdown al event bus (F26)~~ ✅ Ya escucha orden:creada
+- [x] ~~Integrar ProductForm en inventario (F17)~~ ✅ Ya estaba importado con POST handlers
+- [x] ~~Contabilidad mock → service (F32-F33, Phase 4+)~~ ✅ Ya usa ContabilidadService con Supabase
+- [x] ~~Charts dashboard: mock → service aggregation~~ ✅ Ya computa desde órdenes reales del service
 
 ### 3.16 Astro 6 Improvements ✅ (Jul 1, 2026)
 > **v0.4.2** — Basado en documentación oficial de Astro consultada via `astro-docs` MCP
