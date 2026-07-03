@@ -9,6 +9,7 @@
  */
 
 import type { Cliente, Orden, Producto, Transaccion, SolicitudB2B, Pago, Evento, Notificacion } from '@/types/admin';
+import type { Producto as DomainProducto, Variante as DomainVariante } from './domain/entities/producto';
 
 // ─── Mapper interface ─────────────────────────────────────────────────────────
 
@@ -353,3 +354,82 @@ export const MAPEADORES = {
   notificacion: NotificacionMapper,
   solicitudB2B: SolicitudB2BMapper,
 } as const
+
+// ─── Bidirectional Mapper (Domain Layer) ─────────────────────────────────────
+
+export interface MapperBidireccional<D, R> {
+  deDBaDominio: (db: D) => R
+  deDominioaDB: (domain: R) => D
+}
+
+/**
+ * Bidirectional mapper between L-Medusa DB rows and domain Producto entities.
+ * This bridges the persistence layer (snake_case DB rows) with the domain layer (camelCase).
+ */
+export const ProductoDomainMapper: MapperBidireccional<
+  { producto: LMProductoRow; variantes: LMVarianteRow[]; niveles: LMNivelInventarioRow[] },
+  DomainProducto
+> = {
+  deDBaDominio(db) {
+    const domainVariantes: DomainVariante[] = db.variantes.map((v) => ({
+      id: v.id,
+      productoId: v.producto_id,
+      gramos: v.gramos,
+      precioCop: v.precio_cop,
+      precioBrl: v.precio_brl,
+      precioUsd: v.precio_usd,
+      sku: v.sku,
+      activo: v.activo,
+      creadoEn: '',
+      actualizadoEn: '',
+    }))
+
+    return {
+      id: db.producto.id,
+      slug: db.producto.slug,
+      nombre_es: db.producto.nombre_es,
+      nombre_en: db.producto.nombre_en,
+      nombre_pt: db.producto.nombre_pt,
+      descripcion_es: db.producto.descripcion_es,
+      descripcion_en: db.producto.descripcion_en,
+      descripcion_pt: db.producto.descripcion_pt,
+      tipoVenta: db.producto.tipo_venta as DomainProducto['tipoVenta'],
+      disponibleEn: (db.producto as any).disponible_en ?? ['CO', 'BR'],
+      variantes: domainVariantes,
+      activo: db.producto.activo,
+      creadoEn: '',
+      actualizadoEn: '',
+    }
+  },
+
+  deDominioaDB(domain) {
+    const productoLM: LMProductoRow = {
+      id: domain.id,
+      slug: domain.slug,
+      nombre_es: domain.nombre_es,
+      nombre_en: domain.nombre_en,
+      nombre_pt: domain.nombre_pt,
+      descripcion_es: domain.descripcion_es,
+      descripcion_en: domain.descripcion_en,
+      descripcion_pt: domain.descripcion_pt,
+      tipo_venta: domain.tipoVenta,
+      activo: domain.activo,
+    }
+
+    const variantesLM: LMVarianteRow[] = domain.variantes.map((v) => ({
+      id: v.id,
+      producto_id: v.productoId,
+      gramos: v.gramos,
+      precio_cop: v.precioCop,
+      precio_brl: v.precioBrl,
+      precio_usd: v.precioUsd,
+      precio_cop_mayorista: null,
+      precio_brl_mayorista: null,
+      precio_usd_mayorista: null,
+      sku: v.sku,
+      activo: v.activo,
+    }))
+
+    return { producto: productoLM, variantes: variantesLM, niveles: [] }
+  },
+}

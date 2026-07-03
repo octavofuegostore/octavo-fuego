@@ -3,13 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import { toast } from "sonner";
-import {
-  Search,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  Pencil,
-} from "lucide-react";
+
 
 import {
   Table,
@@ -148,7 +142,18 @@ export default function CustomerTableClient({
           {/* Search */}
           <div className="flex-1 max-w-md">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza"
+              >
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
               <input
                 type="text"
                 placeholder="Buscar clientes..."
@@ -277,14 +282,36 @@ export default function CustomerTableClient({
                           className="p-1.5 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors"
                           title="Ver perfil"
                         >
-                          <Eye className="w-4 h-4" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17a5 5 0 100-10 5 5 0 000 10z" />
+                            </svg>
                         </button>
                         <button
                           onClick={() => handleEditCustomer(customer.id)}
                           className="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
-                          <Pencil className="w-4 h-4" />
+                          <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-4 h-4"
+                            >
+                              <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            </svg>
                         </button>
                       </div>
                     </TableCell>
@@ -310,7 +337,18 @@ export default function CustomerTableClient({
                 disabled={$customerCurrentPage === 1}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronLeft className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M15 19l-7-7 7-7" />
+                </svg>
               </button>
 
               {getPageNumbers($customerCurrentPage, totalPages).map((page, index) =>
@@ -338,7 +376,18 @@ export default function CustomerTableClient({
                 disabled={$customerCurrentPage === totalPages}
                 className="px-3 py-1.5 border border-papel rounded-lg text-sm text-ceniza hover:bg-papel transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronRight className="w-4 h-4" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-4 h-4"
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
               </button>
             </div>
           </div>

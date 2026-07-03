@@ -1,0 +1,49 @@
+---
+export interface Props {
+  id: string           // unique panel ID
+  title: string
+  open?: boolean       // controlled by parent or URL
+  size?: 'sm' | 'md' | 'lg'
+  class?: string
+}
+
+const { id, title, open = false, size = 'md' } = Astro.props
+const sizeClasses = { sm: 'max-w-md', md: 'max-w-lg', lg: 'max-w-2xl' }
+---
+
+<div
+  id={`panel-${id}`}
+  class:list={[
+    'fixed inset-y-0 right-0 z-50 w-full bg-white shadow-xl transform transition-transform duration-300',
+    sizeClasses[size],
+    open ? 'translate-x-0' : 'translate-x-full'
+  ]}
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby={`panel-${id}-title`}
+>
+  <div class="flex items-center justify-between p-4 border-b border-papel">
+    <h2 id={`panel-${id}-title`} class="text-lg font-display font-bold text-humo">{title}</h2>
+    <button
+      id={`panel-${id}-close`}
+      class="p-2 rounded-lg hover:bg-papel/50 transition-colors text-ceniza hover:text-humo"
+      aria-label="Cerrar"
+    >
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+  <div class="p-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
+    <slot />
+  </div>
+</div>
+
+<!-- Backdrop -->
+<div
+  id={`panel-${id}-backdrop`}
+  class:list={[
+    'fixed inset-0 bg-black/30 z-40 transition-opacity duration-300',
+    open ? 'opacity-100' : 'opacity-0 pointer-events-none'
+  ]}
+/>
