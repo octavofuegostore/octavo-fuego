@@ -8,7 +8,7 @@
   /* Colors - Minimalist Sacred (Octavo Fuego) */
   --color-black: #000000;
   --color-white: #FFFFFF;
-  --color-tabacco: #8B4513;
+  --color-tabacco: #6d5e4d;
   --color-ceniza: #7b8084;
   --color-humo: #2A2A2A;
   --color-papel: #F5F5F0;
@@ -18,9 +18,11 @@
   --color-error: #EF4444;
   --color-warning: #F59E0B;
   --color-whatsapp: #25D366;
+  --color-border-subtle: #C4956A;
   
   /* Typography */
   --font-display: 'Playfair Display', serif;
+  --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
   
   /* Spacing (base 8px) */
