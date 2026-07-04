@@ -30,7 +30,7 @@ export const roleSchema = z.enum(['admin', 'b2b_client', 'viewer'], {
 
 // ─── Pagos ─────────────────────────────────────────────────────────────────────
 
-export const metodoPagoSchema = z.enum(['wompi_link', 'pix_qr', 'pix_copia_cola'], {
+export const metodoPagoSchema = z.enum(['wompi_link', 'pix_qr', 'pix_copia_cola', 'stripe', 'transferencia'], {
   errorMap: () => ({ message: 'Método de pago no válido' }),
 })
 

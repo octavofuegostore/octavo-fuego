@@ -6,8 +6,11 @@ User-agent: *
 Allow: /
 
 # Disallow checkout pages
+Disallow: /checkout
 Disallow: /checkout/
+Disallow: /carrito
 Disallow: /carrito/
+Disallow: /admin
 
 # Sitemap
 Sitemap: https://octavofuego.com/sitemap-index.xml

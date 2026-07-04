@@ -4,7 +4,7 @@
  * Modified for: Octavo Fuego — single currency (COP), WhatsApp checkout
  */
 
-import type { Locale } from '@/i18n/config';
+import type { Locale } from '@/i18n';
 
 // ─── Cart Item ───────────────────────────────────────────────────────────────
 

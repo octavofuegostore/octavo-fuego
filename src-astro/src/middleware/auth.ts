@@ -9,7 +9,7 @@
 import { defineMiddleware, sequence } from 'astro:middleware'
 import { getActionContext } from 'astro:actions'
 import { verifyJWT } from '@/lib/auth'
-import type { AuthPayload } from '@/lib/auth'
+import type { AuthPayload, UserRole } from '@/lib/auth'
 
 // Extend Astro.Locals so TypeScript knows about `user`
 declare global {
@@ -23,6 +23,31 @@ declare global {
 const LOCALE_ADMIN_REGEX = /^\/(es|en|pt)\/(admin|api)/
 const PUBLIC_ROUTES = ['/admin/login']
 const PUBLIC_PREFIXES = ['/api/auth/']
+
+// ─── RBAC: role → allowed route prefixes ───────────────────────────────
+const ROLE_ROUTES: Record<string, UserRole[]> = {
+  '/admin/clientes': ['admin', 'supervisor', 'bodeguero'],
+  '/admin/contabilidad': ['admin', 'supervisor'],
+  '/admin/configuracion': ['admin'],
+  '/admin/inventario': ['admin', 'supervisor', 'bodeguero'],
+  '/admin/ordenes': ['admin', 'supervisor'],
+  '/admin/pagos': ['admin', 'supervisor'],
+  '/admin/actividad': ['admin', 'supervisor'],
+}
+
+function checkRouteAccess(pathname: string, role: UserRole): boolean {
+  // Dashboard (/admin) is accessible to all authenticated users
+  if (pathname === '/admin') return true
+
+  for (const [routePrefix, allowedRoles] of Object.entries(ROLE_ROUTES)) {
+    if (pathname.startsWith(routePrefix)) {
+      return allowedRoles.includes(role)
+    }
+  }
+
+  // If the route isn't explicitly listed, default to admin-only
+  return role === 'admin'
+}
 
 const localeHandler = defineMiddleware(async (context, next) => {
   const { redirect } = context
@@ -59,7 +84,7 @@ const authHandler = defineMiddleware(async (context, next) => {
     return next()
   }
 
-  // Enforce auth on /admin/*
+  // Enforce auth + RBAC on /admin/*
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
     const token = cookies.get('of_admin_token')?.value
 
@@ -69,6 +94,17 @@ const authHandler = defineMiddleware(async (context, next) => {
       return redirect('/admin/login', 302)
     }
     locals.user = payload
+
+    // RBAC: check role-based access
+    if (!checkRouteAccess(pathname, payload.role)) {
+      return new Response(
+        JSON.stringify({ error: 'No autorizado — permisos insuficientes para esta sección' }),
+        {
+          status: 403,
+          headers: { 'Content-Type': 'application/json' },
+        },
+      )
+    }
   }
 
   return next()

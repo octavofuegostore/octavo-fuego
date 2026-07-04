@@ -55,7 +55,7 @@ const RAPE_PRICING: PriceGram[] = [
 
 const WHOLESALE = {
   enabled: true,
-  minGrams: 500,
+  minGrams: 250,
   pricePerGram: 1300,
 };
 
@@ -126,7 +126,7 @@ export const products: Product[] = [
       },
     },
     /** @source ESP.html Intent Map — "Reset Energético" | ENG.html Intent Map — "Energetic Reset" | PT.html Intent Map — "Reset Energético" */
-    intentMap: 'reset-energetico',
+    intentMap: 'resetEnergetico',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
     // TODO: Replace IMAGE_TISUNU with actual product image
@@ -199,7 +199,7 @@ export const products: Product[] = [
       },
     },
     /** @source ESP.html Intent Map — "Bienestar Físico y Respiratorio" | ENG.html — "Physical and Respiratory Well-being" | PT.html — "Bem-estar Físico e Respiratório" */
-    intentMap: 'bienestar-fisico',
+    intentMap: 'bienestarFisico',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
     // TODO: Replace IMAGE_PIXURI with actual product image
@@ -272,7 +272,7 @@ export const products: Product[] = [
       },
     },
     /** @source ESP.html Intent Map — "Conexión Espiritual Profunda" | ENG.html — "Deep Spiritual Connection" | PT.html — "Conexão Espiritual Profunda" */
-    intentMap: 'conexion-espiritual',
+    intentMap: 'conexionEspiritual',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
     // TODO: Replace IMAGE_PARIKA with actual product image
@@ -418,7 +418,7 @@ export const products: Product[] = [
       },
     },
     /** @source ESP.html Intent Map — "Claridad Mental y Meditación" | ENG.html — "Mental Clarity and Meditation" | PT.html — "Clareza Mental e Meditação" */
-    intentMap: 'claridad-mental',
+    intentMap: 'claridadMental',
     pricing: RAPE_PRICING,
     wholesale: WHOLESALE,
     // TODO: Replace IMAGE_VENA with actual product image

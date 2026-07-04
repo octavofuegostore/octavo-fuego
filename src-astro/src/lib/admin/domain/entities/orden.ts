@@ -1,4 +1,5 @@
 // Pure domain entity — NO infra imports, NO Zod
+import type { CodigoDivisa } from '../value-objects/divisa'
 
 export type EstadoOrden = 'pendiente' | 'confirmada' | 'pagada' | 'preparando' | 'enviada' | 'entregada' | 'cancelada'
 export type CanalOrden = 'whatsapp' | 'web' | 'manual'
@@ -31,7 +32,7 @@ export interface Orden {
   clienteId: string | null
   items: ItemOrden[]
   total: number
-  divisa: string
+  divisa: CodigoDivisa
   estado: EstadoOrden
   canal: CanalOrden
   bodegaId: string

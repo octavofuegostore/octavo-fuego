@@ -1,6 +1,4 @@
-import type { Locale } from './index';
-
-const locales: Locale[] = ['es', 'en', 'pt'];
+import { locales, type Locale } from './index';
 
 /**
  * Builds a locale-prefixed path for use in Navbar/Footer links.

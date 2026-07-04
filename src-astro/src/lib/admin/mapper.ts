@@ -32,6 +32,8 @@ export interface LMProductoRow {
   descripcion_pt: string | null;
   tipo_venta: string; // 'retail' | 'both'
   activo: boolean;
+  creado_en?: string;
+  actualizado_en?: string;
 }
 
 export interface LMVarianteRow {
@@ -46,6 +48,8 @@ export interface LMVarianteRow {
   precio_usd_mayorista: number | null;
   sku: string;
   activo: boolean;
+  creado_en?: string;
+  actualizado_en?: string;
 }
 
 export interface LMNivelInventarioRow {
@@ -127,9 +131,9 @@ export function mapToAdminProducto(
     stockCO,
     stockBR,
     status:
-      !producto.activo ? 'inactive' :
-      !hasStock ? 'out_of_stock' :
-      'active',
+      !producto.activo ? 'inactivo' :
+      !hasStock ? 'sin_stock' :
+      'activo',
   };
 }
 
@@ -380,8 +384,8 @@ export const ProductoDomainMapper: MapperBidireccional<
       precioUsd: v.precio_usd,
       sku: v.sku,
       activo: v.activo,
-      creadoEn: '',
-      actualizadoEn: '',
+      creadoEn: v.creado_en ?? '',
+      actualizadoEn: v.actualizado_en ?? '',
     }))
 
     return {
@@ -397,8 +401,8 @@ export const ProductoDomainMapper: MapperBidireccional<
       disponibleEn: (db.producto as any).disponible_en ?? ['CO', 'BR'],
       variantes: domainVariantes,
       activo: db.producto.activo,
-      creadoEn: '',
-      actualizadoEn: '',
+      creadoEn: db.producto.creado_en ?? '',
+      actualizadoEn: db.producto.actualizado_en ?? '',
     }
   },
 

@@ -56,8 +56,8 @@ class TypedEventBus {
         rpcPayload.p_orden_id = (payload as any).ordenId
       }
       await supabase.rpc('emitir_evento', rpcPayload)
-    } catch {
-      // Silent fail — event bus should never break the caller
+    } catch (err) {
+      console.error(`[EventBus] Failed to persist event "${event as string}":`, err)
     }
 
     // Fire in-memory handlers with error isolation via Promise.allSettled

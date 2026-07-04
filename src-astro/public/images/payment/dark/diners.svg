@@ -1,6 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Diners Club blue circle -->
-  <circle cx="100" cy="100" r="90" fill="#0079BE"/>
-  <!-- White stylized D letterform -->
-  <path d="M65 55 h30 a35 35 0 0 1 0 90 h-30 z" fill="white"/>
+  <!-- Diners Club — dark variant: white circle bg for contrast on dark backgrounds -->
+  <circle cx="100" cy="100" r="90" fill="white"/>
+  <path d="M65 55 h30 a35 35 0 0 1 0 90 h-30 z" fill="#0079BE"/>
 </svg>

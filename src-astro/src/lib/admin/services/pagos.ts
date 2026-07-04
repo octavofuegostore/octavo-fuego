@@ -25,13 +25,14 @@ export class PagoService extends SupabaseService<LMPagoRow> {
   }
 
   async confirmarPago(id: string, metadata?: Record<string, unknown>): Promise<Pago> {
+    const updateData: Record<string, unknown> = {
+      estado: 'confirmado',
+      metadata: metadata ?? {},
+      confirmado_en: new Date().toISOString(),
+    }
     const { data, error } = await supabase
       .from('pagos')
-      .update({
-        estado: 'confirmado',
-        metadata: metadata ?? {},
-        confirmado_en: new Date().toISOString(),
-      } as any)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single()
@@ -41,12 +42,13 @@ export class PagoService extends SupabaseService<LMPagoRow> {
   }
 
   async marcarFallido(id: string, razon: string): Promise<Pago> {
+    const updateData: Record<string, unknown> = {
+      estado: 'fallido',
+      metadata: { razon_fallo: razon },
+    }
     const { data, error } = await supabase
       .from('pagos')
-      .update({
-        estado: 'fallido',
-        metadata: { razon_fallo: razon },
-      } as any)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single()

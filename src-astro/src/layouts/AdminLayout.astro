@@ -52,6 +52,10 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <ClientRouter />
   </head>
   <body class="bg-papel min-h-screen">
+    <!-- Skip-to-content link -->
+    <a href="#admin-main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-tabaco focus:rounded-xl focus:shadow-lg">
+      Saltar al contenido principal
+    </a>
     <div class="flex h-screen overflow-hidden">
       <!-- Sidebar -->
       <aside
@@ -95,6 +99,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
             <li>
               <button
                 id="inventario-toggle"
+                aria-expanded={currentPath.startsWith("/admin/inventario")}
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/inventario")
@@ -193,6 +198,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
             <li>
               <button
                 id="clientes-toggle"
+                aria-expanded={currentPath.startsWith("/admin/clientes")}
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/clientes")
@@ -245,6 +251,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
             <li>
               <button
                 id="contabilidad-toggle"
+                aria-expanded={currentPath.startsWith("/admin/contabilidad")}
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/contabilidad")
@@ -344,14 +351,16 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
               <p class="text-sm font-medium text-papel truncate">{userName}</p>
               <p class="text-xs text-ceniza truncate">{user?.role || 'Admin'}</p>
             </div>
-            <a
-              href="/api/auth/logout"
-              class="flex items-center gap-2 px-3 py-2 rounded-lg text-papel/70 hover:text-papel hover:bg-humo/80 transition-colors"
-              title="Cerrar sesión"
-            >
-              <Icon name="solar:logout-2-bold" class="w-5 h-5" />
-              <span class="text-sm font-medium">Cerrar Sesión</span>
-            </a>
+            <form action="/api/auth/logout" method="POST" id="logout-form" class="inline">
+              <input type="hidden" name="_csrf" id="logout-csrf" value="" />
+              <button type="submit"
+                class="flex items-center gap-2 px-3 py-2 rounded-lg text-papel/70 hover:text-papel hover:bg-humo/80 transition-colors cursor-pointer"
+                title="Cerrar sesión"
+              >
+                <Icon name="solar:logout-2-bold" class="w-5 h-5" />
+                <span class="text-sm font-medium">Cerrar Sesión</span>
+              </button>
+            </form>
           </div>
         </div>
       </aside>
@@ -438,7 +447,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         </header>
 
         <!-- Page Content -->
-        <main class="flex-1 overflow-y-auto p-6">
+        <main id="admin-main" class="flex-1 overflow-y-auto p-6">
           <slot />
         </main>
       </div>
@@ -456,6 +465,18 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
     <script>
       import { $sidebarOpen, $seccionActual } from '@/stores/admin'
 
+      // ── CSRF token: populate hidden input from cookie ──
+      function setCsrfToken() {
+        const csrfInput = document.getElementById('logout-csrf') as HTMLInputElement | null
+        if (csrfInput && !csrfInput.value) {
+          const match = document.cookie.match(/(?:^|;\s*)of_csrf=([^;]*)/)
+          if (match) csrfInput.value = match[1]
+        }
+      }
+
+      // Initially populate CSRF token
+      setCsrfToken()
+
       // ── STORE SUBSCRIPTION (module scope — runs once per ESM module lifecycle) ──
       $sidebarOpen.subscribe((open) => {
         const el = document.getElementById('admin-sidebar')
@@ -466,6 +487,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
 
       // ── PATH DETECTION + SUBMENU RESET (runs on every navigation) ──
       function initAdminUI() {
+        setCsrfToken()
         const path = window.location.pathname
 
         // Set active section from path
@@ -491,6 +513,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         for (const { toggle, active } of entries) {
           const submenu = document.getElementById(`${toggle}-submenu`)
           const arrow = document.querySelector(`.${toggle}-arrow`)
+          const toggleBtn = document.getElementById(`${toggle}-toggle`) as HTMLButtonElement | null
           if (!submenu) continue
           if (active) {
             submenu.classList.remove('max-h-0', 'opacity-0')
@@ -501,6 +524,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
             submenu.classList.add('max-h-0', 'opacity-0')
             arrow?.classList.remove('rotate-180')
           }
+          toggleBtn?.setAttribute('aria-expanded', String(active))
         }
       }
 
@@ -516,11 +540,13 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           const id = btn.id.replace('-toggle', '')
           const submenu = document.getElementById(`${id}-submenu`)
           const arrow = document.querySelector(`.${id}-arrow`)
+          const isOpen = submenu?.classList.contains('max-h-40') ?? false
           submenu?.classList.toggle('max-h-0')
           submenu?.classList.toggle('max-h-40')
           submenu?.classList.toggle('opacity-0')
           submenu?.classList.toggle('opacity-100')
           arrow?.classList.toggle('rotate-180')
+          ;(btn as HTMLButtonElement).setAttribute('aria-expanded', String(!isOpen))
         })
 
         // Sidebar-level delegation for mobile toggle, overlay

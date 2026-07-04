@@ -110,10 +110,10 @@ const t = useTranslations(locale);
       <a href={localeUrl('/profecia', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.profecia}</a>
       <a href={localeUrl('/blog', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.blog}</a>
       <a href={localeUrl('/nosotros', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.nosotros}</a>
-      <a href={localeUrl('/contacto', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">Contacto</a>
+      <a href={localeUrl('/contacto', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.contacto}</a>
       <hr class="border-gray-100 my-2" />
       <a href="/carrito" class="flex items-center gap-2 text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">
-        <span>Carrito</span>
+        <span>{t.nav.carrito}</span>
       </a>
       <div class="mt-auto pt-4">
         <LanguageSwitcher locale={locale} />

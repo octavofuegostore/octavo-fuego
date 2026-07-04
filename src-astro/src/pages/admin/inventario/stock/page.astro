@@ -127,36 +127,73 @@ const stockItems: StockItem[] = (stockData ?? []).map(n => ({
       const tbody = document.getElementById('stock-tbody');
       if (!tbody) return;
 
-      tbody.innerHTML = filteredStock.map(s => {
+      // Clear safely
+      tbody.textContent = '';
+
+      for (const s of filteredStock) {
         const status = getStatus(s.current, s.minimum);
         const locationBg = s.location.startsWith('CO') ? 'bg-info/10 text-info' : 'bg-success/10 text-success';
 
-        return `
-          <tr class="hover:bg-papel/30 transition-colors">
-            <td class="px-6 py-4">
-              <div>
-                <p class="text-sm font-medium text-humo">${s.productName}</p>
-                <p class="text-xs text-ceniza">${s.sku}</p>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${locationBg}">${s.location}</span>
-            </td>
-            <td class="px-6 py-4 text-right text-sm font-medium text-humo">${s.current}g</td>
-            <td class="px-6 py-4 text-right text-sm text-ceniza">${s.minimum}g</td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}">${status.label}</span>
-            </td>
-            <td class="px-6 py-4 text-right">
-              <button class="p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors" title="Ajustar stock">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-                </svg>
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-papel/30 transition-colors';
+
+        // ── Product name + SKU ──
+        const td1 = document.createElement('td');
+        td1.className = 'px-6 py-4';
+        const div1 = document.createElement('div');
+        const pName = document.createElement('p');
+        pName.className = 'text-sm font-medium text-humo';
+        pName.textContent = s.productName;
+        const pSku = document.createElement('p');
+        pSku.className = 'text-xs text-ceniza';
+        pSku.textContent = s.sku;
+        div1.appendChild(pName);
+        div1.appendChild(pSku);
+        td1.appendChild(div1);
+        tr.appendChild(td1);
+
+        // ── Location ──
+        const td2 = document.createElement('td');
+        td2.className = 'px-6 py-4 text-center';
+        const spanLoc = document.createElement('span');
+        spanLoc.className = `inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${locationBg}`;
+        spanLoc.textContent = s.location;
+        td2.appendChild(spanLoc);
+        tr.appendChild(td2);
+
+        // ── Current stock ──
+        const td3 = document.createElement('td');
+        td3.className = 'px-6 py-4 text-right text-sm font-medium text-humo';
+        td3.textContent = `${s.current}g`;
+        tr.appendChild(td3);
+
+        // ── Minimum stock ──
+        const td4 = document.createElement('td');
+        td4.className = 'px-6 py-4 text-right text-sm text-ceniza';
+        td4.textContent = `${s.minimum}g`;
+        tr.appendChild(td4);
+
+        // ── Status badge ──
+        const td5 = document.createElement('td');
+        td5.className = 'px-6 py-4 text-center';
+        const spanStatus = document.createElement('span');
+        spanStatus.className = `inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}`;
+        spanStatus.textContent = status.label;
+        td5.appendChild(spanStatus);
+        tr.appendChild(td5);
+
+        // ── Actions ──
+        const td6 = document.createElement('td');
+        td6.className = 'px-6 py-4 text-right';
+        const btn = document.createElement('button');
+        btn.className = 'p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors';
+        btn.title = 'Ajustar stock';
+        btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>';
+        td6.appendChild(btn);
+        tr.appendChild(td6);
+
+        tbody.appendChild(tr);
+      }
     }
 
     searchInput?.addEventListener('input', filterStock);

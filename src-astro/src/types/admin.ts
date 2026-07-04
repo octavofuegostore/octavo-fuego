@@ -100,7 +100,7 @@ export interface Pago {
   id: string;
   orden_id: string;
   bodega_id: string;
-  metodo: 'wompi_link' | 'pix_qr' | 'pix_copia_cola';
+  metodo: 'wompi_link' | 'pix_qr' | 'pix_copia_cola' | 'stripe' | 'transferencia';
   estado: 'pendiente' | 'procesando' | 'confirmado' | 'fallido' | 'reembolsado';
   monto: number;
   moneda: string;

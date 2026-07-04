@@ -1,15 +1,6 @@
 import { z } from 'zod'
 import { estadoOrdenSchema, canalOrdenSchema } from './enums'
-
-const TRANSICIONES_VALIDAS: Record<string, string[]> = {
-  pendiente: ['confirmada', 'cancelada'],
-  confirmada: ['pagada', 'cancelada'],
-  pagada: ['preparando', 'cancelada'],
-  preparando: ['enviada', 'cancelada'],
-  enviada: ['entregada', 'cancelada'],
-  entregada: [],
-  cancelada: [],
-}
+import { TRANSICIONES_ORDEN } from '../domain/entities/orden'
 
 export const CrearOrdenSchema = z.object({
   cliente_id: z.string().uuid(),
@@ -33,7 +24,7 @@ export const ActualizarEstadoSchema = z.object({
   estadoAnterior: estadoOrdenSchema,
   estadoNuevo: estadoOrdenSchema,
 }).refine(
-  (data) => (TRANSICIONES_VALIDAS[data.estadoAnterior] ?? []).includes(data.estadoNuevo),
+  (data) => (TRANSICIONES_ORDEN[data.estadoAnterior] ?? []).includes(data.estadoNuevo),
   { message: 'Transición de estado no válida', path: ['estadoNuevo'] },
 )
 

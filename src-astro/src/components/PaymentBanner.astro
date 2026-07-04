@@ -4,7 +4,7 @@ interface Props {
   locale?: 'es' | 'en' | 'pt';
 }
 
-import { t } from '@/i18n';
+import { t, type Locale } from '@/i18n';
 import { Icon } from 'astro-icon/components';
 
 const { variant = 'dark', locale = 'es' } = Astro.props;
@@ -17,7 +17,7 @@ type PaymentMethod = {
   label: string;
 };
 
-function getPaymentMethods(locale: string): PaymentMethod[] {
+function getPaymentMethods(locale: Locale): PaymentMethod[] {
   switch (locale) {
     case 'pt':
       return [
@@ -62,10 +62,10 @@ const t_ = (key: string) => t(key, locale);
 ---
 
 <div class="w-full flex flex-col items-start space-y-4">
-  <h4 class="text-xs font-medium uppercase tracking-widest opacity-70 text-tabaco mb-2">
+  <h4 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-2">
     {t_('payment.title')}
   </h4>
-  <div class="w-full flex flex-wrap items-center justify-start gap-x-3 gap-y-3" role="list" aria-label="Métodos de pago aceptados">
+  <div class="w-full flex flex-wrap items-center justify-start gap-x-3 gap-y-3" role="list" aria-label={t_('payment.ariaList')}>
     {methods.map((method) => (
       <div role="listitem" class="flex items-center justify-center h-12">
         <img
@@ -78,7 +78,7 @@ const t_ = (key: string) => t(key, locale);
     ))}
   </div>
   <div class={`flex items-center gap-2 pt-3 border-t border-tabaco/[0.08] text-xs ${mutedColor}`}>
-    <Icon name="solar:lock-bold" class="w-3.5 h-3.5" />
+    <Icon name="solar:lock-bold" class="w-3.5 h-3.5" aria-hidden="true" />
     <span>{t_('payment.securedBy')}</span>
   </div>
 </div>

@@ -2,12 +2,9 @@
 export const prerender = false;
 // Informes page — Reportes financieros con tabs mensual/anual (datos reales)
 import AdminLayout from '@/layouts/AdminLayout.astro';
-import { ContabilidadService } from '@/lib/admin/services/contabilidad';
 import { supabase } from '@/lib/supabase';
 import { formatCurrency } from '@/lib/formatCurrency';
 import { formatDate } from '@/lib/admin/formatters';
-
-const svc = new ContabilidadService();
 
 const now = new Date();
 const currentMes = now.getMonth(); // 0-indexed
@@ -302,20 +299,53 @@ const balanceIcon = 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a
       if (balanceEl) balanceEl.textContent = formatCOP(data.balance);
 
       if (tbody) {
+        // Clear safely
+        tbody.textContent = '';
+
         if (txns.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-ceniza">No hay transacciones para este período</td></tr>';
+          const tr = document.createElement('tr');
+          const td = document.createElement('td');
+          td.colSpan = 5;
+          td.className = 'px-6 py-8 text-center text-ceniza';
+          td.textContent = 'No hay transacciones para este período';
+          tr.appendChild(td);
+          tbody.appendChild(tr);
         } else {
-          tbody.innerHTML = txns.map((t: { fecha: string; descripcion: string; categoria: string; tipo: string; monto: number }) => `
-            <tr class="hover:bg-papel/30 transition-colors">
-              <td class="px-6 py-4 text-sm text-humo">${formatDate(t.fecha)}</td>
-              <td class="px-6 py-4 text-sm text-humo">${t.descripcion}</td>
-              <td class="px-6 py-4 text-sm text-ceniza">${t.categoria}</td>
-              <td class="px-6 py-4 text-center">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${t.tipo === 'Ingreso' ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}">${t.tipo}</span>
-              </td>
-              <td class="px-6 py-4 text-right text-sm font-medium text-humo">${formatCOP(t.monto)}</td>
-            </tr>
-          `).join('');
+          for (const t of txns) {
+            const tRow = document.createElement('tr');
+            tRow.className = 'hover:bg-papel/30 transition-colors';
+
+            const tdFecha = document.createElement('td');
+            tdFecha.className = 'px-6 py-4 text-sm text-humo';
+            tdFecha.textContent = formatDate(t.fecha);
+            tRow.appendChild(tdFecha);
+
+            const tdDesc = document.createElement('td');
+            tdDesc.className = 'px-6 py-4 text-sm text-humo';
+            tdDesc.textContent = t.descripcion;
+            tRow.appendChild(tdDesc);
+
+            const tdCat = document.createElement('td');
+            tdCat.className = 'px-6 py-4 text-sm text-ceniza';
+            tdCat.textContent = t.categoria;
+            tRow.appendChild(tdCat);
+
+            const tdTipo = document.createElement('td');
+            tdTipo.className = 'px-6 py-4 text-center';
+            const spanTipo = document.createElement('span');
+            const isIngreso = t.tipo === 'Ingreso';
+            spanTipo.className = `inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${isIngreso ? 'bg-success/10 text-success' : 'bg-error/10 text-error'}`;
+            spanTipo.textContent = t.tipo;
+            tdTipo.appendChild(spanTipo);
+            tRow.appendChild(tdTipo);
+
+            const tdMonto = document.createElement('td');
+            tdMonto.className = 'px-6 py-4 text-right text-sm font-medium text-humo';
+            tdMonto.textContent = formatCOP(t.monto);
+            tRow.appendChild(tdMonto);
+
+            tbody.appendChild(tRow);
+          }
         }
       }
     }

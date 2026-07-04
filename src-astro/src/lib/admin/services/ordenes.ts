@@ -124,9 +124,10 @@ export class OrdenService extends SupabaseService<LMOrdenRow> {
       throw new ErrorValidacion('Transición de estado no válida', 'estado')
     }
 
+    const updateData: Record<string, unknown> = { estado: nuevoEstado }
     const { data, error } = await supabase
       .from('ordenes')
-      .update({ estado: nuevoEstado } as any)
+      .update(updateData)
       .eq('id', ordenId)
       .select()
       .single()

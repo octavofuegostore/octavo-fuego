@@ -7,6 +7,14 @@ import { crearServicios } from '@/lib/admin/provider';
 
 const svc = crearServicios();
 const orders = await svc.ordenes.listar();
+
+// Compute stats from actual data
+const hoy = new Date();
+const hoyStr = hoy.toDateString();
+const ordenesHoy = orders.filter(o => new Date(o.creadoEn).toDateString() === hoyStr).length;
+const pendientes = orders.filter(o => o.estado === 'pendiente').length;
+const enProceso = orders.filter(o => ['confirmada', 'pagada', 'preparando'].includes(o.estado)).length;
+const completadas = orders.filter(o => o.estado === 'entregada').length;
 ---
 
 <AdminLayout title="Órdenes" description="Gestiona las órdenes de venta">
@@ -38,19 +46,19 @@ const orders = await svc.ordenes.listar();
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Órdenes Hoy</p>
-      <p class="text-2xl font-bold text-humo font-display" id="stat-hoy">8</p>
+      <p class="text-2xl font-bold text-humo font-display" id="stat-hoy">{ordenesHoy}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Pendientes</p>
-      <p class="text-2xl font-bold text-warning font-display" id="stat-pendientes">12</p>
+      <p class="text-2xl font-bold text-warning font-display" id="stat-pendientes">{pendientes}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">En Proceso</p>
-      <p class="text-2xl font-bold text-info font-display" id="stat-proceso">5</p>
+      <p class="text-2xl font-bold text-info font-display" id="stat-proceso">{enProceso}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Completadas</p>
-      <p class="text-2xl font-bold text-success font-display" id="stat-completadas">156</p>
+      <p class="text-2xl font-bold text-success font-display" id="stat-completadas">{completadas}</p>
     </div>
   </div>
 

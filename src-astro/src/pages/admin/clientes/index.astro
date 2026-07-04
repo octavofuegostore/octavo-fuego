@@ -8,6 +8,16 @@ import { crearServicios } from '@/lib/admin/provider';
 
 const svc = crearServicios();
 const customers = await svc.clientes.listar();
+
+// Compute stats from actual data
+const totalClientes = customers.length;
+const activos = customers.filter(c => c.estado === 'aprobado').length;
+const mayoristas = customers.filter(c => c.rol === 'b2b_client').length;
+const ahora = new Date();
+const nuevos = customers.filter(c => {
+  const creado = new Date(c.creadoEn);
+  return creado.getMonth() === ahora.getMonth() && creado.getFullYear() === ahora.getFullYear();
+}).length;
 ---
 
 <AdminLayout title="Clientes" description="Gestiona tu base de clientes">
@@ -39,19 +49,19 @@ const customers = await svc.clientes.listar();
   <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-8">
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Total Clientes</p>
-      <p class="text-2xl font-bold text-humo font-display" id="stat-total">156</p>
+      <p class="text-2xl font-bold text-humo font-display" id="stat-total">{totalClientes}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Activos</p>
-      <p class="text-2xl font-bold text-success font-display" id="stat-activos">142</p>
+      <p class="text-2xl font-bold text-success font-display" id="stat-activos">{activos}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Mayoristas</p>
-      <p class="text-2xl font-bold text-tabaco font-display" id="stat-mayoristas">28</p>
+      <p class="text-2xl font-bold text-tabaco font-display" id="stat-mayoristas">{mayoristas}</p>
     </div>
     <div class="bg-white rounded-xl p-4 shadow-card">
       <p class="text-sm text-ceniza">Nuevos (Mes)</p>
-      <p class="text-2xl font-bold text-info font-display" id="stat-nuevos">15</p>
+      <p class="text-2xl font-bold text-info font-display" id="stat-nuevos">{nuevos}</p>
     </div>
   </div>
 

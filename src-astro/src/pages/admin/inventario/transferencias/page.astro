@@ -166,33 +166,86 @@ const transferItems: TransferItem[] = (rawTransfers ?? []).map(t => {
         en_transito: { class: 'bg-warning/10 text-warning', label: 'En Tránsito' },
       };
 
-      tbody.innerHTML = filteredTransfers.map(t => {
-        const status = statusConfig[t.status] || { class: 'bg-ceniza/10 text-ceniza', label: t.status };
+      // Clear safely
+      tbody.textContent = '';
 
-        return `
-          <tr class="hover:bg-papel/30 transition-colors">
-            <td class="px-6 py-4 text-sm font-medium text-humo font-mono">${t.id}</td>
-            <td class="px-6 py-4 text-sm text-ceniza">${t.date ? new Date(t.date).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' }) : '-'}</td>
-            <td class="px-6 py-4">
-              <div>
-                <p class="text-sm font-medium text-humo">${t.productName}</p>
-                <p class="text-xs text-ceniza">${t.sku}</p>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-info/10 text-info">${t.origin}</span>
-            </td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success">${t.destination}</span>
-            </td>
-            <td class="px-6 py-4 text-right text-sm font-medium text-humo">${t.quantity}g</td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}">${status.label}</span>
-            </td>
-            <td class="px-6 py-4 text-sm text-ceniza">${t.notes}</td>
-          </tr>
-        `;
-      }).join('');
+      for (const t of filteredTransfers) {
+        const status = statusConfig[t.status] || { class: 'bg-ceniza/10 text-ceniza', label: t.status };
+        const dateStr = t.date
+          ? new Date(t.date).toLocaleDateString('es-CO', { day: '2-digit', month: 'short', year: 'numeric' })
+          : '-';
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-papel/30 transition-colors';
+
+        // ── ID ──
+        const td1 = document.createElement('td');
+        td1.className = 'px-6 py-4 text-sm font-medium text-humo font-mono';
+        td1.textContent = t.id;
+        tr.appendChild(td1);
+
+        // ── Fecha ──
+        const td2 = document.createElement('td');
+        td2.className = 'px-6 py-4 text-sm text-ceniza';
+        td2.textContent = dateStr;
+        tr.appendChild(td2);
+
+        // ── Producto ──
+        const td3 = document.createElement('td');
+        td3.className = 'px-6 py-4';
+        const div3 = document.createElement('div');
+        const p3Name = document.createElement('p');
+        p3Name.className = 'text-sm font-medium text-humo';
+        p3Name.textContent = t.productName;
+        const p3Sku = document.createElement('p');
+        p3Sku.className = 'text-xs text-ceniza';
+        p3Sku.textContent = t.sku;
+        div3.appendChild(p3Name);
+        div3.appendChild(p3Sku);
+        td3.appendChild(div3);
+        tr.appendChild(td3);
+
+        // ── Origen ──
+        const td4 = document.createElement('td');
+        td4.className = 'px-6 py-4 text-center';
+        const spanOrg = document.createElement('span');
+        spanOrg.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-info/10 text-info';
+        spanOrg.textContent = t.origin;
+        td4.appendChild(spanOrg);
+        tr.appendChild(td4);
+
+        // ── Destino ──
+        const td5 = document.createElement('td');
+        td5.className = 'px-6 py-4 text-center';
+        const spanDst = document.createElement('span');
+        spanDst.className = 'inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success';
+        spanDst.textContent = t.destination;
+        td5.appendChild(spanDst);
+        tr.appendChild(td5);
+
+        // ── Cantidad ──
+        const td6 = document.createElement('td');
+        td6.className = 'px-6 py-4 text-right text-sm font-medium text-humo';
+        td6.textContent = `${t.quantity}g`;
+        tr.appendChild(td6);
+
+        // ── Estado ──
+        const td7 = document.createElement('td');
+        td7.className = 'px-6 py-4 text-center';
+        const spanSt = document.createElement('span');
+        spanSt.className = `inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${status.class}`;
+        spanSt.textContent = status.label;
+        td7.appendChild(spanSt);
+        tr.appendChild(td7);
+
+        // ── Notas ──
+        const td8 = document.createElement('td');
+        td8.className = 'px-6 py-4 text-sm text-ceniza';
+        td8.textContent = t.notes;
+        tr.appendChild(td8);
+
+        tbody.appendChild(tr);
+      }
     }
 
     searchInput?.addEventListener('input', filterTransfers);

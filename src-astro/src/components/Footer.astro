@@ -24,7 +24,7 @@ const t = useTranslations(locale);
         <p class="text-[var(--near-black)] text-sm mb-6 opacity-80">
           {t.common.tagline}
         </p>
-        <p class="text-ceniza text-xs max-w-xs">
+        <p class="text-[#5C6063] text-xs max-w-xs">
           {t.footer.disclaimer}
         </p>
         <div class="mt-8 pt-6 border-t border-tabaco/20">
@@ -34,7 +34,7 @@ const t = useTranslations(locale);
 
       <!-- Col 2: Productos -->
       <div>
-        <h4 class="text-xs font-medium uppercase tracking-widest opacity-70 text-tabaco mb-6">
+        <h4 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
           {t.footer.productos}
         </h4>
         <ul class="space-y-3">
@@ -45,7 +45,7 @@ const t = useTranslations(locale);
           </li>
           <li>
             <a href={localeUrl('/profecia', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
-              Profecía
+              {t.nav.profecia}
             </a>
           </li>
         </ul>
@@ -53,7 +53,7 @@ const t = useTranslations(locale);
 
       <!-- Col 3: Ayuda -->
       <div>
-        <h4 class="text-xs font-medium uppercase tracking-widest opacity-70 text-tabaco mb-6">
+        <h4 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
           {t.footer.ayuda}
         </h4>
         <ul class="space-y-3">
@@ -87,7 +87,7 @@ const t = useTranslations(locale);
 
       <!-- Col 4: Conecta -->
       <div>
-        <h4 class="text-xs font-medium uppercase tracking-widest opacity-70 text-tabaco mb-6">
+        <h4 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
           {t.footer.conecta}
         </h4>
         <ul class="space-y-3 mb-6">
@@ -98,9 +98,9 @@ const t = useTranslations(locale);
             </a>
           </li>
           <li>
-            <a href="https://wa.me/573172137932" target="_blank" rel="noopener" class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors flex items-center gap-2 p-2">
+            <a href="https://wa.me/573172137932" target="_blank" rel="noopener noreferrer" class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors flex items-center gap-2 p-2">
               <Icon name="solar:chat-round-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
-              WhatsApp
+              {t.footer.whatsapp}
             </a>
           </li>
           <li class="flex items-center gap-2 text-[var(--near-black)] text-sm p-2">
@@ -111,7 +111,7 @@ const t = useTranslations(locale);
             <Icon name="solar:leaf-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
             <span>{t.footer.confianzaFooter}</span>
           </li>
-          <li class="text-ceniza text-xs">{t.footer.enviosZona}</li>
+          <li class="text-[#5C6063] text-xs">{t.footer.enviosZona}</li>
         </ul>
 
         <!-- Social Icons -->
@@ -119,27 +119,27 @@ const t = useTranslations(locale);
           <a
             href="https://instagram.com/octavofuego"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
-            aria-label="Ir a Instagram"
+            aria-label={t.footer.instagram}
           >
             <Icon name="ph:instagram-logo-duotone" class="w-6 h-6 text-tabaco" />
           </a>
           <a
             href="https://facebook.com/octavofuego"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
-            aria-label="Ir a Facebook"
+            aria-label={t.footer.facebook}
           >
             <Icon name="ph:facebook-logo-duotone" class="w-6 h-6 text-tabaco" />
           </a>
           <a
             href="https://wa.me/573172137932"
             target="_blank"
-            rel="noopener"
+            rel="noopener noreferrer"
             class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
-            aria-label="Ir a WhatsApp"
+            aria-label={t.footer.whatsapp}
           >
             <Icon name="ph:whatsapp-logo-duotone" class="w-6 h-6 text-tabaco" />
           </a>
@@ -150,14 +150,14 @@ const t = useTranslations(locale);
     <!-- Bottom Bar -->
     <div class="pt-8 border-t border-tabaco/20">
       <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-ceniza text-xs">
+        <p class="text-[#5C6063] text-xs">
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href={localeUrl('/terminos', locale)} class="text-ceniza text-xs hover:text-tabaco transition-colors">
+          <a href={localeUrl('/terminos', locale)} class="text-[#5C6063] text-xs hover:text-tabaco transition-colors">
             {t.footer.terminos}
           </a>
-          <a href={localeUrl('/privacidad', locale)} class="text-ceniza text-xs hover:text-tabaco transition-colors">
+          <a href={localeUrl('/privacidad', locale)} class="text-[#5C6063] text-xs hover:text-tabaco transition-colors">
             {t.footer.privacidad}
           </a>
         </div>

@@ -2,7 +2,10 @@
   "common": {
     "brand": "Octavo Fuego",
     "tagline": "Rapé de Acre, Amazonía brasileña",
-    "skip_to_content": "Ir al contenido principal"
+    "skip_to_content": "Ir al contenido principal",
+    "contentPending": "Contenido pendiente de redacción",
+    "contentPendingDesc": "Esta sección está siendo redactada. Vuelve pronto.",
+    "breadcrumbHome": "Inicio"
   },
   "nav": {
     "tienda": "Tienda",
@@ -131,10 +134,13 @@
   },
   "payment": {
     "title": "Métodos de pago",
+    "ariaList": "Métodos de pago aceptados",
     "securedBy": "Compra protegida"
   },
   "blog": {
     "breadcrumbHome": "Inicio",
+    "pageTitle": "Blog",
+    "pageDescription": "Artículos sobre Rapé, Sananga y Kuripes. Medicina ancestral amazónica, ceremonias y tradiciones.",
     "ctaQuestion": "¿Te resultó útil este artículo?",
     "whatsappCta": "Escribir por WhatsApp",
     "relatedPosts": "Artículos relacionados",
@@ -162,6 +168,10 @@
     "email": "Email",
     "copyright": "© 2026 Octavo Fuego. Todos los derechos reservados.",
     "disclaimer": "Nuestros productos se venden como inciensos ceremoniales. El uso es responsabilidad de quien adquiere."
+  },
+  "contacto": {
+    "formUnavailable": "Formulario no disponible. Escríbenos por WhatsApp:",
+    "whatsappCta": "Consultar por WhatsApp"
   },
   "whatsapp": {
     "tooltip": "¿Necesitas ayuda?",

@@ -5,11 +5,11 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
 import KpiCard from '@/components/admin/contabilidad/KpiCard.astro';
 import GraficaBarras from '@/components/admin/contabilidad/GraficaBarras.astro';
 import GraficaTorta from '@/components/admin/charts/GraficaTorta.astro';
-import { ContabilidadService } from '@/lib/admin/services/contabilidad';
+import { crearContabilidadServicio } from '@/lib/admin/domain/servicios/contabilidad-servicio';
 import { supabase } from '@/lib/supabase';
 import { formatCurrency } from '@/lib/formatCurrency';
 
-const svc = new ContabilidadService();
+const svc = crearContabilidadServicio();
 
 // Parse selected month/year from URL, default to current
 const now = new Date();
@@ -19,7 +19,7 @@ const mes = mesParam >= 0 && mesParam <= 11 ? mesParam : now.getMonth();
 const año = añoParam >= 2020 && añoParam <= 2030 ? añoParam : now.getFullYear();
 
 const kpis = await svc.obtenerKPIs(mes + 1, año);
-const graficaMensual = await svc.obtenerGraficaMensual(año);
+const { mensual: graficaMensual } = await svc.obtenerGraficas(año);
 
 // Expense breakdown by category for the selected month
 const { data: transacciones } = await svc.listarTransacciones(1, 1000, {

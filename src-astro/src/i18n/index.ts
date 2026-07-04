@@ -11,7 +11,7 @@ const translations = { es, en, pt };
 
 type TranslationKeys = typeof es;
 
-function getNestedValue(obj: any, path: string): string {
+function getNestedValue(obj: Record<string, unknown>, path: string): string {
   return path.split('.').reduce((acc, key) => acc?.[key], obj) || path;
 }
 

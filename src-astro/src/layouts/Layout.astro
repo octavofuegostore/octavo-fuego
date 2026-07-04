@@ -27,9 +27,8 @@ const {
 const t = useTranslations(locale);
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
 
-// F6.1.1: Canonical always points to ES version (strip locale prefix)
-const canonicalPath = Astro.url.pathname.replace(/^\/(en|pt)(?:\/|$)/, '/');
-const canonicalUrl = new URL(canonicalPath, 'https://octavofuego.com').href;
+// Self-referencing canonical per locale (not stripping prefix)
+const canonicalUrl = new URL(Astro.url.pathname, 'https://octavofuego.com').href;
 
 const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
 
@@ -99,15 +98,17 @@ const hreflangLocales = [
 
     <!-- CSS-first breakpoint detection -->
     <script>
+      let breakpointHandler;
       document.addEventListener('astro:after-swap', () => {
-        const setBreakpoint = () => {
+        if (breakpointHandler) window.removeEventListener('resize', breakpointHandler);
+        breakpointHandler = () => {
           const w = window.innerWidth;
           if (w >= 1024) document.documentElement.dataset.breakpoint = 'lg';
           else if (w >= 768) document.documentElement.dataset.breakpoint = 'md';
           else document.documentElement.dataset.breakpoint = 'sm';
         };
-        setBreakpoint();
-        window.addEventListener('resize', setBreakpoint);
+        breakpointHandler();
+        window.addEventListener('resize', breakpointHandler);
       });
     </script>
   </head>

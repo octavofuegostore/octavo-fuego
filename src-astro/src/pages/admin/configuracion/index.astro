@@ -108,6 +108,8 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked="true"
               class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-papel transition-colors"
               data-toggle="alertas-stock"
               data-enabled="true"
@@ -153,6 +155,8 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked="true"
               class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-tabaco transition-colors"
               data-toggle="checkout-whatsapp"
               data-enabled="true"
@@ -168,6 +172,8 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
             </div>
             <button
               type="button"
+              role="switch"
+              aria-checked="false"
               class="toggle-btn relative inline-flex h-6 w-11 items-center rounded-full bg-papel transition-colors"
               data-toggle="modo-mayorista"
               data-enabled="false"
@@ -264,6 +270,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
         const newEnabled = !isEnabled;
 
         toggleBtn.setAttribute('data-enabled', String(newEnabled));
+        toggleBtn.setAttribute('aria-checked', String(newEnabled));
         toggleBtn.classList.toggle('bg-tabaco', newEnabled);
         toggleBtn.classList.toggle('bg-papel', !newEnabled);
 
@@ -319,6 +326,7 @@ import AdminLayout from '@/layouts/AdminLayout.astro';
             const enabled = data[key] === 'true';
             const indicator = toggleBtn.querySelector('.toggle-indicator') as HTMLElement;
             toggleBtn.setAttribute('data-enabled', String(enabled));
+            toggleBtn.setAttribute('aria-checked', String(enabled));
             toggleBtn.classList.toggle('bg-tabaco', enabled);
             toggleBtn.classList.toggle('bg-papel', !enabled);
             if (indicator) {
