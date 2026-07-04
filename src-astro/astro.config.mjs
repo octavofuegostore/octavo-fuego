@@ -41,6 +41,8 @@ export default defineConfig({
           'alt-arrow-down-bold-duotone',
           'global-bold-duotone',
           'bag-2-bold-duotone',
+          // PaymentBanner
+          'lock-bold',
           // Admin Sidebar
           'chart-square-bold',
           'box-bold',

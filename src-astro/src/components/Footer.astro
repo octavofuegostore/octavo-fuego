@@ -14,10 +14,10 @@ const t = useTranslations(locale);
 ---
 
 <footer class="bg-[var(--color-footer-bg)] text-white">
-  <div class="max-w-7xl mx-auto px-6 md:px-12 py-16">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-      <!-- Logo + Tagline -->
-      <div class="lg:col-span-1">
+  <div class="max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-24">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12 mb-12">
+      <!-- Col 1: Logo + Tagline -->
+      <div>
         <a href={localeUrl('/', locale)} class="font-display text-2xl font-bold mb-4 block text-white">
           {t.common.brand}
         </a>
@@ -29,9 +29,17 @@ const t = useTranslations(locale);
         </p>
       </div>
 
-      <!-- Productos Links -->
+      <!-- Col 2: Métodos de pago -->
+      <div class="md:col-span-2 lg:col-span-1">
+        <h4 class="text-xs font-medium uppercase tracking-widest opacity-50 text-white mb-6">
+          Métodos de pago
+        </h4>
+        <PaymentBanner variant="dark" locale={locale} />
+      </div>
+
+      <!-- Col 3: Productos -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
+        <h4 class="text-xs font-medium uppercase tracking-widest opacity-50 text-white mb-6">
           {t.footer.productos}
         </h4>
         <ul class="space-y-3">
@@ -48,9 +56,9 @@ const t = useTranslations(locale);
         </ul>
       </div>
 
-      <!-- Información Links -->
+      <!-- Col 4: Ayuda -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
+        <h4 class="text-xs font-medium uppercase tracking-widest opacity-50 text-white mb-6">
           {t.footer.ayuda}
         </h4>
         <ul class="space-y-3">
@@ -82,71 +90,66 @@ const t = useTranslations(locale);
         </ul>
       </div>
 
-      <!-- Contacto + Social -->
+      <!-- Col 5: Conecta -->
       <div>
-        <h4 class="font-display text-sm font-semibold uppercase tracking-wider mb-6 text-white">
+        <h4 class="text-xs font-medium uppercase tracking-widest opacity-50 text-white mb-6">
           {t.footer.conecta}
         </h4>
         <ul class="space-y-3 mb-6">
           <li>
             <a href="mailto:hola@octavofuego.com" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors flex items-center gap-2 p-2">
-              <Icon name="solar:letter-bold" class="w-7 h-7 shrink-0 text-white" />
+              <Icon name="solar:letter-bold" class="w-5 h-5 shrink-0 text-white" />
               hola@octavofuego.com
             </a>
           </li>
           <li>
             <a href="https://wa.me/573172137932" target="_blank" rel="noopener" class="text-[var(--color-text-on-dark)] text-sm hover:text-white transition-colors flex items-center gap-2 p-2">
-              <Icon name="solar:chat-round-bold" class="w-7 h-7 shrink-0 text-white" />
+              <Icon name="solar:chat-round-bold" class="w-5 h-5 shrink-0 text-white" />
               WhatsApp
             </a>
           </li>
           <li class="flex items-center gap-2 text-[var(--color-text-on-dark)] text-sm p-2">
-            <Icon name="solar:map-point-bold" class="w-7 h-7 shrink-0 text-white" />
+            <Icon name="solar:map-point-bold" class="w-5 h-5 shrink-0 text-white" />
             <span>{t.footer.direccionFabrica}</span>
           </li>
           <li class="flex items-center gap-2 text-[var(--color-text-on-dark)] text-sm p-2">
-            <Icon name="solar:leaf-bold" class="w-7 h-7 shrink-0 text-white" />
+            <Icon name="solar:leaf-bold" class="w-5 h-5 shrink-0 text-white" />
             <span>{t.footer.confianzaFooter}</span>
           </li>
           <li class="text-[var(--color-text-on-dark)]/70 text-xs">{t.footer.enviosZona}</li>
         </ul>
-        
+
         <!-- Social Icons -->
         <div class="flex gap-4">
-          <a 
-            href="https://instagram.com/octavofuego" 
-            target="_blank" 
-            rel="noopener" 
+          <a
+            href="https://instagram.com/octavofuego"
+            target="_blank"
+            rel="noopener"
             class="text-[var(--color-text-on-dark)] hover:text-white transition-colors p-2"
             aria-label="Ir a Instagram"
           >
-            <Icon name="ph:instagram-logo-fill" class="w-7 h-7 text-white" />
+            <Icon name="ph:instagram-logo-fill" class="w-6 h-6 text-white" />
           </a>
-          <a 
-            href="https://facebook.com/octavofuego" 
-            target="_blank" 
-            rel="noopener" 
+          <a
+            href="https://facebook.com/octavofuego"
+            target="_blank"
+            rel="noopener"
             class="text-[var(--color-text-on-dark)] hover:text-white transition-colors p-2"
             aria-label="Ir a Facebook"
           >
-            <Icon name="ph:facebook-logo-fill" class="w-7 h-7 text-white" />
+            <Icon name="ph:facebook-logo-fill" class="w-6 h-6 text-white" />
           </a>
-          <a 
-            href="https://wa.me/573172137932" 
-            target="_blank" 
-            rel="noopener" 
+          <a
+            href="https://wa.me/573172137932"
+            target="_blank"
+            rel="noopener"
             class="text-[var(--color-text-on-dark)] hover:text-white transition-colors p-2"
             aria-label="Ir a WhatsApp"
           >
-            <Icon name="ph:whatsapp-logo-fill" class="w-7 h-7 text-white" />
+            <Icon name="ph:whatsapp-logo-fill" class="w-6 h-6 text-white" />
           </a>
         </div>
       </div>
-    </div>
-
-    <!-- Payment Methods -->
-    <div class="mb-8">
-      <PaymentBanner variant="dark" locale={locale} />
     </div>
 
     <!-- Bottom Bar -->

@@ -14,8 +14,8 @@
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
 | 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.11.0) |
-| 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
-| 05 Testing & Polish | ████████░░ 80% | 🔄 En progreso (E4/E9 + JD ✅) |
+| 04 Marketing/SEO | ██████████ 100% | ✅ Completado (v0.12.0) |
+| 05 Testing & Polish | ████████░░ 80% | 🔄 En progreso (E4 + JD ✅) |
 | 06 Lanzamiento | ██████████ 100% | ✅ Completado (E5 Fase 1 + PaymentBanner) |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
@@ -119,14 +119,14 @@
 - [ ] Fase 3: Stripe Provider (BR/Intl) — espera aprobación legal
 - [ ] Fase 4: Mercado Pago (CO+BR) — opcional
 
-### 🎨 UX — PaymentBanner visual refresh
-- [ ] Mejorar la visual de los métodos de pago — actualmente se ven como logos chicos sin orden ni teselado. Ideal: badges blancos con bordes sutiles en grid ordenado (3-4 por fila), logos con padding consistente, "Protegido por Stripe" con ícono de candado y mejor tipografía.
+### ✅ UX — PaymentBanner visual refresh
+- [x] Logos en badges grid 3×4 con padding consistente, hover sutiles, candado en Stripe
 
-### 🔶 E9 — SEO (4 phases)
-- [ ] E9-P1 — Technical SEO (canonical, sitemap)
-- [ ] E9-P2 — International SEO (hreflang, locales)
-- [ ] E9-P3 — On-Page SEO (meta, OG)
-- [ ] E9-P4 — Content/Schema (FAQ, schema.org)
+### ✅ E9 — SEO (4 phases)
+- [x] E9-P1 — Technical SEO (canonical, sitemap, robots.txt)
+- [x] E9-P2 — International SEO (hreflang es/en/pt + x-default, og:locale)
+- [x] E9-P3 — On-Page SEO (OG, Twitter Card, meta desc, transactional titles)
+- [x] E9-P4 — Content/Schema (Organization, Product, Breadcrumb, FAQPage, BlogPosting, WebPage, ItemList, CollectionPage)
 
 ---
 
