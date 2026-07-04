@@ -54,3 +54,21 @@ export function formatCOP(amount: number): string {
     minimumFractionDigits: 0,
   }).format(amount)
 }
+
+export interface TrendResult {
+  change: number
+  trend: 'up' | 'down' | 'neutral'
+  display: string
+}
+
+export function computeTendencia(current: number, previous: number): TrendResult {
+  if (previous === 0 || current === 0) {
+    return { change: 0, trend: 'neutral', display: '--' }
+  }
+  const change = Math.round(((current - previous) / previous) * 100 * 10) / 10
+  return {
+    change: Math.abs(change),
+    trend: change > 0 ? 'up' : change < 0 ? 'down' : 'neutral',
+    display: `${change > 0 ? '+' : ''}${change}%`,
+  }
+}
