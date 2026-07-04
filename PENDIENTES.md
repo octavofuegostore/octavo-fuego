@@ -13,7 +13,7 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.11.0) |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.12.0) |
 | 04 Marketing/SEO | ██████████ 100% | ✅ Completado (v0.12.0) |
 | 05 Testing & Polish | ████████░░ 80% | 🔄 En progreso (E4 + JD ✅) |
 | 06 Lanzamiento | ██████████ 100% | ✅ Completado (E5 Fase 1 + PaymentBanner) |
@@ -27,7 +27,7 @@
 > **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
 > **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Bold CO, Stripe BR/Intl, MP opcional)
 > **Payment architecture:** `sdd/e5-checkout-payment/proposal` (#1833) — WhatsApp Provider → Bold → Stripe → MP
-> **Commits:** 17 PRs visual-frontend-audit | **Tag:** `v0.11.0` | **Build:** ✅ 0 errores
+> **Commits:** 17 PRs visual-frontend-audit | **Tags:** `v0.11.0` → `v0.12.0` | **Build:** ✅ 0 errores
 
 ### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
 - [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
@@ -127,6 +127,44 @@
 - [x] E9-P2 — International SEO (hreflang es/en/pt + x-default, og:locale)
 - [x] E9-P3 — On-Page SEO (OG, Twitter Card, meta desc, transactional titles)
 - [x] E9-P4 — Content/Schema (Organization, Product, Breadcrumb, FAQPage, BlogPosting, WebPage, ItemList, CollectionPage)
+
+---
+
+## 🏁 Último Sprint — v0.12.0: PaymentBanner Polish + Footer Redesign (Julio 4, 2026)
+
+> **SDD:** `paymentbanner-visual-refresh` + `payment-icons-v2` + `visual-comprehensive-audit`
+> **PR:** [#40](https://github.com/octavofuegostore/octavo-fuego/pull/40)
+> **Build:** ✅ 0 errores | **Tag:** `v0.12.0`
+
+### ✅ PaymentBanner — Refactor completo (no-box + contenedor invisible)
+- [x] Outer container + badge boxes removidos (editorial no-box)
+- [x] Contenedor unificado sin bg/border (space-y-4)
+- [x] Contenedores uniformes 64×64 para logos (max-h-12 max-w-12)
+- [x] Grid 3 columnas uniforme
+- [x] Hover: scale-110 + ARIA roles + dimensiones
+- [x] Lock icon via astro-icon (solar:lock-bold)
+
+### ✅ SVGs — ViewBox fixes + rewrites + cleanup
+- [x] ViewBox ajustados: PSE "5 4.5 16 16", Visa "0 8 25 9", Mastercard "0 5 26 12", Discover "0 10 25 8", Nequi "4 6 19 14"
+- [x] Codensa rewrite: texto → vector circle (naranja/azul + C blanca)
+- [x] Diners rewrite: texto → vector circle (azul + D blanca)
+- [x] Boleto rewrite: texto → icono de boleto bancario
+- [x] Amex color restaurado: fill="#006FD4"
+- [x] Pix fill agregado: fill="white"
+- [x] MP fill agregado: fill="white"
+- [x] Efecty: removido de métodos + SVGs eliminados
+- [x] Bold + MP: agregados a ES y PT
+
+### ✅ Footer — Rediseño completo
+- [x] 5→4 columnas: Identidad+Pagos / Productos / Ayuda / Conecta
+- [x] Fondo: de #3D2E22/#1F1612/#1A1A1A a #F2EFE8 (warm off-white)
+- [x] Tipografía: títulos tabaco, cuerpo near-black, muted ceniza
+- [x] Iconos sociales: Phosphor Fill → Duotone (tabaco)
+- [x] Divisores: border-white/10 → border-tabaco/20
+- [x] Padding: py-20 md:py-24
+
+### ✅ i18n
+- [x] "Compra protegida" / "Secure purchase" / "Compra protegida" (sin strippe)
 
 ---
 
