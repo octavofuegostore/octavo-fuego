@@ -13,7 +13,7 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.12.0) |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.13.0) |
 | 04 Marketing/SEO | ██████████ 100% | ✅ Completado (v0.12.0) |
 | 05 Testing & Polish | ████████░░ 80% | 🔄 En progreso (E4 + JD ✅) |
 | 06 Lanzamiento | ██████████ 100% | ✅ Completado (E5 Fase 1 + PaymentBanner) |
@@ -27,7 +27,7 @@
 > **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
 > **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Bold CO, Stripe BR/Intl, MP opcional)
 > **Payment architecture:** `sdd/e5-checkout-payment/proposal` (#1833) — WhatsApp Provider → Bold → Stripe → MP
-> **Commits:** 17 PRs visual-frontend-audit | **Tags:** `v0.11.0` → `v0.12.0` | **Build:** ✅ 0 errores
+> **Commits:** 17 PRs visual-frontend-audit | **Tags:** `v0.11.0` → `v0.12.0` → `v0.13.0` | **Build:** ✅ 0 errores
 
 ### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
 - [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
@@ -167,6 +167,27 @@
 - [x] "Compra protegida" / "Secure purchase" / "Compra protegida" (sin strippe)
 
 ---
+
+## 🏁 Último Sprint — v0.13.0: Payment Icons 32px Flex-Wrap + SVG Fixes (Julio 4, 2026)
+
+> **SDD:** `logos-not-equal` + `small-logos-investigation`
+> **PR:** [#41](https://github.com/octavofuegostore/octavo-fuego/pull/41)
+> **Build:** ✅ 0 errores | **Tag:** `v0.13.0`
+
+### ✅ Payment icons — flex-wrap uniforme
+- [x] Flex-wrap layout con h-8 (32px) forzados en TODOS los logos
+- [x] Ancho natural proporcional por SVG (Bold 90x32, Stripe 77x32, Boleto 64x32, cuadrados 32x32)
+- [x] hover:scale-105 en todos los logos
+
+### ✅ SVGs — dimensiones intrínsecas corregidas
+- [x] Pix, Boleto, Diners, MercadoPago: agregados width/height faltantes (no se renderizaban)
+- [x] Discover: width/height corregido para matchear viewBox (antes 32x32 cuadrado, ahora 57x32 proporcional)
+- [x] Visa, MC, Amex, Discover: width/height sincronizados con viewBox
+
+### ✅ Locales verificados
+- [x] EN: Stripe, Visa, MC, Amex, Diners, Discover — todos visibles
+- [x] PT: Pix, Boleto, Visa, MC, Amex, Diners, Discover, MP — todos visibles
+- [x] ES: 12 métodos — todos visibles
 
 ## Sprint Anterior — v0.9.1: JD Priority Fixes + Multi-User (Julio 1, 2026)
 

@@ -1082,3 +1082,25 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 - Títulos traducibles vía i18n
 
 *Última actualización: Julio 4, 2026 — v0.12.0*
+
+---
+
+### 🏁 v0.13.0 — Payment Icons 32px Flex-Wrap + SVG Fixes (Julio 4, 2026)
+
+> **PR:** [#41](https://github.com/octavofuegostore/octavo-fuego/pull/41)
+> **Tag:** `v0.13.0` | **Build:** ✅ 0 errores
+
+**Payment icons:**
+- Flex-wrap layout con h-8 (32px) forzados en TODOS los logos
+- Ancho natural proporcional (Bold 90x32, Stripe 77x32, Boleto 64x32, cuadrados 32x32)
+- hover:scale-105 en todos los logos
+
+**SVGs:**
+- Pix, Boleto, Diners, MP: width/height faltantes (no se renderizaban en PT/EN)
+- Discover: width/height corregido al viewBox (antes 32x32 cuadrado, ahora 57x32 proporcional)
+- Visa, MC, Amex, Discover: width/height sincronizados con viewBox
+
+**Locales verificados:**
+- EN: 6 métodos todos visibles ✅
+- PT: 8 métodos todos visibles ✅
+- ES: 12 métodos todos visibles ✅
