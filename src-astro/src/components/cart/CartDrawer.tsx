@@ -1,9 +1,11 @@
 
 
+import { memo } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, formatCOP, type CartItem } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
 import { useT } from '@/stores/localeStore';
+import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -15,11 +17,12 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
   const total = useStore(cartTotal);
   const count = useStore(cartCount);
   const $t = useT();
+  const drawerRef = useFocusTrap(isOpen, onClose);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50">
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Carrito de compras">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -27,7 +30,10 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
       />
       
       {/* Drawer */}
-      <div className="absolute top-0 right-0 h-full w-full max-w-md bg-humo border-l border-humo/50 shadow-xl flex flex-col">
+      <div
+        ref={drawerRef}
+        className="absolute top-0 right-0 h-full w-full max-w-md bg-humo border-l border-humo/50 shadow-xl flex flex-col"
+      >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-humo/50">
           <h2 className="font-display text-xl font-semibold">
@@ -103,7 +109,7 @@ interface CartItemCardProps {
   onRemove: (variantId: string) => void;
 }
 
-function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
+const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
   const $t = useT();
   return (
     <div className="flex gap-4 p-4 bg-black/20 border border-humo/30">
@@ -158,6 +164,6 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
       </div>
     </div>
   );
-}
+});
 
 export { CartItemCard };

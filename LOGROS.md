@@ -44,20 +44,20 @@
 > **Skills nuevos**: impeccable, wcag-audit, web-quality-audit, vercel-react-best-practices, design-taste-frontend, emil-design-eng, tailwind-design-system, astro, i18n-localization, seo-audit, shadcn, find-skills + 4 complementarios
 > **Skills on-demand**: 26 skills en `skills_master/web-pack/`
 
-| Explore | Skill | Score | Hallazgos |
-|---------|-------|-------|-----------|
-| E1 UI Visual Audit | impeccable | 12/20 | 18 issues (5 P1, 9 P2, 4 P3) |
-| E2 Accesibilidad WCAG | wcag-audit | A con gaps | 5 Critical, 5 High, 7 Medium |
-| E3 Web Quality | addyosmani | 55-75 | Perf 55, A11y 60, SEO 75, BP 65 |
-| E4 React Performance | vercel-react | ~150KB salvageable | 22 issues (3 Critical) |
-| E5 Design Taste + Craft | taste + emil | AI Slop Bajo-Medio | 7 hallazgos |
-| E6 Tailwind + Tokens | tailwind-ds | Híbrido confuso | 10 issues (4 Critical) |
-| E7 Astro Best Practices | astro | SSG roto | 10 issues (2 Critical) |
-| E8 i18n / Locale | i18n | React islands sin i18n | 4 Critical, 2 High |
-| E9-P1 Technical SEO | seo-audit | Canonical roto | 5 Critical |
-| E9-P2 International SEO | seo-audit | Sitemap sin i18n | 3 Critical |
-| E9-P3 On-Page SEO | seo-audit | Brand duplicado | 3 Critical |
-| E9-P4 Content + Schema | seo-audit | Lorem ipsum, garbled | 3 Critical |
+| Explore | Skill | Score | Hallazgos | Estado |
+|---------|-------|-------|-----------|--------|
+| E1 UI Visual Audit | impeccable | 12/20 | 18 issues (5 P1, 9 P2, 4 P3) | Proposal listo |
+| E2 Accesibilidad WCAG | wcag-audit | A con gaps | 5 Critical, 5 High, 7 Medium | ✅ Implementado |
+| E3 Web Quality | addyosmani | 55-75 | Perf 55, A11y 60, SEO 75, BP 65 | ✅ Implementado |
+| E4 React Performance | vercel-react | ~150KB salvageable | 22 issues (3 Critical) | Proposal listo |
+| E5 Design Taste + Craft | taste + emil | AI Slop Bajo-Medio | 7 hallazgos | ✅ Reemplazado por audit |
+| E6 Tailwind + Tokens | tailwind-ds | Híbrido confuso | 10 issues (4 Critical) | ✅ Implementado |
+| E7 Astro Best Practices | astro | SSG roto | 10 issues (2 Critical) | ✅ Implementado |
+| E8 i18n / Locale | i18n | React islands sin i18n | 4 Critical, 2 High | ✅ Implementado |
+| E9-P1 Technical SEO | seo-audit | Canonical roto | 5 Critical | Proposal listo |
+| E9-P2 International SEO | seo-audit | Sitemap sin i18n | 3 Critical | Proposal listo |
+| E9-P3 On-Page SEO | seo-audit | Brand duplicado | 3 Critical | Proposal listo |
+| E9-P4 Content + Schema | seo-audit | Lorem ipsum, garbled | 3 Critical | Proposal listo |
 
 ---
 
@@ -1020,4 +1020,23 @@ tokens funcionales disponibles:
 
 ---
 
+### ✅ E2 — UI/UX A11y (implementado Julio 3)
+> 3 PRs, ~750 líneas en `chore/e2-ui-ux-a11y`
+- PR1: Focus trap en CartDrawer + modales admin (ConfirmDialog, SlidePanel)
+- PR2: Keyboard nav en LanguageSwitcher + Navbar dropdowns (Tab, Enter, Space, Arrow)
+- PR3: Form a11y en CheckoutForm (htmlFor/id, aria-describedby, aria-live, radiogroup)
+
+### ✅ PaymentBanner — Iconos de pago (Julio 3)
+- 34 SVGs: 17 métodos × 2 variantes (dark=blanco para footer, light=color para checkout)
+- Fuentes: Bold CDN (10), simpleicons (MP, Pix), Wikimedia (Stripe), seeklogo (Diners, Efecty), custom (Codensa, Boleto)
+- Componente `PaymentBanner.astro` locale-aware, integrado en footer + checkout
+- Stripe badge aparte como "secured by"
+
+### 🟡 E5 — Checkout & Payment Architecture (Proposal, Julio 3)
+> `sdd/e5-checkout-payment/proposal` (#1833)
+- **Arquitectura:** PaymentProvider interface + mapeo locale→provider
+- **Fase 1 (urgente):** WhatsApp Provider — guardar orden antes de confirmar, copy honesto, clearCart() post-orden
+- **Fase 2 (espera legal):** Bold Provider (CO)
+- **Fase 3 (espera legal):** Stripe Provider (BR Pix/Boleto + Intl card)
+- **Fase 4 (opcional):** Mercado Pago (CO+BR)
 *Última actualización: Julio 3, 2026*

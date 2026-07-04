@@ -39,6 +39,86 @@ const sizeClasses = { sm: 'max-w-md', md: 'max-w-lg', lg: 'max-w-2xl' }
   </div>
 </div>
 
+<script define:vars={{ id }}>
+  const panel = document.getElementById(`panel-${id}`);
+  const closeBtn = document.getElementById(`panel-${id}-close`);
+  const backdrop = document.getElementById(`panel-${id}-backdrop`);
+
+  function getFocusableElements() {
+    if (!panel) return [];
+    return Array.from(
+      panel.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    );
+  }
+
+  function focusFirstElement() {
+    const focusable = getFocusableElements();
+    if (focusable.length > 0) {
+      (focusable[0] as HTMLElement).focus();
+    } else {
+      panel?.focus();
+    }
+  }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Escape') {
+      closeBtn?.click();
+      return;
+    }
+
+    if (e.key !== 'Tab') return;
+
+    const focusable = getFocusableElements();
+    if (focusable.length === 0) {
+      e.preventDefault();
+      return;
+    }
+
+    const first = focusable[0] as HTMLElement;
+    const last = focusable[focusable.length - 1] as HTMLElement;
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }
+
+  // Observe when panel opens/closes via class changes
+  const observer = new MutationObserver(() => {
+    const isOpen = panel?.classList.contains('translate-x-0');
+    if (isOpen) {
+      focusFirstElement();
+      document.addEventListener('keydown', handleKeyDown);
+    } else {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  });
+
+  if (panel) {
+    panel.setAttribute('tabindex', '-1');
+    observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+    // If already open on page load
+    if (panel.classList.contains('translate-x-0')) {
+      focusFirstElement();
+      document.addEventListener('keydown', handleKeyDown);
+    }
+  }
+
+  // Close on backdrop click
+  backdrop?.addEventListener('click', () => {
+    closeBtn?.click();
+  });
+</script>
+
 <!-- Backdrop -->
 <div
   id={`panel-${id}-backdrop`}
