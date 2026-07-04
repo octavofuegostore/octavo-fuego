@@ -119,6 +119,9 @@
 - [ ] Fase 3: Stripe Provider (BR/Intl) — espera aprobación legal
 - [ ] Fase 4: Mercado Pago (CO+BR) — opcional
 
+### 🎨 UX — PaymentBanner visual refresh
+- [ ] Mejorar la visual de los métodos de pago — actualmente se ven como logos chicos sin orden ni teselado. Ideal: badges blancos con bordes sutiles en grid ordenado (3-4 por fila), logos con padding consistente, "Protegido por Stripe" con ícono de candado y mejor tipografía.
+
 ### 🔶 E9 — SEO (4 phases)
 - [ ] E9-P1 — Technical SEO (canonical, sitemap)
 - [ ] E9-P2 — International SEO (hreflang, locales)
