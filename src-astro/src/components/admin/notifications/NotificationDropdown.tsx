@@ -55,7 +55,7 @@ function notificationIcon(tipo: string): string {
 }
 
 function notificationColor(tipo: string): string {
-  if (tipo.includes('orden')) return 'text-tabacco';
+  if (tipo.includes('orden')) return 'text-tabaco';
   if (tipo.includes('b2b')) return 'text-blue-500';
   if (tipo.includes('stock')) return 'text-amber-500';
   if (tipo.includes('pago')) return 'text-green-500';
@@ -157,7 +157,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative text-humo hover:text-tabacco transition-colors"
+        className="relative text-humo hover:text-tabaco transition-colors"
         title="Notificaciones"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -169,7 +169,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
           />
         </svg>
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-tabacco text-white text-xs rounded-full flex items-center justify-center font-medium">
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-tabaco text-white text-xs rounded-full flex items-center justify-center font-medium">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -188,7 +188,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="text-xs text-tabacco hover:underline"
+                className="text-xs text-tabaco hover:underline"
               >
                 Marcar todo leído
               </button>
@@ -210,12 +210,12 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
                   key={notif.id}
                   onClick={() => handleClick(notif)}
                   className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-papel/50 transition-colors border-b border-papel/50 last:border-0 ${
-                    !notif.leida ? 'bg-tabacco/[0.03]' : ''
+                    !notif.leida ? 'bg-tabaco/[0.03]' : ''
                   }`}
                 >
                   {/* Unread accent bar */}
                   {!notif.leida && (
-                    <div className="w-0.5 self-stretch rounded-full bg-tabacco flex-shrink-0" />
+                    <div className="w-0.5 self-stretch rounded-full bg-tabaco flex-shrink-0" />
                   )}
 
                   {/* Icon */}
@@ -247,7 +247,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
           {/* Footer */}
           {notificaciones.length > 0 && (
             <div className="px-4 py-2.5 border-t border-papel text-center">
-              <a href="/admin/actividad" className="text-xs text-tabacco hover:underline">
+              <a href="/admin/actividad" className="text-xs text-tabaco hover:underline">
                 Ver todo el registro de actividad
               </a>
             </div>

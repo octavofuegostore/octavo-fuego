@@ -1,10 +1,9 @@
 
 
-import { memo } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, cartCount, updateQuantity, removeFromCart, formatCOP, type CartItem } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
-import { useT } from '@/stores/localeStore';
+import { useT, localeStore } from '@/stores/localeStore';
 import { useFocusTrap } from '@/hooks/useFocusTrap';
 
 interface CartDrawerProps {
@@ -86,11 +85,13 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             </div>
             <div className="flex justify-between items-center pt-4 border-t border-humo/50">
               <span className="font-semibold">{$t('cart.total')}</span>
-              <span className="font-display text-2xl font-bold text-tabacco">
+              <span className="font-display text-2xl font-bold text-tabaco">
                 {formatCOP(total)}
               </span>
             </div>
-            <Button className="w-full" size="lg">
+            <Button className="w-full" size="lg" onClick={() => {
+              window.location.href = '/checkout';
+            }}>
               {$t('cart.irCheckout')}
             </Button>
             <Button variant="ghost" className="w-full" onClick={onClose}>
@@ -109,7 +110,7 @@ interface CartItemCardProps {
   onRemove: (variantId: string) => void;
 }
 
-const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
+function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
   const $t = useT();
   return (
     <div className="flex gap-4 p-4 bg-black/20 border border-humo/30">
@@ -126,7 +127,7 @@ const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemo
       <div className="flex-1 min-w-0">
         <h3 className="font-medium text-sm truncate">{item.nombre.es}</h3>
         <p className="text-ceniza text-xs">{item.etnia}</p>
-        <p className="text-tabacco text-sm font-semibold mt-1">
+        <p className="text-tabaco text-sm font-semibold mt-1">
           {formatCOP(item.precio)}
         </p>
 
@@ -134,7 +135,7 @@ const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemo
         <div className="flex items-center gap-2 mt-2">
           <button
             onClick={() => onUpdateQuantity(item.variantId, item.cantidad - 1)}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabaco transition-colors"
             aria-label={$t('cart.ariaReducir')}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +145,7 @@ const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemo
           <span className="w-8 text-center text-sm">{item.cantidad}</span>
           <button
             onClick={() => onUpdateQuantity(item.variantId, item.cantidad + 1)}
-            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabacco transition-colors"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] flex items-center justify-center border border-humo hover:border-tabaco transition-colors"
             aria-label={$t('cart.ariaAumentar')}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -164,6 +165,6 @@ const CartItemCard = memo(function CartItemCard({ item, onUpdateQuantity, onRemo
       </div>
     </div>
   );
-});
+}
 
 export { CartItemCard };

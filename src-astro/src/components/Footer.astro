@@ -3,6 +3,7 @@ import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
 import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
+import PaymentBanner from '@/components/PaymentBanner.astro';
 
 interface Props {
   locale?: Locale;
@@ -141,6 +142,11 @@ const t = useTranslations(locale);
           </a>
         </div>
       </div>
+    </div>
+
+    <!-- Payment Methods -->
+    <div class="mb-8">
+      <PaymentBanner variant="dark" locale={locale} />
     </div>
 
     <!-- Bottom Bar -->

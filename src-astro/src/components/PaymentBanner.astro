@@ -1,0 +1,89 @@
+---
+interface Props {
+  variant: 'dark' | 'light';
+  locale?: 'es' | 'en' | 'pt';
+}
+
+import { t } from '@/i18n';
+
+const { variant = 'dark', locale = 'es' } = Astro.props;
+
+const textColor = variant === 'dark' ? 'text-white' : 'text-[var(--near-black)]';
+const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-ceniza';
+const bgMuted = variant === 'dark' ? 'bg-white/5' : 'bg-papel/50';
+const borderColor = variant === 'dark' ? 'border-white/10' : 'border-gray-200';
+
+// Locale-based payment methods
+type PaymentMethod = {
+  id: string;
+  label: string;
+};
+
+function getPaymentMethods(locale: string): PaymentMethod[] {
+  switch (locale) {
+    case 'pt':
+      return [
+        { id: 'pix', label: 'Pix' },
+        { id: 'boleto', label: 'Boleto' },
+        { id: 'visa', label: 'Visa' },
+        { id: 'mastercard', label: 'Mastercard' },
+        { id: 'amex', label: 'Amex' },
+        { id: 'diners', label: 'Diners' },
+        { id: 'discover', label: 'Discover' },
+      ];
+    case 'en':
+      return [
+        { id: 'stripe', label: 'Stripe' },
+        { id: 'visa', label: 'Visa' },
+        { id: 'mastercard', label: 'Mastercard' },
+        { id: 'amex', label: 'Amex' },
+        { id: 'diners', label: 'Diners' },
+        { id: 'discover', label: 'Discover' },
+      ];
+    default: // 'es' — Colombia
+      return [
+        { id: 'pse', label: 'PSE' },
+        { id: 'nequi', label: 'Nequi' },
+        { id: 'daviplata', label: 'Daviplata' },
+        { id: 'bancolombia', label: 'Bancolombia' },
+        { id: 'efecty', label: 'Efecty' },
+        { id: 'codensa', label: 'Codensa' },
+        { id: 'visa', label: 'Visa' },
+        { id: 'mastercard', label: 'Mastercard' },
+        { id: 'amex', label: 'Amex' },
+        { id: 'diners', label: 'Diners' },
+        { id: 'discover', label: 'Discover' },
+      ];
+  }
+}
+
+const methods = getPaymentMethods(locale);
+const t_ = (key: string) => t(key, locale);
+const title = t_('payment.title');
+---
+
+<div class="w-full">
+  <div class={`border ${borderColor} ${bgMuted} p-6 rounded-2xl`}>
+    <p class={`text-xs font-semibold uppercase tracking-wider mb-4 ${mutedColor}`}>
+      {title}
+    </p>
+    <div class="flex flex-wrap gap-3 items-center">
+      {methods.map((method) => (
+        <img
+          key={method.id}
+          src={`/images/payment/${variant}/${method.id}.svg`}
+          alt={method.label}
+          class="h-8 md:h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+          loading="lazy"
+        />
+      ))}
+    </div>
+    <div class={`flex items-center gap-2 mt-4 pt-4 ${borderColor} border-t text-xs ${mutedColor}`}>
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="1" y="4" width="22" height="16" rx="2" />
+        <path d="M1 10h22" />
+      </svg>
+      <span>{t_('payment.securedBy')}</span>
+    </div>
+  </div>
+</div>

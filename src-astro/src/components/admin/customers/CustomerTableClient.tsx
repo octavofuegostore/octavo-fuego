@@ -48,7 +48,7 @@ const locationConfig: Record<
 
 const typeConfig = {
   retail: { bg: "bg-info/10", text: "text-info", label: "Minorista" },
-  wholesale: { bg: "bg-tabacco/10", text: "text-tabacco", label: "Mayorista" },
+  wholesale: { bg: "bg-tabaco/10", text: "text-tabaco", label: "Mayorista" },
 };
 
 interface CustomerTableClientProps {
@@ -159,7 +159,7 @@ export default function CustomerTableClient({
                 placeholder="Buscar clientes..."
                 value={$customerSearchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
               />
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function CustomerTableClient({
                 customerLocationFilter.set(e.target.value);
                 customerCurrentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todas las ubicaciones</option>
               <option value="CO">Colombia</option>
@@ -187,7 +187,7 @@ export default function CustomerTableClient({
                 customerTypeFilter.set(e.target.value);
                 customerCurrentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todos los tipos</option>
               <option value="retail">Minorista</option>
@@ -230,8 +230,8 @@ export default function CustomerTableClient({
                   <TableRow key={customer.id}>
                     <TableCell>
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-tabacco/10 rounded-full flex items-center justify-center">
-                          <span className="text-tabacco font-medium text-sm">
+                        <div className="w-10 h-10 bg-tabaco/10 rounded-full flex items-center justify-center">
+                          <span className="text-tabaco font-medium text-sm">
                             {customer.name
                               .split(" ")
                               .map((n) => n[0])
@@ -297,7 +297,7 @@ export default function CustomerTableClient({
                         </button>
                         <button
                           onClick={() => handleEditCustomer(customer.id)}
-                          className="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors"
+                          className="p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
                           <svg
@@ -358,7 +358,7 @@ export default function CustomerTableClient({
                     onClick={() => handlePageChange(page)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                       page === $customerCurrentPage
-                        ? "bg-tabacco text-white"
+                        ? "bg-tabaco text-white"
                         : "border border-papel text-ceniza hover:bg-papel transition-colors"
                     }`}
                   >

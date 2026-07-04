@@ -6,11 +6,16 @@
  * @source components/ui/FloatingWhatsApp.tsx (converted)
  */
 
+export interface Props {
+  locale?: 'es' | 'en' | 'pt';
+}
+
 import { useTranslations } from '@/i18n';
 
-const t = useTranslations('es');
+const { locale = 'es' } = Astro.props;
+const t = useTranslations(locale);
 const phoneNumber = '573172137932';
-const message = 'Hola, me gustaría obtener más información sobre sus productos.';
+const message = t.whatsapp.message_template;
 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 ---
 

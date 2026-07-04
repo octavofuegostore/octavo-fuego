@@ -46,7 +46,7 @@ const cobradoBRL = confirmados
       </div>
       <button
         id="generate-link-btn"
-        class="flex items-center gap-2 px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+        class="flex items-center gap-2 px-4 py-2 bg-tabaco text-white rounded-lg text-sm font-medium hover:bg-tabaco/90 transition-colors"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
@@ -93,12 +93,12 @@ const cobradoBRL = confirmados
           type="text"
           id="search-pagos"
           placeholder="Buscar por ID u orden..."
-          class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+          class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
         />
       </div>
       <select
         id="filter-metodo"
-        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
       >
         <option value="">Todos los métodos</option>
         <option value="wompi_link">Link Wompi</option>
@@ -107,7 +107,7 @@ const cobradoBRL = confirmados
       </select>
       <select
         id="filter-estado"
-        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+        class="px-3 py-2 border border-papel rounded-lg text-sm text-humo focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
       >
         <option value="">Todos los estados</option>
         <option value="pendiente">Pendiente</option>
@@ -194,7 +194,7 @@ const cobradoBRL = confirmados
               >
                 <td class="py-3 px-4 font-medium text-humo">#{pago.id}</td>
                 <td class="py-3 px-4">
-                  <a href={'/admin/ordenes/' + pago.orden_id} class="text-tabacco hover:text-tabacco/80 font-medium" data-stop-propagation>
+                  <a href={'/admin/ordenes/' + pago.orden_id} class="text-tabaco hover:text-tabaco/80 font-medium" data-stop-propagation>
                     {pago.orden_id}
                   </a>
                 </td>

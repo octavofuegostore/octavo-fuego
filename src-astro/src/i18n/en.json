@@ -1,7 +1,8 @@
 {
   "common": {
     "brand": "Octavo Fuego",
-    "tagline": "Rapé from Acre, Brazilian Amazon"
+    "tagline": "Rapé from Acre, Brazilian Amazon",
+    "skip_to_content": "Skip to main content"
   },
   "nav": {
     "tienda": "Shop",
@@ -120,7 +121,28 @@
     "confirmarWhatsApp": "Confirm via WhatsApp",
     "procesando": "Processing...",
     "pagoSeguro": "100% secure payment. We accept PSE, Nequi, Daviplata and cards.",
-    "masItems": "+ {count} more"
+    "masItems": "+ {count} more",
+    "pedidoRecibidoHeading": "Order received!",
+    "referencia": "Reference:",
+    "pedidoRecibidoMsg": "We received your order. To confirm it, write to us on WhatsApp with your reference number and we'll coordinate payment.",
+    "procesandoAria": "Processing your payment...",
+    "recibidoAria": "Order received. Coordinate payment via WhatsApp.",
+    "whatsappConfirmMsg": "Hi! I just placed an order ({referenceId}) for {total} under {name}. I'm waiting to coordinate payment."
+  },
+  "payment": {
+    "title": "Payment methods",
+    "securedBy": "Secured by Stripe"
+  },
+  "blog": {
+    "breadcrumbHome": "Home",
+    "ctaQuestion": "Was this article helpful?",
+    "whatsappCta": "Send via WhatsApp",
+    "relatedPosts": "Related articles",
+    "category": {
+      "ancestral": "Ancestral",
+      "cultura": "Culture",
+      "salud": "Health"
+    }
   },
   "footer": {
     "productos": "Products",
@@ -142,7 +164,8 @@
     "disclaimer": "Our products are sold as ceremonial incense. Use is the responsibility of the acquirer."
   },
   "whatsapp": {
-    "tooltip": "Need help?"
+    "tooltip": "Need help?",
+    "message_template": "Hello, I'd like to learn more about your products."
   },
   "404": {
     "titulo": "Page not found",
@@ -198,8 +221,35 @@
   "mayoristas": {
     "hero_title": "Institutional Distribution of Rapé do Acre for Facilitators and Distributors in Colombia",
     "hero_desc": "Direct source from the Brazilian Amazon. The best price per gram on the Colombian market.",
+    "hero_desc_extra": "Vacuum-sealed packaging guarantees freshness from Acre to your center.",
     "ventaja_origen": "Source Price",
-    "ventaja_origen_desc": "No intermediaries. We work directly with communities in Acre, Brazil.",
+    "ventaja_origen_desc": "No intermediaries. We work directly with communities in Acre, Brazil. Up to 46% cheaper than competitors.",
+    "ventaja_empaque": "Vacuum Packed",
+    "ventaja_empaque_desc": "Each batch is hermetically sealed at origin. Guaranteed freshness from the Amazon to your center or store.",
+    "ventaja_envio": "Shipping to Colombia",
+    "ventaja_envio_desc": "Nationwide coverage. Minimum 250g for wholesale orders. Delivery time 3-7 business days.",
+    "variedades_title": "Varieties Available for Wholesale",
+    "variedad_tisunu_desc": "Focus and mental clarity",
+    "variedad_pixuri_desc": "Respiratory balance",
+    "variedad_parika_desc": "Energetic cleansing",
+    "variedad_cumaru_desc": "Protection and balsamic aroma",
+    "variedad_vena_desc": "Intuition and balance",
+    "variedad_kuripes_desc": "Artisanal applicators",
+    "variedad_precio": "From {price} COP/g",
+    "variedad_proximamente": "Coming soon",
+    "cta_mid_title": "Are you a facilitator or distributor?",
+    "cta_mid_desc": "Receive volume preferential pricing, samples for your center, and scheduled shipments. Flexible minimum from 250g for pilot trials.",
+    "cta_mid_btn": "Request Information",
+    "faq_title": "Frequently Asked Questions",
+    "faq_q1": "What is the minimum wholesale purchase?",
+    "faq_a1": "The standard minimum is 250g per variety. We offer a pilot trial from 250g so you can evaluate quality before committing to a larger volume.",
+    "faq_q2": "Do you ship throughout Colombia?",
+    "faq_a2": "Yes, we cover all Colombian national territory. Delivery times are 3 to 7 business days depending on location. We offer express options for priority orders (contact via WhatsApp).",
+    "faq_q3": "What is the purchase process?",
+    "faq_a3": "1. Inquire via WhatsApp → 2. We quote based on volume → 3. You confirm the order → 4. You receive vacuum-sealed packaging direct from Acre.",
+    "faq_q4": "What payment methods do you accept?",
+    "faq_a4": "We accept bank transfers in Colombia. For larger orders, we can coordinate other options via WhatsApp.",
+    "whatsapp_wholesale": "Hello, I want information about wholesale purchases of Rapé do Acre for my center or distribution.",
     "cta_catalogo": "View Catalog",
     "cta_whatsapp": "Inquire via WhatsApp",
     "meta_title": "Rapé Wholesale Colombia — Rapé do Acre Distributor",

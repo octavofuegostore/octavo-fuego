@@ -14,7 +14,7 @@ Sistema de diseño visual para Octavo Fuego - estética "Minimalist Sacred" que 
 |-------|-----|-------|
 | `black` | #000000 | Fondos principales, texto |
 | `white` | #FFFFFF | Texto sobre oscuro, fondos |
-| `tabacco` | #8B4513 | CTAs, acentos, tierra |
+| `tabaco` | #6d5e4d | CTAs, acentos, tierra |
 | `ash` | #C0C0C0 | Textos secundarios |
 | `smoke` | #2A2A2A | Cards, fondos suaves |
 | `paper` | #F5F5F0 | Blog, contenido claro |
@@ -77,15 +77,15 @@ Sistema de diseño visual para Octavo Fuego - estética "Minimalist Sacred" que 
 
 | Variant | Style |
 |---------|-------|
-| Primary | bg-tabacco, text-white, px-6 py-3 |
-| Secondary/Ghost | border-tabacco, text-tabacco, transparent bg |
+| Primary | bg-tabaco, text-white, px-6 py-3 |
+| Secondary/Ghost | border-tabaco, text-tabaco, transparent bg |
 | Disabled | opacity-50, cursor-not-allowed |
 
 ### 5.2 Card (Product)
 
 ```
 Borde: 1px solid #2A2A2A (smoke)
-Hover: borde → #8B4513 (tabacco), sombra sutil
+Hover: borde → #6d5e4d (tabaco), sombra sutil
 Radio: 0 (sin border-radius - cuadrado)
 ```
 
@@ -94,7 +94,7 @@ Radio: 0 (sin border-radius - cuadrado)
 ```
 Estilo: border-bottom only
 Color: #C0C0C0 (ash)
-Focus: border-bottom → #8B4513 (tabacco)
+Focus: border-bottom → #6d5e4d (tabaco)
 ```
 
 ### 5.4 Modal/Dialog
@@ -110,7 +110,7 @@ Animación: fade in 200ms
 
 ```
 Estilo: underline activo
-Color activo: #8B4513 (tabacco)
+Color activo: #6d5e4d (tabaco)
 Transición: opacity 200ms
 ```
 

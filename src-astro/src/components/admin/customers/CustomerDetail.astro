@@ -17,7 +17,7 @@ const locationConfig = {
 
 const typeConfig = {
   retail: { bg: 'bg-info/10', text: 'text-info', label: 'Minorista' },
-  wholesale: { bg: 'bg-tabacco/10', text: 'text-tabacco', label: 'Mayorista' }
+  wholesale: { bg: 'bg-tabaco/10', text: 'text-tabaco', label: 'Mayorista' }
 };
 
 function formatPrice(price: number, currency: string): string {
@@ -48,8 +48,8 @@ const averageOrderValue = customer && customer.totalOrders > 0
     <div class="bg-white rounded-2xl shadow-card p-6">
       <div class="flex items-start justify-between">
         <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-tabacco/10 rounded-full flex items-center justify-center">
-            <span class="text-tabacco font-bold text-xl">
+          <div class="w-16 h-16 bg-tabaco/10 rounded-full flex items-center justify-center">
+            <span class="text-tabaco font-bold text-xl">
               {customer.name.split(' ').map(n => n[0]).join('')}
             </span>
           </div>

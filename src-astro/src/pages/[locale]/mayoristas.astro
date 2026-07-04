@@ -16,8 +16,7 @@ const title = t.mayoristas.meta_title;
 const description = t.mayoristas.meta_desc;
 
 const phoneNumber = '573172137932';
-const whatsappMessage =
-  'Hola, quiero información sobre compras mayoristas de Rapé do Acre para mi centro o distribución.';
+const whatsappMessage = t.mayoristas.whatsapp_wholesale;
 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
 const keywords = t.mayoristas.keywords.join(', ');
@@ -30,17 +29,16 @@ const keywords = t.mayoristas.keywords.join(', ');
     <WholesaleStoreJsonLd />
   </Fragment>
 
-  <main class="max-w-6xl mx-auto px-4 py-16">
+  <section class="max-w-6xl mx-auto px-4 py-16">
     <!-- Hero -->
-    <section class="text-center mb-20">
+    <div class="text-center mb-20">
       <h1
         class="font-display heading-xl font-bold text-[var(--near-black)] mb-6 leading-tight"
       >
         {t.mayoristas.hero_title}
       </h1>
       <p class="text-lg text-ceniza max-w-3xl mx-auto mb-8">
-        {t.mayoristas.hero_desc}
-        Empaque al vacío que garantiza frescura desde Acre hasta tu centro.
+        {t.mayoristas.hero_desc} {t.mayoristas.hero_desc_extra}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
@@ -67,25 +65,23 @@ const keywords = t.mayoristas.keywords.join(', ');
           {t.mayoristas.ventaja_origen}
         </h2>
         <p class="text-ceniza">
-          {t.mayoristas.ventaja_origen_desc} Hasta 46% más barato que la competencia.
+          {t.mayoristas.ventaja_origen_desc}
         </p>
       </div>
       <div class="bg-papel rounded-2xl p-8 text-center">
         <h2 class="font-display text-2xl font-bold text-[var(--near-black)] mb-4">
-          Empaque al Vacío
+          {t.mayoristas.ventaja_empaque}
         </h2>
         <p class="text-ceniza">
-          Cada lote es sellado herméticamente en origen. Frescura garantizada desde
-          la Amazonía hasta tu centro o tienda.
+          {t.mayoristas.ventaja_empaque_desc}
         </p>
       </div>
       <div class="bg-papel rounded-2xl p-8 text-center">
         <h2 class="font-display text-2xl font-bold text-[var(--near-black)] mb-4">
-          Envío a Colombia
+          {t.mayoristas.ventaja_envio}
         </h2>
         <p class="text-ceniza">
-          Cobertura nacional. Mínimo 250g para pedidos mayoristas. Tiempos de
-          entrega de 3-7 días hábiles.
+          {t.mayoristas.ventaja_envio_desc}
         </p>
       </div>
     </section>
@@ -95,61 +91,61 @@ const keywords = t.mayoristas.keywords.join(', ');
       <h2
         class="font-display heading-xl font-bold text-[var(--near-black)] mb-8 text-center"
       >
-        Variedades Disponibles para Mayoristas
+        {t.mayoristas.variedades_title}
       </h2>
       <div class="grid md:grid-cols-3 gap-6">
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Tisunú
           </h3>
-          <p class="text-ceniza text-sm mb-4">Enfoque y claridad mental</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_tisunu_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Desde $3.500 COP/g
+            {t.mayoristas.variedad_precio.replace('{price}', '$3.500')}
           </p>
         </div>
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Pixurí
           </h3>
-          <p class="text-ceniza text-sm mb-4">Equilibrio respiratorio</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_pixuri_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Desde $3.500 COP/g
+            {t.mayoristas.variedad_precio.replace('{price}', '$3.500')}
           </p>
         </div>
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Pariká
           </h3>
-          <p class="text-ceniza text-sm mb-4">Limpieza energética</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_parika_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Desde $3.500 COP/g
+            {t.mayoristas.variedad_precio.replace('{price}', '$3.500')}
           </p>
         </div>
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Cumarú de Cheiro
           </h3>
-          <p class="text-ceniza text-sm mb-4">Protección y aroma balsámico</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_cumaru_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Desde $3.500 COP/g
+            {t.mayoristas.variedad_precio.replace('{price}', '$3.500')}
           </p>
         </div>
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Vena de Pajé
           </h3>
-          <p class="text-ceniza text-sm mb-4">Intuición y balance</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_vena_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Desde $3.500 COP/g
+            {t.mayoristas.variedad_precio.replace('{price}', '$3.500')}
           </p>
         </div>
         <div class="border border-[var(--color-action-subtle)] rounded-2xl p-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
             Kuripes
           </h3>
-          <p class="text-ceniza text-sm mb-4">Aplicadores artesanales</p>
+          <p class="text-ceniza text-sm mb-4">{t.mayoristas.variedad_kuripes_desc}</p>
           <p class="text-sm text-[var(--tabaco-base)] font-semibold">
-            Próximamente
+            {t.mayoristas.variedad_proximamente}
           </p>
         </div>
       </div>
@@ -158,11 +154,10 @@ const keywords = t.mayoristas.keywords.join(', ');
     <!-- CTA Mid-page -->
     <section class="bg-[var(--tabaco-base)] rounded-2xl p-12 text-center mb-20">
       <h2 class="font-display text-3xl font-bold text-white mb-4">
-        ¿Eres facilitador o distribuidor?
+        {t.mayoristas.cta_mid_title}
       </h2>
       <p class="text-[var(--color-text-on-dark)] mb-8 max-w-2xl mx-auto">
-        Recibe precios preferenciales por volumen, muestras para tu centro y
-        envíos programados. Mínimo flexible desde 250g para pruebas piloto.
+        {t.mayoristas.cta_mid_desc}
       </p>
       <a
         href={whatsappUrl}
@@ -170,7 +165,7 @@ const keywords = t.mayoristas.keywords.join(', ');
         rel="noopener noreferrer"
         class="inline-block bg-white text-[var(--tabaco-base)] px-10 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-colors"
       >
-        Solicitar Información
+        {t.mayoristas.cta_mid_btn}
       </a>
     </section>
 
@@ -179,74 +174,66 @@ const keywords = t.mayoristas.keywords.join(', ');
       <h2
         class="font-display heading-xl font-bold text-[var(--near-black)] mb-8 text-center"
       >
-        Preguntas Frecuentes
+        {t.mayoristas.faq_title}
       </h2>
 
       <div class="space-y-6">
         <div class="border-b border-gray-200 pb-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
-            ¿Cuál es el mínimo de compra mayorista?
+            {t.mayoristas.faq_q1}
           </h3>
           <p class="text-ceniza">
-            El mínimo estándar es 250g por variedad. Ofrecemos una prueba piloto
-            desde 250g para que puedas evaluar la calidad antes de comprometerte a
-            un volumen mayor.
+            {t.mayoristas.faq_a1}
           </p>
         </div>
         <div class="border-b border-gray-200 pb-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
-            ¿Hacen envíos a todo Colombia?
+            {t.mayoristas.faq_q2}
           </h3>
           <p class="text-ceniza">
-            Sí, cubrimos territorio nacional colombiano. Los tiempos de entrega son
-            de 3 a 7 días hábiles dependiendo de la ubicación. Ofrecemos opción
-            urgente para pedidos prioritarios (contactar vía WhatsApp).
+            {t.mayoristas.faq_a2}
           </p>
         </div>
         <div class="border-b border-gray-200 pb-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
-            ¿Cómo es el proceso de compra?
+            {t.mayoristas.faq_q3}
           </h3>
           <p class="text-ceniza">
-            1. Consultas por WhatsApp → 2. Te cotizamos según volumen → 3.
-            Confirmas pedido → 4. Recibes empaque al vacío directo del Acre.
+            {t.mayoristas.faq_a3}
           </p>
         </div>
         <div class="border-b border-gray-200 pb-6">
           <h3 class="font-display text-xl font-bold text-[var(--near-black)] mb-2">
-            ¿Qué métodos de pago aceptan?
+            {t.mayoristas.faq_q4}
           </h3>
           <p class="text-ceniza">
-            Aceptamos transferencia bancaria en Colombia. Para pedidos mayores,
-            podemos coordinar otras opciones vía WhatsApp.
+            {t.mayoristas.faq_a4}
           </p>
         </div>
       </div>
     </section>
 
     <!-- Schema -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Product",
-        "name": "Rapé do Acre — Distribución Mayorista",
-        "description": "Distribución institucional de Rapé do Acre para facilitadores y distribuidores en Colombia. Origen directo del Amazonas brasileño.",
-        "brand": {
-          "@type": "Brand",
-          "name": "Octavo Fuego"
-        },
-        "offers": {
-          "@type": "AggregateOffer",
-          "priceCurrency": "COP",
-          "lowPrice": "3500",
-          "highPrice": "3500",
-          "offerCount": "5"
-        },
-        "areaServed": {
-          "@type": "Country",
-          "name": "Colombia"
-        }
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "Rapé do Acre — Distribución Mayorista",
+      "description": t.mayoristas.meta_desc,
+      "brand": {
+        "@type": "Brand",
+        "name": "Octavo Fuego"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "COP",
+        "lowPrice": "3500",
+        "highPrice": "3500",
+        "offerCount": "5"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Colombia"
       }
-    </script>
-  </main>
+    })} />
+  </section>
 </Layout>

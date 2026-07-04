@@ -24,8 +24,16 @@ function filterLegacyItems(items: CartItem[]): CartItem[] {
   });
 }
 
+function safeGetLocalStorage(key: string, fallback: string): string {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 const rawInitialCart: CartItem[] = isBrowser
-  ? JSON.parse(localStorage.getItem('octavo-cart') || '[]')
+  ? JSON.parse(safeGetLocalStorage('octavo-cart', '[]'))
   : [];
 
 const initialCart = filterLegacyItems(rawInitialCart);
@@ -35,7 +43,11 @@ export const cartItems = atom<CartItem[]>(initialCart);
 // Sync with localStorage
 cartItems.listen((items) => {
   if (isBrowser) {
-    localStorage.setItem('octavo-cart', JSON.stringify(items));
+    try {
+      localStorage.setItem('octavo-cart', JSON.stringify(items));
+    } catch {
+      console.warn('[cartStore] Failed to persist cart to localStorage');
+    }
   }
 });
 

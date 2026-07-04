@@ -3,6 +3,7 @@ import Layout from '@/layouts/Layout.astro';
 import { useTranslations, getLocaleFromUrl } from '@/i18n';
 import { CheckoutForm } from '@/components/checkout/CheckoutForm';
 import { OrderSummary } from '@/components/checkout/OrderSummary';
+import PaymentBanner from '@/components/PaymentBanner.astro';
 
 const locale = getLocaleFromUrl(Astro.url);
 const t = useTranslations(locale);
@@ -19,30 +20,7 @@ const t = useTranslations(locale);
         </h1>
       </div>
 
-      <!-- Step Indicator -->
-      <div class="flex justify-center mb-12" role="list" aria-label="Progreso del checkout">
-        <div class="flex items-center gap-4 md:gap-8">
-          <div id="step-1-indicator" class="flex items-center gap-2" role="listitem" aria-current="step">
-            <div class="w-8 h-8 rounded-full border-2 border-tabacco bg-tabacco text-white flex items-center justify-center text-sm font-semibold" aria-hidden="true">1</div>
-            <span class="hidden md:inline text-sm">{t.checkout.info}</span>
-          </div>
-          <div class="w-8 md:w-16 h-px bg-humo" aria-hidden="true"></div>
-          <div id="step-2-indicator" class="flex items-center gap-2 opacity-50" role="listitem">
-            <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold" aria-hidden="true">2</div>
-            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.envio}</span>
-          </div>
-          <div class="w-8 md:w-16 h-px bg-humo" aria-hidden="true"></div>
-          <div id="step-3-indicator" class="flex items-center gap-2 opacity-50" role="listitem">
-            <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold" aria-hidden="true">3</div>
-            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.pago}</span>
-          </div>
-          <div class="w-8 md:w-16 h-px bg-humo" aria-hidden="true"></div>
-          <div id="step-4-indicator" class="flex items-center gap-2 opacity-50" role="listitem">
-            <div class="w-8 h-8 rounded-full border-2 border-humo flex items-center justify-center text-sm font-semibold" aria-hidden="true">4</div>
-            <span class="hidden md:inline text-sm text-ceniza">{t.checkout.listo}</span>
-          </div>
-        </div>
-      </div>
+
 
       <!-- Checkout Content -->
       <div class="grid lg:grid-cols-3 gap-12">
@@ -55,6 +33,11 @@ const t = useTranslations(locale);
         <div class="lg:col-span-1">
           <OrderSummary locale={locale} client:load />
         </div>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="mt-8 max-w-md mx-auto">
+        <PaymentBanner variant="light" locale={locale} />
       </div>
     </div>
   </section>

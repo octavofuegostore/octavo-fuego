@@ -915,7 +915,7 @@ WhatsApp:   ph:whatsapp-logo-fill (oscuro) / ph:whatsapp-logo-duotone (claro)
 
 ### Sistema Migrado (Junio 15, 2026)
 ```
-verde-botanico (#6d5e4d) → tabacco-base (#6d5e4d)     [rename semántico]
+verde-botanico (#6d5e4d) → tabaco-base (#6d5e4d)     [rename semántico]
 verde-botanico          → color-action-primary         [functional token]
 
 tokens funcionales disponibles:

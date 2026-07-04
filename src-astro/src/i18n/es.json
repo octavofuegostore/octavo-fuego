@@ -1,7 +1,8 @@
 {
   "common": {
     "brand": "Octavo Fuego",
-    "tagline": "Rapé de Acre, Amazonía brasileña"
+    "tagline": "Rapé de Acre, Amazonía brasileña",
+    "skip_to_content": "Ir al contenido principal"
   },
   "nav": {
     "tienda": "Tienda",
@@ -120,7 +121,28 @@
     "confirmarWhatsApp": "Confirmar por WhatsApp",
     "procesando": "Procesando...",
     "pagoSeguro": "Pago 100% seguro. Aceptamos PSE, Nequi, Daviplata y tarjetas.",
-    "masItems": "+ {count} más"
+    "masItems": "+ {count} más",
+    "pedidoRecibidoHeading": "¡Pedido recibido!",
+    "referencia": "Referencia:",
+    "pedidoRecibidoMsg": "Recibimos tu pedido. Para confirmarlo, escríbenos por WhatsApp con tu número de referencia y coordinamos el pago.",
+    "procesandoAria": "Procesando tu pago...",
+    "recibidoAria": "Pedido recibido. Coordina el pago por WhatsApp.",
+    "whatsappConfirmMsg": "¡Hola! Acabo de hacer un pedido ({referenceId}) por {total} a nombre de {name}. Quedo atento para coordinar el pago."
+  },
+  "payment": {
+    "title": "Métodos de pago",
+    "securedBy": "Protegido por Stripe"
+  },
+  "blog": {
+    "breadcrumbHome": "Inicio",
+    "ctaQuestion": "¿Te resultó útil este artículo?",
+    "whatsappCta": "Escribir por WhatsApp",
+    "relatedPosts": "Artículos relacionados",
+    "category": {
+      "ancestral": "Ancestral",
+      "cultura": "Cultura",
+      "salud": "Salud"
+    }
   },
   "footer": {
     "productos": "Productos",
@@ -142,7 +164,8 @@
     "disclaimer": "Nuestros productos se venden como inciensos ceremoniales. El uso es responsabilidad de quien adquiere."
   },
   "whatsapp": {
-    "tooltip": "¿Necesitas ayuda?"
+    "tooltip": "¿Necesitas ayuda?",
+    "message_template": "Hola, me gustaría obtener más información sobre sus productos."
   },
   "404": {
     "titulo": "Página no encontrada",
@@ -198,8 +221,35 @@
   "mayoristas": {
     "hero_title": "Distribución Institucional de Rapé do Acre para Facilitadores y Distribuidores en Colombia",
     "hero_desc": "Origen directo del Amazonas brasileño. El mejor precio por gramo del mercado colombiano.",
+    "hero_desc_extra": "Empaque al vacío que garantiza frescura desde Acre hasta tu centro.",
     "ventaja_origen": "Precio de Origen",
-    "ventaja_origen_desc": "Sin intermediarios. Trabajamos directamente con comunidades del Acre, Brasil.",
+    "ventaja_origen_desc": "Sin intermediarios. Trabajamos directamente con comunidades del Acre, Brasil. Hasta 46% más barato que la competencia.",
+    "ventaja_empaque": "Empaque al Vacío",
+    "ventaja_empaque_desc": "Cada lote es sellado herméticamente en origen. Frescura garantizada desde la Amazonía hasta tu centro o tienda.",
+    "ventaja_envio": "Envío a Colombia",
+    "ventaja_envio_desc": "Cobertura nacional. Mínimo 250g para pedidos mayoristas. Tiempos de entrega de 3-7 días hábiles.",
+    "variedades_title": "Variedades Disponibles para Mayoristas",
+    "variedad_tisunu_desc": "Enfoque y claridad mental",
+    "variedad_pixuri_desc": "Equilibrio respiratorio",
+    "variedad_parika_desc": "Limpieza energética",
+    "variedad_cumaru_desc": "Protección y aroma balsámico",
+    "variedad_vena_desc": "Intuición y balance",
+    "variedad_kuripes_desc": "Aplicadores artesanales",
+    "variedad_precio": "Desde {price} COP/g",
+    "variedad_proximamente": "Próximamente",
+    "cta_mid_title": "¿Eres facilitador o distribuidor?",
+    "cta_mid_desc": "Recibe precios preferenciales por volumen, muestras para tu centro y envíos programados. Mínimo flexible desde 250g para pruebas piloto.",
+    "cta_mid_btn": "Solicitar Información",
+    "faq_title": "Preguntas Frecuentes",
+    "faq_q1": "¿Cuál es el mínimo de compra mayorista?",
+    "faq_a1": "El mínimo estándar es 250g por variedad. Ofrecemos una prueba piloto desde 250g para que puedas evaluar la calidad antes de comprometerte a un volumen mayor.",
+    "faq_q2": "¿Hacen envíos a todo Colombia?",
+    "faq_a2": "Sí, cubrimos territorio nacional colombiano. Los tiempos de entrega son de 3 a 7 días hábiles dependiendo de la ubicación. Ofrecemos opción urgente para pedidos prioritarios (contactar vía WhatsApp).",
+    "faq_q3": "¿Cómo es el proceso de compra?",
+    "faq_a3": "1. Consultas por WhatsApp → 2. Te cotizamos según volumen → 3. Confirmas pedido → 4. Recibes empaque al vacío directo del Acre.",
+    "faq_q4": "¿Qué métodos de pago aceptan?",
+    "faq_a4": "Aceptamos transferencia bancaria en Colombia. Para pedidos mayores, podemos coordinar otras opciones vía WhatsApp.",
+    "whatsapp_wholesale": "Hola, quiero información sobre compras mayoristas de Rapé do Acre para mi centro o distribución.",
     "cta_catalogo": "Ver Catálogo",
     "cta_whatsapp": "Consultar por WhatsApp",
     "meta_title": "Rapé por Mayor Colombia — Distribuidor Rapé do Acre",
