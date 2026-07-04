@@ -1,0 +1,203 @@
+- generic [active] [ref=f13e1]:
+  - link "Skip to main content" [ref=f13e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - banner [ref=f13e3]:
+    - navigation [ref=f13e4]:
+      - link "Octavo Fuego Octavo Fuego" [ref=f13e5] [cursor=pointer]:
+        - /url: /en/
+        - img "Octavo Fuego" [ref=f13e6]
+        - text: Octavo Fuego
+      - generic [ref=f13e7]:
+        - button "Shop" [ref=f13e9]:
+          - text: Shop
+          - img [ref=f13e10]
+        - link "Prophecy" [ref=f13e12] [cursor=pointer]:
+          - /url: /en/profecia
+        - link "Blog" [ref=f13e13] [cursor=pointer]:
+          - /url: /en/blog
+        - link "About" [ref=f13e14] [cursor=pointer]:
+          - /url: /en/nosotros
+        - link "Contact" [ref=f13e15] [cursor=pointer]:
+          - /url: /en/contacto
+      - generic [ref=f13e16]:
+        - button "Idioma" [ref=f13e18]:
+          - img [ref=f13e19]
+          - generic [ref=f13e21]: English
+          - img [ref=f13e22]
+        - link [ref=f13e24] [cursor=pointer]:
+          - /url: /carrito
+          - img [ref=f13e25]
+  - main [ref=f13e28]:
+    - generic [ref=f13e29]:
+      - generic [ref=f13e30]:
+        - generic [ref=f13e31]:
+          - heading "Octavo Fuego" [level=1] [ref=f13e32]
+          - paragraph [ref=f13e33]: Rapé do Acre · Sananga · Kuripe
+          - link "Discover the Medicine →" [ref=f13e34] [cursor=pointer]:
+            - /url: /en/tienda
+        - img "Rapé do Acre" [ref=f13e37]
+      - generic [ref=f13e38]: ↓
+    - region "Trust" [ref=f13e39]:
+      - heading "Trust" [level=2] [ref=f13e40]
+      - generic [ref=f13e42]:
+        - generic [ref=f13e43]:
+          - img [ref=f13e45]
+          - heading "Certified Origin" [level=3] [ref=f13e47]
+          - paragraph [ref=f13e48]: Direct from Acre, Brazil
+        - generic [ref=f13e49]:
+          - img [ref=f13e51]
+          - heading "Sustainable Cultivation" [level=3] [ref=f13e53]
+          - paragraph [ref=f13e54]: Traditional communities
+        - generic [ref=f13e55]:
+          - img [ref=f13e57]
+          - heading "Vacuum Packed" [level=3] [ref=f13e59]
+          - paragraph [ref=f13e60]: Maximum freshness guaranteed
+    - generic [ref=f13e62]:
+      - generic [ref=f13e63]: The Eighth Fire
+      - blockquote [ref=f13e64]: "\"If they choose the right road, then the Seventh Fire will light the Eighth and Final Fire — an eternal Fire of peace, love, brotherhood and sisterhood.\""
+      - paragraph [ref=f13e65]: Are we the New People of the Seventh Fire?
+      - link "Read the Prophecy →" [ref=f13e66] [cursor=pointer]:
+        - /url: /en/profecia
+    - generic [ref=f13e68]:
+      - heading "What is your intention today?" [level=2] [ref=f13e69]
+      - paragraph [ref=f13e70]: Let the plant guide you
+      - generic [ref=f13e71]:
+        - link "Mental Clarity and Meditation Vena de Pajé" [ref=f13e72] [cursor=pointer]:
+          - /url: /en/tienda/rape/vena-de-paje
+          - img [ref=f13e74]
+          - generic [ref=f13e76]: Mental Clarity and Meditation
+          - generic [ref=f13e77]: Vena de Pajé
+        - link "Energetic Reset Tisunú" [ref=f13e78] [cursor=pointer]:
+          - /url: /en/tienda/rape/tisunu
+          - img [ref=f13e80]
+          - generic [ref=f13e82]: Energetic Reset
+          - generic [ref=f13e83]: Tisunú
+        - link "Physical and Respiratory Well-being Pixurí, Cumarú de Cheiro o Vena de Pajé" [ref=f13e84] [cursor=pointer]:
+          - /url: /en/tienda/rape/pixuri
+          - img [ref=f13e86]
+          - generic [ref=f13e88]: Physical and Respiratory Well-being
+          - generic [ref=f13e89]: Pixurí, Cumarú de Cheiro o Vena de Pajé
+        - link "Protection and Shield Cumarú de Cheiro" [ref=f13e90] [cursor=pointer]:
+          - /url: /en/tienda/rape/cumaru-de-cheiro
+          - img [ref=f13e92]
+          - generic [ref=f13e94]: Protection and Shield
+          - generic [ref=f13e95]: Cumarú de Cheiro
+        - link "Deep Spiritual Connection Pariká" [ref=f13e96] [cursor=pointer]:
+          - /url: /en/tienda/rape/parika
+          - img [ref=f13e98]
+          - generic [ref=f13e100]: Deep Spiritual Connection
+          - generic [ref=f13e101]: Pariká
+    - generic [ref=f13e103]:
+      - generic [ref=f13e104]:
+        - heading "Our Medicine" [level=2] [ref=f13e105]
+        - paragraph [ref=f13e106]: Rapé do Acre · Sananga · Kuripes
+      - link "View all →" [ref=f13e108] [cursor=pointer]:
+        - /url: /en/tienda
+  - contentinfo [ref=f13e109]:
+    - generic [ref=f13e110]:
+      - generic [ref=f13e111]:
+        - generic [ref=f13e112]:
+          - link "Octavo Fuego" [ref=f13e113] [cursor=pointer]:
+            - /url: /en/
+          - paragraph [ref=f13e114]: Rapé from Acre, Brazilian Amazon
+          - paragraph [ref=f13e115]: Our products are sold as ceremonial incense. Use is the responsibility of the acquirer.
+          - generic [ref=f13e117]:
+            - heading "Payment methods" [level=4] [ref=f13e118]
+            - list "Métodos de pago aceptados" [ref=f13e119]:
+              - listitem:
+                - img "Stripe"
+              - listitem:
+                - img "Visa"
+              - listitem:
+                - img "Mastercard"
+              - listitem:
+                - img "Amex"
+              - listitem:
+                - img "Diners"
+              - listitem:
+                - img "Discover"
+            - generic [ref=f13e120]:
+              - img [ref=f13e121]
+              - generic [ref=f13e123]: Secure purchase
+        - generic [ref=f13e124]:
+          - heading "Products" [level=4] [ref=f13e125]
+          - list [ref=f13e126]:
+            - listitem [ref=f13e127]:
+              - link "Shop" [ref=f13e128] [cursor=pointer]:
+                - /url: /en/tienda
+            - listitem [ref=f13e129]:
+              - link "Profecía" [ref=f13e130] [cursor=pointer]:
+                - /url: /en/profecia
+        - generic [ref=f13e131]:
+          - heading "Help" [level=4] [ref=f13e132]
+          - list [ref=f13e133]:
+            - listitem [ref=f13e134]:
+              - link "About" [ref=f13e135] [cursor=pointer]:
+                - /url: /en/nosotros
+            - listitem [ref=f13e136]:
+              - link "Blog" [ref=f13e137] [cursor=pointer]:
+                - /url: /en/blog
+            - listitem [ref=f13e138]:
+              - link "Contact" [ref=f13e139] [cursor=pointer]:
+                - /url: /en/contacto
+            - listitem [ref=f13e140]:
+              - link "FAQ" [ref=f13e141] [cursor=pointer]:
+                - /url: /en/faq
+            - listitem [ref=f13e142]:
+              - link "Shipping" [ref=f13e143] [cursor=pointer]:
+                - /url: /en/envios
+        - generic [ref=f13e144]:
+          - heading "Connect" [level=4] [ref=f13e145]
+          - list [ref=f13e146]:
+            - listitem [ref=f13e147]:
+              - link "hola@octavofuego.com" [ref=f13e148] [cursor=pointer]:
+                - /url: mailto:hola@octavofuego.com
+                - img [ref=f13e149]
+                - text: hola@octavofuego.com
+            - listitem [ref=f13e151]:
+              - link "WhatsApp" [ref=f13e152] [cursor=pointer]:
+                - /url: https://wa.me/573172137932
+                - img [ref=f13e153]
+                - text: WhatsApp
+            - listitem [ref=f13e155]:
+              - img [ref=f13e156]
+              - generic [ref=f13e158]: Travessa Francisco Severiano 106, Cruzeiro do Sul, AC
+            - listitem [ref=f13e159]:
+              - img [ref=f13e160]
+              - generic [ref=f13e162]: Direct from the Amazon, with purpose
+            - listitem [ref=f13e163]: Shipping to Colombia and Brazil
+          - generic [ref=f13e164]:
+            - link "Ir a Instagram" [ref=f13e165] [cursor=pointer]:
+              - /url: https://instagram.com/octavofuego
+              - img [ref=f13e166]
+            - link "Ir a Facebook" [ref=f13e168] [cursor=pointer]:
+              - /url: https://facebook.com/octavofuego
+              - img [ref=f13e169]
+            - link "Ir a WhatsApp" [ref=f13e171] [cursor=pointer]:
+              - /url: https://wa.me/573172137932
+              - img [ref=f13e172]
+      - generic [ref=f13e175]:
+        - paragraph [ref=f13e176]: © 2026 Octavo Fuego. All rights reserved.
+        - generic [ref=f13e177]:
+          - link "Terms" [ref=f13e178] [cursor=pointer]:
+            - /url: /en/terminos
+          - link "Privacy" [ref=f13e179] [cursor=pointer]:
+            - /url: /en/privacidad
+  - link "Need help?" [ref=f13e181] [cursor=pointer]:
+    - /url: https://wa.me/573172137932?text=Hello%2C%20I'd%20like%20to%20learn%20more%20about%20your%20products.
+    - img [ref=f13e183]
+  - generic [ref=f13e187]:
+    - button "Menu" [ref=f13e188]:
+      - img [ref=f13e190]
+      - generic: Menu
+    - button "Inspect" [ref=f13e194]:
+      - img [ref=f13e196]
+      - generic: Inspect
+    - button "Audit" [ref=f13e198]:
+      - generic [ref=f13e199]:
+        - img [ref=f13e200]
+        - img [ref=f13e203]
+      - generic: Audit
+    - button "Settings" [ref=f13e206]:
+      - img [ref=f13e208]
+      - generic: Settings
