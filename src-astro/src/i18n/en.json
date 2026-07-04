@@ -131,7 +131,7 @@
   },
   "payment": {
     "title": "Payment methods",
-    "securedBy": "Secured by Stripe"
+    "securedBy": "Secure purchase"
   },
   "blog": {
     "breadcrumbHome": "Home",

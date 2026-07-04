@@ -5,13 +5,11 @@ interface Props {
 }
 
 import { t } from '@/i18n';
+import { Icon } from 'astro-icon/components';
 
 const { variant = 'dark', locale = 'es' } = Astro.props;
 
-const textColor = variant === 'dark' ? 'text-white' : 'text-[var(--near-black)]';
 const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-ceniza';
-const bgMuted = variant === 'dark' ? 'bg-white/5' : 'bg-papel/50';
-const borderColor = variant === 'dark' ? 'border-white/10' : 'border-gray-200';
 
 // Locale-based payment methods
 type PaymentMethod = {
@@ -30,6 +28,7 @@ function getPaymentMethods(locale: string): PaymentMethod[] {
         { id: 'amex', label: 'Amex' },
         { id: 'diners', label: 'Diners' },
         { id: 'discover', label: 'Discover' },
+        { id: 'mercadopago', label: 'MercadoPago' },
       ];
     case 'en':
       return [
@@ -46,44 +45,40 @@ function getPaymentMethods(locale: string): PaymentMethod[] {
         { id: 'nequi', label: 'Nequi' },
         { id: 'daviplata', label: 'Daviplata' },
         { id: 'bancolombia', label: 'Bancolombia' },
-        { id: 'efecty', label: 'Efecty' },
         { id: 'codensa', label: 'Codensa' },
         { id: 'visa', label: 'Visa' },
         { id: 'mastercard', label: 'Mastercard' },
         { id: 'amex', label: 'Amex' },
         { id: 'diners', label: 'Diners' },
         { id: 'discover', label: 'Discover' },
+        { id: 'bold', label: 'Bold' },
+        { id: 'mercadopago', label: 'MercadoPago' },
       ];
   }
 }
 
 const methods = getPaymentMethods(locale);
 const t_ = (key: string) => t(key, locale);
-const title = t_('payment.title');
 ---
 
-<div class="w-full">
-  <div class={`border ${borderColor} ${bgMuted} p-6 rounded-2xl`}>
-    <p class={`text-xs font-semibold uppercase tracking-wider mb-4 ${mutedColor}`}>
-      {title}
-    </p>
-    <div class="flex flex-wrap gap-3 items-center">
-      {methods.map((method) => (
+<div class="space-y-4">
+  <div class="grid grid-cols-3 gap-4 md:gap-5" role="list" aria-label="Métodos de pago aceptados">
+    {methods.map((method) => (
+      <div role="listitem" class="flex items-center justify-center w-16 h-16 rounded-lg">
         <img
-          key={method.id}
           src={`/images/payment/${variant}/${method.id}.svg`}
           alt={method.label}
-          class="h-8 md:h-10 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+          class="max-h-12 max-w-12 w-auto object-contain hover:scale-110 transition-transform duration-200"
           loading="lazy"
+          width="64"
+          height="64"
         />
-      ))}
-    </div>
-    <div class={`flex items-center gap-2 mt-4 pt-4 ${borderColor} border-t text-xs ${mutedColor}`}>
-      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="1" y="4" width="22" height="16" rx="2" />
-        <path d="M1 10h22" />
-      </svg>
-      <span>{t_('payment.securedBy')}</span>
-    </div>
+      </div>
+    ))}
+  </div>
+
+  <div class={`flex items-center gap-2 pt-4 mt-4 border-t border-tabaco/[0.1] text-xs ${mutedColor}`}>
+    <Icon name="solar:lock-bold" class="w-3.5 h-3.5" />
+    <span>{t_('payment.securedBy')}</span>
   </div>
 </div>

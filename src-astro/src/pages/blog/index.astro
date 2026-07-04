@@ -64,9 +64,34 @@ function getCategoryLabel(category: string) {
   };
   return labels[category] || category;
 }
+
+// Blog index schema — CollectionPage + blogPost entries
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `https://octavofuego.com${baseUrl}/blog#collection`,
+  'url': `https://octavofuego.com${baseUrl}/blog`,
+  'name': 'Blog | Octavo Fuego',
+  'description': 'Artículos sobre medicina ancestral amazónica, ceremonias, tradiciones y bienestar espiritual.',
+  'isPartOf': {
+    '@type': 'WebSite',
+    '@id': 'https://octavofuego.com/#website',
+  },
+  'mainEntity': {
+    '@type': 'ItemList',
+    'itemListElement': allPosts.map((post, i) => ({
+      '@type': 'ListItem',
+      'position': i + 1,
+      'url': `https://octavofuego.com${baseUrl}/blog/${post.slug}`,
+    })),
+  },
+};
 ---
 
 <Layout title="Blog" description="Artículos sobre Rapé, Sananga y Kuripes. Medicina ancestral amazónica, ceremonias y tradiciones." locale={locale_}>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(blogSchema)} />
+  </Fragment>
   <section class="py-16 md:py-24">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
       <!-- Header -->

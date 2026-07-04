@@ -1,0 +1,189 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e5]:
+        - link [ref=e6] [cursor=pointer]:
+          - /url: /
+        - generic [ref=e7]:
+          - generic [ref=e8]:
+            - generic [ref=e10]:
+              - textbox "Search for products, scents, samples" [ref=e11]
+              - button [ref=e12] [cursor=pointer]
+            - link "Sign Up" [ref=e15] [cursor=pointer]:
+              - /url: "#"
+            - link "Log in/Register" [ref=e18] [cursor=pointer]:
+              - /url: /front/app/account/home
+              - generic [ref=e20]: Log in/Register
+          - link "Cart" [ref=e21] [cursor=pointer]:
+            - /url: "#"
+          - navigation [ref=e25]:
+            - list [ref=e26]:
+              - listitem [ref=e27]:
+                - link "FINE FRAGRANCES" [ref=e28] [cursor=pointer]:
+                  - /url: /classic-collection.html
+                - button "Expand FINE FRAGRANCES menu" [ref=e29] [cursor=pointer]
+              - listitem [ref=e31]:
+                - link "HOME" [ref=e32] [cursor=pointer]:
+                  - /url: /home-creations.html
+                - button "Expand HOME menu" [ref=e33] [cursor=pointer]
+              - listitem [ref=e35]:
+                - link "BODY — HAIR — FACE" [ref=e36] [cursor=pointer]:
+                  - /url: /body--hair--face.html
+                - button "Expand BODY — HAIR — FACE menu" [ref=e37] [cursor=pointer]
+              - listitem [ref=e39]:
+                - button "GROOMING" [ref=e40] [cursor=pointer]
+              - listitem [ref=e41]:
+                - button "ODDITIES" [ref=e42] [cursor=pointer]
+              - listitem [ref=e43]:
+                - link "GIFTS" [ref=e44] [cursor=pointer]:
+                  - /url: /gifts.html
+                - button "Expand GIFTS menu" [ref=e45] [cursor=pointer]
+              - listitem [ref=e47]:
+                - link "DISCOVERY" [ref=e48] [cursor=pointer]:
+                  - /url: /discovery-program.html
+                - button "Expand DISCOVERY menu" [ref=e49] [cursor=pointer]
+              - listitem [ref=e51]:
+                - button "FILMS" [ref=e52] [cursor=pointer]
+              - listitem [ref=e53]:
+                - link "ABOUT US" [ref=e54] [cursor=pointer]:
+                  - /url: /about-us.html
+                - button "Expand ABOUT US menu" [ref=e55] [cursor=pointer]
+    - heading "Le Labo" [level=1] [ref=e57]
+    - contentinfo [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e61]:
+          - generic [ref=e63]:
+            - link "About Le Labo":
+              - /url: "#footer-navigation-1"
+            - navigation [ref=e64]:
+              - list [ref=e65]:
+                - listitem [ref=e66]:
+                  - link "About Us" [ref=e67] [cursor=pointer]:
+                    - /url: /about-us.html
+                - listitem [ref=e68]:
+                  - link "Refill Program" [ref=e69] [cursor=pointer]:
+                    - /url: /le-labo-refill-program.html
+                - listitem [ref=e70]:
+                  - link "Discovery" [ref=e71] [cursor=pointer]:
+                    - /url: /discovery-program.html
+                - listitem [ref=e72]:
+                  - link "Le Journal" [ref=e73] [cursor=pointer]:
+                    - /url: /le-journal.html
+                - listitem [ref=e74]:
+                  - link "Our Impact" [ref=e75] [cursor=pointer]:
+                    - /url: /our-impact
+                - listitem [ref=e76]:
+                  - link "Responsible Practices" [ref=e77] [cursor=pointer]:
+                    - /url: /responsible-practices
+                - listitem [ref=e78]:
+                  - link "Accessibility View" [ref=e79] [cursor=pointer]:
+                    - /url: "#"
+          - generic [ref=e81]:
+            - link "Client Care":
+              - /url: "#footer-navigation-2"
+            - navigation [ref=e82]:
+              - list [ref=e83]:
+                - listitem [ref=e84]:
+                  - link "Contact Us" [ref=e85] [cursor=pointer]:
+                    - /url: /front/app/lead/add/contactus
+                - listitem [ref=e86]:
+                  - link "Order Status" [ref=e87] [cursor=pointer]:
+                    - /url: /front/app/order/search
+                - listitem [ref=e88]:
+                  - link "Shipping & Handling" [ref=e89] [cursor=pointer]:
+                    - /url: /shipping-and-handling.html
+                - listitem [ref=e90]:
+                  - link "Same-Day Delivery" [ref=e91] [cursor=pointer]:
+                    - /url: /same-day-delivery.html
+                - listitem [ref=e92]:
+                  - link "Same-Day & Next-Day Delivery" [ref=e93] [cursor=pointer]:
+                    - /url: /same-day-delivery-and-next-day-delivery-uk
+                - listitem [ref=e94]:
+                  - link "Return & Refund" [ref=e95] [cursor=pointer]:
+                    - /url: /return-and-refund.html
+                - listitem [ref=e96]:
+                  - link "FAQ" [ref=e97] [cursor=pointer]:
+                    - /url: /faq.html
+                - listitem [ref=e98]:
+                  - link "Corporate Gifting" [ref=e99] [cursor=pointer]:
+                    - /url: /front/app/lead/add/corporate
+                - listitem [ref=e100]:
+                  - link "Diffuser Warranty" [ref=e101] [cursor=pointer]:
+                    - /url: /register-diffuser/
+          - generic [ref=e103]:
+            - link "Privacy & Terms":
+              - /url: "#footer-navigation-3"
+            - navigation [ref=e104]:
+              - list [ref=e105]:
+                - listitem [ref=e106]:
+                  - link "Privacy Policy" [ref=e107] [cursor=pointer]:
+                    - /url: /privacy-policy.html
+                - listitem [ref=e108]: Do Not Sell or Share My Personal Information / Targeted Ads
+                - listitem [ref=e109]: Manage Cookies
+                - listitem [ref=e110]:
+                  - link "Limit Use of My Sensitive Personal Information" [ref=e111] [cursor=pointer]:
+                    - /url: https://privacyportal-cdn.onetrust.com/dsarwebform/84bcbfa6-9d87-4573-b6f8-acfb1a7839a8/d6294dc1-b732-45f5-8980-a49051301422.html
+                - listitem [ref=e112]:
+                  - link "Terms & Conditions" [ref=e113] [cursor=pointer]:
+                    - /url: /terms-and-conditions.html
+                - listitem [ref=e114]:
+                  - link "Terms & Conditions of Sale" [ref=e115] [cursor=pointer]:
+                    - /url: /terms-and-conditions-sale.html
+                - listitem [ref=e116]:
+                  - link "Manufacturer Details" [ref=e117] [cursor=pointer]:
+                    - /url: /Manufacturer-Details/Manufacturer-Details.html
+          - generic [ref=e119]:
+            - link "Visit Us":
+              - /url: "#footer-navigation-4"
+            - navigation [ref=e120]:
+              - list [ref=e121]:
+                - listitem [ref=e122]:
+                  - link "Store Locator" [ref=e123] [cursor=pointer]:
+                    - /url: /store-search.html
+                - listitem [ref=e124]:
+                  - link "In-Store Pickup" [ref=e125] [cursor=pointer]:
+                    - /url: /in-store-pickup.html
+                - listitem [ref=e126]:
+                  - link "Phone Orders" [ref=e127] [cursor=pointer]:
+                    - /url: /phone-orders.html
+        - generic [ref=e130]:
+          - link [ref=e132] [cursor=pointer]:
+            - /url: "#"
+          - list [ref=e135]:
+            - listitem [ref=e136]:
+              - link [ref=e137] [cursor=pointer]:
+                - /url: https://www.bcorporation.net/en-us/find-a-b-corp/company/le-labo-holding-l-l-c
+            - listitem [ref=e139]:
+              - link [ref=e140] [cursor=pointer]:
+                - /url: https://www.youtube.com/@lelabofragrances
+            - listitem [ref=e142]:
+              - link [ref=e143] [cursor=pointer]:
+                - /url: https://instagram.com/lelabofragrances
+            - listitem
+  - dialog "Select Your Location" [ref=e145]:
+    - generic [ref=e149]:
+      - banner [ref=e150]:
+        - link "Le Labo" [active] [ref=e151] [cursor=pointer]:
+          - /url: /
+      - generic [ref=e155]:
+        - generic [ref=e156]:
+          - paragraph [ref=e157]: Select Your Location
+          - generic:
+            - paragraph
+        - generic [ref=e159]:
+          - generic [ref=e161]:
+            - generic: "Location:"
+            - textbox [ref=e164] [cursor=pointer]
+          - link "Enter Site" [ref=e166] [cursor=pointer]:
+            - /url: "#"
+            - button "Enter Site" [ref=e168]
+          - link "Accessibility View" [ref=e171] [cursor=pointer]:
+            - /url: "#"
+  - region "Cookie banner" [ref=e173]:
+    - dialog "Privacy" [ref=e174]:
+      - generic [ref=e177]:
+        - generic [ref=e179]: We use cookies to analyse the traffic of our site, provide you with personalised content, interest-based advertising and content from social platforms. You can select your cookie preferences or obtain more information on cookies by clicking on Personalise or at any time in our Privacy Policy. You can click on Accept or Reject to accept or refuse all cookies.
+        - generic [ref=e181]:
+          - button "Accept" [ref=e183] [cursor=pointer]
+          - button "Reject" [ref=e185] [cursor=pointer]
+          - button "Personalise" [ref=e187] [cursor=pointer]
