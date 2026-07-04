@@ -20,7 +20,7 @@ export const CrearOrdenSchema = z.object({
   })).min(1, 'La orden debe tener al menos un item'),
   canal: canalOrdenSchema,
   notas: z.string().nullable().optional(),
-  bodega_id: z.string().uuid(),
+  bodega_id: z.string().optional(),
 }).strict()
 
 export const ItemsOrdenSchema = z.object({
