@@ -1049,4 +1049,36 @@ tokens funcionales disponibles:
 
 Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhatsApp locale-aware, --ceniza WCAG AA, spacing corregido, --color-tabaco rename, CSP production, mayoristas i18n, formatDate locale-aware, categories i18n.
 
-*Última actualización: Julio 3, 2026 — v0.11.0*
+---
+
+### 🏁 v0.12.0 — PaymentBanner Polish + Footer Redesign (Julio 4, 2026)
+
+> **PR:** [#40](https://github.com/octavofuegostore/octavo-fuego/pull/40)
+> **Tag:** `v0.12.0` | **Build:** ✅ 0 errores
+
+**Footer:**
+- Restructurado de 5 a 4 columnas (fondo #F2EFE8 warm off-white)
+- Métodos de pago movidos bajo columna de identidad
+- Tipografía editorial (títulos tabaco, cuerpo near-black)
+- Iconos sociales Phosphor Duotone (antes Fill blanco invisible)
+
+**PaymentBanner:**
+- Refactor no-box: removed outer container + badge boxes
+- Contenedor unificado invisible (space-y-4, sin bg/border)
+- Logos en contenedores uniformes 64×64 con max 48px
+- Grid 3 columnas para ES/PT/EN
+
+**SVGs:**
+- ViewBox ajustados en PSE, Visa, Mastercard, Discover, Nequi
+- Codensa, Diners reescritos como paths vectoriales
+- Boleto reescrito con icono de boleto bancario (barras + líneas)
+- Efecty eliminado (SVGs borrados)
+- Bold + MercadoPago agregados a ES/PT
+- fill="white" agregado a MP dark (era invisible)
+- Colores originales restaurados en Amex, Pix
+
+**i18n:**
+- Copy honesto sin strippe (Compra protegida / Secure purchase)
+- Títulos traducibles vía i18n
+
+*Última actualización: Julio 4, 2026 — v0.12.0*
