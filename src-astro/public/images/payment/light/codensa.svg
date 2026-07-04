@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 50"><rect width="200" height="50" rx="4" fill="#003366"/><text x="100" y="32" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="white">CODENSA</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Codensa brand: orange/blue split circle -->
+  <circle cx="50" cy="50" r="48" fill="#F37021"/>
+  <path d="M 2 50 A 48 48 0 0 0 98 50 Z" fill="#0033A0"/>
+  <!-- White stylized C -->
+  <path d="M 68 25 a 30 30 0 1 1 0 50" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/>
+</svg>
