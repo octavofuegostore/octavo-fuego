@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState } from 'react';
 import { addToCart, type CartItem } from '@/stores/cartStore';

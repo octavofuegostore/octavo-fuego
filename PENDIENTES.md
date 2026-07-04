@@ -423,6 +423,17 @@
 - [x] Checkout (`/checkout`)
 - [x] Blog listing + 4 posts
 
+### ⚠️ Post i18n Routing Fix (Jul 2, 2026) — SDD archivado, 2 warnings pendientes
+
+> 17 páginas movidas a `[locale]/`, 34/34 tareas, build 0 errores. Engram: `sdd/i18n-routing-locale-fix/*`
+
+| Warning | Impacto |
+|---------|---------|
+| **Sitemap sin URLs EN/PT** — páginas info usan `prerender=false`, `@astrojs/sitemap` no las indexa | 🔴 Search engines no descubren automáticamente variantes EN/PT — depende de internal links |
+| **Link helpers inconsistentes** — algunas páginas usan `localeUrl()`, otras usan `baseUrl` inline | 🟡 Mantenimiento, no afecta funcionalidad |
+
+**Fix recomendado**: Convertir páginas info públicas (nosotros, contacto, faq, envios, terminos, privacidad, profecia) de vuelta a SSG con `getStaticPaths()` para restaurar cobertura de sitemap.
+
 ### 3.5 SEO ✅ (Audit + Fixes completados Junio 15, 2026)
 
 #### Schemas (100% cobertura)
@@ -447,7 +458,7 @@
 - [x] Convertir WhatsAppButton.tsx → .astro (mismo fix que FloatingWhatsApp)
 - [x] WhatsAppButton en PDP — integrado en `PricingTable.astro:86`
 - [ ] **Imágenes reales de los 5 rapés** (placeholder actual: `bobinsana-rape-2.webp`. Fotos reales existen en `assets/productos/rape/` — falta copiarlas a `public/` y mapear slugs a imágenes)
-- [ ] **og:image social card real (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen y pasarlo desde el PDP
+- [x] ~~**og:image social card real (1200×630)**~~ ✅ og-default.svg existe en `public/images/`
 - [ ] **Página "Nosotros"** → Ver §3.12 Bloque A
 - [ ] **11 páginas SEO** (6 trust foundation + 5 landings) → Ver §3.12 Bloque A y B
 
@@ -483,7 +494,7 @@
 ##### 🟢 Bajos
 - [ ] **Title alineado** → "Rapé por Mayor Colombia — Distribuidor Rapé do Acre | Octavo Fuego"
 - [ ] **Mover `astro.config.mjs`** de la página pública → `README.md` interno
-- [ ] **Schema.org WholesaleStore** — JSON-LD en `<head>` con `currenciesAccepted`, `areaServed`, `hasOfferCatalog`
+- [x] ~~**Schema.org WholesaleStore**~~ ✅ WholesaleStoreJsonLd.astro existe y está importado en mayoristas.astro
 - [ ] **Cobertura geográfica explícita** — el body no dice explícitamente que "territorio nacional" = Colombia
 
 #### 3.10.2 Backend B2B → Ver §7.3 Escala Élite
@@ -519,20 +530,20 @@
 > SDD Proposal: `seo-transactional-trust-foundation` (Jun 16, 2026)
 > Engram: `sdd/seo-transactional-trust-foundation/proposal`
 
-#### Bloque A: Trust Foundation (6 páginas, prioridad 🔴 primera)
-- [ ] `/nosotros` — historia, comunidades (Yawanawá, Nukini, Kaxinawá, Shanenawa), misión, equipo
-- [ ] `/contacto` — formulario + WhatsApp + email
-- [ ] `/faq` — preguntas frecuentes
-- [ ] `/envios` — política de envíos, tiempos, zonas
-- [ ] `/terminos` — términos y condiciones
-- [ ] `/privacidad` — política de privacidad
+#### Bloque A: Trust Foundation (6 páginas, prioridad 🔴 primera) — ✅ Páginas creadas, 🖊️ falta copy real
+- [x] `/nosotros` — estructura + schema listos, buscar `🖊️ USUARIO` para escribir copy
+- [x] `/contacto` — estructura + schema listos, falta copy real
+- [x] `/faq` — estructura + schema listos, falta copy real
+- [x] `/envios` — estructura + schema listos, falta copy real
+- [x] `/terminos` — estructura + schema listos, falta copy real
+- [x] `/privacidad` — estructura + schema listos, falta copy real
 
 #### Bloque B: SEO Landing Pages (5 páginas, prioridad 🔴 segunda)
-- [ ] `/es/guia-comprador-rape/` — transaccional pura (keywords: comprar rapé, dónde comprar rapé do acre)
-- [ ] `/es/ceremonia-de-rape/` — alto volumen (keywords: ceremonia de rapé, ritual rapé)
-- [ ] `/es/que-es-el-rape/` — informacional base (keywords: qué es el rapé, para qué sirve)
-- [ ] `/es/como-usar-el-rape/` — middle funnel (keywords: cómo aplicar con kuripe, dosis primera vez)
-- [ ] `/es/rape-do-acre-origen/` — diferenciación (keywords: rapé brasileño vs colombiano, etnias)
+- [ ] `/es/guia-comprador-rape/` — página NO creada aún
+- [ ] `/es/ceremonia-de-rape/` — página NO creada aún
+- [x] `/es/que-es-el-rape/` — página creada, 🖊️ falta copy real
+- [x] `/es/como-usar-el-rape/` — página creada, 🖊️ falta copy real
+- [x] `/es/rape-do-acre-origen/` — página creada, 🖊️ falta copy real
 
 #### Bloque C: Wiring (prioridad 🟡 tercera)
 - [ ] Footer: agregar sección Guías con las 5 landing pages
@@ -615,12 +626,12 @@
 - [x] **F27 EventTimeline** — Nuevo componente timeline vertical
 - [x] **F29 Sidebar** — Wire a $sidebarOpen + $seccionActual stores
 
-#### 📋 Pendiente
-- [ ] Integrar OrderStateMachine en OrderDetail (F20 → F19)
-- [ ] Conectar NotificationDropdown al event bus (F26)
-- [ ] Integrar ProductForm en inventario (F17)
-- [ ] Contabilidad mock → service (F32-F33, Phase 4+)
-- [ ] Charts dashboard: mock → service aggregation
+#### 📋 Pendiente (verificado Jul 3, 2026)
+- [x] ~~Integrar OrderStateMachine en OrderDetail (F20 → F19)~~ ✅ Ya estaba integrado
+- [x] ~~Conectar NotificationDropdown al event bus (F26)~~ ✅ Ya escucha orden:creada
+- [x] ~~Integrar ProductForm en inventario (F17)~~ ✅ Ya estaba importado con POST handlers
+- [x] ~~Contabilidad mock → service (F32-F33, Phase 4+)~~ ✅ Ya usa ContabilidadService con Supabase
+- [x] ~~Charts dashboard: mock → service aggregation~~ ✅ Ya computa desde órdenes reales del service
 
 ### 3.16 Astro 6 Improvements ✅ (Jul 1, 2026)
 > **v0.4.2** — Basado en documentación oficial de Astro consultada via `astro-docs` MCP
@@ -686,7 +697,7 @@ Password: octavo2026
 - [x] Sitemap generado
 - [x] Auditoría SEO completa (5 críticos + 4 warnings corregidos)
 - [x] Precio/g visible en PDP — `PricingTable.astro:78`
-- [ ] **og:image social card (1200×630)** — infraestructura lista en `Layout.astro`, falta crear el archivo de imagen (actualmente usa logo.png)
+- [x] ~~**og:image social card (1200×630)**~~ ✅ og-default.svg existe y Layout lo referencia
 - [ ] Imágenes reales de productos para SEO
 - [ ] Core Web Vitals optimizados
 - [ ] Google Search Console configurado

@@ -13,7 +13,10 @@ import { useTranslations, type Locale } from '@/i18n';
 import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 
-export const prerender = false;
+
+import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+
+export async function getStaticPaths() { return getLocaleStaticPaths(); }
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
@@ -103,6 +106,8 @@ const iconNames: Record<string, string> = {
           <img 
             src="/images/productos/rape/bobinsana-rape-2.webp" 
             alt="Rapé do Acre"
+            width="800"
+            height="800"
             class="w-full h-full object-cover"
           />
         </div>

@@ -5,7 +5,7 @@
  * @source WhatsApp integration for catalog products — Design Decision: WhatsApp as Commerce Layer
  */
 
-"use client";
+
 
 const WHATSAPP_PHONE = "573172137932";
 

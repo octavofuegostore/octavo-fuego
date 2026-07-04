@@ -24,8 +24,20 @@ const ssrCache = new Map<string, { data: unknown; expiresAt: number }>()
 const CACHE_TTL_MS = 5 * 60 * 1000 // 5 minutes
 
 /**
+ * Genera una key única para cache usando namespace + params.
+ * Previene colisiones entre distintos servicios que usen el mismo key.
+ */
+export function cacheKey(namespace: string, params?: Record<string, unknown>): string {
+  if (!params) return namespace
+  const sorted = Object.keys(params).sort().map(k => `${k}=${params[k]}`).join('&')
+  return `${namespace}:${sorted}`
+}
+
+/**
  * Wraps an async SSR query with in-memory caching.
  * Cache resets on Vercel cold start (acceptable — warm instance is normal).
+ * Usar con cacheKey() para evitar colisiones:
+ * @example conCache(cacheKey('ordenes', { estado: 'pendiente', limit: 10 }), () => svc.ordenes.listar(...))
  */
 export function conCache<T>(key: string, fn: () => Promise<T>): Promise<T> {
   const hit = ssrCache.get(key)

@@ -71,7 +71,11 @@
     "total": "Total",
     "irCheckout": "Ir al Checkout",
     "vaciar": "Vaciar carrito",
-    "continuarComprando": "Continuar comprando"
+    "continuarComprando": "Continuar comprando",
+    "ariaCerrar": "Cerrar carrito",
+    "ariaReducir": "Reducir cantidad",
+    "ariaAumentar": "Aumentar cantidad",
+    "ariaEliminar": "Eliminar producto"
   },
   "checkout": {
     "info": "Información",
@@ -89,7 +93,34 @@
     "metodoPago": "Método de pago",
     "transferencia": "Transferencia bancaria",
     "pse": "PSE",
-    "tarjeta": "Tarjeta de crédito"
+    "tarjeta": "Tarjeta de crédito",
+    "irCatalogo": "Ir al catálogo",
+    "seleccionar": "Seleccionar...",
+    "errNombreRequerido": "El nombre es requerido",
+    "errEmailRequerido": "El email es requerido",
+    "errEmailInvalido": "Email inválido",
+    "errTelefonoRequerido": "El teléfono es requerido",
+    "errDireccionRequerida": "La dirección es requerida",
+    "errCiudadRequerida": "La ciudad es requerida",
+    "errDepartamentoRequerido": "El departamento es requerido",
+    "notasAdicionales": "Notas adicionales",
+    "notasPlaceholder": "Indicaciones para la entrega...",
+    "departamento": "Departamento",
+    "pagoMovil": "Pago móvil",
+    "pagoConBanco": "Pago con tu banco",
+    "seguridadBold": "Al continuar, serás redirigido a la pasarela de pago segura de Bold para completar tu transacción.",
+    "pedidoConfirmado": "¡Pedido confirmado!",
+    "pedidoRecibido": "Tu pedido ha sido recibido. Te enviamos un correo a",
+    "conDetalles": "con los detalles.",
+    "resumenPedido": "Resumen del pedido",
+    "nombreLabel": "Nombre:",
+    "envioLabel": "Envío:",
+    "metodoPagoLabel": "Método de pago:",
+    "totalLabel": "Total:",
+    "confirmarWhatsApp": "Confirmar por WhatsApp",
+    "procesando": "Procesando...",
+    "pagoSeguro": "Pago 100% seguro. Aceptamos PSE, Nequi, Daviplata y tarjetas.",
+    "masItems": "+ {count} más"
   },
   "footer": {
     "productos": "Productos",
@@ -170,6 +201,9 @@
     "ventaja_origen": "Precio de Origen",
     "ventaja_origen_desc": "Sin intermediarios. Trabajamos directamente con comunidades del Acre, Brasil.",
     "cta_catalogo": "Ver Catálogo",
-    "cta_whatsapp": "Consultar por WhatsApp"
+    "cta_whatsapp": "Consultar por WhatsApp",
+    "meta_title": "Rapé por Mayor Colombia — Distribuidor Rapé do Acre",
+    "meta_desc": "Distribución institucional de Rapé do Acre para facilitadores y distribuidores en Colombia. Desde $3.500 COP/g. Origen directo del Acre, Brasil. Envío a todo Colombia.",
+    "keywords": ["rapé por mayor Colombia", "distribuidor rapé do Acre", "proveedor rapé Colombia", "rapé mayorista Colombia", "rapé para facilitadores Colombia", "rapé para centros de retiro", "proveedor medicina amazónica Colombia", "rapé por kilo Colombia"]
   }
 }

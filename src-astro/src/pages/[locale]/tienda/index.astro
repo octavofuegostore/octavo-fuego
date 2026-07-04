@@ -15,7 +15,10 @@ import Glossary from '@/components/tienda/Glossary.astro';
 import { products } from '@/data/products';
 import { useTranslations, type Locale } from '@/i18n';
 
-export const prerender = false;
+
+import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+
+export async function getStaticPaths() { return getLocaleStaticPaths(); }
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 const t = useTranslations(locale_);
