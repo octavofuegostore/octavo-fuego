@@ -1039,4 +1039,14 @@ tokens funcionales disponibles:
 - **Fase 2 (espera legal):** Bold Provider (CO)
 - **Fase 3 (espera legal):** Stripe Provider (BR Pix/Boleto + Intl card)
 - **Fase 4 (opcional):** Mercado Pago (CO+BR)
-*Última actualización: Julio 3, 2026*
+### 🏁 v0.11.0 — Frontend Visual Audit + JD (Julio 3, 2026)
+> 3 PRs stacked → main | [#37](https://github.com/octavofuegostore/octavo-fuego/pull/37) → [#38](https://github.com/octavofuegostore/octavo-fuego/pull/38) → [#39](https://github.com/octavofuegostore/octavo-fuego/pull/39)
+> **Tag:** `v0.11.0` | **Build:** ✅ 0 errores
+
+**PR 1/3 — Infrastructure:** E7 SSG/ViewTransitions + E6 tokens + E8 i18n + E3 web quality
+**PR 2/3 — UX:** E2 a11y + E4 React perf + E5-F1 checkout honesto + PaymentBanner
+**PR 3/3 — JD Fixes:** 22 issues de blind adversarial review, todos fixeados + re-judgment APPROVED
+
+Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhatsApp locale-aware, --ceniza WCAG AA, spacing corregido, --color-tabaco rename, CSP production, mayoristas i18n, formatDate locale-aware, categories i18n.
+
+*Última actualización: Julio 3, 2026 — v0.11.0*

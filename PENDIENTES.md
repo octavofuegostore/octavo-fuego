@@ -13,10 +13,10 @@
 |------|----------|--------|
 | 01 Estrategia | ██████████ 100% | ✅ Completado |
 | 02 Diseño | ██████████ 100% | ✅ Completado |
-| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.10.0) |
+| 03 Desarrollo (Core) | ██████████ 100% | ✅ Completado (v0.11.0) |
 | 04 Marketing/SEO | ████████░░ 85% | 🔄 En progreso |
-| 05 Testing & Polish | ██████░░░░ 60% | ⏳ Pendiente (E4/E9 + a11y manual) |
-| 06 Lanzamiento | ██████░░░░ 60% | ⏳ Pendiente (E5 Fase 1 urgente) |
+| 05 Testing & Polish | ████████░░ 80% | 🔄 En progreso (E4/E9 + JD ✅) |
+| 06 Lanzamiento | ██████████ 100% | ✅ Completado (E5 Fase 1 + PaymentBanner) |
 | 07 Monorepo + Medusa | █░░░░░░░░░ 0% | ⏳ Planificado (3 fases progresivas) |
 
 ---
@@ -27,7 +27,7 @@
 > **Stack:** Astro 6 + Supabase Free Tier + multi-pasarela multi-país
 > **Context:** Stack modernization + Domain Layer + Multi-Pasarela (Bold CO, Stripe BR/Intl, MP opcional)
 > **Payment architecture:** `sdd/e5-checkout-payment/proposal` (#1833) — WhatsApp Provider → Bold → Stripe → MP
-> **Commits:** 16 PRs visual-frontend-audit | **Tag:** `v0.10.0` | **Build:** ✅ 0 errores
+> **Commits:** 17 PRs visual-frontend-audit | **Tag:** `v0.11.0` | **Build:** ✅ 0 errores
 
 ### 🔥 Tier 1 — Critical Blockers ✅ COMPLETADO
 - [x] T1.1 `bcryptjs` → Web Crypto API (PBKDF2) — SDD auth-web-crypto-migration completo (3 PRs)
@@ -63,56 +63,67 @@
 
 ---
 
-## 🏁 Último Sprint — v0.10.0: Visual Frontend Audit (Julio 3, 2026)
+## 🏁 Último Sprint — v0.11.0: Frontend Visual Audit + JD (Julio 3, 2026)
 
-> **SDD:** `visual-frontend-audit` — 8 audits implementados de 12
-> **Commits:** 16 PRs en `feature/visual-frontend-audit`
-> **Build:** ✅ 0 errores
+> **SDD:** `visual-frontend-audit` + `jd-bug-fixes` — 22 issues JD
+> **Commits:** 3 PRs stacked a main (infra → UX → fixes)
+> **PRs:** [#37](https://github.com/octavofuegostore/octavo-fuego/pull/37) → [#38](https://github.com/octavofuegostore/octavo-fuego/pull/38) → [#39](https://github.com/octavofuegostore/octavo-fuego/pull/39)
+> **Build:** ✅ 0 errores | **Tag:** `v0.11.0`
 
 ### ✅ E7 — Astro Best Practices (5 PRs)
-- [x] PR1 — SSG: remove `prerender=false` de 19 páginas públicas
-- [x] PR2 — View Transitions: ClientRouter en Layout.astro
-- [x] PR3 — "use client" cleanup en 12 TSX componentes
-- [x] PR4 — CartStore `client:load` → `client:idle`
-- [x] PR5 — lucide-react removal
+- [x] SSG mode restored on 19 public pages
+- [x] ViewTransitions via ClientRouter
+- [x] client:idle for React islands
+- [x] lucide-react removed
 
 ### ✅ E6 — Tailwind + Design Tokens (2 PRs)
-- [x] PR1 — `--color-border-subtle`, `--font-heading`, brown unificado #6d5e4d
-- [x] PR2 — Spacing dedup + `--shadow-raised`
+- [x] --color-action-primary, --color-border-subtle, --font-heading
+- [x] Spacing dedup + shadow system (+ JD: spacing corregido a 0.25rem×n)
 
 ### ✅ E8 — i18n / Locale (3 PRs)
-- [x] PR1 — Mayoristas crash fix (EN/PT keys)
-- [x] PR2 — CartDrawer i18n + `localeStore.ts`
-- [x] PR3 — CheckoutForm + OrderSummary i18n
+- [x] localeStore nanostore, React islands locale-aware, mayoristas crash fix
+- [x] 3 locale JSONs completos (+ blog keys, payment keys, checkout keys)
 
 ### ✅ E3 — Web Quality (3 PRs)
-- [x] PR1 — Playfair preload + hero LCP w/h
-- [x] PR2 — Skip-to-content, `:focus-visible`, dynamic lang, color contrast
-- [x] PR3 — noindex, CSP, lorem ipsum removal, garbled chars fix
+- [x] Font preload (Playfair + Inter), hero LCP dimensions
+- [x] Skip-to-content, :focus-visible, color contrast WCAG AA
+- [x] noindex, CSP production (_headers), lorem ipsum removal
 
 ### ✅ E2 — UI/UX Accessibility (3 PRs)
-- [x] PR1 — Focus trap en CartDrawer + modales
-- [x] PR2 — Keyboard nav en dropdowns
-- [x] PR3 — Form a11y (htmlFor/id, aria-describedby, aria-live)
+- [x] Focus trap, keyboard nav, form a11y (aria-describedby, aria-live)
+
+### ✅ E4 — React Performance (3 PRs)
+- [x] FloatingWhatsApp/WhatsAppButton → .astro (0KB JS)
+- [x] CartItemCard con memo
+- [x] Barrel import cleanup, ~20KB JS removed
+
+### ✅ E5-F1 — Checkout honesto (WhatsApp Provider)
+- [x] saveOrder() a localStorage con try-catch
+- [x] Copy honesto (no "confirmado" falso)
+- [x] clearCart() post-orden
+- [x] WhatsApp pre-fill con #orden + i18n template
+- [x] Locale-aware redirects
 
 ### ✅ PaymentBanner (34 SVGs)
 - [x] 17 métodos × 2 variantes (dark/light) en `public/images/payment/`
-- [x] Componente `PaymentBanner.astro` — locale-aware
+- [x] Componente `PaymentBanner.astro` — locale-aware con i18n keys
 - [x] Integrado en footer (dark) + checkout (light)
 
-### 🔶 E5 — Checkout & Payment Architecture (Proposal listo)
-> `sdd/e5-checkout-payment/proposal` (#1833)
-- [ ] Fase 1: WhatsApp Provider (guardar orden, copy honesto) — **urge implementar**
+### ✅ Judgment Day — 2 rondas, 22 issues fixeados
+- [x] Ronda 1: 16 issues confirmados por ambos jueces
+- [x] Ronda 2: 6 issues adicionales (checkout 404, blog i18n, Stripe text)
+- [x] Ronda 3/Re-JD: JUDGMENT APPROVED ✅ (0 CRITICAL, 0 WARNING)
+
+### 🔶 E5 Fases 2-4 — Pasarelas de pago reales
 - [ ] Fase 2: Bold Provider (CO) — espera aprobación legal
 - [ ] Fase 3: Stripe Provider (BR/Intl) — espera aprobación legal
 - [ ] Fase 4: Mercado Pago (CO+BR) — opcional
 
-### 🔶 Pendientes post-launch (proposal listo)
-- [ ] E4 — React Performance (#1733)
-- [ ] E9-P1 — Technical SEO (2 PRs)
-- [ ] E9-P2 — International SEO (#1746)
-- [ ] E9-P3 — On-Page SEO (#1745)
-- [ ] E9-P4 — Content/Schema (3 PRs)
+### 🔶 E9 — SEO (4 phases)
+- [ ] E9-P1 — Technical SEO (canonical, sitemap)
+- [ ] E9-P2 — International SEO (hreflang, locales)
+- [ ] E9-P3 — On-Page SEO (meta, OG)
+- [ ] E9-P4 — Content/Schema (FAQ, schema.org)
 
 ---
 
