@@ -1,0 +1,406 @@
+---
+// OrdenForm.astro — Create order form in modal
+export interface ClienteOption {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export interface VarianteOption {
+  id: string;
+  producto_id: string;
+  producto_nombre: string;
+  gramos: number;
+  precio_cop: number;
+  precio_brl: number | null;
+}
+
+interface Props {
+  clientes: ClienteOption[];
+  variantes: VarianteOption[];
+  bodegaId?: string;
+}
+
+const { clientes, variantes, bodegaId = 'CO-BOGOTA' } = Astro.props;
+const moneda = bodegaId === 'BR-ACRE' ? 'BRL' : 'COP';
+---
+
+<div
+  id="orden-form-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+>
+  <div class="bg-white rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="p-6 border-b border-papel">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-display font-bold text-humo">Nueva Orden</h2>
+          <p class="text-sm text-ceniza mt-1">Crea una orden manualmente para un cliente</p>
+        </div>
+        <button
+          type="button"
+          id="close-orden-modal"
+          class="p-2 text-ceniza hover:text-humo hover:bg-papel rounded-lg transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <form id="orden-form" class="p-6 space-y-6">
+      <input type="hidden" name="bodega_id" id="orden-bodega-id" value={bodegaId} />
+
+      <!-- Cliente -->
+      <div>
+        <label for="orden-cliente" class="block text-sm font-medium text-humo mb-2">Cliente *</label>
+        <select
+          id="orden-cliente"
+          name="cliente_id"
+          required
+          class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white"
+        >
+          <option value="">Selecciona un cliente...</option>
+          {clientes.map((cliente) => (
+            <option value={cliente.id}>{cliente.name} — {cliente.email}</option>
+          ))}
+        </select>
+      </div>
+
+      <!-- Productos -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="block text-sm font-medium text-humo">Productos *</label>
+          <button
+            type="button"
+            id="add-product-row"
+            class="text-sm font-medium text-tabacco hover:text-tabacco/80 transition-colors flex items-center gap-1"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Agregar producto
+          </button>
+        </div>
+
+        <div id="product-rows" class="space-y-3">
+          <!-- Rows injected by client script -->
+        </div>
+
+        <p id="items-error" class="hidden mt-2 text-sm text-error">La orden debe tener al menos un producto</p>
+
+        <!-- Total -->
+        <div class="mt-4 p-4 bg-papel/30 rounded-lg flex items-center justify-between">
+          <span class="text-sm text-ceniza">Total estimado</span>
+          <span id="orden-total" class="text-lg font-bold text-humo font-display">
+            {new Intl.NumberFormat('es-CO', { style: 'currency', currency: moneda, minimumFractionDigits: 0 }).format(0)}
+          </span>
+        </div>
+      </div>
+
+      <!-- Canal y Notas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="orden-canal" class="block text-sm font-medium text-humo mb-2">Canal *</label>
+          <select
+            id="orden-canal"
+            name="canal"
+            required
+            class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white"
+          >
+            <option value="whatsapp">WhatsApp</option>
+            <option value="web">Web</option>
+            <option value="manual">Manual</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="orden-bodega" class="block text-sm font-medium text-humo mb-2">Bodega *</label>
+          <select
+            id="orden-bodega"
+            name="bodega_id_select"
+            required
+            class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white"
+          >
+            <option value="CO-BOGOTA" selected={bodegaId === 'CO-BOGOTA'}>Bogotá</option>
+            <option value="BR-ACRE" selected={bodegaId === 'BR-ACRE'}>Acre</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="orden-notas" class="block text-sm font-medium text-humo mb-2">Notas</label>
+        <textarea
+          id="orden-notas"
+          name="notas"
+          rows="3"
+          class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco resize-none"
+          placeholder="Notas adicionales sobre la orden..."
+        ></textarea>
+      </div>
+
+      <div id="form-error" class="hidden p-4 bg-error/10 rounded-lg text-sm text-error"></div>
+
+      <div class="flex items-center justify-end gap-3 pt-4 border-t border-papel">
+        <button
+          type="button"
+          id="cancel-orden-form"
+          class="px-4 py-2 border border-papel rounded-lg text-sm font-medium text-humo hover:bg-papel transition-colors"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          id="submit-orden-form"
+          class="px-4 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Crear Orden
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script define:vars={{ variantes, moneda }}>
+  import { toast } from 'sonner';
+
+  function initOrdenForm() {
+    const modal = document.getElementById('orden-form-modal');
+    const closeBtn = document.getElementById('close-orden-modal');
+    const cancelBtn = document.getElementById('cancel-orden-form');
+    const form = document.getElementById('orden-form');
+    const productRows = document.getElementById('product-rows');
+    const addProductBtn = document.getElementById('add-product-row');
+    const itemsError = document.getElementById('items-error');
+    const formError = document.getElementById('form-error');
+    const totalEl = document.getElementById('orden-total');
+    const submitBtn = document.getElementById('submit-orden-form');
+    const bodegaSelect = document.getElementById('orden-bodega');
+    const hiddenBodega = document.getElementById('orden-bodega-id');
+
+    const allVariantes = variantes;
+    let rowCount = 0;
+
+    function formatMoney(amount) {
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: moneda,
+        minimumFractionDigits: 0,
+      }).format(amount);
+    }
+
+    function getPrecioVariante(varianteId) {
+      const v = allVariantes.find(x => x.id === varianteId);
+      if (!v) return 0;
+      return moneda === 'BRL' && v.precio_brl ? v.precio_brl : v.precio_cop;
+    }
+
+    function updateTotal() {
+      if (!productRows) return;
+      let total = 0;
+      productRows.querySelectorAll('.product-row').forEach(row => {
+        const grams = Number((row.querySelector('.product-grams') || {}).value || 0);
+        const price = Number((row.querySelector('.product-price') || {}).value || 0);
+        total += grams * price;
+      });
+      if (totalEl) totalEl.textContent = formatMoney(total);
+    }
+
+    function createProductRow() {
+      rowCount++;
+      const row = document.createElement('div');
+      row.className = 'product-row grid grid-cols-1 sm:grid-cols-12 gap-3 p-3 border border-papel rounded-lg bg-papel/20';
+      row.dataset.rowId = String(rowCount);
+
+      const options = allVariantes
+        .map(v => `<option value="${v.id}" data-gramos="${v.gramos}" data-precio="${getPrecioVariante(v.id)}">${v.producto_nombre} — ${v.gramos}g</option>`)
+        .join('');
+
+      row.innerHTML = `
+        <div class="sm:col-span-6">
+          <label class="block text-xs text-ceniza mb-1">Producto</label>
+          <select name="variante_id" required class="w-full px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco bg-white product-variant-select">
+            <option value="">Seleccionar...</option>
+            ${options}
+          </select>
+        </div>
+        <div class="sm:col-span-2">
+          <label class="block text-xs text-ceniza mb-1">Gramos</label>
+          <input type="number" name="gramos" min="1" step="1" required class="w-full px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco product-grams" placeholder="10" />
+        </div>
+        <div class="sm:col-span-3">
+          <label class="block text-xs text-ceniza mb-1">Precio unit.</label>
+          <input type="number" name="precio_unit" min="1" step="1" required class="w-full px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco product-price" placeholder="0" />
+        </div>
+        <div class="sm:col-span-1 flex items-end">
+          <button type="button" class="remove-row-btn p-2 text-ceniza hover:text-error hover:bg-error/10 rounded-lg transition-colors" title="Eliminar">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+            </svg>
+          </button>
+        </div>
+      `;
+
+      const select = row.querySelector('.product-variant-select');
+      const gramsInput = row.querySelector('.product-grams');
+      const priceInput = row.querySelector('.product-price');
+      const removeBtn = row.querySelector('.remove-row-btn');
+
+      select.addEventListener('change', () => {
+        const v = allVariantes.find(x => x.id === select.value);
+        if (v) {
+          gramsInput.value = String(v.gramos);
+          priceInput.value = String(getPrecioVariante(v.id));
+        }
+        updateTotal();
+      });
+
+      gramsInput.addEventListener('input', updateTotal);
+      priceInput.addEventListener('input', updateTotal);
+
+      removeBtn.addEventListener('click', () => {
+        row.remove();
+        updateTotal();
+      });
+
+      return row;
+    }
+
+    function openModal() {
+      if (!modal) return;
+      form.reset();
+      if (productRows) productRows.innerHTML = '';
+      productRows.appendChild(createProductRow());
+      updateTotal();
+      if (formError) {
+        formError.textContent = '';
+        formError.classList.add('hidden');
+      }
+      if (itemsError) itemsError.classList.add('hidden');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    closeBtn?.addEventListener('click', closeModal);
+    cancelBtn?.addEventListener('click', closeModal);
+
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    addProductBtn?.addEventListener('click', () => {
+      productRows?.appendChild(createProductRow());
+      updateTotal();
+    });
+
+    bodegaSelect?.addEventListener('change', () => {
+      if (hiddenBodega) hiddenBodega.value = bodegaSelect.value;
+    });
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form) return;
+
+      if (formError) {
+        formError.textContent = '';
+        formError.classList.add('hidden');
+      }
+      itemsError?.classList.add('hidden');
+
+      const rows = productRows ? Array.from(productRows.querySelectorAll('.product-row')) : [];
+      if (rows.length === 0) {
+        itemsError?.classList.remove('hidden');
+        return;
+      }
+
+      const items = [];
+      let hasError = false;
+      rows.forEach(row => {
+        const select = row.querySelector('.product-variant-select');
+        const gramsInput = row.querySelector('.product-grams');
+        const priceInput = row.querySelector('.product-price');
+        const varianteId = select.value;
+        const gramos = parseInt(gramsInput.value, 10);
+        const precioUnit = parseInt(priceInput.value, 10);
+
+        if (!varianteId || isNaN(gramos) || gramos <= 0 || isNaN(precioUnit) || precioUnit <= 0) {
+          hasError = true;
+          return;
+        }
+        items.push({ variante_id: varianteId, gramos, precio_unit: precioUnit });
+      });
+
+      if (hasError) {
+        if (formError) {
+          formError.textContent = 'Revisa los productos: todos deben tener variante, gramos y precio válidos.';
+          formError.classList.remove('hidden');
+        }
+        return;
+      }
+
+      const formData = new FormData(form);
+      const payload = {
+        cliente_id: formData.get('cliente_id'),
+        items,
+        canal: formData.get('canal'),
+        notas: formData.get('notas') || null,
+        bodega_id: hiddenBodega?.value || bodegaSelect?.value || 'CO-BOGOTA',
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creando...';
+
+      try {
+        const response = await fetch('/api/admin/ordenes/crear', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          const message = data.error || 'Error al crear la orden';
+          if (formError) {
+            formError.textContent = message;
+            formError.classList.remove('hidden');
+          }
+          toast.error(message);
+          return;
+        }
+
+        toast.success('Orden creada correctamente');
+        closeModal();
+        window.dispatchEvent(new CustomEvent('orden-creada', { detail: data.orden }));
+      } catch (err) {
+        const message = 'Error de conexión al crear la orden';
+        if (formError) {
+          formError.textContent = message;
+          formError.classList.remove('hidden');
+        }
+        toast.error(message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Crear Orden';
+      }
+    });
+
+    // Expose open function globally for the orders page
+    window.openOrdenModal = openModal;
+
+    // Initialize with one row if empty
+    if (productRows && productRows.children.length === 0) {
+      productRows.appendChild(createProductRow());
+      updateTotal();
+    }
+  }
+
+  initOrdenForm();
+  document.addEventListener('astro:page-load', initOrdenForm);
+</script>

@@ -1,11 +1,12 @@
 import { SupabaseClient } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
 import { SupabaseService } from '@/lib/admin/services/base'
-import { ActualizarEstadoSchema } from '@/lib/admin/schemas/orden'
+import { ActualizarEstadoSchema, CrearOrdenSchema } from '@/lib/admin/schemas/orden'
 import { ErrorValidacion } from '@/lib/admin/errores'
 import type { LMOrdenRow } from '@/lib/admin/mapper'
 import { mapToAdminOrden, OrdenMapper } from '@/lib/admin/mapper'
 import type { Orden } from '@/types/admin'
+import type { CrearOrdenInput } from '@/lib/admin/schemas/orden'
 
 export class OrdenService extends SupabaseService<LMOrdenRow> {
   constructor(supabase: SupabaseClient, bodegaId?: string) {
@@ -51,6 +52,63 @@ export class OrdenService extends SupabaseService<LMOrdenRow> {
       price: i.precio_unit,
     }))
 
+    return orden
+  }
+
+  async crear(data: CrearOrdenInput & { bodega_id: string }): Promise<Orden> {
+    const validation = CrearOrdenSchema.safeParse(data)
+    if (!validation.success) {
+      throw new ErrorValidacion('Datos de orden inválidos', 'input')
+    }
+
+    const total = data.items.reduce((sum, item) => sum + item.gramos * item.precio_unit, 0)
+    const moneda = data.bodega_id === 'BR-ACRE' ? 'BRL' : 'COP'
+    const totalField = moneda === 'BRL' ? 'total_brl' : 'total_cop'
+
+    const insertData: Record<string, unknown> = {
+      cliente_id: data.cliente_id,
+      bodega_id: data.bodega_id,
+      canal: data.canal,
+      estado: 'pendiente',
+      notas: data.notas ?? null,
+      [totalField]: total,
+    }
+
+    const { data: ordenRow, error: ordenError } = await supabase
+      .from('ordenes')
+      .insert(insertData)
+      .select('*, clientes!inner(nombre_empresa, email, telefono)')
+      .single()
+
+    if (ordenError) throw ordenError
+
+    const ordenId = (ordenRow as LMOrdenRow).id
+
+    const itemsToInsert = data.items.map(item => ({
+      orden_id: ordenId,
+      variante_id: item.variante_id,
+      gramos: item.gramos,
+      precio_unit: item.precio_unit,
+    }))
+
+    const { error: itemsError } = await supabase
+      .from('orden_items')
+      .insert(itemsToInsert)
+
+    if (itemsError) {
+      // Best-effort rollback: delete the orphan order
+      await supabase.from('ordenes').delete().eq('id', ordenId)
+      throw itemsError
+    }
+
+    const orden = mapToAdminOrden(ordenRow as LMOrdenRow)
+    orden.items = data.items.map(item => ({
+      name: item.variante_id,
+      quantity: item.gramos,
+      price: item.precio_unit,
+    }))
+    orden.total = total
+    orden.currency = moneda
     return orden
   }
 
