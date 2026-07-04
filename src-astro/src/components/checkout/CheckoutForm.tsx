@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useId, useCallback } from 'react';
+import React, { useState, useEffect, useId, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, formatCOP, clearCart } from '@/stores/cartStore';
 import { Button } from '@/components/ui/button';
@@ -81,39 +81,6 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
     notas: `${formId}-notas`,
   };
 
-  const updateStepIndicator = (step: Step) => {
-    for (let i = 1; i <= 4; i++) {
-      const indicator = document.getElementById(`step-${i}-indicator`);
-      if (indicator) {
-        const div = indicator.querySelector('div');
-        const span = indicator.querySelector('span');
-        // Update aria-current
-        if (i === step) {
-          indicator.setAttribute('aria-current', 'step');
-        } else {
-          indicator.removeAttribute('aria-current');
-        }
-        if (i === step) {
-          div?.classList.add('border-tabacco', 'bg-tabacco', 'text-white');
-          div?.classList.remove('border-humo');
-          if (span) span.classList.remove('text-ceniza', 'opacity-50');
-        } else if (i < step) {
-          div!.innerHTML = '✓';
-          div?.classList.add('border-tabacco', 'bg-tabacco', 'text-white');
-          div?.classList.remove('border-humo');
-          if (span) span.classList.remove('text-ceniza', 'opacity-50');
-        } else {
-          div?.classList.remove('border-tabacco', 'bg-tabacco', 'text-white');
-          div?.classList.add('border-humo');
-          if (span) {
-            span.classList.add('text-ceniza', 'opacity-50');
-            span.classList.remove('text-tabacco');
-          }
-        }
-      }
-    }
-  };
-
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
@@ -140,13 +107,10 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
   const handleNext = () => {
     if (currentStep === 1 && validateStep1()) {
       setCurrentStep(2);
-      updateStepIndicator(2);
     } else if (currentStep === 2 && validateStep2()) {
       setCurrentStep(3);
-      updateStepIndicator(3);
     } else if (currentStep === 3) {
       setCurrentStep(4);
-      updateStepIndicator(4);
       handlePayment();
     }
   };
@@ -154,7 +118,6 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
   const handleBack = () => {
     if (currentStep > 1) {
       setCurrentStep((prev) => (prev - 1) as Step);
-      updateStepIndicator((currentStep - 1) as Step);
     }
   };
 
@@ -175,9 +138,19 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
       estado: 'pendiente_pago',
     };
     // Persistir orden en localStorage
-    const ordenesGuardadas = JSON.parse(localStorage.getItem('of_ordenes') || '[]');
+    let ordenesGuardadas: SavedOrder[] = [];
+    try {
+      ordenesGuardadas = JSON.parse(localStorage.getItem('of_ordenes') || '[]');
+    } catch {
+      console.warn('[checkout] Failed to read orders from localStorage, starting fresh');
+      ordenesGuardadas = [];
+    }
     ordenesGuardadas.push(order);
-    localStorage.setItem('of_ordenes', JSON.stringify(ordenesGuardadas));
+    try {
+      localStorage.setItem('of_ordenes', JSON.stringify(ordenesGuardadas));
+    } catch {
+      console.warn('[checkout] Failed to persist order to localStorage');
+    }
     return order;
   }, [contactInfo, shippingInfo, paymentInfo, items, total]);
 
@@ -197,13 +170,45 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
     return (
       <div class="text-center py-12">
         <p class="text-ceniza mb-4">{$t('cart.vacío')}</p>
-        <Button onClick={() => window.location.href='/es/tienda'}>{$t('checkout.irCatalogo')}</Button>
+        <Button onClick={() => { window.location.href = locale === 'es' ? '/tienda' : `/${locale}/tienda`; }}>{$t('checkout.irCatalogo')}</Button>
       </div>
     );
   }
 
+  const stepLabels = [$t('checkout.info'), $t('checkout.envio'), $t('checkout.pago'), $t('checkout.listo')];
+
   return (
-    <div class="bg-papel/50 border border-gray-200 p-6 md:p-8">
+    <>
+      {/* Step Indicator — rendered inside React to avoid DOM coupling */}
+      <div class="flex justify-center mb-12" role="list" aria-label="Progreso del checkout">
+        <div class="flex items-center gap-4 md:gap-8">
+          {[1, 2, 3, 4].map((step) => (
+            <React.Fragment key={step}>
+              {step > 1 && <div class="w-8 md:w-16 h-px bg-humo" aria-hidden="true" />}
+              <div
+                class={`flex items-center gap-2 ${currentStep < step ? 'opacity-50' : ''}`}
+                role="listitem"
+                aria-current={currentStep === step ? 'step' : undefined}
+              >
+                <div
+                  class={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-semibold ${
+                    currentStep >= step
+                      ? 'border-tabaco bg-tabaco text-white'
+                      : 'border-humo'
+                  }`}
+                  aria-hidden="true"
+                >
+                  {currentStep > step ? '✓' : step}
+                </div>
+                <span class={`hidden md:inline text-sm ${currentStep < step ? 'text-ceniza' : ''}`}>
+                  {stepLabels[step - 1]}
+                </span>
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+      </div>
+      <div class="bg-papel/50 border border-gray-200 p-6 md:p-8">
       {/* Step 1: Contact Information */}
       {currentStep === 1 && (
         <div class="space-y-6">
@@ -308,7 +313,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
                 id={fieldIds.departamento}
                 value={shippingInfo.departamento}
                 onChange={(e) => setShippingInfo({ ...shippingInfo, departamento: e.target.value })}
-                className={`w-full h-11 px-2 bg-transparent border rounded-lg text-base md:text-sm transition-colors outline-none focus:border-tabacco ${errors.departamento ? 'border-error' : 'border-humo'}`}
+                className={`w-full h-11 px-2 bg-transparent border rounded-lg text-base md:text-sm transition-colors outline-none focus:border-tabaco ${errors.departamento ? 'border-error' : 'border-humo'}`}
                 aria-describedby={errors.departamento ? `${fieldIds.departamento}-error` : undefined}
                 aria-invalid={errors.departamento ? 'true' : undefined}
               >
@@ -331,7 +336,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               onChange={(e) => setShippingInfo({ ...shippingInfo, notas: e.target.value })}
               placeholder={$t('checkout.notasPlaceholder')}
               rows={3}
-              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-base md:text-sm resize-none focus:border-tabacco focus:outline-none"
+              className="w-full bg-transparent border border-humo rounded-lg px-3 py-2 text-base md:text-sm resize-none focus:border-tabaco focus:outline-none"
             />
           </div>
         </div>
@@ -343,14 +348,14 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
           <h2 class="font-display text-xl font-semibold mb-6">{$t('checkout.metodoPago')}</h2>
           
           <div class="space-y-3" role="radiogroup" aria-label="Método de pago">
-            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'pse' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
+            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'pse' ? 'border-tabaco bg-tabaco/10' : 'border-humo hover:border-tabaco/50'}`}>
               <input
                 type="radio"
                 name="payment"
                 value="pse"
                 checked={paymentInfo.metodo === 'pse'}
                 onChange={() => setPaymentInfo({ metodo: 'pse' })}
-                class="accent-tabacco"
+                class="accent-tabaco"
               />
               <div class="flex-1">
                 <span class="font-medium">PSE</span>
@@ -359,14 +364,14 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <span class="text-sm text-ceniza">{$t('checkout.transferencia')}</span>
             </label>
 
-            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'nequi' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
+            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'nequi' ? 'border-tabaco bg-tabaco/10' : 'border-humo hover:border-tabaco/50'}`}>
               <input
                 type="radio"
                 name="payment"
                 value="nequi"
                 checked={paymentInfo.metodo === 'nequi'}
                 onChange={() => setPaymentInfo({ metodo: 'nequi' })}
-                class="accent-tabacco"
+                class="accent-tabaco"
               />
               <div class="flex-1">
                 <span class="font-medium">Nequi</span>
@@ -375,14 +380,14 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <span class="text-ceniza font-semibold text-sm">Nequi</span>
             </label>
 
-            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'daviplata' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
+            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'daviplata' ? 'border-tabaco bg-tabaco/10' : 'border-humo hover:border-tabaco/50'}`}>
               <input
                 type="radio"
                 name="payment"
                 value="daviplata"
                 checked={paymentInfo.metodo === 'daviplata'}
                 onChange={() => setPaymentInfo({ metodo: 'daviplata' })}
-                class="accent-tabacco"
+                class="accent-tabaco"
               />
               <div class="flex-1">
                 <span class="font-medium">Daviplata</span>
@@ -391,14 +396,14 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <span class="text-ceniza font-semibold text-sm">Daviplata</span>
             </label>
 
-            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'tarjeta' ? 'border-tabacco bg-tabacco/10' : 'border-humo hover:border-tabacco/50'}`}>
+            <label className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentInfo.metodo === 'tarjeta' ? 'border-tabaco bg-tabaco/10' : 'border-humo hover:border-tabaco/50'}`}>
               <input
                 type="radio"
                 name="payment"
                 value="tarjeta"
                 checked={paymentInfo.metodo === 'tarjeta'}
                 onChange={() => setPaymentInfo({ metodo: 'tarjeta' })}
-                class="accent-tabacco"
+                class="accent-tabaco"
               />
               <div class="flex-1">
                 <span class="font-medium">{$t('checkout.tarjeta')}</span>
@@ -425,10 +430,10 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h2 class="font-display text-2xl font-semibold mb-2">¡Pedido recibido!</h2>
-          <p class="text-ceniza text-sm mb-1">Referencia: <strong class="text-[var(--near-black)] font-mono">{savedOrder.id}</strong></p>
+          <h2 class="font-display text-2xl font-semibold mb-2">{$t('checkout.pedidoRecibidoHeading')}</h2>
+          <p class="text-ceniza text-sm mb-1">{$t('checkout.referencia')} <strong class="text-[var(--near-black)] font-mono">{savedOrder.id}</strong></p>
           <p class="text-ceniza mb-6 max-w-sm mx-auto">
-            Recibimos tu pedido. Para confirmarlo, escríbenos por WhatsApp con tu número de referencia y coordinamos el pago.
+            {$t('checkout.pedidoRecibidoMsg')}
           </p>
           <div class="bg-papel/50 p-6 rounded-lg mb-8 text-left max-w-md mx-auto">
             <h3 class="font-semibold mb-4">{$t('checkout.resumenPedido')}</h3>
@@ -447,18 +452,23 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
               </div>
               <div class="border-t border-humo/50 pt-2 mt-4 flex justify-between font-semibold">
                 <span>{$t('checkout.totalLabel')}</span>
-                <span class="text-tabacco">{formatCOP(total)}</span>
+                <span class="text-tabaco">{formatCOP(total)}</span>
               </div>
             </div>
           </div>
           <div class="flex flex-col gap-4 max-w-md mx-auto">
-            <Button onClick={() => window.open(`https://wa.me/573172137932?text=¡Hola!%20Acabo%20de%20hacer%20un%20pedido%20(%23${savedOrder.id})%20por%20${formatCOP(total)}%20a%20nombre%20de%20${encodeURIComponent(contactInfo.nombre)}.%20Quedo%20atento%20para%20coordinar%20el%20pago.`, '_blank')}>
+            <Button onClick={() => window.open(`https://wa.me/573172137932?text=${encodeURIComponent(
+              $t('checkout.whatsappConfirmMsg')
+                .replace('{referenceId}', savedOrder.id)
+                .replace('{total}', formatCOP(total))
+                .replace('{name}', contactInfo.nombre)
+            )}`, '_blank')}>
               <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
               </svg>
               {$t('checkout.confirmarWhatsApp')}
             </Button>
-            <Button variant="secondary" onClick={() => window.location.href='/es/tienda'}>
+            <Button variant="secondary" onClick={() => { window.location.href = locale === 'es' ? '/tienda' : `/${locale}/tienda`; }}>
               {$t('cart.continuarComprando')}
             </Button>
           </div>
@@ -467,8 +477,8 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
 
       {/* Status messages (a11y live region) */}
       <div aria-live="polite" role="status" class="sr-only">
-        {isProcessing ? 'Procesando tu pago...' : ''}
-        {currentStep === 4 ? 'Pedido recibido. Coordina el pago por WhatsApp.' : ''}
+        {isProcessing ? $t('checkout.procesandoAria') : ''}
+        {currentStep === 4 ? $t('checkout.recibidoAria') : ''}
       </div>
 
       {/* Navigation Buttons */}
@@ -495,5 +505,6 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
         </div>
       )}
     </div>
+    </>
   );
 }

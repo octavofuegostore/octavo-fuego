@@ -11,7 +11,7 @@ Fix 4 critical token defects found in the Tailwind v4 audit that produce visible
 - **PR1 — Definition gaps + brown unification** (~200 lines)
   - Define `--color-border-subtle` in `@theme` (rendering black today)
   - Add `font-heading` alias or fix `card.tsx` to use `font-display`
-  - Unify `--color-tabacco` (#8B4513) / `--tabaco-base` (#6d5e4d) to a single brown
+  - Unify `--color-tabacco` (#8B4513) / `--tabaco-base` (#6d5e4d) → `--color-tabaco` (#6d5e4d)
   - Update all components using the deprecated brown
 - **PR2 — Spacing dedup + shadow alignment** (~200 lines)
   - Remove `--space-*` from `:root` or align values with `--spacing-*` in `@theme`
@@ -47,7 +47,7 @@ Each PR ≤ 400 lines. Revertable atomically.
 |------|--------|-------------|
 | `src-astro/src/styles/global.css` | Modified | Add `--color-border-subtle`, `font-heading`, unify browns, dedup spacing, add 3rd shadow |
 | `src-astro/src/components/ui/card.tsx` | Modified | Fix `font-heading` → `font-display` or add to `@theme` |
-| Admin components using `bg-tabacco` | Modified | Migrate to unified brown token |
+| Admin components using `bg-tabacco` → `bg-tabaco` | Modified | Migrate to unified brown token |
 | Public templates with `text-papel`/`bg-humo` | Modified | Ensure consistency with unified palette |
 
 ## Risks
@@ -69,7 +69,7 @@ Per PR: `git revert -m 1 <merge-commit>`. Both PRs are atomic — a single rever
 
 ## Success Criteria
 
-- [ ] `grep -r 'color-tabacco\|--color-border-subtle\|font-heading' src-astro/` finds zero undefined references
+- [x] `grep -r 'color-tabacco\|--color-border-subtle\|font-heading' src-astro/` finds zero undefined references (tabacco kept as backward-compat alias for --color-tabaco)
 - [ ] `--space-*` and `--spacing-*` no longer conflict (one source of truth)
 - [ ] `--color-border-subtle` renders as a visible defined color on all public pages
 - [ ] `--shadow-card`, `--shadow-hover`, `--shadow-raised` all defined and referenced

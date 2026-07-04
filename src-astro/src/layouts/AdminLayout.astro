@@ -62,7 +62,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         <!-- Logo -->
         <div class="p-4 border-b border-humo/50">
           <a href="/admin" class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-tabacco rounded-lg flex items-center justify-center">
+            <div class="w-10 h-10 bg-tabaco rounded-lg flex items-center justify-center">
               <span class="text-white font-display font-bold text-lg">OF</span>
             </div>
             <div>
@@ -82,7 +82,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                   currentPath === "/admin"
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -98,7 +98,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/inventario")
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -121,7 +121,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -134,7 +134,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/stock"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -147,7 +147,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/transferencias"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -164,7 +164,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/ordenes")
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -180,7 +180,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/pagos")
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -196,7 +196,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/clientes")
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -218,7 +218,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/clientes"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -231,7 +231,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath.startsWith("/admin/clientes/b2b")
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -248,7 +248,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "w-full flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors",
                   currentPath.startsWith("/admin/contabilidad")
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -270,7 +270,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Dashboard</a>
@@ -281,7 +281,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/transacciones"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Transacciones</a>
@@ -292,7 +292,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/informes"
-                        ? "bg-tabacco/20 text-tabacco"
+                        ? "bg-tabaco/20 text-tabaco"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Informes</a>
@@ -307,7 +307,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                   currentPath === "/admin/configuracion"
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -323,7 +323,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 class:list={[
                   "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors",
                   currentPath === "/admin/actividad"
-                    ? "bg-tabacco text-white"
+                    ? "bg-tabaco text-white"
                     : "text-papel/70 hover:bg-humo/80 hover:text-papel"
                 ]}
               >
@@ -337,8 +337,8 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         <!-- User section -->
         <div class="p-4 border-t border-humo/50">
           <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-tabacco/20 rounded-full flex items-center justify-center">
-              <span class="text-tabacco font-medium text-sm">{userInitials}</span>
+            <div class="w-9 h-9 bg-tabaco/20 rounded-full flex items-center justify-center">
+              <span class="text-tabaco font-medium text-sm">{userInitials}</span>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-papel truncate">{userName}</p>
@@ -363,7 +363,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           <!-- Mobile menu button -->
           <button
             id="mobile-menu-toggle"
-            class="lg:hidden text-humo hover:text-tabacco transition-colors"
+            class="lg:hidden text-humo hover:text-tabaco transition-colors"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -380,7 +380,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                 id="admin-global-search"
                 type="text"
                 placeholder="Buscar productos, órdenes, clientes... (Enter para buscar)"
-                class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+                class="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
               />
             </div>
           </div>
@@ -397,7 +397,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
             <div class="relative">
               <button
                 id="admin-quick-create-btn"
-                class="flex items-center gap-2 px-3 py-2 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+                class="flex items-center gap-2 px-3 py-2 bg-tabaco text-white rounded-lg text-sm font-medium hover:bg-tabaco/90 transition-colors"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />

@@ -58,7 +58,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
       <p class="text-ceniza mb-6">El pago con ID <span class="font-mono text-humo">#{id}</span> no existe o fue eliminado.</p>
       <a
         href="/admin/pagos"
-        class="inline-flex items-center gap-2 px-5 py-2.5 bg-tabacco text-white rounded-lg text-sm font-medium hover:bg-tabacco/90 transition-colors"
+        class="inline-flex items-center gap-2 px-5 py-2.5 bg-tabaco text-white rounded-lg text-sm font-medium hover:bg-tabaco/90 transition-colors"
       >
         Ver todos los pagos
       </a>
@@ -225,7 +225,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
         <!-- Monto -->
         <div class="bg-white rounded-2xl shadow-card p-6">
           <h3 class="font-display text-lg font-bold text-humo mb-4">Monto</h3>
-          <p class="text-3xl font-bold text-tabacco font-display">
+          <p class="text-3xl font-bold text-tabaco font-display">
             {formatCurrency(pago.monto, pago.moneda as 'COP' | 'BRL')}
           </p>
           <p class="text-sm text-ceniza mt-1">{pago.moneda}</p>
@@ -238,7 +238,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
             <div class="space-y-3">
               <div>
                 <p class="text-sm text-ceniza">ID Orden</p>
-                <a href={`/admin/ordenes/${orden.id}`} class="text-sm font-medium text-tabacco hover:text-tabacco/80 transition-colors">
+                <a href={`/admin/ordenes/${orden.id}`} class="text-sm font-medium text-tabaco hover:text-tabaco/80 transition-colors">
                   {orden.id}
                 </a>
               </div>
@@ -256,7 +256,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
               </div>
             </div>
             <div class="mt-4 pt-4 border-t border-papel">
-              <a href={`/admin/ordenes/${orden.id}`} class="text-sm text-tabacco hover:text-tabacco/80 font-medium transition-colors">
+              <a href={`/admin/ordenes/${orden.id}`} class="text-sm text-tabaco hover:text-tabaco/80 font-medium transition-colors">
                 Ver detalle de orden →
               </a>
             </div>

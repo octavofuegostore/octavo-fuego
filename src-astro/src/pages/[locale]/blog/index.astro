@@ -52,7 +52,8 @@ const allPosts = [
 ];
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString('es-CO', {
+  const localeMap: Record<string, string> = { es: 'es-CO', en: 'en-US', pt: 'pt-BR' };
+  return new Date(dateStr).toLocaleDateString(localeMap[locale_] || 'es-CO', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -61,9 +62,9 @@ function formatDate(dateStr: string) {
 
 function getCategoryLabel(category: string) {
   const labels: Record<string, string> = {
-    ancestral: 'Ancestral',
-    cultura: 'Cultura',
-    salud: 'Salud',
+    ancestral: t.blog.category.ancestral,
+    cultura: t.blog.category.cultura,
+    salud: t.blog.category.salud,
   };
   return labels[category] || category;
 }
@@ -85,7 +86,7 @@ function getCategoryLabel(category: string) {
       <!-- Featured Post -->
       {allPosts[0] && (
         <a href={`${baseUrl}/blog/${allPosts[0].slug}`} class="block mb-12 group">
-          <article class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
+          <article class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-papel/50 border border-gray-200 hover:border-tabaco transition-colors">
             <div class="aspect-video md:aspect-auto overflow-hidden">
               <img 
                 src={allPosts[0].coverImage} 
@@ -99,7 +100,7 @@ function getCategoryLabel(category: string) {
               <Badge variant="secondary" className="w-fit mb-4">
                 {getCategoryLabel(allPosts[0].category)}
               </Badge>
-              <h2 class="font-display heading-md font-bold mb-4 group-hover:text-tabacco transition-colors">
+              <h2 class="font-display heading-md font-bold mb-4 group-hover:text-tabaco transition-colors">
                 {allPosts[0].title}
               </h2>
               <p class="text-ceniza mb-4 line-clamp-3">
@@ -117,7 +118,7 @@ function getCategoryLabel(category: string) {
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {allPosts.slice(1).map((post) => (
           <a href={`${baseUrl}/blog/${post.slug}`} class="group">
-            <article class="h-full bg-papel/50 border border-gray-200 hover:border-tabacco transition-colors">
+            <article class="h-full bg-papel/50 border border-gray-200 hover:border-tabaco transition-colors">
               <div class="aspect-video overflow-hidden">
                 <img 
                   src={post.coverImage} 
@@ -131,7 +132,7 @@ function getCategoryLabel(category: string) {
                 <Badge variant="secondary" className="w-fit mb-3">
                   {getCategoryLabel(post.category)}
                 </Badge>
-                <h3 class="font-display text-xl font-bold mb-2 group-hover:text-tabacco transition-colors">
+                <h3 class="font-display text-xl font-bold mb-2 group-hover:text-tabaco transition-colors">
                   {post.title}
                 </h3>
                 <p class="text-ceniza text-sm mb-4 line-clamp-2">

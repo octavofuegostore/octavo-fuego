@@ -8,8 +8,9 @@
   /* Colors - Minimalist Sacred (Octavo Fuego) */
   --color-black: #000000;
   --color-white: #FFFFFF;
-  --color-tabacco: #6d5e4d;
-  --color-ceniza: #7b8084;
+  --color-tabaco: #6d5e4d;
+  --color-tabacco: var(--color-tabaco); /* deprecated - use --color-tabaco */
+  --color-ceniza: #6B6F73;
   --color-humo: #2A2A2A;
   --color-papel: #F5F5F0;
   
@@ -25,16 +26,16 @@
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Inter', sans-serif;
   
-  /* Spacing (base 8px) */
+  /* Spacing (base 8px - standard 0.25rem scale) */
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
-  --spacing-3: 1rem;
-  --spacing-4: 1.5rem;
-  --spacing-6: 2rem;
-  --spacing-8: 3rem;
-  --spacing-12: 4rem;
-  --spacing-16: 6rem;
-  --spacing-24: 8rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
   
   /* Border Radius - Airbnb Style */
   --radius-button: 8px;
@@ -42,6 +43,14 @@
   --radius-badge: 14px;
   --radius-pill: 20px;
   --radius: 0;
+
+  /* Shadow System - 3 Layer Airbnb Style */
+  --shadow-card:
+    rgba(0,0,0,0.02) 0 0 0 1px,
+    rgba(0,0,0,0.04) 0 0.125rem 0.375rem,
+    rgba(0,0,0,0.1) 0 0.25rem 0.5rem;
+  --shadow-hover: rgba(0,0,0,0.08) 0 0.25rem 0.75rem;
+  --shadow-raised: rgba(0,0,0,0.12) 0 0.5rem 1.25rem;
 }
 
 /* Theme Override for Shadcn - White First Minimalist Sacred */
@@ -52,26 +61,26 @@
   --card-foreground: var(--color-black);
   --popover: var(--color-white);
   --popover-foreground: var(--color-black);
-  --primary: var(--color-tabacco);
+  --primary: var(--color-tabaco);
   --primary-foreground: var(--color-white);
   --secondary: var(--color-papel);
   --secondary-foreground: var(--color-black);
   --muted: var(--color-papel);
   --muted-foreground: #666666;
-  --accent: var(--color-tabacco);
+  --accent: var(--color-tabaco);
   --accent-foreground: var(--color-white);
   --destructive: var(--color-error);
   --destructive-foreground: var(--color-white);
   --border: #E5E5E5;
   --input: var(--color-white);
-  --ring: var(--color-tabacco);
+  --ring: var(--color-tabaco);
   
   /* Design Tokens - Airbnb Style */
   /* Base color: Tabaco (renamed from --color-action-primary - semantically incorrect) */
   --tabaco-base: #6d5e4d;
   --color-footer-bg: #3D2E22;
   --near-black: #222222;
-  --ceniza: #6B6F73;
+  --ceniza: var(--color-ceniza);
 
   /* Functional Action Tokens (híbrido - preserva identidad + escala) */
   --color-action-primary: var(--tabaco-base);     /* Botones CTA, accents principales */
@@ -88,14 +97,6 @@
   --color-text-secondary: #8C8680;   /* Meta, subtítulos */
   --color-text-on-action: #F2EFE8;   /* Texto sobre action-primary */
   --color-text-on-dark: #F2EFE8;     /* Texto sobre superficies oscuras */
-  
-  /* Shadow System - 3 Layer */
-  --shadow-card:
-    rgba(0,0,0,0.02) 0 0 0 1px,
-    rgba(0,0,0,0.04) 0 0.125rem 0.375rem,
-    rgba(0,0,0,0.1) 0 0.25rem 0.5rem;
-  --shadow-hover: rgba(0,0,0,0.08) 0 0.25rem 0.75rem;
-  --shadow-raised: rgba(0,0,0,0.12) 0 0.5rem 1.25rem;
 }
 
 /* Selection */

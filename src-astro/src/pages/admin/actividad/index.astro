@@ -37,7 +37,7 @@ function eventoIcon(tipo: string): string {
 }
 
 function eventoColor(tipo: string): string {
-  if (tipo.startsWith('orden')) return 'bg-tabacco/10 text-tabacco';
+  if (tipo.startsWith('orden')) return 'bg-tabaco/10 text-tabaco';
   if (tipo.startsWith('b2b')) return 'bg-blue-50 text-blue-600';
   if (tipo.startsWith('stock')) return 'bg-amber-50 text-amber-600';
   if (tipo.startsWith('pago')) return 'bg-green-50 text-green-600';
@@ -105,14 +105,14 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
   <div class="flex flex-wrap gap-2 mb-6" id="filter-pills">
     <button
       data-filter="all"
-      class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border transition-colors bg-tabacco text-white border-tabacco"
+      class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border transition-colors bg-tabaco text-white border-tabaco"
     >
       Todos
     </button>
     {tipos.map((tipo) => (
       <button
         data-filter={tipo}
-        class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border border-papel text-ceniza hover:border-tabacco/30 hover:text-tabacco transition-colors"
+        class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border border-papel text-ceniza hover:border-tabaco/30 hover:text-tabaco transition-colors"
       >
         {tipoLabel(tipo)}
       </button>
@@ -167,7 +167,7 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
                     <p class="text-sm text-ceniza truncate">{payloadSummary(ev.payload)}</p>
                   )}
                   {ev.orden_id && (
-                    <a href={`/admin/ordenes/${ev.orden_id}`} class="text-xs text-tabacco hover:underline mt-1 inline-block">
+                    <a href={`/admin/ordenes/${ev.orden_id}`} class="text-xs text-tabaco hover:underline mt-1 inline-block">
                       {ev.orden_id}
                     </a>
                   )}
@@ -198,10 +198,10 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
 
         // Update active pill styles
         pills.forEach((p) => {
-          p.classList.remove('bg-tabacco', 'text-white', 'border-tabacco');
+          p.classList.remove('bg-tabaco', 'text-white', 'border-tabaco');
           p.classList.add('border-papel', 'text-ceniza');
         });
-        pill.classList.add('bg-tabacco', 'text-white', 'border-tabacco');
+        pill.classList.add('bg-tabaco', 'text-white', 'border-tabaco');
         pill.classList.remove('border-papel', 'text-ceniza');
 
         // Filter events

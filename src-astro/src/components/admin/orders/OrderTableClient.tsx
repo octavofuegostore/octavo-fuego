@@ -188,7 +188,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 placeholder="Buscar órdenes..."
                 value={$searchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
               />
             </div>
           </div>
@@ -202,7 +202,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 statusFilter.set(e.target.value);
                 currentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todos los estados</option>
               <option value="pending">Pendiente</option>
@@ -219,7 +219,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 channelFilter.set(e.target.value);
                 currentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todos los canales</option>
               <option value="whatsapp">WhatsApp</option>
@@ -234,7 +234,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                 locationFilter.set(e.target.value);
                 currentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todas las ubicaciones</option>
               <option value="CO">CO</option>
@@ -432,7 +432,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
                     onClick={() => handlePageChange(page)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                       page === $currentPage
-                        ? "bg-tabacco text-white"
+                        ? "bg-tabaco text-white"
                         : "border border-papel text-ceniza hover:bg-papel transition-colors"
                     }`}
                   >

@@ -158,7 +158,9 @@ npm run preview  # preview production build
 | `--white` | #ffffff | Fondo principal | ✅ |
 | `--negro` | #000000 | Headings | ✅ |
 | `--near-black` | #222222 | Texto body | ✅ |
-| `--tabaco` | #8B4513 | Acento ocasional | ✅ |
+| `--color-tabaco` | #6d5e4d | Acento principal (Tailwind: text-tabaco, bg-tabaco, border-tabaco) | ✅ Token activo |
+| `--tabaco` | #8B4513 | Acento ocasional | ❌ Deprecated → usar `--color-tabaco` |
+| `--color-tabacco` | var(--color-tabaco) | Alias backward compat | ❌ Deprecated → usar `--color-tabaco` |
 | `--ceniza` | #7b8084 | Textos secundarios | ✅ |
 | `--humo` | #2A2A2A | Footer | ✅ → usar `--color-surface-dark` |
 | `--papel` | #F5F5F0 | Secciones contrastadas | ✅ → usar `--color-surface-warm` |

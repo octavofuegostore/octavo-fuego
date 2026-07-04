@@ -152,7 +152,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 placeholder="Buscar productos..."
                 value={$productSearchQuery}
                 onChange={(e) => handleSearchChange(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco transition-colors"
+                className="w-full pl-10 pr-4 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
               />
             </div>
           </div>
@@ -166,7 +166,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 productCategoryFilter.set(e.target.value);
                 productCurrentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todas</option>
               <option value="Cera de Ducha">Cera de Ducha</option>
@@ -182,7 +182,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                 productStatusFilter.set(e.target.value);
                 productCurrentPage.set(1);
               }}
-              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabacco/20 focus:border-tabacco"
+              className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todos</option>
               <option value="active">Activo</option>
@@ -315,7 +315,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                         </button>
                         <button
                           onClick={() => handleEditProduct(product.id)}
-                          className="p-1.5 text-ceniza hover:text-tabacco hover:bg-tabacco/10 rounded-lg transition-colors"
+                          className="p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
                           <svg
@@ -376,7 +376,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                     onClick={() => handlePageChange(page)}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                       page === $productCurrentPage
-                        ? "bg-tabacco text-white"
+                        ? "bg-tabaco text-white"
                         : "border border-papel text-ceniza hover:bg-papel transition-colors"
                     }`}
                   >

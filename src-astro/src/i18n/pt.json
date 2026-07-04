@@ -1,7 +1,8 @@
 {
   "common": {
     "brand": "Octavo Fuego",
-    "tagline": "Rapé do Acre, Amazônia brasileira"
+    "tagline": "Rapé do Acre, Amazônia brasileira",
+    "skip_to_content": "Ir para o conteúdo principal"
   },
   "nav": {
     "tienda": "Loja",
@@ -120,7 +121,28 @@
     "confirmarWhatsApp": "Confirmar via WhatsApp",
     "procesando": "Processando...",
     "pagoSeguro": "Pagamento 100% seguro. Aceitamos PSE, Nequi, Daviplata e cartões.",
-    "masItems": "+ {count} mais"
+    "masItems": "+ {count} mais",
+    "pedidoRecibidoHeading": "Pedido recebido!",
+    "referencia": "Referência:",
+    "pedidoRecibidoMsg": "Recebemos seu pedido. Para confirmá-lo, escreva para nós no WhatsApp com seu número de referência e combinaremos o pagamento.",
+    "procesandoAria": "Processando seu pagamento...",
+    "recibidoAria": "Pedido recebido. Combine o pagamento via WhatsApp.",
+    "whatsappConfirmMsg": "Olá! Acabei de fazer um pedido ({referenceId}) de {total} em nome de {name}. Aguardando para coordenar o pagamento."
+  },
+  "payment": {
+    "title": "Métodos de pagamento",
+    "securedBy": "Protegido pela Stripe"
+  },
+  "blog": {
+    "breadcrumbHome": "Início",
+    "ctaQuestion": "Este artigo foi útil?",
+    "whatsappCta": "Enviar via WhatsApp",
+    "relatedPosts": "Artigos relacionados",
+    "category": {
+      "ancestral": "Ancestral",
+      "cultura": "Cultura",
+      "salud": "Saúde"
+    }
   },
   "footer": {
     "productos": "Produtos",
@@ -142,7 +164,8 @@
     "disclaimer": "Nossos produtos são vendidos como incensos cerimoniais. O uso é responsabilidade de quem adquire."
   },
   "whatsapp": {
-    "tooltip": "Precisa de ajuda?"
+    "tooltip": "Precisa de ajuda?",
+    "message_template": "Olá, gostaria de saber mais sobre seus produtos."
   },
   "404": {
     "titulo": "Página não encontrada",
@@ -198,8 +221,35 @@
   "mayoristas": {
     "hero_title": "Distribuição Institucional de Rapé do Acre para Facilitadores e Distribuidores na Colômbia",
     "hero_desc": "Origem direta da Amazônia brasileira. O melhor preço por grama do mercado colombiano.",
+    "hero_desc_extra": "Embalagem a vácuo que garante frescor do Acre até seu centro.",
     "ventaja_origen": "Preço de Origem",
-    "ventaja_origen_desc": "Sem intermediários. Trabalhamos diretamente com comunidades do Acre, Brasil.",
+    "ventaja_origen_desc": "Sem intermediários. Trabalhamos diretamente com comunidades do Acre, Brasil. Até 46% mais barato que a concorrência.",
+    "ventaja_empaque": "Embalagem a Vácuo",
+    "ventaja_empaque_desc": "Cada lote é selado hermeticamente na origem. Frescor garantido da Amazônia até seu centro ou loja.",
+    "ventaja_envio": "Envio para Colômbia",
+    "ventaja_envio_desc": "Cobertura nacional. Mínimo 250g para pedidos atacado. Prazos de entrega de 3-7 dias úteis.",
+    "variedades_title": "Variedades Disponíveis para Atacado",
+    "variedad_tisunu_desc": "Foco e clareza mental",
+    "variedad_pixuri_desc": "Equilíbrio respiratório",
+    "variedad_parika_desc": "Limpeza energética",
+    "variedad_cumaru_desc": "Proteção e aroma balsâmico",
+    "variedad_vena_desc": "Intuição e equilíbrio",
+    "variedad_kuripes_desc": "Aplicadores artesanais",
+    "variedad_precio": "A partir de {price} COP/g",
+    "variedad_proximamente": "Em breve",
+    "cta_mid_title": "Você é facilitador ou distribuidor?",
+    "cta_mid_desc": "Receba preços preferenciais por volume, amostras para seu centro e envios programados. Mínimo flexível desde 250g para testes piloto.",
+    "cta_mid_btn": "Solicitar Informações",
+    "faq_title": "Perguntas Frequentes",
+    "faq_q1": "Qual é o mínimo de compra atacado?",
+    "faq_a1": "O mínimo padrão é 250g por variedade. Oferecemos um teste piloto desde 250g para que você possa avaliar a qualidade antes de comprometer-se com um volume maior.",
+    "faq_q2": "Vocês fazem envios para toda a Colômbia?",
+    "faq_a2": "Sim, cobrimos todo o território nacional colombiano. Os prazos de entrega são de 3 a 7 dias úteis dependendo da localização. Oferecemos opção urgente para pedidos prioritários (contato via WhatsApp).",
+    "faq_q3": "Como é o processo de compra?",
+    "faq_a3": "1. Consulte via WhatsApp → 2. Fazemos cotação conforme volume → 3. Confirme o pedido → 4. Receba embalagem a vácuo direto do Acre.",
+    "faq_q4": "Quais métodos de pagamento vocês aceitam?",
+    "faq_a4": "Aceitamos transferência bancária na Colômbia. Para pedidos maiores, podemos coordenar outras opções via WhatsApp.",
+    "whatsapp_wholesale": "Olá, quero informações sobre compras atacado de Rapé do Acre para meu centro ou distribuição.",
     "cta_catalogo": "Ver Catálogo",
     "cta_whatsapp": "Consultar via WhatsApp",
     "meta_title": "Rapé por Atacado Colômbia — Distribuidor Rapé do Acre",
