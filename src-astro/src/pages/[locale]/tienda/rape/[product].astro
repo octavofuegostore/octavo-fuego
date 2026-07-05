@@ -13,6 +13,7 @@ import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
+import RelatedProducts from '@/components/product/RelatedProducts.astro';
 import { products } from '@/data/products';
 import { useTranslations, type Locale } from '@/i18n';
 import { locales } from '@/i18n';
@@ -88,10 +89,10 @@ const priceText = locale_ === 'en'
     />
   </Fragment>
   <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
-    <div class="max-w-4xl mx-auto px-6 md:px-12">
+    <div class="max-w-6xl mx-auto px-6 md:px-12">
 
-      <!-- Breadcrumb -->
-      <nav class="mb-8 text-sm">
+      <!-- Breadcrumb (full-width, above grid) -->
+      <nav class="mb-10 text-sm">
         <ol class="flex items-center gap-2 text-[var(--ceniza)]">
           <li>
             <a href={`${baseUrl}/`} class="hover:text-[var(--color-action-primary)] transition-colors">
@@ -115,93 +116,175 @@ const priceText = locale_ === 'en'
         </ol>
       </nav>
 
-      <!-- Product Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-10">
-        <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[var(--color-action-primary)] font-bold block mb-3">
-          {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
-        </span>
-        <h1 class="font-display heading-xl font-bold tracking-tight text-[var(--near-black)] mb-4">
-          {product.nombre[locale_]}
-        </h1>
-      </div>
+      <!-- 2-Column Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
 
-      <!-- Product Image -->
-      <div class="aspect-[4/3] bg-gray-50 rounded-[var(--radius-card)] overflow-hidden mb-12">
-        <img
-          src={product.imagenes[0]}
-          alt={product.nombre[locale_]}
-          class="w-full h-full object-cover"
-          width="1200"
-          height="900"
-          loading="eager"
-        />
-      </div>
+        <!-- LEFT COLUMN: Image -->
+        <div class="order-first">
+          <!-- Single image -->
+          {product.imagenes.length <= 1 && (
+            <div class="aspect-square overflow-hidden rounded-[var(--radius-card)] shadow-[var(--shadow-hover)]">
+              <img
+                src={product.imagenes[0]}
+                alt={product.nombre[locale_]}
+                class="w-full h-full object-cover"
+                width="1000"
+                height="1000"
+                loading="eager"
+              />
+            </div>
+          )}
+          <!-- Gallery (2+ images) -->
+          {product.imagenes.length > 1 && (
+            <div class="grid grid-cols-[80px_1fr] gap-3">
+              <div class="flex flex-col gap-2" id="gallery-thumbs">
+                {product.imagenes.map((img, i) => (
+                  <button
+                    class="gallery-thumb w-full aspect-square overflow-hidden rounded-lg border-2 border-transparent data-[active=false]:border-transparent transition-all duration-200"
+                    data-index={i}
+                    data-active={i === 0}
+                    aria-label={product.nombre[locale_] + ' ' + (i + 1)}
+                  >
+                    <img src={img} alt="" class="w-full h-full object-cover" width="80" height="80" loading="lazy" />
+                  </button>
+                ))}
+              </div>
+              <div class="aspect-square overflow-hidden rounded-[var(--radius-card)] shadow-[var(--shadow-hover)]" id="gallery-main">
+                <img
+                  src={product.imagenes[0]}
+                  alt={product.nombre[locale_]}
+                  class="gallery-main-img w-full h-full object-cover"
+                  width="800"
+                  height="800"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          )}
+        </div>
 
-      <!-- Full Description -->
-      <div class="mb-10">
-        <p class="text-[var(--near-black)] text-base md:text-[1.05rem] leading-[1.8] text-left">
-          {description}
-        </p>
-      </div>
+        <!-- RIGHT COLUMN: Product Info -->
+        <div class="order-last lg:order-none flex flex-col gap-6">
 
-      <!-- Highlight Quote -->
-      <div class="mb-12 bg-[var(--papel)] p-8 md:p-10 border-l-2 border-[var(--color-action-primary)]">
-        <p class="font-display text-lg md:text-xl italic text-[var(--near-black)] leading-relaxed">
-          {highlight}
-        </p>
-      </div>
+          <!-- Variety Order Tag -->
+          <span class="text-[0.7rem] uppercase tracking-[0.2em] text-[var(--color-action-primary)] font-bold">
+            {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
+          </span>
 
-      <!-- Pricing Table (Selectable Buttons) -->
-      <div class="mb-12 border border-gray-200 rounded-[var(--radius-card)] p-6 md:p-8">
-        <PricingTable
-          pricing={product.pricing}
-          wholesale={product.wholesale}
-          locale={locale_}
-          productName={product.nombre[locale_]}
-        />
-      </div>
+          <!-- Product Name — Playfair BLACK -->
+          <h1 class="font-display font-black text-4xl md:text-5xl lg:text-6xl tracking-tight text-[var(--near-black)] leading-tight">
+            {product.nombre[locale_]}
+          </h1>
 
-      <!-- Intensity Profile (single product) -->
-      <div class="mb-12">
-        <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
-          {t.tienda.intensity}
-        </h2>
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="bg-[var(--papel)] p-4 rounded-lg">
-            <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {t.tienda.intensityLabels.strength}
-            </span>
-            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.fuerza[locale_]}</span>
+          <!-- Description -->
+          <p class="text-[var(--near-black)] text-base md:text-lg leading-[1.8]">
+            {description}
+          </p>
+
+          <!-- Highlight Quote — BOLD serif, NOT italic, 4px tabaco border, warm bg -->
+          <div class="border-l-[4px] border-[var(--color-action-primary)] bg-[var(--color-surface-warm)] p-6 md:p-8">
+            <p class="font-display font-bold text-lg md:text-xl text-[var(--near-black)] leading-relaxed">
+              {highlight}
+            </p>
           </div>
-          <div class="bg-[var(--papel)] p-4 rounded-lg">
-            <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {t.tienda.intensityLabels.aroma}
-            </span>
-            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.aroma[locale_]}</span>
+
+          <!-- PricingTable (UNCHANGED) -->
+          <div class="pt-2">
+            <PricingTable
+              pricing={product.pricing}
+              wholesale={product.wholesale}
+              locale={locale_}
+              productName={product.nombre[locale_]}
+            />
           </div>
-          <div class="bg-[var(--papel)] p-4 rounded-lg">
-            <span class="text-xs text-[var(--ceniza)] block mb-1">
-              {t.tienda.intensityLabels.level}
-            </span>
-            <span class="font-semibold text-[var(--near-black)]">{product.intensidad.nivel[locale_]}</span>
+
+          <!-- Intensity — tabaco badges -->
+          <div class="pt-4">
+            <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
+              {t.tienda.intensity}
+            </h2>
+            <div class="grid grid-cols-3 gap-3">
+              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                  {t.tienda.intensityLabels.strength}
+                </span>
+                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                  {product.intensidad.fuerza[locale_]}
+                </span>
+              </div>
+              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                  {t.tienda.intensityLabels.aroma}
+                </span>
+                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                  {product.intensidad.aroma[locale_]}
+                </span>
+              </div>
+              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                  {t.tienda.intensityLabels.level}
+                </span>
+                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                  {product.intensidad.nivel[locale_]}
+                </span>
+              </div>
+            </div>
           </div>
+
+          <!-- Intent Map -->
+          <div class="pt-2">
+            <p class="text-sm text-[var(--ceniza)]">
+              {t.tienda.categoryLabel}{' '}
+              <span class="text-[var(--color-action-primary)] font-bold">
+                {product.intentMap}
+              </span>
+            </p>
+          </div>
+
         </div>
       </div>
 
-      <!-- Intent Map Badge -->
-      <div class="border-t border-gray-200 pt-6">
-        <p class="text-sm text-[var(--ceniza)]">
-          {t.tienda.categoryLabel}{' '}
-          <span class="text-[var(--color-action-primary)] font-semibold">
-            {product.intentMap}
-          </span>
-        </p>
-      </div>
-
+      <!-- Testimonials (full width below grid) -->
       <Testimonials locale={locale_} />
 
+      <!-- FAQ (full width) -->
       <FAQSection product={product} locale={locale_} />
+
+      <!-- Related Products (NEW) -->
+      <RelatedProducts currentSlug={productSlug} locale={locale_} baseUrl={baseUrl} />
 
     </div>
   </section>
+
+  <!-- Gallery JS: thumbnail switching -->
+  <script>
+    document.addEventListener('astro:page-load', () => {
+      const thumbs = document.querySelectorAll('.gallery-thumb');
+      const mainImg = document.querySelector('.gallery-main-img');
+      if (!thumbs.length || !mainImg) return;
+
+      thumbs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = btn.getAttribute('data-index');
+          const src = btn.querySelector('img')?.getAttribute('src');
+          if (src && mainImg) {
+            mainImg.setAttribute('src', src);
+            thumbs.forEach(b => {
+              b.setAttribute('data-active', 'false');
+              b.classList.remove('border-[var(--color-action-primary)]');
+            });
+            btn.setAttribute('data-active', 'true');
+            btn.classList.add('border-[var(--color-action-primary)]');
+          }
+        });
+      });
+
+      // Activate first thumbnail by default when gallery exists
+      const firstThumb = thumbs[0];
+      if (firstThumb) {
+        firstThumb.setAttribute('data-active', 'true');
+        firstThumb.classList.add('border-[var(--color-action-primary)]');
+      }
+    });
+  </script>
 </Layout>
