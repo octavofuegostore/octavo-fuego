@@ -29,7 +29,7 @@ const homeDescriptions: Record<Locale, string> = {
 ---
 
 <Layout title={homeTitles.es} description={homeDescriptions.es} locale="es" ogImage="/images/og-default.svg">
-  <link rel="preload" as="image" href="/images/productos/rape/bobinsana-rape-2.webp" slot="head" />
+  <link rel="preload" as="image" href="/images/productos/rape/bobinsana-rape-2.webp" fetchpriority="high" slot="head" />
   <GraphSchema slot="head" locale="es" />
   <HomeContent locale="es" />
 </Layout>
