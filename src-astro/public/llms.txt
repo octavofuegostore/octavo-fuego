@@ -4,12 +4,12 @@
 
 ## Products
 
-- [Rapé Kaxinawá](https://octavofuego.com/tienda/rape/kaxinawa): Rapé tradicional indígena con cenizas de árboles seleccionados. Disponible en 10g, 20g y 30g.
-- [Rapé Nukini](https://octavofuego.com/tienda/rape/nukini): Blend amazónico de la tribu Nukini con propiedades únicas. Tres presentaciones.
-- [Rapé Apurinã](https://octavofuego.com/tienda/rape/apurina): Variedad suave y aromática ideal para meditación. Envases de 10g, 20g y 30g.
-- [Rapé Kuntanawa](https://octavofuego.com/tienda/rape/kuntanawa): Rapé ceremonial de la comunidad Kuntanawa con perfil herbal distintivo.
-- [Rapé Katukina](https://octavofuego.com/tienda/rape/katukina): Blend tradicional Katukina de perfil intenso. Tres tamaños disponibles.
-- [Tienda completa](https://octavofuego.com/tienda): Catálogo completo de rapés, sananga y kuripes con precios y descripciones.
+- [Rapé Tisunú](https://octavofuego.com/tienda/rape/tisunu): Rapé tradicional amazónico para reset energético. Disponible en 10g, 20g y 30g.
+- [Rapé Pixurí](https://octavofuego.com/tienda/rape/pixuri): Blend amazónico asociado al bienestar físico y respiratorio. Tres presentaciones.
+- [Rapé Pariká](https://octavofuego.com/tienda/rape/parika): Variedad para conexión espiritual profunda. Envases de 10g, 20g y 30g.
+- [Rapé Cumarú de Cheiro](https://octavofuego.com/tienda/rape/cumaru-de-cheiro): Rapé ceremonial para protección y escudo energético.
+- [Rapé Vena de Pajé](https://octavofuego.com/tienda/rape/vena-de-paje): Rapé para claridad mental y meditación. Tres tamaños disponibles.
+- [Tienda completa](https://octavofuego.com/tienda): Catálogo completo de rapés con precios, descripciones e información por variedad.
 
 ## Docs
 
@@ -27,8 +27,8 @@
 
 - Fundado en 2026 por Octavo Fuego
 - Sede operativa: Colombia (envíos a Colombia y Brasil)
-- Productos: Rapé do Acre (5 variedades), Sananga, Kuripes/Kuripes
-- Variedades de rapé: Kaxinawá, Nukini, Apurinã, Kuntanawa, Katukina
+- Productos: Rapé do Acre (5 variedades), Sananga, Kuripes/Kuripe
+- Variedades de rapé: Tisunú, Pixurí, Pariká, Cumarú de Cheiro, Vena de Pajé
 - Presentaciones: 10g, 20g, 30g por variedad
 - Industria: Medicinas ancestrales / Ecommerce ceremonial
 - Diferenciador: Rapé artesanal directo de comunidades tradicionales de Acre, Amazonía brasileña
