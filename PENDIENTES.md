@@ -94,3 +94,8 @@
 | 17 | og:image JPG real | `public/images/` | Temporal SVG. Reemplazar con asset gráfico. |
 | 18 | Home text SEO — redacción definitiva | `HomeContent.astro` | Owner debe dar tono de marca final |
 | 19 | Verificar SVGs payment icons en Vercel | `public/images/payment/` | Falso positivo de Lighthouse, verificado en local OK |
+
+## 🟢 Vanguardia / Estratégico
+
+- [ ] **Redefinir locale EN como B2B/Wholesale**: Actualmente `/en/` replica la tienda B2C en inglés. Convertirlo en portal mayorista (precios bulk, registro B2B, sin carrito B2C). Implica replantear contenido, navegación y checkout para EN.
+- [ ] **Rutas localizadas por idioma** (ej. `/en/shop/`, `/pt/loja/`): SEO benefit menor vs esfuerzo (~40+ archivos). Aplazar hasta que haya tráfico real o reestructuración B2B.
