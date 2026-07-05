@@ -8,9 +8,6 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   adapter: vercel(),
   site: 'https://octavofuego.com',
-  build: {
-    inlineStylesheets: 'always',
-  },
   integrations: [
     react(),
     icon({
