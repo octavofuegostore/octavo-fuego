@@ -9,11 +9,13 @@
 import Layout from '@/layouts/Layout.astro';
 import PricingTable from '@/components/product/PricingTable.astro';
 import Testimonials from '@/components/tienda/Testimonials.astro';
+import ReviewModal from '@/components/tienda/ReviewModal.astro';
 import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
 import RelatedProducts from '@/components/product/RelatedProducts.astro';
+import WhatsAppButton from '@/components/whatsapp/WhatsAppButton.astro';
 import { products } from '@/data/products';
 import { useTranslations, type Locale } from '@/i18n';
 import { locales } from '@/i18n';
@@ -38,6 +40,18 @@ if (!product) {
 
 const description = product.descripcion[locale_];
 const highlight = product.highlight[locale_];
+
+const shippingText: Record<Locale, string> = {
+  es: 'Ofrecemos envío a todo Colombia. Los pedidos se procesan en 1-2 días hábiles y se entregan en 3-7 días hábiles según la ubicación. Envío gratuito en pedidos superiores a $100.000 COP.',
+  en: 'We ship to all Colombia. Orders are processed within 1-2 business days and delivered within 3-7 business days depending on location. Free shipping on orders over $100,000 COP.',
+  pt: 'Enviamos para toda a Colômbia. Os pedidos são processados em 1-2 dias úteis e entregues em 3-7 dias úteis dependendo da localização. Frete grátis em pedidos acima de $100.000 COP.',
+};
+
+const returnsText: Record<Locale, string> = {
+  es: 'Aceptamos cambios dentro de los 15 días posteriores a la entrega. El producto debe estar sin abrir y en su empaque original. Para gestionar un cambio, contáctanos vía WhatsApp.',
+  en: 'We accept exchanges within 15 days of delivery. The product must be unopened and in its original packaging. Contact us via WhatsApp to process an exchange.',
+  pt: 'Aceitamos trocas dentro de 15 dias após a entrega. O produto deve estar lacrado e em sua embalagem original. Entre em contato via WhatsApp para solicitar uma troca.',
+};
 
 // F3: Transactional title — product-specific, falls back to generic prefix + name
 const transactionalTitle = product.pageTitle[locale_] ?? `${locale_ === 'en' ? 'Buy' : 'Comprar'} Rapé ${product.nombre[locale_]} | Octavo Fuego`;
@@ -117,7 +131,7 @@ const priceText = locale_ === 'en'
       </nav>
 
       <!-- 2-Column Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+      <div class="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 lg:gap-10">
 
         <!-- LEFT COLUMN: Image -->
         <div class="order-first">
@@ -172,20 +186,30 @@ const priceText = locale_ === 'en'
           </span>
 
           <!-- Product Name — Playfair BLACK -->
-          <h1 class="font-display font-black text-4xl md:text-5xl lg:text-6xl tracking-tight text-[var(--near-black)] leading-tight">
+          <h1 class="font-display font-black text-3xl md:text-4xl lg:text-5xl tracking-tight text-[var(--near-black)] leading-tight">
             {product.nombre[locale_]}
           </h1>
 
-          <!-- Description -->
+          <!-- Description (visible, not in tabs) -->
           <p class="text-[var(--near-black)] text-base md:text-lg leading-[1.8]">
             {description}
           </p>
 
-          <!-- Highlight Quote — BOLD serif, NOT italic, 4px tabaco border, warm bg -->
-          <div class="border-l-[4px] border-[var(--color-action-primary)] bg-[var(--color-surface-warm)] p-6 md:p-8">
-            <p class="font-display font-bold text-lg md:text-xl text-[var(--near-black)] leading-relaxed">
+          <!-- Highlight (visible) -->
+          <div class="border-l-[2px] border-[var(--color-action-primary)] pl-5 md:pl-6 py-3">
+            <p class="font-display italic text-base md:text-lg text-[var(--ceniza)] leading-relaxed">
               {highlight}
             </p>
+          </div>
+
+          <!-- Tags (like desktop/accessories/season) -->
+          <div class="flex flex-wrap gap-2">
+            <span class="inline-block text-xs font-medium text-[var(--color-action-primary)] bg-[var(--color-action-primary)]/5 px-3 py-1 rounded-full">
+              {product.intentMap}
+            </span>
+            <span class="inline-block text-xs font-medium text-[var(--ceniza)] bg-[var(--papel)] px-3 py-1 rounded-full">
+              {t.tienda.intensityLabels.level}: {product.intensidad.nivel[locale_]}
+            </span>
           </div>
 
           <!-- PricingTable (UNCHANGED) -->
@@ -198,60 +222,85 @@ const priceText = locale_ === 'en'
             />
           </div>
 
-          <!-- Intensity — tabaco badges -->
-          <div class="pt-4">
-            <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
-              {t.tienda.intensity}
-            </h2>
-            <div class="grid grid-cols-3 gap-3">
-              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
-                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
-                  {t.tienda.intensityLabels.strength}
-                </span>
-                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
-                  {product.intensidad.fuerza[locale_]}
-                </span>
+          <!-- Tabs -->
+          <div class="border-b border-gray-200 mt-10">
+            <nav class="flex gap-4 lg:gap-6 -mb-px text-sm overflow-x-auto">
+              <button class="tab-btn pb-3 font-medium border-b-2 border-[var(--color-action-primary)] text-[var(--color-action-primary)] whitespace-nowrap" data-tab="intensity">Intensidad</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="shipping">Envío</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="uso">Uso</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="tradicion">Tradición</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="reviews">Reseñas</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="faq">FAQ</button>
+            </nav>
+          </div>
+
+          <!-- Tab content -->
+          <div class="py-6 space-y-6">
+            <div id="tab-intensity" class="tab-content">
+              <div>
+                <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-4">
+                  {t.tienda.intensity}
+                </h2>
+                <div class="grid grid-cols-3 gap-3">
+                  <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                    <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                      {t.tienda.intensityLabels.strength}
+                    </span>
+                    <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                      {product.intensidad.fuerza[locale_]}
+                    </span>
+                  </div>
+                  <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                    <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                      {t.tienda.intensityLabels.aroma}
+                    </span>
+                    <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                      {product.intensidad.aroma[locale_]}
+                    </span>
+                  </div>
+                  <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
+                    <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
+                      {t.tienda.intensityLabels.level}
+                    </span>
+                    <span class="font-bold text-sm text-[var(--color-text-on-action)]">
+                      {product.intensidad.nivel[locale_]}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
-                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
-                  {t.tienda.intensityLabels.aroma}
-                </span>
-                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
-                  {product.intensidad.aroma[locale_]}
-                </span>
+            </div>
+            <div id="tab-shipping" class="tab-content hidden">
+              <p class="text-sm text-[var(--ceniza)] leading-relaxed">{shippingText[locale_]}</p>
+            </div>
+            <div id="tab-uso" class="tab-content hidden">
+              <div class="space-y-4 text-sm text-[var(--ceniza)] leading-relaxed">
+                <p><strong class="text-[var(--near-black)]">Aplicación:</strong> El rapé se administra con un kuripe (aplicador personal). Se sopla suavemente en cada fosa nasal, alternando lados.</p>
+                <p><strong class="text-[var(--near-black)]">Dosis:</strong> Comenzar con una cantidad pequeña (¼ de lo que usarías con otros rapés) e ir aumentando según la experiencia.</p>
+                <p><strong class="text-[var(--near-black)]">Ambiente:</strong> Buscar un espacio tranquilo. El rapé es una medicina de introspección, no de recreación.</p>
+                <p><strong class="text-[var(--near-black)]">Conservación:</strong> Mantener en un lugar seco y fresco, lejos de la luz directa. El empaque al vacío preserva la frescura.</p>
               </div>
-              <div class="bg-[var(--color-action-primary)] rounded-lg p-3 text-center">
-                <span class="text-[0.6rem] uppercase tracking-wider text-[var(--color-text-on-action)]/70 block mb-1">
-                  {t.tienda.intensityLabels.level}
-                </span>
-                <span class="font-bold text-sm text-[var(--color-text-on-action)]">
-                  {product.intensidad.nivel[locale_]}
-                </span>
+            </div>
+            <div id="tab-tradicion" class="tab-content hidden">
+              <div class="space-y-4 text-sm text-[var(--ceniza)] leading-relaxed">
+                <p><strong class="text-[var(--near-black)]">Origen:</strong> Proveniente del Acre, Amazonía brasileña. Elaborado de forma tradicional por comunidades indígenas de la región.</p>
+                <p><strong class="text-[var(--near-black)]">El árbol:</strong> {product.nombre[locale_]} se elabora con la ceniza del árbol homónimo, considerado por las tradiciones amazónicas como el más poderoso y fuerte de la selva.</p>
+                <p><strong class="text-[var(--near-black)]">Preparación:</strong> {description}</p>
               </div>
+            </div>
+            <div id="tab-reviews" class="tab-content hidden">
+              <Testimonials locale={locale_} />
+            </div>
+            <div id="tab-faq" class="tab-content hidden">
+              <FAQSection product={product} locale={locale_} />
             </div>
           </div>
 
-          <!-- Intent Map -->
-          <div class="pt-2">
-            <p class="text-sm text-[var(--ceniza)]">
-              {t.tienda.categoryLabel}{' '}
-              <span class="text-[var(--color-action-primary)] font-bold">
-                {product.intentMap}
-              </span>
-            </p>
-          </div>
-
         </div>
-      </div>
-
-      <!-- Testimonials (full width below grid) -->
-      <Testimonials locale={locale_} />
-
-      <!-- FAQ (full width) -->
-      <FAQSection product={product} locale={locale_} />
 
       <!-- Related Products (NEW) -->
       <RelatedProducts currentSlug={productSlug} locale={locale_} baseUrl={baseUrl} />
+
+      <ReviewModal locale={locale_} productName={product.nombre[locale_]} />
 
     </div>
   </section>
@@ -285,6 +334,29 @@ const priceText = locale_ === 'en'
         firstThumb.setAttribute('data-active', 'true');
         firstThumb.classList.add('border-[var(--color-action-primary)]');
       }
+    });
+  </script>
+
+  <!-- Tab JS: toggle visibility -->
+  <script>
+    document.addEventListener('astro:page-load', () => {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+      if (!tabs.length) return;
+      tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const target = btn.getAttribute('data-tab');
+          tabs.forEach(b => {
+            b.classList.remove('border-[var(--color-action-primary)]', 'text-[var(--color-action-primary)]');
+            b.classList.add('border-transparent', 'text-[var(--ceniza)]');
+          });
+          btn.classList.add('border-[var(--color-action-primary)]', 'text-[var(--color-action-primary)]');
+          btn.classList.remove('border-transparent', 'text-[var(--ceniza)]');
+          contents.forEach(c => c.classList.add('hidden'));
+          const tc = document.getElementById(`tab-${target}`);
+          if (tc) tc.classList.remove('hidden');
+        });
+      });
     });
   </script>
 </Layout>

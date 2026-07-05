@@ -1,0 +1,248 @@
+---
+interface Props {
+  locale: 'es' | 'en' | 'pt';
+  productName: string;
+}
+
+const { locale, productName } = Astro.props;
+
+const labels = {
+  es: {
+    title: 'Comparte tu experiencia',
+    subtitle: 'Cuéntanos qué te pareció este producto — tu opinión ayuda a otros.',
+    name: 'Tu nombre',
+    namePlaceholder: 'Ej: Mateo R.',
+    location: 'Ubicación',
+    locationPlaceholder: 'Ej: Bogotá, Colombia',
+    rating: 'Tu calificación',
+    review: 'Tu reseña',
+    reviewPlaceholder: 'Escribe tu reseña aquí',
+    cancel: 'Cancelar',
+    submit: 'Enviar reseña',
+    thanks: 'Gracias por tu reseña — será enviada vía WhatsApp',
+  },
+  en: {
+    title: 'Share your thoughts',
+    subtitle: 'Tell us what you think about this product — your feedback helps others.',
+    name: 'Your name',
+    namePlaceholder: 'e.g. Mateo R.',
+    location: 'Location',
+    locationPlaceholder: 'e.g. Bogotá, Colombia',
+    rating: 'Your rating',
+    review: 'Your review',
+    reviewPlaceholder: 'Write your review here',
+    cancel: 'Cancel',
+    submit: 'Submit review',
+    thanks: 'Thanks for your review — it will be sent via WhatsApp',
+  },
+  pt: {
+    title: 'Compartilhe sua experiência',
+    subtitle: 'Conte-nos o que achou deste produto — sua opinião ajuda outros.',
+    name: 'Seu nome',
+    namePlaceholder: 'Ex: Mateo R.',
+    location: 'Localização',
+    locationPlaceholder: 'Ex: Bogotá, Colômbia',
+    rating: 'Sua avaliação',
+    review: 'Sua avaliação',
+    reviewPlaceholder: 'Escreva sua avaliação aqui',
+    cancel: 'Cancelar',
+    submit: 'Enviar avaliação',
+    thanks: 'Obrigado pela sua avaliação — será enviada via WhatsApp',
+  },
+};
+
+const l = labels[locale];
+---
+
+<div
+  id="reviewModal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity"
+>
+  <div class="w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl">
+    <div class="p-8">
+      <!-- Header -->
+      <div class="text-center">
+        <div class="w-14 h-14 rounded-full bg-[var(--papel)] flex items-center justify-center mx-auto">
+          <svg class="w-7 h-7 text-[var(--color-action-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+          </svg>
+        </div>
+        <h2 class="font-display font-bold text-xl text-[var(--near-black)] mt-6">
+          {l.title}
+        </h2>
+        <p class="text-sm text-[var(--ceniza)] mt-1">
+          {l.subtitle}
+        </p>
+      </div>
+
+      <!-- Form -->
+      <form class="mt-8 space-y-5" id="reviewForm">
+        <!-- Stars -->
+        <div>
+          <label class="block text-sm font-medium text-[var(--near-black)] mb-2">
+            {l.rating}
+          </label>
+          <div class="flex gap-1" id="star-rating">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <button
+                type="button"
+                class="star-btn w-8 h-8 flex items-center justify-center text-gray-300 hover:text-yellow-500 transition-colors duration-150"
+                data-value={i}
+                aria-label={`${i} estrellas`}
+              >
+                <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+              </button>
+            ))}
+          </div>
+          <input type="hidden" name="rating" id="ratingValue" value="5" />
+        </div>
+
+        <!-- Name -->
+        <div>
+          <label for="reviewName" class="block text-sm font-medium text-[var(--near-black)] mb-1.5">
+            {l.name}
+          </label>
+          <input
+            type="text"
+            id="reviewName"
+            name="name"
+            required
+            placeholder={l.namePlaceholder}
+            class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-200 text-[var(--near-black)] placeholder:text-[var(--ceniza)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-action-primary)] focus:border-transparent transition-all duration-200"
+          />
+        </div>
+
+        <!-- Location -->
+        <div>
+          <label for="reviewLocation" class="block text-sm font-medium text-[var(--near-black)] mb-1.5">
+            {l.location}
+          </label>
+          <input
+            type="text"
+            id="reviewLocation"
+            name="location"
+            required
+            placeholder={l.locationPlaceholder}
+            class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-200 text-[var(--near-black)] placeholder:text-[var(--ceniza)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-action-primary)] focus:border-transparent transition-all duration-200"
+          />
+        </div>
+
+        <!-- Review -->
+        <div>
+          <label for="reviewText" class="block text-sm font-medium text-[var(--near-black)] mb-1.5">
+            {l.review}
+          </label>
+          <textarea
+            id="reviewText"
+            rows="4"
+            required
+            placeholder={l.reviewPlaceholder}
+            class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-200 text-[var(--near-black)] placeholder:text-[var(--ceniza)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-action-primary)] focus:border-transparent transition-all duration-200 resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3 pt-2">
+          <button
+            type="button"
+            id="cancelReviewBtn"
+            class="px-5 py-2.5 text-sm font-medium text-[var(--ceniza)] hover:text-[var(--near-black)] bg-[var(--papel)] rounded-lg transition-colors duration-200"
+          >
+            {l.cancel}
+          </button>
+          <button
+            type="submit"
+            class="px-5 py-2.5 text-sm font-medium text-white bg-[var(--color-action-primary)] rounded-lg hover:opacity-90 active:scale-[0.98] transition-all duration-200"
+          >
+            {l.submit}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    // Star rating
+    const stars = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('ratingValue');
+    if (stars.length && ratingInput) {
+      stars.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const val = parseInt(btn.getAttribute('data-value') || '5');
+          ratingInput.value = String(val);
+          stars.forEach((s, i) => {
+            if (i < val) {
+              s.classList.remove('text-gray-300');
+              s.classList.add('text-yellow-500');
+            } else {
+              s.classList.remove('text-yellow-500');
+              s.classList.add('text-gray-300');
+            }
+          });
+        });
+      });
+    }
+
+    // Modal logic
+    const modal = document.getElementById('reviewModal');
+    const openBtn = document.getElementById('modalButton');
+    const cancelBtn = document.getElementById('cancelReviewBtn');
+    const form = document.getElementById('reviewForm');
+
+    if (!modal || !openBtn) return;
+
+    function openModal() {
+      modal.classList.remove('hidden');
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+
+    if (cancelBtn) {
+      cancelBtn.addEventListener('click', closeModal);
+    }
+
+    // Close on backdrop click
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
+    });
+
+    // Form submit -> WhatsApp
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('reviewName')?.value || '';
+        const location = document.getElementById('reviewLocation')?.value || '';
+        const rating = document.getElementById('ratingValue')?.value || '5';
+        const review = document.getElementById('reviewText')?.value || '';
+        const starsStr = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
+        const msg = `Hola! Quiero dejar una reseña para ${productName}:\n\n${starsStr}\n"${review}"\n\n— ${name}, ${location}`;
+        window.open(`https://wa.me/573172137932?text=${encodeURIComponent(msg)}`, '_blank');
+        closeModal();
+        form.reset();
+        // Reset stars
+        stars.forEach(s => {
+          s.classList.remove('text-yellow-500');
+          s.classList.add('text-gray-300');
+        });
+        if (ratingInput) ratingInput.value = '5';
+      });
+    }
+  });
+</script>
