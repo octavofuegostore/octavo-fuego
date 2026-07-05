@@ -1118,4 +1118,50 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 **F4 Domain:** MetodoPago unified, legacy cleanup, Value Objects, DTOs
 **F5 i18n+Data:** minGrams, cart import, intentMap, getNestedValue
 
-*Última actualización: Julio 4, 2026 — v0.13.0 + JD*
+*Última actualización: Julio 5, 2026 — v0.14.0 Sprint Auditorías Técnicas*
+
+---
+
+## 🧪 Sprint Auditorías Técnicas — Julio 5, 2026
+
+> **PRs:** [#50](https://github.com/octavofuegostore/octavo-fuego/pull/50) + [#51](https://github.com/octavofuegostore/octavo-fuego/pull/51)
+> **Commits:** 23 | **Archivos:** 43 | **Build:** ✅ 0 errores
+> **Lighthouse Accesibilidad:** 91 → **100** 🚀
+> **Render-blocking resources:** 1,400ms → **0** 🚀
+> **LCP:** 2.7s → **1.2s** 🚀
+
+### ✅ Performance
+- Google Fonts CSS no bloqueante (`media="print" onload="this.media='all'"`)
+- LCP preload hero image via `slot="head"`
+- Width/height explícitos en logo y payment icons
+
+### ✅ Seguridad
+- HSTS, COOP, CORP, Permissions-Policy en `public/_headers`
+
+### ✅ Accesibilidad
+- Cart icon `aria-label`
+- ARIA IDs duplicados corregidos (LanguageSwitcher con `suffix`)
+- Headings h4→h2 en Footer + PaymentBanner
+- Contraste color corregido (Compra protegida)
+- Alt text mejorado en productos
+- Glossary con `<dl>` wrapper
+- Tienda: jerarquía de headings corregida (h1→h2→h3)
+- LanguageSwitcher: accessible name matching visible text
+
+### ✅ SEO + Contenido
+- `llms.txt` reescrito con estándar geo-llmstxt (Key Facts, Contact, Products, Docs)
+- H1 home: "Octavo Fuego — Rapé Ancestral Amazónico" (ES/EN/PT)
+- `og:image.svg` rediseñado
+- Texto SEO home (200+ palabras sobre Rapé do Acre)
+- `ReviewJsonLd.astro` con AggregateRating + 3 reseñas
+
+### ✅ Rename Tisunú → Tsunú
+- 23 archivos: slug, display name, schemas, inventory, pricing
+- Redirect legacy `/catalogo/tisunu` corregido
+
+### ✅ WebMCP
+- Tool declarations declarativas (`toolname`/`tooldescription`) en WhatsApp y cart
+
+### ✅ Routing
+- Fix i18n `prefixDefaultLocale:false` para páginas de producto (redirects root → /es/)
+- 5 slugs funcionando desde root sin prefijo

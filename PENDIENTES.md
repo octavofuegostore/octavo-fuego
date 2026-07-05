@@ -1396,5 +1396,7 @@ octavo-fuego/
 
 #### 🟢 Vanguardia
 - [x] **WebMCP**: toolname + tooldescription en WhatsApp button y cart links (markup declarativo). El estándar aún es experimental (Chrome 149+), pero el markup ya está listo.
+- [x] **Product page routing fix**: Redirects root → /es/ para /tienda/rape/[slug]. PR #51.
 - [ ] **CrUX field data**: Revisar cuando haya tráfico real (~28 días) — no se puede codificar
 - [ ] **Reviews Schema UGC**: Si se implementan reseñas de usuarios, marcarlas con Schema Review
+- [ ] **@astrojs/vercel i18n routing bug**: v10 no genera rutas root para [locale] dinámicos con prefixDefaultLocale:false. Fix actual: redirects manuales. Evaluar si v11 lo resuelve.
