@@ -67,6 +67,8 @@
 - [ ] **Product page 404 en dev/preview server**: Las rutas `/tienda/rape/[slug]` funcionan en producción pero no en dev server. Bug de Astro 6.1.3.
 - [ ] **Monorepo + Medusa Server**: Fase 7 del roadmap. Pendiente de planificar.
 
+> ⚠️ **Lección aprendida:** Tailwind 4 usa `@layer` directives que NO son compatibles con CSS inlinado (`<style>` inline o extractores como `@playform/inline`/beasties). El browser no parsea correctamente las reglas dentro de `@layer` cuando hay conflictos entre inline y external CSS. **No intentar inlining de CSS con Tailwind 4** hasta que Astro/Tailwind tengan soporte nativo para critical CSS extraction que maneje `@layer` correctamente.
+
 ---
 
 ## 📋 Judgment Day — Postergados (v0.9.0+)
