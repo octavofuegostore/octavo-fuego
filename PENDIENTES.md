@@ -1346,3 +1346,42 @@ octavo-fuego/
 | 14 | Escape key listener stacking en View Transitions | `ReviewModal.astro` | Baja prioridad, solo acumula, no rompe |
 | 15 | Focus trap modal reseñas (accesibilidad) | `ReviewModal.astro` | Mejora WCAG, no blocker |
 | 16 | Meta descriptions USD/BRL vs precios COP | `data/products.ts` | Decisión: mantener USD/BRL para SEO multi-mercado o unificar a COP |
+| 17 | Imagen og:image real (JPG 1200×630) con foto de producto | `public/images/` | Temporal SVG generado. Reemplazar con asset gráfico real + foto de producto. |
+| 18 | Texto SEO home — redacción definitiva | `HomeContent.astro` | Borrador técnico puesto. Owner debe reescribir con tono de marca. |
+| 19 | Verificar SVGs de payment icons en Vercel | `public/images/payment/` | Confirmar si los SVGs se sirven correctamente en producción. |
+
+### 📋 Auditoría Técnica 06/2026 — Items Implementados con SDD
+
+> Auditoría completa de octavofuego.com (Lighthouse + PageSpeed Insights).
+> SDD cycles ejecutados en Julio 2026.
+
+#### 🔴 Alta Prioridad — Implementado (Change 1: Performance)
+- [x] **Render-blocking fonts**: Google Fonts CSS → `media="print" onload="this.media='all'"` + `<noscript>` fallback
+- [x] **LCP preload**: Hero image con `<link rel="preload" as="image">` via `slot="head"`
+- [x] **Logo width/height**: `width="40" height="32"` en Navbar.astro
+- [x] **Payment icons w/h**: `width="32" height="32"` en PaymentBanner.astro
+
+#### 🔴 Alta Prioridad — Implementado (Change 2: Seguridad)
+- [x] **HSTS**: `max-age=63072000; includeSubDomains` en `public/_headers`
+- [x] **COOP**: `same-origin-allow-popups` en `public/_headers`
+- [x] **CORP**: `same-origin` en `public/_headers`
+- [x] **Permissions-Policy**: `camera=(), microphone=(), geolocation=()` en `public/_headers`
+
+#### 🔴 Alta Prioridad — Implementado (Change 3: Accesibilidad)
+- [x] **Cart icon aria-label**: `aria-label="Ver carrito de compras"` en Navbar.astro
+- [x] **ARIA IDs duplicados**: LanguageSwitcher con `suffix` prop para desktop/mobile
+- [x] **Headings h4→h2**: Footer + PaymentBanner headings corregidos
+- [x] **Contraste color**: `Compra protegida` cambiado a `text-[#4a4a4a]`
+- [x] **Alt text redundante**: Mejorado alt text en productos
+
+#### 🟡 Media Prioridad — Implementado (Change 4: SEO)
+- [x] **llms.txt**: Creado en `public/llms.txt`
+- [x] **H1 home**: Cambiado a "Octavo Fuego — Rapé Ancestral Amazónico" (ES/EN/PT)
+- [x] **og:image SVG**: Actualizado con nuevo tagline y diseño mejorado
+- [x] **Texto SEO home**: Borrador de ~200 palabras sobre Rapé do Acre añadido
+
+#### 🟡 Media Prioridad — Pendiente
+- [ ] **og:image JPG real**: Reemplazar SVG temporal con JPG 1200×630 con foto de producto
+- [ ] **Home text**: Revisar y reescribir borrador con tono de marca definitivo
+- [ ] **Payment icons**: Verificar despliegue de SVGs en Vercel
+- [ ] **www vs no-www**: Configurar redirect 301 en Vercel

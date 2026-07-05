@@ -4,17 +4,36 @@
       <stop offset="0%" style="stop-color:#1C1410;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#3D2E22;stop-opacity:1" />
     </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#C4956A" />
+      <stop offset="100%" style="stop-color:#6d5e4d" />
+    </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)" />
-  <!-- Decorative line -->
-  <line x1="80" y1="280" x2="400" y2="280" stroke="#C4956A" stroke-width="2" />
+  
+  <!-- Top accent bar -->
+  <rect fill="url(#accent)" width="1200" height="6" />
+  
+  <!-- Decorative circles -->
+  <circle cx="1050" cy="200" r="280" fill="#C4956A" opacity="0.04" />
+  <circle cx="150" cy="500" r="200" fill="#C4956A" opacity="0.03" />
+  
   <!-- Brand name -->
   <text x="80" y="200" font-family="'Playfair Display', Georgia, serif" font-size="64" font-weight="700" fill="#F2EFE8">Octavo Fuego</text>
+  
+  <!-- Divider -->
+  <line x1="80" y1="240" x2="300" y2="240" stroke="#C4956A" stroke-width="2" />
+  
   <!-- Tagline -->
-  <text x="80" y="340" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="400" fill="#C4956A">Rapé do Acre — Amazonian Sacred Snuff</text>
-  <!-- Bottom text -->
-  <text x="80" y="480" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="300" fill="#8C8680">Directo de la Amazonía, con propósito</text>
-  <!-- Decorative circle -->
-  <circle cx="1050" cy="315" r="120" fill="none" stroke="#C4956A" stroke-width="1" opacity="0.3" />
-  <circle cx="1050" cy="315" r="80" fill="none" stroke="#C4956A" stroke-width="1" opacity="0.2" />
+  <text x="80" y="320" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="400" fill="#C4956A">Rapé Ancestral Amazónico</text>
+  
+  <!-- Subtitle -->
+  <text x="80" y="380" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="300" fill="#8C8680" letter-spacing="3">RAPÉ DO ACRE · SANANGA · KURIPE</text>
+  
+  <!-- Description -->
+  <text x="80" y="460" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="300" fill="#8C8680">Rapé artesanal directamente de las comunidades</text>
+  <text x="80" y="490" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="300" fill="#8C8680">tradicionales de Acre, Amazonía brasileña.</text>
+  
+  <!-- Bottom accent bar -->
+  <rect fill="url(#accent)" x="0" y="624" width="1200" height="6" />
 </svg>

@@ -1,0 +1,31 @@
+# Octavo Fuego — Rapé do Acre
+
+## About
+Octavo Fuego is a Colombian-based ecommerce store specializing in Rapé do Acre — a traditional Amazonian sacred snuff (rape) made from handcrafted medicinal tobacco and tree ashes. Sourced directly from indigenous communities in Acre, Brazilian Amazon.
+
+## Products
+- **Rapé (Rapé do Acre)**: 5 varieties — Kaxinawá, Nukini, Apurinã, Kuntanawa, Katukina. Available in 10g, 20g, 30g sizes.
+- **Sananga**: Amazonian eye drops
+- **Kuripes / Kuripe**: Traditional self-application pipes
+
+## Key Pages
+- Home: https://octavofuego.com
+- Store: https://octavofuego.com/tienda
+- Blog: https://octavofuego.com/blog
+- About: https://octavofuego.com/nosotros
+- FAQ: https://octavofuego.com/faq
+- Contact: https://octavofuego.com/contacto
+
+## Social
+- Instagram: @octavofuego
+- WhatsApp: +57 (available from the website)
+
+## Locales
+- Spanish (default): https://octavofuego.com
+- English: https://octavofuego.com/en
+- Portuguese: https://octavofuego.com/pt
+
+## Tech
+- Built with Astro + TailwindCSS
+- Deployed on Vercel
+- Payment via WhatsApp (PSE, Nequi, transfer)
