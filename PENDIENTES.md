@@ -1380,8 +1380,20 @@ octavo-fuego/
 - [x] **og:image SVG**: Actualizado con nuevo tagline y diseño mejorado
 - [x] **Texto SEO home**: Borrador de ~200 palabras sobre Rapé do Acre añadido
 
+#### 🟡 Media Prioridad — Implementado (Change 5: Reviews + Config)
+- [x] **Reviews Schema JSON-LD**: Creado ReviewJsonLd.astro con AggregateRating + 3 reviews en producto
+- [x] **www redirect**: 301 redirect configurado en `vercel.json` de `octavofuego.com` → `www.octavofuego.com`
+- [x] **llms.txt**: Creado para visibilidad en LLMs
+- [x] **og:image SVG**: Actualizado con tagline "Rapé Ancestral Amazónico"
+- [x] **Payment icons**: Verificado en local — **falso positivo de Lighthouse**. Los 12 SVGs se renderizan correctamente con src, alt y dimensiones.
+- [x] **Console errors**: Verificado en local — 0 errores, 0 warnings en home.
+
 #### 🟡 Media Prioridad — Pendiente
 - [ ] **og:image JPG real**: Reemplazar SVG temporal con JPG 1200×630 con foto de producto
 - [ ] **Home text**: Revisar y reescribir borrador con tono de marca definitivo
-- [ ] **Payment icons**: Verificar despliegue de SVGs en Vercel
-- [ ] **www vs no-www**: Configurar redirect 301 en Vercel
+- [ ] **Google Search Console**: Verificar propiedad en search.google.com
+
+#### 🟢 Vanguardia
+- [ ] **WebMCP**: Google I/O 2026 — origin trial en Chrome 149+. Guardar en radar para 2027. Experimental.
+- [ ] **CrUX field data**: Revisar cuando haya tráfico real (~28 días)
+- [ ] **Reviews Schema UGC**: Si se implementan reseñas de usuarios, marcarlas con Schema Review
