@@ -40,6 +40,7 @@ export interface Product {
     minGrams: number;
     pricePerGram: number;
   };
+  overview: Record<Locale, string>;
   imagenes: string[];
   metaDescription: Record<Locale, string>;
   pageTitle: Record<Locale, string>;
@@ -82,6 +83,11 @@ export const products: Product[] = [
       es: 'Tisunú',
       en: 'Tisunú',
       pt: 'Tisunú',
+    },
+    overview: {
+      es: 'Ideal para limpiezas energéticas profundas, equilibrio interior y fortalecer la conexión con la naturaleza.',
+      en: 'Ideal for deep energetic cleansing, inner balance, and strengthening the connection with nature.',
+      pt: 'Ideal para limpezas energéticas profundas, equilíbrio interior e fortalecer a conexão com a natureza.',
     },
     /** @source ESP.html table row 1 — Enfoque Principal | ENG.html table row 1 | PT.html table row 1 */
     enfoque: {
@@ -156,6 +162,11 @@ export const products: Product[] = [
       en: 'Pixurí',
       pt: 'Pixurí',
     },
+    overview: {
+      es: 'Reconocido por sus propiedades respiratorias, su aroma profundo y su capacidad para aliviar la sinusitis y el asma de forma natural.',
+      en: 'Recognized for its respiratory properties, deep aroma, and ability to naturally relieve sinusitis and asthma.',
+      pt: 'Reconhecido por suas propriedades respiratórias, aroma profundo e capacidade de aliviar sinusite e asma naturalmente.',
+    },
     /** @source ESP.html table row 2 — Enfoque Principal | ENG.html table row 2 | PT.html table row 2 */
     enfoque: {
       es: 'Medicinal',
@@ -228,6 +239,11 @@ export const products: Product[] = [
       es: 'Pariká',
       en: 'Pariká',
       pt: 'Pariká',
+    },
+    overview: {
+      es: 'Herramienta ceremonial de fuerza ancestral para la conexión espiritual, la limpieza de energías densas y la apertura de caminos.',
+      en: 'Ceremonial tool of ancestral strength for spiritual connection, cleansing of dense energies, and opening of pathways.',
+      pt: 'Ferramenta cerimonial de força ancestral para conexão espiritual, limpeza de energias densas e abertura de caminhos.',
     },
     /** @source ESP.html table row 3 — Enfoque Principal | ENG.html table row 3 | PT.html table row 3 */
     enfoque: {
@@ -302,6 +318,11 @@ export const products: Product[] = [
       en: 'Cumarú de Cheiro',
       pt: 'Cumarú de Cheiro',
     },
+    overview: {
+      es: 'Escudo energético, protección ancestral y limpieza respiratoria. Ideal para quienes buscan fuerza y resistencia espiritual y física.',
+      en: 'Energetic shield, ancestral protection, and respiratory cleansing. Ideal for those seeking spiritual and physical strength.',
+      pt: 'Escudo energético, proteção ancestral e limpeza respiratória. Ideal para quem busca força espiritual e física.',
+    },
     /** @source ESP.html table row 4 — Enfoque Principal | ENG.html table row 4 | PT.html table row 4 */
     enfoque: {
       es: 'Mixto',
@@ -374,6 +395,11 @@ export const products: Product[] = [
       es: 'Vena de Pajé',
       en: 'Vena de Pajé',
       pt: 'Veia de Pajé',
+    },
+    overview: {
+      es: 'Medicina única para despertar la percepción, profundizar la meditación y descalcificar la glándula pineal.',
+      en: 'Unique medicine to awaken perception, deepen meditation, and decalcify the pineal gland.',
+      pt: 'Medicina única para despertar a percepção, aprofundar a meditação e descalcificar a glândula pineal.',
     },
     /** @source ESP.html table row 5 — Enfoque Principal | ENG.html table row 5 | PT.html table row 5 */
     enfoque: {

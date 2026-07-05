@@ -12,6 +12,8 @@ const labels = {
     subtitle: 'Cuéntanos qué te pareció este producto — tu opinión ayuda a otros.',
     name: 'Tu nombre',
     namePlaceholder: 'Ej: Mateo R.',
+    email: 'Correo electrónico (opcional)',
+    emailPlaceholder: 'tu@email.com — para tu avatar',
     location: 'Ubicación',
     locationPlaceholder: 'Ej: Bogotá, Colombia',
     rating: 'Tu calificación',
@@ -26,6 +28,8 @@ const labels = {
     subtitle: 'Tell us what you think about this product — your feedback helps others.',
     name: 'Your name',
     namePlaceholder: 'e.g. Mateo R.',
+    email: 'Email (optional)',
+    emailPlaceholder: 'your@email.com — for your avatar',
     location: 'Location',
     locationPlaceholder: 'e.g. Bogotá, Colombia',
     rating: 'Your rating',
@@ -40,8 +44,10 @@ const labels = {
     subtitle: 'Conte-nos o que achou deste produto — sua opinião ajuda outros.',
     name: 'Seu nome',
     namePlaceholder: 'Ex: Mateo R.',
+    email: 'E-mail (opcional)',
+    emailPlaceholder: 'seu@email.com — para seu avatar',
     location: 'Localização',
-    locationPlaceholder: 'Ex: Bogotá, Colômbia',
+    locationPlaceholder: 'Ex: São Paulo, Brasil',
     rating: 'Sua avaliação',
     review: 'Sua avaliação',
     reviewPlaceholder: 'Escreva sua avaliação aqui',
@@ -125,6 +131,20 @@ const l = labels[locale];
             name="location"
             required
             placeholder={l.locationPlaceholder}
+            class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-200 text-[var(--near-black)] placeholder:text-[var(--ceniza)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-action-primary)] focus:border-transparent transition-all duration-200"
+          />
+        </div>
+
+        <!-- Email (optional, for Gravatar) -->
+        <div>
+          <label for="reviewEmail" class="block text-sm font-medium text-[var(--near-black)] mb-1.5">
+            {l.email}
+          </label>
+          <input
+            type="email"
+            id="reviewEmail"
+            name="email"
+            placeholder={l.emailPlaceholder}
             class="block w-full px-4 py-2.5 text-sm rounded-lg border border-gray-200 text-[var(--near-black)] placeholder:text-[var(--ceniza)]/50 focus:outline-none focus:ring-2 focus:ring-[var(--color-action-primary)] focus:border-transparent transition-all duration-200"
           />
         </div>
@@ -223,16 +243,28 @@ const l = labels[locale];
       if (e.key === 'Escape' && modal.style.display === 'flex') closeModal();
     });
 
+    // Gravatar URL helper using Web Crypto API
+    async function gravatarUrl(email) {
+      if (!email) return '';
+      const msg = new TextEncoder().encode(email.trim().toLowerCase());
+      const hash = await crypto.subtle.digest('MD5', msg);
+      const hex = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2,'0')).join('');
+      return `https://www.gravatar.com/avatar/${hex}?s=80&d=mp`;
+    }
+
     // Form submit -> WhatsApp
     if (form) {
-      form.addEventListener('submit', (e) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.getElementById('reviewName')?.value || '';
         const location = document.getElementById('reviewLocation')?.value || '';
         const rating = document.getElementById('ratingValue')?.value || '5';
         const review = document.getElementById('reviewText')?.value || '';
+        const email = document.getElementById('reviewEmail')?.value || '';
+        const gravatar = await gravatarUrl(email);
         const starsStr = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
-        const msg = `Hola! Quiero dejar una reseña para ${productName}:\n\n${starsStr}\n"${review}"\n\n— ${name}, ${location}`;
+        let msg = `Hola! Quiero dejar una reseña para ${productName}:\n\n${starsStr}\n"${review}"\n\n— ${name}, ${location}`;
+        if (gravatar) msg += `\nAvatar: ${gravatar}`;
         window.open(`https://wa.me/573172137932?text=${encodeURIComponent(msg)}`, '_blank');
         closeModal();
         form.reset();
