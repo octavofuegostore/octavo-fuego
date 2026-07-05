@@ -85,9 +85,9 @@ export const products: Product[] = [
       pt: 'Tisunú',
     },
     overview: {
-      es: 'Ideal para limpiezas energéticas profundas, equilibrio interior y fortalecer la conexión con la naturaleza.',
-      en: 'Ideal for deep energetic cleansing, inner balance, and strengthening the connection with nature.',
-      pt: 'Ideal para limpezas energéticas profundas, equilíbrio interior e fortalecer a conexão com a natureza.',
+      es: 'Elaborado con la ceniza del árbol más poderoso de la selva, Tisunú es una de las medicinas más antiguas de los pueblos indígenas. Su preparación combina tabaco de moho y tabaco orgánico. Ideal para limpiezas energéticas profundas, purificación del aura, equilibrio interior y conexión espiritual.',
+      en: 'Made from the ash of the most powerful tree in the forest, Tisunú is one of the oldest medicines of indigenous peoples. Its preparation combines mold tobacco and organic tobacco. Ideal for deep energetic cleansing, aura purification, inner balance, and spiritual connection.',
+      pt: 'Elaborado com a cinza da árvore mais poderosa da floresta, Tisunú é um dos medicamentos mais antigos dos povos indígenas. Seu preparo combina tabaco de mofo e tabaco orgânico. Ideal para limpezas energéticas profundas, purificação da aura, equilíbrio interior e conexão espiritual.',
     },
     /** @source ESP.html table row 1 — Enfoque Principal | ENG.html table row 1 | PT.html table row 1 */
     enfoque: {
@@ -163,9 +163,9 @@ export const products: Product[] = [
       pt: 'Pixurí',
     },
     overview: {
-      es: 'Reconocido por sus propiedades respiratorias, su aroma profundo y su capacidad para aliviar la sinusitis y el asma de forma natural.',
-      en: 'Recognized for its respiratory properties, deep aroma, and ability to naturally relieve sinusitis and asthma.',
-      pt: 'Reconhecido por suas propriedades respiratórias, aroma profundo e capacidade de aliviar sinusite e asma naturalmente.',
+      es: 'Reconocido por su aroma profundo y agradable, Pixurí posee propiedades antisépticas, analgésicas y expectorantes por su eucaliptol natural. Sus hojas se combinan con ceniza de Tisunú o Pariká y tabaco de savia, logrando una mezcla aromática y curativa de alta calidad. Ideal para aliviar afecciones respiratorias como sinusitis y asma.',
+      en: 'Recognized for its deep, pleasant aroma, Pixurí has antiseptic, analgesic and expectorant properties from its natural eucalyptol. Its leaves combine with Tisunú or Pariká ash and sap tobacco, creating a high-quality aromatic and healing blend. Ideal for relieving respiratory conditions like sinusitis and asthma.',
+      pt: 'Reconhecido por seu aroma profundo e agradável, Pixurí possui propriedades antissépticas, analgésicas e expectorantes por seu eucaliptol natural. Suas folhas combinam-se com cinza de Tisunú ou Pariká e tabaco de seiva, criando uma mistura aromática e curativa de alta qualidade. Ideal para aliviar condições respiratórias como sinusite e asma.',
     },
     /** @source ESP.html table row 2 — Enfoque Principal | ENG.html table row 2 | PT.html table row 2 */
     enfoque: {
@@ -241,9 +241,9 @@ export const products: Product[] = [
       pt: 'Pariká',
     },
     overview: {
-      es: 'Herramienta ceremonial de fuerza ancestral para la conexión espiritual, la limpieza de energías densas y la apertura de caminos.',
-      en: 'Ceremonial tool of ancestral strength for spiritual connection, cleansing of dense energies, and opening of pathways.',
-      pt: 'Ferramenta cerimonial de força ancestral para conexão espiritual, limpeza de energias densas e abertura de caminhos.',
+      es: 'Esencialmente ceremonial, Pariká actúa sobre el plano espiritual. Su preparación artesanal lleva ceniza de Pariká y tabaco de cuerda, siguiendo la tradición del pueblo Kaxinawá. Utilizada para equilibrio interior, limpieza de energías densas, conexión con guías espirituales y apertura de caminos.',
+      en: 'Essentially ceremonial, Pariká works on the spiritual plane. Its artisanal preparation uses Pariká ash and rope tobacco, following the Kaxinawá tradition. Used for inner balance, cleansing of dense energies, connection with spiritual guides, and opening of pathways.',
+      pt: 'Essencialmente cerimonial, Pariká atua no plano espiritual. Seu preparo artesanal leva cinza de Pariká e tabaco de corda, seguindo a tradição do povo Kaxinawá. Utilizado para equilíbrio interior, limpeza de energias densas, conexão com guias espirituais e abertura de caminhos.',
     },
     /** @source ESP.html table row 3 — Enfoque Principal | ENG.html table row 3 | PT.html table row 3 */
     enfoque: {
@@ -319,9 +319,9 @@ export const products: Product[] = [
       pt: 'Cumarú de Cheiro',
     },
     overview: {
-      es: 'Escudo energético, protección ancestral y limpieza respiratoria. Ideal para quienes buscan fuerza y resistencia espiritual y física.',
-      en: 'Energetic shield, ancestral protection, and respiratory cleansing. Ideal for those seeking spiritual and physical strength.',
-      pt: 'Escudo energético, proteção ancestral e limpeza respiratória. Ideal para quem busca força espiritual e física.',
+      es: 'Conocido como el "árbol que no se pudre" por su extrema dureza, la ceniza del Cumarú otorga a este rapé una fuerza única. Su fórmula integra ceniza de Cumarú, tabaco de cuerda y semillas de imburana. Potente escudo energético, ideal para limpieza del aura, protección contra energías densas y equilibrio del plexo solar.',
+      en: 'Known as the "tree that does not rot" for its extreme hardness, Cumarú ash gives this rapé a unique strength. Its formula integrates Cumarú ash, rope tobacco, and imburana seeds. A powerful energetic shield, ideal for aura cleansing, protection against dense energies, and solar plexus balance.',
+      pt: 'Conhecida como a "árvore que não apodrece" por sua extrema dureza, a cinza do Cumarú dá a este rapé uma força única. Sua fórmula integra cinza de Cumarú, tabaco de corda e sementes de imburana. Poderoso escudo energético, ideal para limpeza da aura, proteção contra energias densas e equilíbrio do plexo solar.',
     },
     /** @source ESP.html table row 4 — Enfoque Principal | ENG.html table row 4 | PT.html table row 4 */
     enfoque: {
@@ -397,9 +397,9 @@ export const products: Product[] = [
       pt: 'Veia de Pajé',
     },
     overview: {
-      es: 'Medicina única para despertar la percepción, profundizar la meditación y descalcificar la glándula pineal.',
-      en: 'Unique medicine to awaken perception, deepen meditation, and decalcify the pineal gland.',
-      pt: 'Medicina única para despertar a percepção, aprofundar a meditação e descalcificar a glândula pineal.',
+      es: 'Única entre las cinco por emplear tres tabacos: orgánico, de moho y de cuerda, combinados con ceniza de Tisunú y Vena de Pajé. Actúa sobre el plano espiritual y físico, facilitando la descalcificación de la glándula pineal, la meditación profunda y la limpieza de canales energéticos.',
+      en: 'Unique among the five for using three tobaccos: organic, mold, and rope, combined with Tisunú ash and Vena de Pajé. Works on both spiritual and physical planes, facilitating pineal gland decalcification, deep meditation, and cleansing of energetic channels.',
+      pt: 'Única entre as cinco por usar três tabacos: orgânico, de mofo e de corda, combinados com cinza de Tisunú e Veia de Pajé. Atua nos planos espiritual e físico, facilitando a descalcificação da glândula pineal, meditação profunda e limpeza dos canais energéticos.',
     },
     /** @source ESP.html table row 5 — Enfoque Principal | ENG.html table row 5 | PT.html table row 5 */
     enfoque: {
