@@ -98,5 +98,10 @@ export default defineConfig({
     '/tienda/rape/parika': '/es/tienda/rape/parika',
     '/tienda/rape/cumaru-de-cheiro': '/es/tienda/rape/cumaru-de-cheiro',
     '/tienda/rape/vena-de-paje': '/es/tienda/rape/vena-de-paje',
+    // Redirect slugs viejos → nuevos
+    '/tienda/rape/tisunu': '/es/tienda/rape/tsunu',
+    '/es/tienda/rape/tisunu': '/es/tienda/rape/tsunu',
+    '/en/tienda/rape/tisunu': '/en/tienda/rape/tsunu',
+    '/pt/tienda/rape/tisunu': '/pt/tienda/rape/tsunu',
   },
 });
