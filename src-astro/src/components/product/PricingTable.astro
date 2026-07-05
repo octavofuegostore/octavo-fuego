@@ -54,12 +54,12 @@ const pricingWithGrams = pricing.map((p) => ({
     {pricingWithGrams.map((p, i) => (
       <button
         class:list={[
-          "pricing-btn group border-2 rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-200 relative",
+          "pricing-btn group rounded-[var(--radius-button)] py-4 px-3 text-center transition-all duration-150 relative",
           "hover:border-[var(--color-action-primary)] hover:bg-[var(--papel)]",
           "sm:sticky sm:left-0 sm:z-10 sm:bg-white",
           i === 0
-            ? "border-[var(--color-action-primary)] bg-[var(--color-action-primary)] text-white"
-            : "border-gray-200 bg-white text-[var(--near-black)]",
+            ? "ring-2 ring-inset ring-[var(--color-action-primary)] bg-[var(--color-action-primary)]/5 text-[var(--color-action-primary)] active:scale-[0.98]"
+            : "ring-1 ring-inset ring-gray-200 bg-white text-[var(--near-black)] active:scale-[0.98]",
         ]}
         data-grams={p.cantidad}
         data-price={p.precio}
@@ -91,25 +91,6 @@ const pricingWithGrams = pricing.map((p) => ({
       className="w-full"
     />
   </div>
-
-  <!-- Wholesale row -->
-  {wholesale.enabled && (
-    <div class="border-t border-gray-200 pt-4 mt-4 flex items-center justify-between">
-      <div>
-        <p class="text-sm font-semibold text-[var(--near-black)]">
-          {t.tienda.pricing.wholesaleLabel}
-        </p>
-        <p class="text-xs text-[var(--ceniza)]">
-          ${formatCOP(wholesale.pricePerGram)} COP/gramo
-        </p>
-      </div>
-      <WhatsAppButton
-        productName={productName}
-        variant="wholesale"
-        className="text-xs px-4 py-2"
-      />
-    </div>
-  )}
 </div>
 
 <script>
@@ -124,11 +105,11 @@ const pricingWithGrams = pricing.map((p) => ({
       btn.addEventListener('click', () => {
         // Update selected state
         buttons.forEach((b) => {
-          b.classList.remove('border-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]', 'text-white');
-          b.classList.add('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
+          b.classList.remove('ring-2', 'ring-inset', 'ring-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]/5', 'text-[var(--color-action-primary)]');
+          b.classList.add('ring-1', 'ring-gray-200', 'bg-white', 'text-[var(--near-black)]');
         });
-        btn.classList.add('border-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]', 'text-white');
-        btn.classList.remove('border-gray-200', 'bg-white', 'text-[var(--near-black)]');
+        btn.classList.add('ring-2', 'ring-inset', 'ring-[var(--color-action-primary)]', 'bg-[var(--color-action-primary)]/5', 'text-[var(--color-action-primary)]');
+        btn.classList.remove('ring-1', 'ring-gray-200', 'bg-white', 'text-[var(--near-black)]');
 
         // Update WhatsApp link
         const grams = btn.getAttribute('data-grams');
