@@ -20,11 +20,11 @@ const t = useTranslations(locale);
 
 <section class="py-16 md:py-24 bg-[#fafafa]">
   <div class="max-w-6xl mx-auto px-6 md:px-12">
-    <span class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-action-primary)] border-b border-gray-200 pb-3 mb-10 block">
+    <h2 class="section-label text-xs uppercase tracking-[0.2em] font-bold text-[var(--color-action-primary)] border-b border-gray-200 pb-3 mb-10 block">
       {t.tienda.glossary}
-    </span>
+    </h2>
 
-    <div class="grid gap-8 md:grid-cols-2">
+    <dl class="grid gap-8 md:grid-cols-2">
       {glossary.map((term) => (
         <div class="border-b border-gray-200 pb-6">
           <dt class="font-display text-xl md:text-2xl text-[var(--color-action-primary)] mb-3 font-semibold">
@@ -35,6 +35,6 @@ const t = useTranslations(locale);
           </dd>
         </div>
       ))}
-    </div>
+    </dl>
   </div>
 </section>

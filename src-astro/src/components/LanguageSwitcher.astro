@@ -23,7 +23,7 @@ const currentUrl = Astro.url.pathname;
     aria-expanded="false"
     aria-haspopup="true"
     aria-controls={"lang-switcher-menu" + suffix}
-    aria-label="Idioma"
+    aria-label={languageNames[locale]}
   >
 <Icon name="solar:global-bold-duotone" class="w-4 h-4" />
     <span class="hidden sm:inline">{languageNames[locale]}</span>
