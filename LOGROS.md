@@ -1175,3 +1175,24 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 - LCP preload con fetchpriority=high
 - Logo optimizado (imagen + atributos)
 - Todas las imágenes del sitio en WebP
+
+### ✅ Critical CSS Inlining (PR #56)
+- `@playform/inline` con beasties: extrae CSS crítico post-build
+- Render-blocking: 370ms → **0**
+- 67 páginas con CSS crítico inlinado (32KB/página, 38% del CSS total)
+- Admin excluido (SSR)
+
+### ✅ Redirect slug viejo (PR #57)
+- `/es/tienda/rape/tisunu` → `/es/tienda/rape/tsunu` (y EN, PT, root)
+
+---
+
+**Resultado final Lighthouse** 🏆
+| Métrica | Valor |
+|---------|-------|
+| **Rendimiento** | **100** |
+| **Accesibilidad** | **100** |
+| **LCP** | **0.8s** |
+| **Render-blocking** | **0** |
+
+*9 PRs (#50→#58), 30+ commits, 48+ archivos*
