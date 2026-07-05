@@ -1,8 +1,10 @@
 ---
 /**
- * Locale-aware homepage — renders at /, /en, /pt
- * Preserves Hero + Trust Badges, REPLACES quiz with real intention categories,
- * adds ProphecyTeaser, updates product links to /tienda
+ * Root homepage (SSG) — serves Spanish (default locale) content at /
+ *
+ * `prefixDefaultLocale: false` means Astro does NOT generate /es/index.html
+ * automatically for a root-level page — this file ensures dist/client/index.html
+ * exists by rendering the ES locale's Layout + GraphSchema + HomeContent.
  */
 
 import Layout from '@/layouts/Layout.astro';
@@ -10,15 +12,9 @@ import HomeContent from '@/components/home/HomeContent.astro';
 import GraphSchema from '@/components/seo/GraphSchema.astro';
 import { useTranslations, type Locale } from '@/i18n';
 
+const locale = 'es';
+const t = useTranslations(locale);
 
-import { getLocaleStaticPaths } from "@/i18n/staticPaths";
-
-export async function getStaticPaths() { return getLocaleStaticPaths(); }
-
-const locale_ = (Astro.currentLocale || 'es') as Locale;
-const t = useTranslations(locale_);
-
-// F2.1: Homepage title + meta descriptions per locale
 const homeTitles: Record<Locale, string> = {
   es: 'Rapé do Acre Colombia — Medicina Ancestral',
   en: 'Rapé do Acre Colombia — Amazonian Sacred Snuff',
@@ -32,7 +28,7 @@ const homeDescriptions: Record<Locale, string> = {
 };
 ---
 
-<Layout title={homeTitles[locale_]} description={homeDescriptions[locale_]} locale={locale_} ogImage="/images/og-default.svg">
-  <GraphSchema slot="head" locale={locale_} />
-  <HomeContent locale={locale_} />
+<Layout title={homeTitles.es} description={homeDescriptions.es} locale="es" ogImage="/images/og-default.svg">
+  <GraphSchema slot="head" locale="es" />
+  <HomeContent locale="es" />
 </Layout>

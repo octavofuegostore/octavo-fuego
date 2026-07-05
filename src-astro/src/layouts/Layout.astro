@@ -27,17 +27,20 @@ const {
 const t = useTranslations(locale);
 const fullTitle = title === 'Octavo Fuego' ? title : `${title} | Octavo Fuego`;
 
-// Self-referencing canonical per locale (not stripping prefix)
-const canonicalUrl = new URL(Astro.url.pathname, 'https://octavofuego.com').href;
-
-const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
-
 // Hreflang: regex-based locale extraction to avoid substring corruption
 // (e.g., "beneficios", "principiantes" containing "en"/"pt")
+// MUST come before canonical URL computation (restPath is needed there)
 const pathname = Astro.url.pathname;
 const localeMatch = pathname.match(/^\/(es|en|pt)(\/.*)?$/i);
 const matchedLocale = localeMatch ? localeMatch[1] : 'es';
 const restPath = localeMatch ? (localeMatch[2] || '/') : (pathname || '/');
+
+// Self-referencing canonical per locale — strip /es prefix for default locale
+// e.g. /es/tienda → https://octavofuego.com/tienda, /en/tienda → https://octavofuego.com/en/tienda
+const canonicalPath = matchedLocale === 'es' ? restPath : Astro.url.pathname;
+const canonicalUrl = new URL(canonicalPath, 'https://octavofuego.com').href;
+
+const absoluteOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, 'https://octavofuego.com').href;
 
 // F6.1.2: Language-only hreflang (no region subtags) + x-default pointing to ES
 const hreflangLocales = [
