@@ -258,15 +258,15 @@ const t = useTranslations(locale);
     });
   });
 
-  // Cart badge reactivity via nanostores
+  // Cart badge reactivity via nanostores — static import evita cascade de requests
+  import { cartCount } from '@/stores/cartStore';
+
   document.addEventListener('astro:page-load', () => {
-    import('@/stores/cartStore').then(({ cartCount }) => {
-      const badge = document.getElementById('cart-badge');
-      if (!badge) return;
-      cartCount.subscribe((count: number) => {
-        badge.textContent = String(count);
-        badge.classList.toggle('hidden', count === 0);
-      });
+    const badge = document.getElementById('cart-badge');
+    if (!badge) return;
+    cartCount.subscribe((count: number) => {
+      badge.textContent = String(count);
+      badge.classList.toggle('hidden', count === 0);
     });
   });
 </script>
