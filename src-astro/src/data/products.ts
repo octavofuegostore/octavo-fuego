@@ -76,18 +76,18 @@ export const products: Product[] = [
   // TISUNÚ — Variety 01
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
-    slug: 'tisunu',
+    slug: 'tsunu',
     varietyOrder: 1,
     /** @source ESP.html v-name (1st) | ENG.html v-name (1st) | PT.html v-name (1st) */
     nombre: {
-      es: 'Tisunú',
-      en: 'Tisunú',
-      pt: 'Tisunú',
+      es: 'Tsunú',
+      en: 'Tsunú',
+      pt: 'Tsunú',
     },
     overview: {
-      es: 'Elaborado con la ceniza del árbol más poderoso de la selva, Tisunú es una de las medicinas más antiguas de los pueblos indígenas. Su preparación combina tabaco de moho y tabaco orgánico. Ideal para limpiezas energéticas profundas, purificación del aura, equilibrio interior y conexión espiritual.',
-      en: 'Made from the ash of the most powerful tree in the forest, Tisunú is one of the oldest medicines of indigenous peoples. Its preparation combines mold tobacco and organic tobacco. Ideal for deep energetic cleansing, aura purification, inner balance, and spiritual connection.',
-      pt: 'Elaborado com a cinza da árvore mais poderosa da floresta, Tisunú é um dos medicamentos mais antigos dos povos indígenas. Seu preparo combina tabaco de mofo e tabaco orgânico. Ideal para limpezas energéticas profundas, purificação da aura, equilíbrio interior e conexão espiritual.',
+      es: 'Elaborado con la ceniza del árbol más poderoso de la selva, Tsunú es una de las medicinas más antiguas de los pueblos indígenas. Su preparación combina tabaco de moho y tabaco orgánico. Ideal para limpiezas energéticas profundas, purificación del aura, equilibrio interior y conexión espiritual.',
+      en: 'Made from the ash of the most powerful tree in the forest, Tsunú is one of the oldest medicines of indigenous peoples. Its preparation combines mold tobacco and organic tobacco. Ideal for deep energetic cleansing, aura purification, inner balance, and spiritual connection.',
+      pt: 'Elaborado com a cinza da árvore mais poderosa da floresta, Tsunú é um dos medicamentos mais antigos dos povos indígenas. Seu preparo combina tabaco de mofo e tabaco orgânico. Ideal para limpezas energéticas profundas, purificação da aura, equilíbrio interior e conexão espiritual.',
     },
     /** @source ESP.html table row 1 — Enfoque Principal | ENG.html table row 1 | PT.html table row 1 */
     enfoque: {
@@ -103,9 +103,9 @@ export const products: Product[] = [
     },
     /** @source ESP.html variety-item 1 — p.v-text | ENG.html variety-item 1 — p.v-text | PT.html variety-item 1 — p.v-text */
     descripcion: {
-      es: `El rapé de Tisunú se elabora con la ceniza del árbol homónimo, considerado por las tradiciones amazónicas como el más poderoso y fuerte de la selva. Esta fortaleza se transmite directamente a la medicina, otorgándole su intensidad característica. Su preparación auténtica emplea una combinación de tabaco de moho y tabaco orgánico. Es una de las medicinas más antiguas utilizadas por los pueblos indígenas, con un enfoque primordialmente energético más que curativo a nivel físico. Se destina principalmente a limpiezas energéticas profundas, el equilibrio del mundo interior, la purificación del aura y el fortalecimiento de la conexión con la naturaleza.`,
-      en: `Tisunú rapé is crafted with ash from the tree of the same name, considered by Amazonian traditions to be the most powerful and strongest tree in the rainforest. This strength is directly transmitted to the medicine, giving it its characteristic intensity. Its authentic preparation employs a combination of mold tobacco and organic tobacco. It is one of the oldest medicines used by indigenous peoples, with a primarily energetic focus rather than physical healing. It is mainly intended for deep energetic cleansing, balancing the inner world, purifying the aura, and strengthening the connection with nature.`,
-      pt: `O rapé de Tisunú é elaborado com a cinza da árvore homônima, considerada pelas tradições amazônicas como a mais poderosa e forte da floresta. Esta fortaleza é transmitida diretamente à medicina, conferindo-lhe sua intensidade característica. Sua preparação autêntica emprega uma combinação de tabaco de molde e tabaco orgânico. É uma das medicinas mais antigas utilizadas pelos povos indígenas, com um enfoque primordialmente energético em vez de curativo a nível físico. Destina-se principalmente a limpezas energéticas profundas, ao equilíbrio do mundo interior, à purificação da aura e ao fortalecimento da conexão com a natureza.`,
+      es: `El rapé de Tsunú se elabora con la ceniza del árbol homónimo, considerado por las tradiciones amazónicas como el más poderoso y fuerte de la selva. Esta fortaleza se transmite directamente a la medicina, otorgándole su intensidad característica. Su preparación auténtica emplea una combinación de tabaco de moho y tabaco orgánico. Es una de las medicinas más antiguas utilizadas por los pueblos indígenas, con un enfoque primordialmente energético más que curativo a nivel físico. Se destina principalmente a limpiezas energéticas profundas, el equilibrio del mundo interior, la purificación del aura y el fortalecimiento de la conexión con la naturaleza.`,
+      en: `Tsunú rapé is crafted with ash from the tree of the same name, considered by Amazonian traditions to be the most powerful and strongest tree in the rainforest. This strength is directly transmitted to the medicine, giving it its characteristic intensity. Its authentic preparation employs a combination of mold tobacco and organic tobacco. It is one of the oldest medicines used by indigenous peoples, with a primarily energetic focus rather than physical healing. It is mainly intended for deep energetic cleansing, balancing the inner world, purifying the aura, and strengthening the connection with nature.`,
+      pt: `O rapé de Tsunú é elaborado com a cinza da árvore homônima, considerada pelas tradições amazônicas como a mais poderosa e forte da floresta. Esta fortaleza é transmitida diretamente à medicina, conferindo-lhe sua intensidade característica. Sua preparação autêntica emprega uma combinação de tabaco de molde e tabaco orgânico. É uma das medicinas mais antigas utilizadas pelos povos indígenas, com um enfoque primordialmente energético em vez de curativo a nível físico. Destina-se principalmente a limpezas energéticas profundas, ao equilíbrio do mundo interior, à purificação da aura e ao fortalecimento da conexão com a natureza.`,
     },
     /** @source ESP.html variety-item 1 — div.v-highlight | ENG.html variety-item 1 — div.v-highlight | PT.html variety-item 1 — div.v-highlight */
     highlight: {
@@ -139,14 +139,14 @@ export const products: Product[] = [
     imagenes: [IMAGE_TISUNU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Tisunú del Acre, Brasil. Ideal para meditación y enfoque profundo. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
-      en: 'Tisunú rapé from Acre, Brazil. Ideal for meditation and deep focus. 20g for $19 USD ($0.95/g). Vacuum sealed.',
-      pt: 'Rapé Tisunú do Acre, Brasil. Ideal para meditação e foco profundo. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+      es: 'Rapé Tsunú del Acre, Brasil. Ideal para meditación y enfoque profundo. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Tsunú rapé from Acre, Brazil. Ideal for meditation and deep focus. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Tsunú do Acre, Brasil. Ideal para meditação e foco profundo. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
     },
     pageTitle: {
-      es: 'Comprar Rapé Tisunú — Enfoque y Claridad Mental',
-      en: 'Buy Rapé Tisunú — Focus and Mental Clarity',
-      pt: 'Comprar Rapé Tisunú — Foco e Clareza Mental',
+      es: 'Comprar Rapé Tsunú — Enfoque y Claridad Mental',
+      en: 'Buy Rapé Tsunú — Focus and Mental Clarity',
+      pt: 'Comprar Rapé Tsunú — Foco e Clareza Mental',
     },
   },
 
@@ -163,9 +163,9 @@ export const products: Product[] = [
       pt: 'Pixurí',
     },
     overview: {
-      es: 'Reconocido por su aroma profundo y agradable, Pixurí posee propiedades antisépticas, analgésicas y expectorantes por su eucaliptol natural. Sus hojas se combinan con ceniza de Tisunú o Pariká y tabaco de savia, logrando una mezcla aromática y curativa de alta calidad. Ideal para aliviar afecciones respiratorias como sinusitis y asma.',
-      en: 'Recognized for its deep, pleasant aroma, Pixurí has antiseptic, analgesic and expectorant properties from its natural eucalyptol. Its leaves combine with Tisunú or Pariká ash and sap tobacco, creating a high-quality aromatic and healing blend. Ideal for relieving respiratory conditions like sinusitis and asthma.',
-      pt: 'Reconhecido por seu aroma profundo e agradável, Pixurí possui propriedades antissépticas, analgésicas e expectorantes por seu eucaliptol natural. Suas folhas combinam-se com cinza de Tisunú ou Pariká e tabaco de seiva, criando uma mistura aromática e curativa de alta qualidade. Ideal para aliviar condições respiratórias como sinusite e asma.',
+      es: 'Reconocido por su aroma profundo y agradable, Pixurí posee propiedades antisépticas, analgésicas y expectorantes por su eucaliptol natural. Sus hojas se combinan con ceniza de Tsunú o Pariká y tabaco de savia, logrando una mezcla aromática y curativa de alta calidad. Ideal para aliviar afecciones respiratorias como sinusitis y asma.',
+      en: 'Recognized for its deep, pleasant aroma, Pixurí has antiseptic, analgesic and expectorant properties from its natural eucalyptol. Its leaves combine with Tsunú or Pariká ash and sap tobacco, creating a high-quality aromatic and healing blend. Ideal for relieving respiratory conditions like sinusitis and asthma.',
+      pt: 'Reconhecido por seu aroma profundo e agradável, Pixurí possui propriedades antissépticas, analgésicas e expectorantes por seu eucaliptol natural. Suas folhas combinam-se com cinza de Tsunú ou Pariká e tabaco de seiva, criando uma mistura aromática e curativa de alta qualidade. Ideal para aliviar condições respiratórias como sinusite e asma.',
     },
     /** @source ESP.html table row 2 — Enfoque Principal | ENG.html table row 2 | PT.html table row 2 */
     enfoque: {
@@ -181,9 +181,9 @@ export const products: Product[] = [
     },
     /** @source ESP.html variety-item 2 — p.v-text | ENG.html variety-item 2 — p.v-text | PT.html variety-item 2 — p.v-text */
     descripcion: {
-      es: `Esta variedad es reconocida por su aroma profundo y agradable, siendo muy valorada en la aromaterapia ceremonial. El Pixurí posee propiedades antisépticas, analgésicas y expectorantes gracias a la presencia natural de eucaliptol en sus hojas. Dado que el árbol Pixurí crece muy lentamente, la preparación utiliza únicamente sus hojas cuidadosamente deshidratadas, combinadas con ceniza de Tisunú o Pariká y tabaco de savia, logrando una mezcla aromática y curativa de alta calidad. Es altamente eficaz para tratar afecciones del tracto respiratorio como sinusitis y asma, además de ser un remedio tradicional para aliviar dolores de cabeza.`,
-      en: `This variety is recognized for its deep and pleasant aroma, being highly valued in ceremonial aromatherapy. Pixurí possesses antiseptic, analgesic, and expectorant properties thanks to the natural presence of eucalyptol in its leaves. Since the Pixurí tree grows very slowly, the preparation uses only its carefully dehydrated leaves, combined with ash from Tisunú or Pariká and sap tobacco, achieving a high-quality aromatic and healing blend. It is highly effective for treating respiratory tract conditions such as sinusitis and asthma, and is also a traditional remedy for relieving headaches.`,
-      pt: `Esta variedade é reconhecida pelo seu aroma profundo e agradável, sendo muito valorizada na aromaterapia cerimonial. O Pixurí possui propriedades antissépticas, analgésicas e expectorantes graças à presença natural de eucaliptol em suas folhas. Como a árvore Pixurí cresce muito lentamente, a preparação utiliza unicamente suas folhas cuidadosamente desidratadas, combinadas com cinza de Tisunú ou Pariká e tabaco de seiva, resultando em uma mistura aromática e curativa de alta qualidade. É altamente eficaz para tratar condições do trato respiratório, como sinusite e asma, além de aliviar dores de cabeça.`,
+      es: `Esta variedad es reconocida por su aroma profundo y agradable, siendo muy valorada en la aromaterapia ceremonial. El Pixurí posee propiedades antisépticas, analgésicas y expectorantes gracias a la presencia natural de eucaliptol en sus hojas. Dado que el árbol Pixurí crece muy lentamente, la preparación utiliza únicamente sus hojas cuidadosamente deshidratadas, combinadas con ceniza de Tsunú o Pariká y tabaco de savia, logrando una mezcla aromática y curativa de alta calidad. Es altamente eficaz para tratar afecciones del tracto respiratorio como sinusitis y asma, además de ser un remedio tradicional para aliviar dolores de cabeza.`,
+      en: `This variety is recognized for its deep and pleasant aroma, being highly valued in ceremonial aromatherapy. Pixurí possesses antiseptic, analgesic, and expectorant properties thanks to the natural presence of eucalyptol in its leaves. Since the Pixurí tree grows very slowly, the preparation uses only its carefully dehydrated leaves, combined with ash from Tsunú or Pariká and sap tobacco, achieving a high-quality aromatic and healing blend. It is highly effective for treating respiratory tract conditions such as sinusitis and asthma, and is also a traditional remedy for relieving headaches.`,
+      pt: `Esta variedade é reconhecida pelo seu aroma profundo e agradável, sendo muito valorizada na aromaterapia cerimonial. O Pixurí possui propriedades antissépticas, analgésicas e expectorantes graças à presença natural de eucaliptol em suas folhas. Como a árvore Pixurí cresce muito lentamente, a preparação utiliza unicamente suas folhas cuidadosamente desidratadas, combinadas com cinza de Tsunú ou Pariká e tabaco de seiva, resultando em uma mistura aromática e curativa de alta qualidade. É altamente eficaz para tratar condições do trato respiratório, como sinusite e asma, além de aliviar dores de cabeça.`,
     },
     /** @source ESP.html variety-item 2 — div.v-highlight | ENG.html variety-item 2 — div.v-highlight | PT.html variety-item 2 — div.v-highlight */
     highlight: {
@@ -397,9 +397,9 @@ export const products: Product[] = [
       pt: 'Veia de Pajé',
     },
     overview: {
-      es: 'Única entre las cinco por emplear tres tabacos: orgánico, de moho y de cuerda, combinados con ceniza de Tisunú y Vena de Pajé. Actúa sobre el plano espiritual y físico, facilitando la descalcificación de la glándula pineal, la meditación profunda y la limpieza de canales energéticos.',
-      en: 'Unique among the five for using three tobaccos: organic, mold, and rope, combined with Tisunú ash and Vena de Pajé. Works on both spiritual and physical planes, facilitating pineal gland decalcification, deep meditation, and cleansing of energetic channels.',
-      pt: 'Única entre as cinco por usar três tabacos: orgânico, de mofo e de corda, combinados com cinza de Tisunú e Veia de Pajé. Atua nos planos espiritual e físico, facilitando a descalcificação da glândula pineal, meditação profunda e limpeza dos canais energéticos.',
+      es: 'Única entre las cinco por emplear tres tabacos: orgánico, de moho y de cuerda, combinados con ceniza de Tsunú y Vena de Pajé. Actúa sobre el plano espiritual y físico, facilitando la descalcificación de la glándula pineal, la meditación profunda y la limpieza de canales energéticos.',
+      en: 'Unique among the five for using three tobaccos: organic, mold, and rope, combined with Tsunú ash and Vena de Pajé. Works on both spiritual and physical planes, facilitating pineal gland decalcification, deep meditation, and cleansing of energetic channels.',
+      pt: 'Única entre as cinco por usar três tabacos: orgânico, de mofo e de corda, combinados com cinza de Tsunú e Veia de Pajé. Atua nos planos espiritual e físico, facilitando a descalcificação da glândula pineal, meditação profunda e limpeza dos canais energéticos.',
     },
     /** @source ESP.html table row 5 — Enfoque Principal | ENG.html table row 5 | PT.html table row 5 */
     enfoque: {
@@ -415,9 +415,9 @@ export const products: Product[] = [
     },
     /** @source ESP.html variety-item 5 — p.v-text | ENG.html variety-item 5 — p.v-text | PT.html variety-item 5 — p.v-text */
     descripcion: {
-      es: `Esta variedad es única entre las cinco por emplear tres tabacos en su preparación: tabaco orgánico, tabaco de moho y tabaco de cuerda, combinados mediante una alquimia propia con ceniza de Tisunú y un cipó (liana) pequeño de aroma muy intenso conocido como Vena de Pajé. Además de su acción sobre el plano espiritual, esta medicina también actúa sobre el cuerpo físico realizando una limpieza eficaz de las vías respiratorias. Es una de las medicinas más buscadas para la descalcificación de la glándula pineal, facilitando la entrada en estados de meditación profunda. Se recomienda especialmente para rituales de cura espiritual y para la limpieza de los canales energéticos, ayudando a despejar la percepción y fortalecer la conexión con los planos sutiles.`,
-      en: `This variety is unique among the five for employing three tobaccos in its preparation: organic tobacco, mold tobacco, and rope tobacco, combined through its own alchemy with Tisunú ash and a small vine (liana) with a very intense aroma known as Vena de Pajé. In addition to its action on the spiritual plane, this medicine also acts on the physical body, performing an effective cleansing of the respiratory tract. It is one of the most sought-after medicines for decalcifying the pineal gland, facilitating entry into deep meditation states. It is especially recommended for spiritual healing rituals and for cleansing energetic channels, helping to clear perception and strengthen connection with subtle planes.`,
-      pt: `Esta variedade é única por empregar três tabacos: orgânico, molde e corda, combinados com cinza de Tisunú e um cipó pequeno de aroma muito intenso conhecido como Veia de Pajé. Além da ação espiritual, realiza uma limpeza eficaz das vias respiratórias no corpo físico. É uma das medicinas mais procuradas para a descalcificação da glândula pineal, facilitando a entrada em estados de meditação profunda. Recomenda-se para rituais de cura espiritual e limpeza de canais energéticos, ajudando a clarear a percepção e fortalecer a conexão sutil.`,
+      es: `Esta variedad es única entre las cinco por emplear tres tabacos en su preparación: tabaco orgánico, tabaco de moho y tabaco de cuerda, combinados mediante una alquimia propia con ceniza de Tsunú y un cipó (liana) pequeño de aroma muy intenso conocido como Vena de Pajé. Además de su acción sobre el plano espiritual, esta medicina también actúa sobre el cuerpo físico realizando una limpieza eficaz de las vías respiratorias. Es una de las medicinas más buscadas para la descalcificación de la glándula pineal, facilitando la entrada en estados de meditación profunda. Se recomienda especialmente para rituales de cura espiritual y para la limpieza de los canales energéticos, ayudando a despejar la percepción y fortalecer la conexión con los planos sutiles.`,
+      en: `This variety is unique among the five for employing three tobaccos in its preparation: organic tobacco, mold tobacco, and rope tobacco, combined through its own alchemy with Tsunú ash and a small vine (liana) with a very intense aroma known as Vena de Pajé. In addition to its action on the spiritual plane, this medicine also acts on the physical body, performing an effective cleansing of the respiratory tract. It is one of the most sought-after medicines for decalcifying the pineal gland, facilitating entry into deep meditation states. It is especially recommended for spiritual healing rituals and for cleansing energetic channels, helping to clear perception and strengthen connection with subtle planes.`,
+      pt: `Esta variedade é única por empregar três tabacos: orgânico, molde e corda, combinados com cinza de Tsunú e um cipó pequeno de aroma muito intenso conhecido como Veia de Pajé. Além da ação espiritual, realiza uma limpeza eficaz das vias respiratórias no corpo físico. É uma das medicinas mais procuradas para a descalcificação da glândula pineal, facilitando a entrada em estados de meditação profunda. Recomenda-se para rituais de cura espiritual e limpeza de canais energéticos, ajudando a clarear a percepção e fortalecer a conexão sutil.`,
     },
     /** @source ESP.html variety-item 5 — div.v-highlight | ENG.html variety-item 5 — div.v-highlight | PT.html variety-item 5 — div.v-highlight */
     highlight: {

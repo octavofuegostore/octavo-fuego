@@ -4,7 +4,7 @@
  * Usage:
  *   import { inventory, type InventorySnapshot } from '@/lib/inventory';
  *
- *   const available = await inventory.getAvailableGrams('tisunu', 'brazil_factory');
+ *   const available = await inventory.getAvailableGrams('tsunu', 'brazil_factory');
  *   const snapshots = await inventory.getFullSnapshot('colombia_distribution');
  *   const lowStock = await inventory.getLowStockItems(100);
  */

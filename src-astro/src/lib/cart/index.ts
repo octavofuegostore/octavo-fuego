@@ -5,7 +5,7 @@
  *   import { cart, formatCOP, type CartItem } from '@/lib/cart';
  *
  *   const state = cart.getCart();
- *   cart.addToCart({ variantId: '10g_tisunu', ... });
+ *   cart.addToCart({ variantId: '10g_tsunu', ... });
  *   console.log(formatCOP(state.total));
  */
 

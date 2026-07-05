@@ -4,7 +4,7 @@
  * Usage:
  *   import { pricing, formatCOP, type PriceTier } from '@/lib/pricing';
  *
- *   const price = await pricing.getRetailPrice('tisunu', 20);
+ *   const price = await pricing.getRetailPrice('tsunu', 20);
  *   console.log(pricing.formatCOP(price));
  */
 
