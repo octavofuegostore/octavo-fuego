@@ -208,34 +208,34 @@ const priceText = locale_ === 'en'
           </p>
 
           <!-- Tags as compact badges (like homepage trust badges) -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div class="text-center">
-              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
-                <Icon name="solar:lightning-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
+                <Icon name="solar:lightning-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Uso</p>
-              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{intentLabel}</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Uso</p>
+              <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{intentLabel}</p>
             </div>
             <div class="text-center">
-              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
-                <Icon name="solar:leaf-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
+                <Icon name="solar:leaf-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Aroma</p>
-              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.aroma[locale_]}</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Aroma</p>
+              <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.aroma[locale_]}</p>
             </div>
             <div class="text-center">
-              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
-                <Icon name="solar:eye-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
+                <Icon name="solar:eye-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Intensidad</p>
-              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.fuerza[locale_]}</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Intensidad</p>
+              <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.fuerza[locale_]}</p>
             </div>
             <div class="text-center">
-              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
-                <Icon name="solar:star-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
+                <Icon name="solar:star-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Nivel</p>
-              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.nivel[locale_]}</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Nivel</p>
+              <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.nivel[locale_]}</p>
             </div>
           </div>
 
