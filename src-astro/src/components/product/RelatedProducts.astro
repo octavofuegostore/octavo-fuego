@@ -40,7 +40,10 @@ const related = products
         <p class="text-base font-display font-bold text-[var(--near-black)] group-hover:text-[var(--color-action-primary)] transition-colors duration-300">
           {p.nombre[locale]}
         </p>
-        <p class="text-sm text-[var(--color-action-primary)] font-semibold mt-1">
+        <p class="text-xs text-[var(--ceniza)] leading-snug mt-1">
+          {p.overview[locale].split('.')[0].substring(0, 120)}.
+        </p>
+        <p class="text-sm text-[var(--color-action-primary)] font-semibold mt-2">
           {p.pricing[1]?.label ?? p.pricing[0]?.label} — ${new Intl.NumberFormat('es-CO').format(p.pricing[1]?.precio ?? p.pricing[0]?.precio)} COP
         </p>
       </a>
