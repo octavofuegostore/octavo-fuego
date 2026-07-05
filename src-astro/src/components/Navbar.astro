@@ -86,7 +86,7 @@ const t = useTranslations(locale);
     <div class="flex items-center gap-1.5 sm:gap-3">
       <LanguageSwitcher locale={locale} />
 
-      <a href="/carrito" class="relative p-2 text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors" aria-label="Ver carrito de compras">
+      <a href="/carrito" class="relative p-2 text-[var(--ceniza)] hover:text-[var(--near-black)] transition-colors" aria-label="Ver carrito de compras" toolname="ver_carrito" tooldescription="Ver carrito de compras y resumen del pedido">
         <Icon name="solar:bag-2-bold-duotone" class="w-6 h-6" />
         <span id="cart-badge" class="absolute -top-1 -right-1 w-5 h-5 bg-[var(--color-action-primary)] text-white text-xs flex items-center justify-center hidden">
           0
@@ -112,7 +112,7 @@ const t = useTranslations(locale);
       <a href={localeUrl('/nosotros', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.nosotros}</a>
       <a href={localeUrl('/contacto', locale)} class="text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">{t.nav.contacto}</a>
       <hr class="border-gray-100 my-2" />
-      <a href="/carrito" class="flex items-center gap-2 text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2">
+      <a href="/carrito" class="flex items-center gap-2 text-lg font-medium text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors py-2" toolname="ver_carrito" tooldescription="Ver carrito de compras y resumen del pedido">
         <span>{t.nav.carrito}</span>
       </a>
       <div class="mt-auto pt-4">
