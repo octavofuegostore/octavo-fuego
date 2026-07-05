@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import inline from '@playform/inline';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import icon from 'astro-icon';
@@ -69,7 +70,11 @@ export default defineConfig({
       filter: (page) => !page.includes('/checkout/'),
       changefreq: 'weekly',
       priority: 0.7,
-    })
+    }),
+    inline({
+      preload: 'media',
+      exclude: ['**/admin/**'],
+    }),
   ],
   i18n: {
     defaultLocale: 'es',

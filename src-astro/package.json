@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@iconify-json/solar": "^1.2.5",
+    "@playform/inline": "^0.1.4",
     "@tailwindcss/postcss": "^4.2.2",
     "postcss": "^8.5.8",
     "shadcn": "^4.1.2"
