@@ -9,7 +9,7 @@ import { Icon } from 'astro-icon/components';
 
 const { variant = 'dark', locale = 'es' } = Astro.props;
 
-const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-ceniza';
+const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-[#4a4a4a]';
 
 // Locale-based payment methods
 type PaymentMethod = {
