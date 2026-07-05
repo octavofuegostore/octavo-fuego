@@ -73,7 +73,7 @@ const IMAGE_VENA = PLACEHOLDER_IMAGE;
 
 export const products: Product[] = [
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // TISUNÚ — Variety 01
+  // TSUNÚ — Variety 01
   // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
     slug: 'tsunu',
