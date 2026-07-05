@@ -9,9 +9,9 @@ import type { InventoryItem, InventoryLevel, LocationId } from './types';
 
 export const MOCK_INVENTORY_ITEMS: InventoryItem[] = [
   {
-    id: 'iitem_tisunu',
+    id: 'iitem_tsunu',
     sku: 'RAPE-TISUNU-001',
-    title: 'Tisunú — Rapé de Tabaco + Cumarú',
+    title: 'Tsunú — Rapé de Tabaco + Cumarú',
     requires_shipping: true,
   },
   {
@@ -43,16 +43,16 @@ export const MOCK_INVENTORY_ITEMS: InventoryItem[] = [
 // ─── Stock Levels (grams) ────────────────────────────────────────────────────
 
 export const MOCK_INVENTORY_LEVELS: InventoryLevel[] = [
-  // Tisunú — most popular, highest stock
+  // Tsunú — most popular, highest stock
   {
-    inventory_item_id: 'iitem_tisunu',
+    inventory_item_id: 'iitem_tsunu',
     location_id: 'sloc_brazil_factory',
     stocked_quantity: 2000,
     reserved_quantity: 0,
     incoming_quantity: 500,
   },
   {
-    inventory_item_id: 'iitem_tisunu',
+    inventory_item_id: 'iitem_tsunu',
     location_id: 'sloc_colombia_distribution',
     stocked_quantity: 500,
     reserved_quantity: 0,
@@ -127,7 +127,7 @@ export const MOCK_INVENTORY_LEVELS: InventoryLevel[] = [
 // ─── Slug → InventoryItem ID mapping ─────────────────────────────────────────
 
 export const SLUG_TO_INVENTORY_ITEM_ID: Record<string, string> = {
-  tisunu: 'iitem_tisunu',
+  tsunu: 'iitem_tsunu',
   pixuri: 'iitem_pixuri',
   parika: 'iitem_parika',
   'cumaru-de-cheiro': 'iitem_cumaru',

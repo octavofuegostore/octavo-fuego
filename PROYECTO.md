@@ -72,7 +72,7 @@ octavo-fuego/
 
 | # | Rapé | Etnia | Intención | Precio/g |
 |---|------|-------|-----------|----------|
-| 1 | Tisunú | Yawanawá | Energético — Reset Energético | $3.500 |
+| 1 | Tsunú | Yawanawá | Energético — Reset Energético | $3.500 |
 | 2 | Pixurí | Nukini | Medicinal — Bienestar Físico | $3.500 |
 | 3 | Pariká | Kaxinawá | Espiritual — Conexión Espiritual | $3.500 |
 | 4 | Cumarú de Cheiro | Yawanawá | Mixto — Protección | $3.500 |

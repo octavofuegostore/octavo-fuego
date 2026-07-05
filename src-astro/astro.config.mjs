@@ -81,7 +81,7 @@ export default defineConfig({
   redirects: {
     '/catalogo': '/tienda',
     '/catalogo/rape': '/tienda/rape',
-    '/catalogo/tisunu': '/tienda/rape/tisunu',
+    '/catalogo/tisunu': '/tienda/rape/tsunu',
     '/catalogo/pixuri': '/tienda/rape/pixuri',
     '/catalogo/parika': '/tienda/rape/parika',
     '/catalogo/cumaru-de-cheiro': '/tienda/rape/cumaru-de-cheiro',

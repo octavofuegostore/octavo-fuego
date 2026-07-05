@@ -122,7 +122,7 @@ class SupabasePricingService implements PricingService {
 // ─── Price Data (matches products.ts) ────────────────────────────────────────
 
 const PRODUCT_PRICING: Record<string, ProductPricing> = {
-  tisunu: {
+  tsunu: {
     retail: [
       { cantidad: 10, precio: 35000, label: '10g' },
       { cantidad: 20, precio: 70000, label: '20g' },

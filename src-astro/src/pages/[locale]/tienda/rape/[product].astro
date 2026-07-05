@@ -13,6 +13,7 @@ import ReviewModal from '@/components/tienda/ReviewModal.astro';
 import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
+import ReviewJsonLd from '@/components/seo/ReviewJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
 import RelatedProducts from '@/components/product/RelatedProducts.astro';
 import WhatsAppButton from '@/components/whatsapp/WhatsAppButton.astro';
@@ -108,6 +109,12 @@ const priceText = locale_ === 'en'
       productName={product.nombre[locale_]}
       priceText={priceText}
     />
+    <ReviewJsonLd
+      locale={locale_}
+      productName={product.nombre[locale_]}
+      productUrl={`https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`}
+      productId={product.slug}
+    />
   </Fragment>
   <section class="pt-8 pb-16 md:pb-24 bg-white">
     <div class="max-w-6xl mx-auto px-6 md:px-12">
@@ -147,7 +154,7 @@ const priceText = locale_ === 'en'
             <div class="aspect-square overflow-hidden rounded-[var(--radius-card)] shadow-[var(--shadow-hover)]">
               <img
                 src={product.imagenes[0]}
-                alt={product.nombre[locale_]}
+                alt={"Foto de Rapé " + product.nombre[locale_]}
                 class="w-full h-full object-cover"
                 width="1000"
                 height="1000"
@@ -173,7 +180,7 @@ const priceText = locale_ === 'en'
               <div class="aspect-square overflow-hidden rounded-[var(--radius-card)] shadow-[var(--shadow-hover)]" id="gallery-main">
                 <img
                   src={product.imagenes[0]}
-                  alt={product.nombre[locale_]}
+                  alt={"Foto de Rapé " + product.nombre[locale_]}
                   class="gallery-main-img w-full h-full object-cover"
                   width="800"
                   height="800"

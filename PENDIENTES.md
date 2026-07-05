@@ -1346,3 +1346,55 @@ octavo-fuego/
 | 14 | Escape key listener stacking en View Transitions | `ReviewModal.astro` | Baja prioridad, solo acumula, no rompe |
 | 15 | Focus trap modal reseñas (accesibilidad) | `ReviewModal.astro` | Mejora WCAG, no blocker |
 | 16 | Meta descriptions USD/BRL vs precios COP | `data/products.ts` | Decisión: mantener USD/BRL para SEO multi-mercado o unificar a COP |
+| 17 | Imagen og:image real (JPG 1200×630) con foto de producto | `public/images/` | Temporal SVG generado. Reemplazar con asset gráfico real + foto de producto. |
+| 18 | Texto SEO home — redacción definitiva | `HomeContent.astro` | Borrador técnico puesto. Owner debe reescribir con tono de marca. |
+| 19 | Verificar SVGs de payment icons en Vercel | `public/images/payment/` | Confirmar si los SVGs se sirven correctamente en producción. |
+
+### 📋 Auditoría Técnica 06/2026 — Items Implementados con SDD
+
+> Auditoría completa de octavofuego.com (Lighthouse + PageSpeed Insights).
+> SDD cycles ejecutados en Julio 2026.
+
+#### 🔴 Alta Prioridad — Implementado (Change 1: Performance)
+- [x] **Render-blocking fonts**: Google Fonts CSS → `media="print" onload="this.media='all'"` + `<noscript>` fallback
+- [x] **LCP preload**: Hero image con `<link rel="preload" as="image">` via `slot="head"`
+- [x] **Logo width/height**: `width="40" height="32"` en Navbar.astro
+- [x] **Payment icons w/h**: `width="32" height="32"` en PaymentBanner.astro
+
+#### 🔴 Alta Prioridad — Implementado (Change 2: Seguridad)
+- [x] **HSTS**: `max-age=63072000; includeSubDomains` en `public/_headers`
+- [x] **COOP**: `same-origin-allow-popups` en `public/_headers`
+- [x] **CORP**: `same-origin` en `public/_headers`
+- [x] **Permissions-Policy**: `camera=(), microphone=(), geolocation=()` en `public/_headers`
+
+#### 🔴 Alta Prioridad — Implementado (Change 3: Accesibilidad)
+- [x] **Cart icon aria-label**: `aria-label="Ver carrito de compras"` en Navbar.astro
+- [x] **ARIA IDs duplicados**: LanguageSwitcher con `suffix` prop para desktop/mobile
+- [x] **Headings h4→h2**: Footer + PaymentBanner headings corregidos
+- [x] **Contraste color**: `Compra protegida` cambiado a `text-[#4a4a4a]`
+- [x] **Alt text redundante**: Mejorado alt text en productos
+
+#### 🟡 Media Prioridad — Implementado (Change 4: SEO)
+- [x] **llms.txt**: Creado en `public/llms.txt`
+- [x] **H1 home**: Cambiado a "Octavo Fuego — Rapé Ancestral Amazónico" (ES/EN/PT)
+- [x] **og:image SVG**: Actualizado con nuevo tagline y diseño mejorado
+- [x] **Texto SEO home**: Borrador de ~200 palabras sobre Rapé do Acre añadido
+
+#### 🟡 Media Prioridad — Implementado (Change 5: Reviews + Config)
+- [x] **Reviews Schema JSON-LD**: Creado ReviewJsonLd.astro con AggregateRating + 3 reviews en producto
+- [x] **www redirect**: 301 redirect configurado en `vercel.json` de `octavofuego.com` → `www.octavofuego.com`
+- [x] **Payment icons**: Verificado en local — **falso positivo de Lighthouse**. Los 12 SVGs se renderizan correctamente con src, alt y dimensiones.
+- [x] **Console errors**: Verificado en local — 0 errores, 0 warnings en home.
+- [x] **WebMCP tool declarations**: Atributos `toolname`/`tooldescription` en botón WhatsApp + links de carrito
+- [x] **Redirect legacy `/catalogo/tisunu`**: Corregido target → `/tienda/rape/tsunu`
+- [x] **Rename Tisunú→Tsunú**: Slug, display name, SEO schemas, inventory, pricing — 23 archivos actualizados
+- [x] **Home SEO text**: Versión aprobada por el owner con "mezcla", "cortezas", Tsunú
+
+#### 🟡 Media Prioridad — Pendiente
+- [ ] **og:image JPG real**: Reemplazar SVG temporal con JPG 1200×630 con foto de producto
+- [ ] **Google Search Console**: Verificar propiedad en search.google.com
+
+#### 🟢 Vanguardia
+- [x] **WebMCP**: toolname + tooldescription en WhatsApp button y cart links (markup declarativo). El estándar aún es experimental (Chrome 149+), pero el markup ya está listo.
+- [ ] **CrUX field data**: Revisar cuando haya tráfico real (~28 días) — no se puede codificar
+- [ ] **Reviews Schema UGC**: Si se implementan reseñas de usuarios, marcarlas con Schema Review

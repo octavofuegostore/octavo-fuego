@@ -9,7 +9,7 @@ import { Icon } from 'astro-icon/components';
 
 const { variant = 'dark', locale = 'es' } = Astro.props;
 
-const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-ceniza';
+const mutedColor = variant === 'dark' ? 'text-[var(--color-text-on-dark)]/70' : 'text-[#4a4a4a]';
 
 // Locale-based payment methods
 type PaymentMethod = {
@@ -62,15 +62,16 @@ const t_ = (key: string) => t(key, locale);
 ---
 
 <div class="w-full flex flex-col items-start space-y-4">
-  <h4 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-2">
+  <h2 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-2">
     {t_('payment.title')}
-  </h4>
+  </h2>
   <div class="w-full flex flex-wrap items-center justify-start gap-x-3 gap-y-3" role="list" aria-label={t_('payment.ariaList')}>
     {methods.map((method) => (
       <div role="listitem" class="flex items-center justify-center h-12">
         <img
           src={`/images/payment/${variant}/${method.id}.svg`}
           alt={method.label}
+          width="32" height="32"
           class="h-8 w-auto object-contain hover:scale-105 transition-transform duration-200"
           loading="lazy"
         />

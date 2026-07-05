@@ -61,7 +61,7 @@ Fase 6: Lanzamiento   ██░░░░░░░░  10% ⏳
 
 | # | Rapé | Etnia | Intención |
 |---|------|-------|-----------|
-| 1 | Tisunú | Yawanawá | Energético — Reset Energético |
+| 1 | Tsunú | Yawanawá | Energético — Reset Energético |
 | 2 | Pixurí | Nukini | Medicinal — Bienestar Físico |
 | 3 | Pariká | Kaxinawá | Espiritual — Conexión Espiritual |
 | 4 | Cumarú de Cheiro | Yawanawá | Mixto — Protección |
