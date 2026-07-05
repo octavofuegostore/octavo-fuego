@@ -86,5 +86,12 @@ export default defineConfig({
     '/catalogo/parika': '/tienda/rape/parika',
     '/catalogo/cumaru-de-cheiro': '/tienda/rape/cumaru-de-cheiro',
     '/catalogo/vena-de-paje': '/tienda/rape/vena-de-paje',
+    // i18n: prefixDefaultLocale:false no genera rutas root para [locale] dinámicas
+    // Redirect explícito para que /tienda/rape/[slug] funcione sin /es/
+    '/tienda/rape/tsunu': '/es/tienda/rape/tsunu',
+    '/tienda/rape/pixuri': '/es/tienda/rape/pixuri',
+    '/tienda/rape/parika': '/es/tienda/rape/parika',
+    '/tienda/rape/cumaru-de-cheiro': '/es/tienda/rape/cumaru-de-cheiro',
+    '/tienda/rape/vena-de-paje': '/es/tienda/rape/vena-de-paje',
   },
 });
