@@ -1395,6 +1395,6 @@ octavo-fuego/
 - [ ] **Google Search Console**: Verificar propiedad en search.google.com
 
 #### 🟢 Vanguardia
-- [ ] **WebMCP**: Google I/O 2026 — origin trial en Chrome 149+. Guardar en radar para 2027. WebMCP tool declarations ya agregadas como markup.
+- [x] **WebMCP**: toolname + tooldescription en WhatsApp button y cart links (markup declarativo). El estándar aún es experimental (Chrome 149+), pero el markup ya está listo.
 - [ ] **CrUX field data**: Revisar cuando haya tráfico real (~28 días) — no se puede codificar
 - [ ] **Reviews Schema UGC**: Si se implementan reseñas de usuarios, marcarlas con Schema Review
