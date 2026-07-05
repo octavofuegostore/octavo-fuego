@@ -109,11 +109,11 @@ const priceText = locale_ === 'en'
       priceText={priceText}
     />
   </Fragment>
-  <section class="pt-24 md:pt-32 pb-16 md:pb-24 bg-white">
+  <section class="pt-8 pb-16 md:pb-24 bg-white">
     <div class="max-w-6xl mx-auto px-6 md:px-12">
 
       <!-- Breadcrumb (full-width, above grid) -->
-      <nav class="mb-10 text-sm">
+      <nav class="mb-3 text-sm">
         <ol class="flex items-center gap-2 text-[var(--ceniza)]">
           <li>
             <a href={`${baseUrl}/`} class="hover:text-[var(--color-action-primary)] transition-colors">
@@ -192,39 +192,51 @@ const priceText = locale_ === 'en'
             {t.tienda.varietyLabel.replace('{order}', `0${product.varietyOrder}`)}
           </span>
 
-          <!-- Product Name — Playfair BLACK -->
-          <h1 class="font-display font-black text-3xl md:text-4xl lg:text-5xl tracking-tight text-[var(--near-black)] leading-tight">
-            {product.nombre[locale_]}
-          </h1>
-
-          <!-- Price Anchor -->
-          <p class="font-display italic text-xl md:text-2xl text-[var(--color-action-primary)]">
-            {priceAnchor}
-          </p>
+          <!-- Product Name + Price (same line, like Williamsburg) -->
+          <div class="flex items-start justify-between gap-4">
+            <h1 class="font-display font-black text-3xl md:text-4xl lg:text-5xl tracking-tight text-[var(--near-black)] leading-tight">
+              {product.nombre[locale_]}
+            </h1>
+            <p class="font-display italic text-lg md:text-xl lg:text-2xl text-[var(--color-action-primary)] whitespace-nowrap mt-1">
+              {priceAnchor}
+            </p>
+          </div>
 
           <!-- Overview -->
           <p class="text-[var(--near-black)] text-base md:text-lg leading-[1.8]">
             {product.overview[locale_]}
           </p>
 
-          <!-- Tags with Icons -->
-          <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm">
-            <span class="inline-flex items-center gap-1.5">
-              <Icon name="solar:lightning-bold-duotone" class="w-3.5 h-3.5 text-[var(--color-action-primary)]" />
-              {intentLabel}
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <Icon name="solar:eye-bold-duotone" class="w-3.5 h-3.5 text-[var(--color-action-primary)]" />
-              {t.tienda.intensityLabels.strength}: {product.intensidad.fuerza[locale_]}
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <Icon name="solar:leaf-bold-duotone" class="w-3.5 h-3.5 text-[var(--color-action-primary)]" />
-              {t.tienda.intensityLabels.aroma}: {product.intensidad.aroma[locale_]}
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <Icon name="solar:star-bold-duotone" class="w-3.5 h-3.5 text-[var(--color-action-primary)]" />
-              {t.tienda.intensityLabels.level}: {product.intensidad.nivel[locale_]}
-            </span>
+          <!-- Tags as compact badges (like homepage trust badges) -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3">
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
+                <Icon name="solar:lightning-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              </div>
+              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Uso</p>
+              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{intentLabel}</p>
+            </div>
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
+                <Icon name="solar:leaf-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              </div>
+              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Aroma</p>
+              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.aroma[locale_]}</p>
+            </div>
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
+                <Icon name="solar:eye-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              </div>
+              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Intensidad</p>
+              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.fuerza[locale_]}</p>
+            </div>
+            <div class="text-center">
+              <div class="inline-flex items-center justify-center w-9 h-9 rounded-full bg-[var(--color-action-primary)]/10 mb-1.5">
+                <Icon name="solar:star-bold-duotone" class="w-4 h-4 text-[var(--color-action-primary)]" />
+              </div>
+              <p class="text-[0.6rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Nivel</p>
+              <p class="text-[0.65rem] text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.nivel[locale_]}</p>
+            </div>
           </div>
 
           <!-- Highlight redesigned -->
@@ -330,6 +342,8 @@ const priceText = locale_ === 'en'
           </div>
 
         </div>
+
+      </div>
 
       <!-- Related Products (NEW) -->
       <RelatedProducts currentSlug={productSlug} locale={locale_} baseUrl={baseUrl} />

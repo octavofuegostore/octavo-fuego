@@ -21,26 +21,26 @@ const related = products
   <h2 class="text-sm font-semibold uppercase tracking-widest text-[var(--ceniza)] mb-6">
     {t.product.productosRelacionados}
   </h2>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     {related.map(p => (
       <a
         href={`${baseUrl}/tienda/rape/${p.slug}`}
-        class="group block bg-[var(--papel)] rounded-[var(--radius-card)] p-4"
+        class="group block bg-[var(--papel)] rounded-[var(--radius-card)] p-5"
       >
-        <div class="aspect-square overflow-hidden mb-3">
+        <div class="aspect-square overflow-hidden rounded-lg mb-3">
           <img
             src={p.imagenes[0]}
             alt={p.nombre[locale]}
-            class="w-full h-full object-cover"
-            width="500"
-            height="500"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            width="600"
+            height="600"
             loading="lazy"
           />
         </div>
-        <p class="text-sm font-display font-bold text-[var(--near-black)] group-hover:text-[var(--color-action-primary)] transition-colors duration-300">
+        <p class="text-base font-display font-bold text-[var(--near-black)] group-hover:text-[var(--color-action-primary)] transition-colors duration-300">
           {p.nombre[locale]}
         </p>
-        <p class="text-xs text-[var(--color-action-primary)] font-semibold mt-1">
+        <p class="text-sm text-[var(--color-action-primary)] font-semibold mt-1">
           {p.pricing[1]?.label ?? p.pricing[0]?.label} — ${new Intl.NumberFormat('es-CO').format(p.pricing[1]?.precio ?? p.pricing[0]?.precio)} COP
         </p>
       </a>
