@@ -1342,3 +1342,7 @@ octavo-fuego/
 | 10 | CartStore React island redundante (optimización) | `carrito/index.astro` | Post-lanzamiento, si hay issues de bundle |
 | 11 | Imágenes placeholder compartidas (sin fotos reales aún) | `data/products.ts` | Cuando se tengan fotos de producto |
 | 12 | sitemap `lastmod` artificial (pre-lanzamiento, no indexado) | `astro.config.mjs` | Cuando haya contenido indexable |
+| 13 | Ruta duplicada `pages/tienda/rape/[product].astro` vs `[locale]/` | `pages/tienda/rape/[product].astro` | Puede romper build con actualizaciones de Astro |
+| 14 | Escape key listener stacking en View Transitions | `ReviewModal.astro` | Baja prioridad, solo acumula, no rompe |
+| 15 | Focus trap modal reseñas (accesibilidad) | `ReviewModal.astro` | Mejora WCAG, no blocker |
+| 16 | Meta descriptions USD/BRL vs precios COP | `data/products.ts` | Decisión: mantener USD/BRL para SEO multi-mercado o unificar a COP |

@@ -208,7 +208,33 @@
       "strength": "Fuerza",
       "aroma": "Aroma",
       "level": "Nivel"
-    }
+    },
+    "tabs": {
+      "detalles": "Detalles",
+      "intensidad": "Intensidad",
+      "envio": "Envío",
+      "uso": "Uso",
+      "tradicion": "Tradición",
+      "resenas": "Reseñas",
+      "faq": "FAQ"
+    },
+    "badges": {
+      "uso": "Uso",
+      "aroma": "Aroma",
+      "intensidad": "Intensidad",
+      "nivel": "Nivel"
+    },
+    "usoContent": [
+      "Aplicación: El rapé se administra con un kuripe (aplicador personal). Se sopla suavemente en cada fosa nasal, alternando lados.",
+      "Dosis: Comenzar con una cantidad pequeña (¼ de lo que usarías con otros rapés) e ir aumentando según la experiencia.",
+      "Ambiente: Buscar un espacio tranquilo. El rapé es una medicina de introspección, no de recreación.",
+      "Conservación: Mantener en un lugar seco y fresco, lejos de la luz directa. El empaque al vacío preserva la frescura."
+    ],
+    "tradicionContent": [
+      "Proveniente del Acre, Amazonía brasileña. Elaborado de forma tradicional por comunidades indígenas de la región.",
+      "Elaborado con la ceniza del árbol homónimo, considerado por las tradiciones amazónicas como el más poderoso y fuerte de la selva.",
+      "Preparación artesanal que sigue métodos transmitidos por generaciones en las comunidades indígenas de la Amazonía."
+    ]
   },
   "profecia": {
     "title": "La Profecía de los Siete Fuegos",

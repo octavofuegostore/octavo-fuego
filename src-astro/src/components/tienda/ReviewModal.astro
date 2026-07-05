@@ -94,7 +94,7 @@ const l = labels[locale];
                 type="button"
                 class="star-btn w-8 h-8 flex items-center justify-center text-gray-300 hover:text-yellow-500 transition-colors duration-150"
                 data-value={i}
-                aria-label={`${i} estrellas`}
+                aria-label={`${i} ${locale === 'es' ? 'estrellas' : locale === 'en' ? 'stars' : 'estrelas'}`}
               >
                 <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -263,7 +263,7 @@ const l = labels[locale];
         const email = document.getElementById('reviewEmail')?.value || '';
         const gravatar = await gravatarUrl(email);
         const starsStr = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
-        let msg = `Hola! Quiero dejar una reseña para ${productName}:\n\n${starsStr}\n"${review}"\n\n— ${name}, ${location}`;
+        let msg = `${locale === 'es' ? 'Hola! Quiero dejar una reseña para' : locale === 'en' ? 'Hi! I want to leave a review for' : 'Olá! Quero deixar uma avaliação para'} ${productName}:\n\n${starsStr}\n"${review}"\n\n— ${name}, ${location}`;
         if (gravatar) msg += `\nAvatar: ${gravatar}`;
         window.open(`https://wa.me/573172137932?text=${encodeURIComponent(msg)}`, '_blank');
         closeModal();

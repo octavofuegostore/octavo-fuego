@@ -208,7 +208,33 @@
       "strength": "Strength",
       "aroma": "Aroma",
       "level": "Level"
-    }
+    },
+    "tabs": {
+      "detalles": "Details",
+      "intensidad": "Intensity",
+      "envio": "Shipping",
+      "uso": "Usage",
+      "tradicion": "Tradition",
+      "resenas": "Reviews",
+      "faq": "FAQ"
+    },
+    "badges": {
+      "uso": "Use",
+      "aroma": "Aroma",
+      "intensidad": "Intensity",
+      "nivel": "Level"
+    },
+    "usoContent": [
+      "Application: Rapé is administered with a kuripe (personal applicator). Gently blow into each nostril, alternating sides.",
+      "Dosage: Start with a small amount (¼ of what you'd use with other rapés) and increase gradually.",
+      "Environment: Find a quiet space. Rapé is a medicine for introspection, not recreation.",
+      "Storage: Keep in a dry, cool place away from direct light. Vacuum sealing preserves freshness."
+    ],
+    "tradicionContent": [
+      "From Acre, Brazilian Amazon. Traditionally prepared by indigenous communities of the region.",
+      "Made from the ash of the namesake tree, considered by Amazonian traditions as the most powerful and strong in the forest.",
+      "Artisanal preparation following methods passed down through generations in Amazonian indigenous communities."
+    ]
   },
   "profecia": {
     "title": "The Prophecy of the Seven Fires",

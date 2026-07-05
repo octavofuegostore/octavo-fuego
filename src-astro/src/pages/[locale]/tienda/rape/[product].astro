@@ -213,28 +213,28 @@ const priceText = locale_ === 'en'
               <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
                 <Icon name="solar:lightning-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Uso</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">{t.tienda.badges.uso}</p>
               <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{intentLabel}</p>
             </div>
             <div class="text-center">
               <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
                 <Icon name="solar:leaf-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Aroma</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">{t.tienda.badges.aroma}</p>
               <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.aroma[locale_]}</p>
             </div>
             <div class="text-center">
               <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
                 <Icon name="solar:eye-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Intensidad</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">{t.tienda.badges.intensidad}</p>
               <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.fuerza[locale_]}</p>
             </div>
             <div class="text-center">
               <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[var(--color-action-primary)]/10 mb-3">
                 <Icon name="solar:star-bold-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
               </div>
-              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">Nivel</p>
+              <p class="text-xs uppercase tracking-wider font-bold text-[var(--color-action-primary)]">{t.tienda.badges.nivel}</p>
               <p class="text-sm text-[var(--ceniza)] leading-tight mt-0.5">{product.intensidad.nivel[locale_]}</p>
             </div>
           </div>
@@ -258,13 +258,13 @@ const priceText = locale_ === 'en'
           <!-- Tabs: 7 tabs with Detalles active -->
           <div class="border-b border-gray-200 mt-10">
             <nav class="flex gap-4 lg:gap-6 -mb-px text-sm overflow-x-auto">
-              <button class="tab-btn pb-3 font-medium border-b-2 border-[var(--color-action-primary)] text-[var(--color-action-primary)] whitespace-nowrap" data-tab="detalles">Detalles</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="intensity">Intensidad</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="shipping">Envío</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="uso">Uso</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="tradicion">Tradición</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="reviews">Reseñas</button>
-              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="faq">FAQ</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-[var(--color-action-primary)] text-[var(--color-action-primary)] whitespace-nowrap" data-tab="detalles">{t.tienda.tabs.detalles}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="intensity">{t.tienda.tabs.intensidad}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="shipping">{t.tienda.tabs.envio}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="uso">{t.tienda.tabs.uso}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="tradicion">{t.tienda.tabs.tradicion}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="reviews">{t.tienda.tabs.resenas}</button>
+              <button class="tab-btn pb-3 font-medium border-b-2 border-transparent text-[var(--ceniza)] hover:text-[var(--near-black)] whitespace-nowrap" data-tab="faq">{t.tienda.tabs.faq}</button>
             </nav>
           </div>
 
@@ -320,17 +320,17 @@ const priceText = locale_ === 'en'
             </div>
             <div id="tab-uso" class="tab-content hidden">
               <div class="space-y-4 text-sm text-[var(--ceniza)] leading-relaxed">
-                <p><strong class="text-[var(--near-black)]">Aplicación:</strong> El rapé se administra con un kuripe (aplicador personal). Se sopla suavemente en cada fosa nasal, alternando lados.</p>
-                <p><strong class="text-[var(--near-black)]">Dosis:</strong> Comenzar con una cantidad pequeña (¼ de lo que usarías con otros rapés) e ir aumentando según la experiencia.</p>
-                <p><strong class="text-[var(--near-black)]">Ambiente:</strong> Buscar un espacio tranquilo. El rapé es una medicina de introspección, no de recreación.</p>
-                <p><strong class="text-[var(--near-black)]">Conservación:</strong> Mantener en un lugar seco y fresco, lejos de la luz directa. El empaque al vacío preserva la frescura.</p>
+                <p><strong class="text-[var(--near-black)]">{t.tienda.usoContent[0].split(':')[0]}:</strong>{t.tienda.usoContent[0].split(':').slice(1).join(':')}</p>
+                <p><strong class="text-[var(--near-black)]">{t.tienda.usoContent[1].split(':')[0]}:</strong>{t.tienda.usoContent[1].split(':').slice(1).join(':')}</p>
+                <p><strong class="text-[var(--near-black)]">{t.tienda.usoContent[2].split(':')[0]}:</strong>{t.tienda.usoContent[2].split(':').slice(1).join(':')}</p>
+                <p><strong class="text-[var(--near-black)]">{t.tienda.usoContent[3].split(':')[0]}:</strong>{t.tienda.usoContent[3].split(':').slice(1).join(':')}</p>
               </div>
             </div>
             <div id="tab-tradicion" class="tab-content hidden">
               <div class="space-y-4 text-sm text-[var(--ceniza)] leading-relaxed">
-                <p><strong class="text-[var(--near-black)]">Origen:</strong> Proveniente del Acre, Amazonía brasileña. Elaborado de forma tradicional por comunidades indígenas de la región.</p>
-                <p><strong class="text-[var(--near-black)]">El árbol:</strong> {product.nombre[locale_]} se elabora con la ceniza del árbol homónimo, considerado por las tradiciones amazónicas como el más poderoso y fuerte de la selva.</p>
-                <p><strong class="text-[var(--near-black)]">Preparación:</strong> {description}</p>
+                <p><strong class="text-[var(--near-black)]">{(locale_ === 'es' ? 'Origen' : locale_ === 'en' ? 'Origin' : 'Origem')}:</strong> {t.tienda.tradicionContent[0]}</p>
+                <p><strong class="text-[var(--near-black)]">{(locale_ === 'es' ? 'El árbol' : locale_ === 'en' ? 'The tree' : 'A árvore')}:</strong> {t.tienda.tradicionContent[1]} {product.nombre[locale_]}</p>
+                <p><strong class="text-[var(--near-black)]">{(locale_ === 'es' ? 'Preparación' : locale_ === 'en' ? 'Preparation' : 'Preparo')}:</strong> {t.tienda.tradicionContent[2]}</p>
               </div>
             </div>
             <div id="tab-reviews" class="tab-content hidden">

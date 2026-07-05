@@ -208,7 +208,33 @@
       "strength": "Força",
       "aroma": "Aroma",
       "level": "Nível"
-    }
+    },
+    "tabs": {
+      "detalles": "Detalhes",
+      "intensidad": "Intensidade",
+      "envio": "Envio",
+      "uso": "Uso",
+      "tradicion": "Tradição",
+      "resenas": "Avaliações",
+      "faq": "FAQ"
+    },
+    "badges": {
+      "uso": "Uso",
+      "aroma": "Aroma",
+      "intensidad": "Intensidade",
+      "nivel": "Nível"
+    },
+    "usoContent": [
+      "Aplicação: O rapé é administrado com um kuripe (aplicador pessoal). Sopre suavemente em cada narina, alternando os lados.",
+      "Dosagem: Comece com uma pequena quantidade (¼ do que você usaria com outros rapés) e aumente gradualmente.",
+      "Ambiente: Encontre um espaço tranquilo. O rapé é um medicamento para introspecção, não para recreação.",
+      "Conservação: Mantenha em local seco e fresco, longe da luz direta. A embalagem a vácuo preserva o frescor."
+    ],
+    "tradicionContent": [
+      "Do Acre, Amazônia brasileira. Preparado tradicionalmente por comunidades indígenas da região.",
+      "Elaborado com a cinza da árvore homônima, considerada pelas tradições amazônicas como a mais poderosa e forte da selva.",
+      "Preparo artesanal seguindo métodos transmitidos por gerações nas comunidades indígenas da Amazônia."
+    ]
   },
   "profecia": {
     "title": "A Profecia dos Sete Fogos",
