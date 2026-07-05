@@ -1124,8 +1124,8 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 
 ## 🧪 Sprint Auditorías Técnicas — Julio 5, 2026
 
-> **PRs:** [#50](https://github.com/octavofuegostore/octavo-fuego/pull/50) + [#51](https://github.com/octavofuegostore/octavo-fuego/pull/51)
-> **Commits:** 23 | **Archivos:** 43 | **Build:** ✅ 0 errores
+> **PRs:** [#50](https://github.com/octavofuegostore/octavo-fuego/pull/50) → [#54](https://github.com/octavofuegostore/octavo-fuego/pull/54)
+> **Commits:** 28 | **Archivos:** 48 | **Build:** ✅ 0 errores
 > **Lighthouse Accesibilidad:** 91 → **100** 🚀
 > **Render-blocking resources:** 1,400ms → **0** 🚀
 > **LCP:** 2.7s → **1.2s** 🚀
@@ -1165,3 +1165,13 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 ### ✅ Routing
 - Fix i18n `prefixDefaultLocale:false` para páginas de producto (redirects root → /es/)
 - 5 slugs funcionando desde root sin prefijo
+
+### ✅ Imágenes WebP
+- Logo: PNG→WebP 80×64px (15KB→2.4KB)
+- Kuripe: JPG→WebP (226KB→52KB)
+- 7 referencias schema actualizadas de .png a .webp
+
+### ✅ Rendimiento (post-auditoría)
+- LCP preload con fetchpriority=high
+- Logo optimizado (imagen + atributos)
+- Todas las imágenes del sitio en WebP
