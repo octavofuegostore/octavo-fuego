@@ -134,7 +134,7 @@ const shipping = order ? order.total - subtotal : 0;
           </div>
           <div class="flex justify-between text-lg font-bold border-t border-papel pt-2">
             <span class="text-humo">Total</span>
-            <span class="text-tabaco">{formatPrice(order.total, order.currency)}</span>
+            <span class="text-[var(--color-action-primary)]">{formatPrice(order.total, order.currency)}</span>
           </div>
         </div>
       </div>
@@ -164,7 +164,7 @@ const shipping = order ? order.total - subtotal : 0;
       </div>
       
       <div class="mt-4 pt-4 border-t border-papel">
-        <a href="/admin/clientes" class="text-sm text-tabaco hover:text-tabaco/80 font-medium transition-colors">
+        <a href="/admin/clientes" class="text-sm text-[var(--color-action-primary)] hover:text-[var(--color-action-primary)]/80 font-medium transition-colors">
           Ver perfil del cliente →
         </a>
       </div>

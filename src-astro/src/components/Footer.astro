@@ -18,7 +18,7 @@ const t = useTranslations(locale);
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12">
       <!-- Col 1: Identidad + Métodos de pago -->
       <div>
-        <a href={localeUrl('/', locale)} class="font-display text-2xl font-bold mb-4 block text-tabaco">
+        <a href={localeUrl('/', locale)} class="font-display text-2xl font-bold mb-4 block text-[var(--color-action-primary)]">
           {t.common.brand}
         </a>
         <p class="text-[var(--near-black)] text-sm mb-6 opacity-80">
@@ -34,17 +34,17 @@ const t = useTranslations(locale);
 
       <!-- Col 2: Productos -->
       <div>
-        <h2 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-[var(--color-action-primary)] mb-6">
           {t.footer.productos}
         </h2>
         <ul class="space-y-3">
           <li>
-            <a href={localeUrl('/tienda', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/tienda', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.tienda}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/profecia', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/profecia', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.profecia}
             </a>
           </li>
@@ -53,32 +53,32 @@ const t = useTranslations(locale);
 
       <!-- Col 3: Ayuda -->
       <div>
-        <h2 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-[var(--color-action-primary)] mb-6">
           {t.footer.ayuda}
         </h2>
         <ul class="space-y-3">
           <li>
-            <a href={localeUrl('/nosotros', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/nosotros', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.nosotros}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/blog', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/blog', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.blog}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/contacto', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/contacto', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.contacto}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/faq', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/faq', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.footer.faq}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/envios', locale)} class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors">
+            <a href={localeUrl('/envios', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.footer.envios}
             </a>
           </li>
@@ -87,28 +87,28 @@ const t = useTranslations(locale);
 
       <!-- Col 4: Conecta -->
       <div>
-        <h2 class="text-xs font-medium uppercase tracking-widest text-tabaco mb-6">
+        <h2 class="text-xs font-medium uppercase tracking-widest text-[var(--color-action-primary)] mb-6">
           {t.footer.conecta}
         </h2>
         <ul class="space-y-3 mb-6">
           <li>
-            <a href="mailto:hola@octavofuego.com" class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors flex items-center gap-2 p-2">
-              <Icon name="solar:letter-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
+            <a href="mailto:hola@octavofuego.com" class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors flex items-center gap-2 p-2">
+              <Icon name="solar:letter-bold" class="w-5 h-5 shrink-0 text-[var(--color-action-primary)]/80" />
               hola@octavofuego.com
             </a>
           </li>
           <li>
-            <a href="https://wa.me/573172137932" target="_blank" rel="noopener noreferrer" class="text-[var(--near-black)] text-sm hover:text-tabaco transition-colors flex items-center gap-2 p-2">
-              <Icon name="solar:chat-round-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
+            <a href="https://wa.me/573172137932" target="_blank" rel="noopener noreferrer" class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors flex items-center gap-2 p-2">
+              <Icon name="solar:chat-round-bold" class="w-5 h-5 shrink-0 text-[var(--color-action-primary)]/80" />
               {t.footer.whatsapp}
             </a>
           </li>
           <li class="flex items-center gap-2 text-[var(--near-black)] text-sm p-2">
-            <Icon name="solar:map-point-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
+            <Icon name="solar:map-point-bold" class="w-5 h-5 shrink-0 text-[var(--color-action-primary)]/80" />
             <span>{t.footer.direccionFabrica}</span>
           </li>
           <li class="flex items-center gap-2 text-[var(--near-black)] text-sm p-2">
-            <Icon name="solar:leaf-bold" class="w-5 h-5 shrink-0 text-tabaco/80" />
+            <Icon name="solar:leaf-bold" class="w-5 h-5 shrink-0 text-[var(--color-action-primary)]/80" />
             <span>{t.footer.confianzaFooter}</span>
           </li>
           <li class="text-[#5C6063] text-xs">{t.footer.enviosZona}</li>
@@ -120,28 +120,28 @@ const t = useTranslations(locale);
             href="https://instagram.com/octavofuego"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
+            class="text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors p-2"
             aria-label={t.footer.instagram}
           >
-            <Icon name="ph:instagram-logo-duotone" class="w-6 h-6 text-tabaco" />
+            <Icon name="ph:instagram-logo-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
           </a>
           <a
             href="https://facebook.com/octavofuego"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
+            class="text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors p-2"
             aria-label={t.footer.facebook}
           >
-            <Icon name="ph:facebook-logo-duotone" class="w-6 h-6 text-tabaco" />
+            <Icon name="ph:facebook-logo-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
           </a>
           <a
             href="https://wa.me/573172137932"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-[var(--near-black)] hover:text-tabaco transition-colors p-2"
+            class="text-[var(--near-black)] hover:text-[var(--color-action-primary)] transition-colors p-2"
             aria-label={t.footer.whatsapp}
           >
-            <Icon name="ph:whatsapp-logo-duotone" class="w-6 h-6 text-tabaco" />
+            <Icon name="ph:whatsapp-logo-duotone" class="w-6 h-6 text-[var(--color-action-primary)]" />
           </a>
         </div>
       </div>
@@ -154,10 +154,10 @@ const t = useTranslations(locale);
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href={localeUrl('/terminos', locale)} class="text-[#5C6063] text-xs hover:text-tabaco transition-colors">
+          <a href={localeUrl('/terminos', locale)} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
             {t.footer.terminos}
           </a>
-          <a href={localeUrl('/privacidad', locale)} class="text-[#5C6063] text-xs hover:text-tabaco transition-colors">
+          <a href={localeUrl('/privacidad', locale)} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
             {t.footer.privacidad}
           </a>
         </div>

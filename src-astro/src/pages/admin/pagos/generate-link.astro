@@ -69,7 +69,7 @@ const ordenesPendientes = todasOrdenes.filter(o => o.status === 'pendiente');
                 name="metodo"
                 value="wompi_link"
                 checked
-                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+                class="w-4 h-4 text-[var(--color-action-primary)] focus:ring-tabacco"
               />
               <div class="flex-1">
                 <p class="text-sm font-medium text-humo">Link Wompi</p>
@@ -82,7 +82,7 @@ const ordenesPendientes = todasOrdenes.filter(o => o.status === 'pendiente');
                 type="radio"
                 name="metodo"
                 value="pix_qr"
-                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+                class="w-4 h-4 text-[var(--color-action-primary)] focus:ring-tabacco"
               />
               <div class="flex-1">
                 <p class="text-sm font-medium text-humo">Pix QR</p>
@@ -95,7 +95,7 @@ const ordenesPendientes = todasOrdenes.filter(o => o.status === 'pendiente');
                 type="radio"
                 name="metodo"
                 value="pix_copia_cola"
-                class="w-4 h-4 text-tabacco focus:ring-tabacco"
+                class="w-4 h-4 text-[var(--color-action-primary)] focus:ring-tabacco"
               />
               <div class="flex-1">
                 <p class="text-sm font-medium text-humo">Pix Copia y Cola</p>
@@ -175,7 +175,7 @@ const ordenesPendientes = todasOrdenes.filter(o => o.status === 'pendiente');
           <button
             id="generate-another-btn"
             type="button"
-            class="text-sm font-medium text-tabacco hover:text-tabacco/80 transition-colors"
+            class="text-sm font-medium text-[var(--color-action-primary)] hover:text-[var(--color-action-primary)]/80 transition-colors"
           >
             Generar otro link
           </button>

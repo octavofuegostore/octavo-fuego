@@ -100,7 +100,7 @@ function estadoBadge(estado: string): { bg: string; text: string; label: string 
               return (
                 <tr class="hover:bg-papel/30 transition-colors">
                   <td class="px-6 py-4">
-                    <a href={`/admin/clientes/b2b/${sol.id}`} class="font-medium text-humo hover:text-tabaco transition-colors">
+                    <a href={`/admin/clientes/b2b/${sol.id}`} class="font-medium text-humo hover:text-[var(--color-action-primary)] transition-colors">
                       {sol.nombre_empresa}
                     </a>
                   </td>
@@ -117,7 +117,7 @@ function estadoBadge(estado: string): { bg: string; text: string; label: string 
                     <div class="flex items-center justify-end gap-2">
                       <a
                         href={`/admin/clientes/b2b/${sol.id}`}
-                        class="text-sm text-tabaco hover:text-tabaco/80 font-medium transition-colors"
+                        class="text-sm text-[var(--color-action-primary)] hover:text-[var(--color-action-primary)]/80 font-medium transition-colors"
                       >
                         Ver
                       </a>

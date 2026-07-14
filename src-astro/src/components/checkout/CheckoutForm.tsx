@@ -583,7 +583,7 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
                 </div>
                 <div class="border-t border-humo/50 pt-2 mt-4 flex justify-between font-semibold">
                   <span>{$t('checkout.totalLabel')}</span>
-                  <span class="text-tabaco">{formatCOP(savedOrder.total)}</span>
+                  <span class="text-[var(--color-action-primary)]">{formatCOP(savedOrder.total)}</span>
                 </div>
               </div>
             </div>

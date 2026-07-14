@@ -41,7 +41,7 @@ const formattedPrice = new Intl.NumberFormat('es-CO', {
         <h2 class="font-display text-2xl font-semibold mb-4" transition:name={`product-title-${product.slug}`}>
           {product.nombre}
         </h2>
-        <p class="text-tabaco text-2xl font-semibold mb-6">{formattedPrice}</p>
+        <p class="text-[var(--color-action-primary)] text-2xl font-semibold mb-6">{formattedPrice}</p>
         
         {product.descripcion && (
           <p class="text-ceniza text-sm mb-6 line-clamp-3">{product.descripcion}</p>

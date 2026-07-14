@@ -37,7 +37,7 @@ function eventoIcon(tipo: string): string {
 }
 
 function eventoColor(tipo: string): string {
-  if (tipo.startsWith('orden')) return 'bg-tabaco/10 text-tabaco';
+  if (tipo.startsWith('orden')) return 'bg-tabaco/10 text-[var(--color-action-primary)]';
   if (tipo.startsWith('b2b')) return 'bg-blue-50 text-blue-600';
   if (tipo.startsWith('stock')) return 'bg-amber-50 text-amber-600';
   if (tipo.startsWith('pago')) return 'bg-green-50 text-green-600';
@@ -112,7 +112,7 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
     {tipos.map((tipo) => (
       <button
         data-filter={tipo}
-        class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border border-papel text-ceniza hover:border-tabaco/30 hover:text-tabaco transition-colors"
+        class="filter-pill px-3 py-1.5 rounded-full text-sm font-medium border border-papel text-ceniza hover:border-tabaco/30 hover:text-[var(--color-action-primary)] transition-colors"
       >
         {tipoLabel(tipo)}
       </button>
@@ -167,7 +167,7 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
                     <p class="text-sm text-ceniza truncate">{payloadSummary(ev.payload)}</p>
                   )}
                   {ev.orden_id && (
-                    <a href={`/admin/ordenes/${ev.orden_id}/page`} class="text-xs text-tabaco hover:underline mt-1 inline-block">
+                    <a href={`/admin/ordenes/${ev.orden_id}/page`} class="text-xs text-[var(--color-action-primary)] hover:underline mt-1 inline-block">
                       {ev.orden_id}
                     </a>
                   )}

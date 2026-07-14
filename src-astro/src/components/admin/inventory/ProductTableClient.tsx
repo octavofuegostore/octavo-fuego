@@ -312,7 +312,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
                         </button>
                         <button
                           onClick={() => handleEditProduct(product.id)}
-                          className="p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors"
+                          className="p-1.5 text-ceniza hover:text-[var(--color-action-primary)] hover:bg-tabaco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
                           <svg

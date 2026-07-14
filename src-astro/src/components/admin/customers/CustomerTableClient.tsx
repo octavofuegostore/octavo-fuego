@@ -48,7 +48,7 @@ const locationConfig: Record<
 
 const typeConfig = {
   retail: { bg: "bg-info/10", text: "text-info", label: "Minorista" },
-  wholesale: { bg: "bg-tabaco/10", text: "text-tabaco", label: "Mayorista" },
+  wholesale: { bg: "bg-tabaco/10", text: "text-[var(--color-action-primary)]", label: "Mayorista" },
 };
 
 interface CustomerTableClientProps {
@@ -231,7 +231,7 @@ export default function CustomerTableClient({
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 bg-tabaco/10 rounded-full flex items-center justify-center">
-                          <span className="text-tabaco font-medium text-sm">
+                          <span className="text-[var(--color-action-primary)] font-medium text-sm">
                             {customer.name
                               .split(" ")
                               .map((n) => n[0])
@@ -297,7 +297,7 @@ export default function CustomerTableClient({
                         </button>
                         <button
                           onClick={() => handleEditCustomer(customer.id)}
-                          className="p-1.5 text-ceniza hover:text-tabaco hover:bg-tabaco/10 rounded-lg transition-colors"
+                          className="p-1.5 text-ceniza hover:text-[var(--color-action-primary)] hover:bg-tabaco/10 rounded-lg transition-colors"
                           title="Editar"
                         >
                           <svg

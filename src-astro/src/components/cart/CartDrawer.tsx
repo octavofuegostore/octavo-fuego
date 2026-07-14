@@ -85,7 +85,7 @@ export function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
             </div>
             <div className="flex justify-between items-center pt-4 border-t border-humo/50">
               <span className="font-semibold">{$t('cart.total')}</span>
-              <span className="font-display text-2xl font-bold text-tabaco">
+              <span className="font-display text-2xl font-bold text-[var(--color-action-primary)]">
                 {formatCOP(total)}
               </span>
             </div>
@@ -127,7 +127,7 @@ function CartItemCard({ item, onUpdateQuantity, onRemove }: CartItemCardProps) {
       <div className="flex-1 min-w-0">
         <h3 className="font-medium text-sm truncate">{item.nombre.es}</h3>
         <p className="text-ceniza text-xs">{item.etnia}</p>
-        <p className="text-tabaco text-sm font-semibold mt-1">
+        <p className="text-[var(--color-action-primary)] text-sm font-semibold mt-1">
           {formatCOP(item.precio)}
         </p>
 

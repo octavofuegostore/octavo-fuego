@@ -53,7 +53,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
   </head>
   <body class="bg-papel min-h-screen">
     <!-- Skip-to-content link -->
-    <a href="#admin-main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-tabaco focus:rounded-xl focus:shadow-lg">
+    <a href="#admin-main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-[var(--color-action-primary)] focus:rounded-xl focus:shadow-lg">
       Saltar al contenido principal
     </a>
     <div class="flex h-screen overflow-hidden">
@@ -126,7 +126,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -139,7 +139,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/stock"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -152,7 +152,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/transferencias"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -224,7 +224,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/clientes"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -237,7 +237,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath.startsWith("/admin/clientes/b2b")
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -277,7 +277,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Dashboard</a>
@@ -288,7 +288,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/transacciones"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Transacciones</a>
@@ -299,7 +299,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/informes"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Informes</a>
@@ -345,7 +345,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         <div class="p-4 border-t border-humo/50">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 bg-tabaco/20 rounded-full flex items-center justify-center">
-              <span class="text-tabaco font-medium text-sm">{userInitials}</span>
+              <span class="text-[var(--color-action-primary)] font-medium text-sm">{userInitials}</span>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-papel truncate">{userName}</p>
@@ -372,7 +372,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           <!-- Mobile menu button -->
           <button
             id="mobile-menu-toggle"
-            class="lg:hidden text-humo hover:text-tabaco transition-colors"
+            class="lg:hidden text-humo hover:text-[var(--color-action-primary)] transition-colors"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
