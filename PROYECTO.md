@@ -109,7 +109,7 @@ octavo-fuego/
 --color-surface-dark: #2A2A2A;             /* Gris oscuro */
 
 /* Section backgrounds */
---color-footer-bg: #3D2E22;                /* Footer + secciones oscuras */
+/* Footer usa --color-surface-warm: #F2EFE8. Decisión: footer claro (Jul 2026) */
 
 /* Text tokens */
 --color-text-primary: #1C1410;             /* Headings */
@@ -128,7 +128,7 @@ octavo-fuego/
 
 | Sección | Background | Texto body | Iconos |
 |---------|-----------|-----------|--------|
-| Footer | `--color-footer-bg` (#3D2E22) | `--color-text-on-dark` | sólido white |
+| Footer | `--color-surface-warm` (#F2EFE8) | `--color-text-primary` (#1C1410) | Solar Bold-Duotone claro |
 | Trust Badges | `--color-action-hover` (#5a4d3f) | `--color-text-on-dark`/80 | sólido white |
 
 Ritmo visual del homepage: `white → tabaco medio → cream → white → cream → tabaco oscuro`
