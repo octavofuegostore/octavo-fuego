@@ -1,0 +1,85 @@
+---
+/**
+ * FAQPage JSON-LD Schema Component — Tienda (Product Catalog)
+ * 4 locale-aware Q&A pairs about rapé varieties for SEO (voice search + rich snippets).
+ */
+export interface Props {
+  locale?: 'es' | 'en' | 'pt';
+}
+
+const { locale = 'es' } = Astro.props;
+
+const faqs: Record<'es' | 'en' | 'pt', { question: string; answer: string }[]> = {
+  es: [
+    {
+      question: '¿Cuál es la diferencia entre los rapés?',
+      answer: 'Cada rapé tiene propiedades y enfoques distintos. Tsunú es energético y de alta intensidad. Pixurí es medicinal con propiedades antisépticas. Pariká es ceremonial para conexión espiritual. Cumarú de Cheiro ofrece protección energética. Vena de Pajé favorece la claridad mental. Todos provienen del Acre, Brasil, elaborados por comunidades indígenas tradicionales.',
+    },
+    {
+      question: '¿Qué tamaño elegir?',
+      answer: 'Ofrecemos tres tamaños: 10g para probar una nueva variedad, 20g (el más popular) para uso regular, y 30g para quienes ya conocen su rapé favorito y desean abastecerse. Todos con empaque al vacío que preserva la frescura y potencia.',
+    },
+    {
+      question: '¿Son orgánicos?',
+      answer: 'Sí, todos nuestros rapés son elaborados de forma artesanal por comunidades indígenas sin pesticidas ni químicos. El tabaco silvestre es cultivado en la Amazonía, molido a mano y combinado con cenizas de árboles sagrados según la tradición de cada etnia.',
+    },
+    {
+      question: '¿De dónde vienen los rapés?',
+      answer: 'Todos nuestros rapés provienen directamente del Acre, en la Amazonía brasileña, específicamente de las comunidades Kaxinawá, Nukini, Apurinã, Kuntanawa y Katukina, con quienes trabajamos directamente para garantizar autenticidad y comercio justo.',
+    },
+  ],
+  en: [
+    {
+      question: "What's the difference between rapé varieties?",
+      answer: 'Each rapé has distinct properties and focus. Tsunú is energizing and high intensity. Pixurí is medicinal with antiseptic properties. Pariká is ceremonial for spiritual connection. Cumarú de Cheiro offers energetic protection. Vena de Pajé promotes mental clarity. All come from Acre, Brazil, crafted by traditional indigenous communities.',
+    },
+    {
+      question: 'Which size should I choose?',
+      answer: 'We offer three sizes: 10g to try a new variety, 20g (most popular) for regular use, and 30g for those who know their favorite rapé and want to stock up. All vacuum-sealed to preserve freshness and potency.',
+    },
+    {
+      question: 'Are they organic?',
+      answer: 'Yes, all our rapés are handcrafted by indigenous communities without pesticides or chemicals. The wild tobacco is grown in the Amazon, hand-ground, and blended with sacred tree ashes according to each tribe\'s tradition.',
+    },
+    {
+      question: 'Where do the rapés come from?',
+      answer: 'All our rapés come directly from Acre, in the Brazilian Amazon, specifically from the Kaxinawá, Nukini, Apurinã, Kuntanawa, and Katukina communities, with whom we work directly to ensure authenticity and fair trade.',
+    },
+  ],
+  pt: [
+    {
+      question: 'Qual é a diferença entre os rapés?',
+      answer: 'Cada rapé tem propriedades e focos distintos. Tsunú é energético e de alta intensidade. Pixurí é medicinal com propriedades antissépticas. Pariká é cerimonial para conexão espiritual. Cumarú de Cheiro oferece proteção energética. Vena de Pajé promove clareza mental. Todos vêm do Acre, Brasil, elaborados por comunidades indígenas tradicionais.',
+    },
+    {
+      question: 'Qual tamanho escolher?',
+      answer: 'Oferecemos três tamanhos: 10g para experimentar uma nova variedade, 20g (o mais popular) para uso regular e 30g para quem já conhece seu rapé favorito e quer se abastecer. Todos com embalagem a vácuo que preserva o frescor e a potência.',
+    },
+    {
+      question: 'São orgânicos?',
+      answer: 'Sim, todos os nossos rapés são feitos artesanalmente por comunidades indígenas, sem pesticidas ou químicos. O tabaco selvagem é cultivado na Amazônia, moído à mão e combinado com cinzas de árvores sagradas segundo a tradição de cada etnia.',
+    },
+    {
+      question: 'De onde vêm os rapés?',
+      answer: 'Todos os nossos rapés vêm diretamente do Acre, na Amazônia brasileira, especificamente das comunidades Kaxinawá, Nukini, Apurinã, Kuntanawa e Katukina, com quem trabalhamos diretamente para garantir autenticidade e comércio justo.',
+    },
+  ],
+};
+
+const currentFaqs = faqs[locale] || faqs.es;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': currentFaqs.map((q) => ({
+    '@type': 'Question',
+    'name': q.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': q.answer,
+    },
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

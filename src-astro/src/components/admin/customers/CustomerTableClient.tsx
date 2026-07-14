@@ -114,7 +114,7 @@ export default function CustomerTableClient({
 
   // Handlers
   const handleViewCustomer = (customerId: string) => {
-    window.location.href = `/admin/clientes/${customerId}`;
+    window.location.href = `/admin/clientes/${customerId}/page`;
   };
 
   const handleEditCustomer = (customerId: string) => {

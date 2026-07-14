@@ -113,6 +113,19 @@
     "pagoMovil": "Pago móvil",
     "pagoConBanco": "Pago con tu banco",
     "seguridadBold": "Al continuar, serás redirigido a la pasarela de pago segura de Bold para completar tu transacción.",
+    "pagarBold": "Pagar con Bold",
+    "boldRedirecting": "Redirigiendo a Bold...",
+    "boldProcesando": "Procesando pago...",
+    "boldError": "Error al procesar el pago",
+    "boldErrorMsg": "Hubo un problema al procesar el pago. Puedes intentar de nuevo o pagar por WhatsApp.",
+    "boldIntentaDeNuevo": "Intentar de nuevo",
+    "boldSuccess": "Pago aprobado",
+    "boldFailed": "Pago rechazado",
+    "boldStatus": "Estado del pago:",
+    "boldReference": "Referencia Bold:",
+    "whatsappFallback": "Prefiero pagar por WhatsApp",
+    "whatsappFallbackDesc": "Te contactaremos para coordinar el pago directamente.",
+    "pedidoWhatsAppMsg": "Tu pedido está pendiente. Confírmalo por WhatsApp para procesarlo.",
     "pedidoConfirmado": "¡Pedido confirmado!",
     "pedidoRecibido": "Tu pedido ha sido recibido. Te enviamos un correo a",
     "conDetalles": "con los detalles.",
@@ -184,7 +197,7 @@
   },
   "tienda": {
     "title": "Catálogo de Rapé",
-    "subtitle": "Medicina Ancestral Amazónica",
+    "subtitle": "Colección de Rapé do Acre, Brasil: Tsunú, Pixurí, Pariká y más. Precios desde $35.000 COP. Envío a Colombia. Origen directo del Amazonas.",
     "quickRef": "Tabla de Referencia Rápida",
     "varieties": "Variedades de la Medicina",
     "intentMap": "Mapa de Intenciones",
@@ -253,6 +266,13 @@
     "bienestarFisico": "Bienestar Físico y Respiratorio",
     "proteccion": "Protección y Escudo",
     "conexionEspiritual": "Conexión Espiritual Profunda"
+  },
+  "llms": {
+    "title": "Octavo Fuego — Rapé do Acre, Sananga y Kuripes",
+    "sectionProducts": "Productos",
+    "labelName": "Nombre",
+    "labelPrices": "Precios",
+    "labelDescription": "Descripción"
   },
   "mayoristas": {
     "hero_title": "Distribución Institucional de Rapé do Acre para Facilitadores y Distribuidores en Colombia",

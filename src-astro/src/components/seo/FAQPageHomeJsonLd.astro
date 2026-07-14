@@ -1,0 +1,97 @@
+---
+/**
+ * FAQPage JSON-LD Schema Component — Homepage
+ * 5 locale-aware Q&A pairs about Rapé for SEO (voice search + rich snippets).
+ */
+export interface Props {
+  locale?: 'es' | 'en' | 'pt';
+}
+
+const { locale = 'es' } = Astro.props;
+
+const faqs: Record<'es' | 'en' | 'pt', { question: string; answer: string }[]> = {
+  es: [
+    {
+      question: '¿Qué es el Rapé?',
+      answer: 'El rapé es un preparado de tabaco ceremonial en polvo, de origen amazónico. Elaborado tradicionalmente por comunidades indígenas del Acre (Brasil), se compone de tabaco silvestre molido combinado con cenizas de árboles sagrados como el Tsunú, Pariká y otras plantas medicinales.',
+    },
+    {
+      question: '¿Para qué sirve el Rapé?',
+      answer: 'Se utiliza en prácticas de meditación, ceremonias y rituales de sanación para propiciar enfoque mental, claridad espiritual y conexión con la sabiduría ancestral de la selva.',
+    },
+    {
+      question: '¿Cómo se usa el Rapé?',
+      answer: 'Se administra mediante un kuripe (aplicador personal) soplando suavemente en cada fosa nasal. Se recomienda empezar con una dosis pequeña e ir aumentando según la experiencia personal. Es una práctica que debe realizarse con respeto y en un entorno adecuado.',
+    },
+    {
+      question: '¿Es legal el Rapé en Colombia?',
+      answer: 'Sí, el rapé ceremonial es legal en Colombia. Es una práctica tradicional indígena protegida por la legislación colombiana. Se puede importar del Acre (Brasil) para uso personal y ceremonial.',
+    },
+    {
+      question: '¿Hay envíos internacionales?',
+      answer: 'Actualmente realizamos envíos a todo Colombia. Consulta disponibilidad para envíos internacionales escribiéndonos por WhatsApp al +57 317 2137932.',
+    },
+  ],
+  en: [
+    {
+      question: 'What is Rapé?',
+      answer: 'Rapé is a ceremonial powdered tobacco snuff of Amazonian origin. Traditionally prepared by indigenous communities in Acre, Brazil, it combines wild tobacco ground with sacred tree ashes such as Tsunú, Pariká, and other medicinal plants.',
+    },
+    {
+      question: 'What is Rapé used for?',
+      answer: 'It is used in meditation practices, ceremonies, and healing rituals to promote mental focus, spiritual clarity, and connection with the ancestral wisdom of the rainforest.',
+    },
+    {
+      question: 'How do you use Rapé?',
+      answer: 'It is administered using a kuripe (personal applicator) by gently blowing into each nostril. Start with a small dose and increase based on your personal experience. It should be practiced with respect and in an appropriate setting.',
+    },
+    {
+      question: 'Is Rapé legal in Colombia?',
+      answer: 'Yes, ceremonial rapé is legal in Colombia. It is a traditional indigenous practice protected by Colombian law. It can be imported from Acre, Brazil for personal and ceremonial use.',
+    },
+    {
+      question: 'Do you ship internationally?',
+      answer: 'We currently ship throughout Colombia. Contact us via WhatsApp at +57 317 2137932 for international shipping availability.',
+    },
+  ],
+  pt: [
+    {
+      question: 'O que é Rapé?',
+      answer: 'O rapé é um preparado de tabaco cerimonial em pó de origem amazônica. Tradicionalmente elaborado por comunidades indígenas do Acre, Brasil, combina tabaco selvagem moído com cinzas de árvores sagradas como Tsunú, Pariká e outras plantas medicinais.',
+    },
+    {
+      question: 'Para que serve o Rapé?',
+      answer: 'É utilizado em práticas de meditação, cerimônias e rituais de cura para promover foco mental, clareza espiritual e conexão com a sabedoria ancestral da floresta.',
+    },
+    {
+      question: 'Como usar o Rapé?',
+      answer: 'É administrado com um kuripe (aplicador pessoal), soprando suavemente em cada narina. Comece com uma dose pequena e aumente conforme sua experiência pessoal. Deve ser praticado com respeito e em um ambiente adequado.',
+    },
+    {
+      question: 'O Rapé é legal na Colômbia?',
+      answer: 'Sim, o rapé cerimonial é legal na Colômbia. É uma prática tradicional indígena protegida pela lei colombiana. Pode ser importado do Acre, Brasil, para uso pessoal e cerimonial.',
+    },
+    {
+      question: 'Vocês fazem envios internacionais?',
+      answer: 'Atualmente fazemos envios para toda a Colômbia. Consulte disponibilidade para envios internacionais nos escrevendo pelo WhatsApp no +57 317 2137932.',
+    },
+  ],
+};
+
+const currentFaqs = faqs[locale] || faqs.es;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  'mainEntity': currentFaqs.map((q) => ({
+    '@type': 'Question',
+    'name': q.question,
+    'acceptedAnswer': {
+      '@type': 'Answer',
+      'text': q.answer,
+    },
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

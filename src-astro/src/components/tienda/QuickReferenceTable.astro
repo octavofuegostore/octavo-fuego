@@ -1,7 +1,9 @@
 ---
 /**
- * QuickReferenceTable — Card-based reference for 5 rapé varieties
- * Replaced HTML table with modern card grid layout
+ * QuickReferenceTable — HTML table comparison of all 5 rapé varieties
+ *
+ * Columns: variety name, 10g/20g/30g price, tradition/origin, enfoque, best for
+ * Responsive: horizontal scroll wrapper on mobile
  *
  * @source ESP.html "Tabla de Referencia Rápida" | ENG.html "Quick Reference Table" | PT.html "Tabela de Referência Rápida"
  */
@@ -17,14 +19,89 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 
-// Build card rows from product data
+// ─── Tradition/origin per product per locale (curated from descriptions) ──
+
+const traditionData: Record<string, Record<Locale, string>> = {
+  tsunu: {
+    es: 'Pueblos indígenas — medicina ancestral',
+    en: 'Indigenous peoples — ancestral medicine',
+    pt: 'Povos indígenas — medicina ancestral',
+  },
+  pixuri: {
+    es: 'Tradición amazónica — aromaterapia ceremonial',
+    en: 'Amazonian tradition — ceremonial aromatherapy',
+    pt: 'Tradição amazônica — aromaterapia cerimonial',
+  },
+  parika: {
+    es: 'Pueblo Kaxinawá — tradición ceremonial',
+    en: 'Kaxinawá people — ceremonial tradition',
+    pt: 'Povo Kaxinawá — tradição cerimonial',
+  },
+  'cumaru-de-cheiro': {
+    es: 'Amazonía — árbol completo, no solo corteza',
+    en: 'Amazon — whole tree, not just bark',
+    pt: 'Amazônia — árvore completa, não só casca',
+  },
+  'vena-de-paje': {
+    es: 'Tradición amazónica — tres tabacos + liana',
+    en: 'Amazonian tradition — three tobaccos + vine',
+    pt: 'Tradição amazônica — três tabacos + cipó',
+  },
+};
+
+// ─── Locale-aware table headers ──────────────────────────────────────────
+
+const headers = {
+  variety: {
+    es: 'Variedad',
+    en: 'Variety',
+    pt: 'Variedade',
+  },
+  price10g: {
+    es: '10g',
+    en: '10g',
+    pt: '10g',
+  },
+  price20g: {
+    es: '20g',
+    en: '20g',
+    pt: '20g',
+  },
+  price30g: {
+    es: '30g',
+    en: '30g',
+    pt: '30g',
+  },
+  tradition: {
+    es: 'Tradición / Origen',
+    en: 'Tradition / Origin',
+    pt: 'Tradição / Origem',
+  },
+  enfoque: {
+    es: 'Enfoque',
+    en: 'Focus',
+    pt: 'Foco',
+  },
+  bestFor: {
+    es: 'Mejor para',
+    en: 'Best for',
+    pt: 'Melhor para',
+  },
+};
+
+const formatCOP = (n: number) => new Intl.NumberFormat('es-CO').format(n);
+
 const rows = products
   .sort((a, b) => a.varietyOrder - b.varietyOrder)
   .map((p) => ({
     name: p.nombre[locale],
+    slug: p.slug,
+    price10g: p.pricing[0]?.precio ?? 0,
+    price20g: p.pricing[1]?.precio ?? 0,
+    price30g: p.pricing[2]?.precio ?? 0,
+    tradition: traditionData[p.slug]?.[locale] ?? '',
     enfoque: p.enfoque[locale],
-    uso: p.usoRecomendado[locale],
-    varietyOrder: p.varietyOrder,
+    bestFor: p.usoRecomendado[locale],
   }));
 ---
 
@@ -34,31 +111,69 @@ const rows = products
       {t.tienda.quickRef}
     </span>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {rows.map((row) => (
-        <div class="border border-gray-200 rounded-[var(--radius-card)] p-6 hover:shadow-[var(--shadow-hover)] hover:border-[var(--color-action-primary)] transition-all duration-200 bg-white">
-          <div class="flex items-start justify-between mb-4">
-            <h3 class="font-display text-lg font-semibold text-[var(--near-black)]">{row.name}</h3>
-            <span class="text-[0.65rem] uppercase tracking-wider text-[var(--color-action-primary)] font-bold bg-[var(--color-action-primary)]/5 px-2 py-1 rounded-full">
-              #{row.varietyOrder}
-            </span>
-          </div>
-          <div class="space-y-3">
-            <div>
-              <span class="text-[0.65rem] uppercase tracking-[0.12em] font-semibold text-[var(--ceniza)] block mb-1">
-                {locale === 'es' ? 'Enfoque Principal' : locale === 'en' ? 'Main Focus' : 'Foco Principal'}
-              </span>
-              <p class="text-sm text-[var(--near-black)]">{row.enfoque}</p>
-            </div>
-            <div>
-              <span class="text-[0.65rem] uppercase tracking-[0.12em] font-semibold text-[var(--ceniza)] block mb-1">
-                {locale === 'es' ? 'Uso Recomendado' : locale === 'en' ? 'Recommended Use' : 'Uso Recomendado'}
-              </span>
-              <p class="text-sm text-[var(--near-black)]">{row.uso}</p>
-            </div>
-          </div>
-        </div>
-      ))}
+    <!-- Scrollable wrapper for mobile -->
+    <div class="overflow-x-auto -mx-6 md:-mx-12">
+      <div class="min-w-[680px] px-6 md:px-12">
+        <table class="w-full border-collapse">
+          <!-- Header -->
+          <thead>
+            <tr class="border-b-2 border-[var(--color-action-primary)]">
+              <th scope="col" class="text-left py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--color-action-primary)] whitespace-nowrap">
+                {headers.variety[locale]}
+              </th>
+              <th scope="col" class="text-right py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap">
+                {headers.price10g[locale]}
+              </th>
+              <th scope="col" class="text-right py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap">
+                {headers.price20g[locale]}
+              </th>
+              <th scope="col" class="text-right py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap">
+                {headers.price30g[locale]}
+              </th>
+              <th scope="col" class="text-left py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap hidden lg:table-cell">
+                {headers.tradition[locale]}
+              </th>
+              <th scope="col" class="text-left py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap hidden md:table-cell">
+                {headers.enfoque[locale]}
+              </th>
+              <th scope="col" class="text-left py-3 px-3 first:pl-0 last:pr-0 text-[0.65rem] uppercase tracking-[0.12em] font-bold text-[var(--ceniza)] whitespace-nowrap hidden lg:table-cell">
+                {headers.bestFor[locale]}
+              </th>
+            </tr>
+          </thead>
+
+          <!-- Body -->
+          <tbody>
+            {rows.map((row, i) => (
+              <tr class="border-b border-gray-100 last:border-b-0 transition-colors hover:bg-[var(--color-action-primary)]/[0.03]">
+                <td class="py-4 px-3 first:pl-0 last:pr-0">
+                  <span class="font-display font-semibold text-sm text-[var(--near-black)]">{row.name}</span>
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 text-right text-sm text-[var(--near-black)] whitespace-nowrap font-mono">
+                  ${formatCOP(row.price10g)}
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 text-right text-sm text-[var(--near-black)] whitespace-nowrap font-mono">
+                  ${formatCOP(row.price20g)}
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 text-right text-sm text-[var(--near-black)] whitespace-nowrap font-mono">
+                  ${formatCOP(row.price30g)}
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 text-sm text-[var(--ceniza)] leading-snug hidden lg:table-cell">
+                  {row.tradition}
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 hidden md:table-cell">
+                  <span class="inline-block text-[0.65rem] uppercase tracking-wider font-bold text-[var(--color-action-primary)] bg-[var(--color-action-primary)]/5 px-2.5 py-1 rounded-full whitespace-nowrap">
+                    {row.enfoque}
+                  </span>
+                </td>
+                <td class="py-4 px-3 first:pl-0 last:pr-0 text-sm text-[var(--ceniza)] leading-snug hidden lg:table-cell">
+                  {row.bestFor}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>

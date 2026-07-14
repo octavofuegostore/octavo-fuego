@@ -30,19 +30,19 @@ const SUPABASE_CONFIGURED = !!(
 
 // ─── Mock data (fallback when Supabase is not configured) ─────────────────────
 
-const RAPES = ['Bobinsana', 'Kaxinawá', 'Nukini', 'Shawandawa', 'Katukina'] as const;
-const SKU_PREFIXES = ['BOB', 'KAX', 'NUK', 'SHA', 'KAT'] as const;
+const RAPES = ['Tsunú', 'Pixurí', 'Pariká', 'Cumarú de Cheiro', 'Vena de Pajé'] as const;
+const SKU_PREFIXES = ['TSU', 'PIX', 'PAR', 'CUM', 'VEN'] as const;
 const PESOS = [10, 20, 30] as const;
 const PRECIO_COP = [35000, 70000, 100000] as const;
 const PRECIO_BRL = [45, 89, 130] as const;
 const PRECIO_USD = [9, 17, 25] as const;
 
 const baseOrdenes: Orden[] = [
-  { id: 'OF-2026-001', customer: { name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567' }, items: [{ name: 'Bobinsana Rapé 10g', quantity: 2, price: 35000 }], total: 70000, currency: 'COP', status: 'pending', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-16T10:30:00Z', updatedAt: '2026-06-16T10:30:00Z' },
-  { id: 'OF-2026-002', customer: { name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321' }, items: [{ name: 'Kaxinawá Rapé 20g', quantity: 1, price: 89 }], total: 89, currency: 'BRL', status: 'confirmed', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-15T14:20:00Z', updatedAt: '2026-06-15T15:00:00Z' },
-  { id: 'OF-2026-003', customer: { name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543' }, items: [{ name: 'Nukini Rapé 30g', quantity: 1, price: 100000 }], total: 100000, currency: 'COP', status: 'shipped', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-14T09:15:00Z', updatedAt: '2026-06-16T08:00:00Z' },
-  { id: 'OF-2026-004', customer: { name: 'Ana Santos', email: 'ana@email.com', phone: '+55 21 91234 5678' }, items: [{ name: 'Shawandawa Rapé 10g', quantity: 2, price: 45 }], total: 90, currency: 'BRL', status: 'delivered', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-13T16:45:00Z', updatedAt: '2026-06-15T12:00:00Z' },
-  { id: 'OF-2026-005', customer: { name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5679' }, items: [{ name: 'Katukina Rapé 20g', quantity: 2, price: 89 }], total: 178, currency: 'BRL', status: 'pending', channel: 'manual', location: 'BR-ACRE', createdAt: '2026-06-12T11:00:00Z', updatedAt: '2026-06-12T11:00:00Z' },
+  { id: 'OF-2026-001', customer: { name: 'María García', email: 'maria@email.com', phone: '+57 300 123 4567' }, items: [{ name: 'Tsunú Rapé 10g', quantity: 2, price: 35000 }], total: 70000, currency: 'COP', status: 'pending', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-16T10:30:00Z', updatedAt: '2026-06-16T10:30:00Z' },
+  { id: 'OF-2026-002', customer: { name: 'João Silva', email: 'joao@email.com', phone: '+55 11 98765 4321' }, items: [{ name: 'Pixurí Rapé 20g', quantity: 1, price: 89 }], total: 89, currency: 'BRL', status: 'confirmed', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-15T14:20:00Z', updatedAt: '2026-06-15T15:00:00Z' },
+  { id: 'OF-2026-003', customer: { name: 'Andrés López', email: 'andres@email.com', phone: '+57 310 987 6543' }, items: [{ name: 'Pariká Rapé 30g', quantity: 1, price: 100000 }], total: 100000, currency: 'COP', status: 'shipped', channel: 'whatsapp', location: 'CO-BOGOTA', createdAt: '2026-06-14T09:15:00Z', updatedAt: '2026-06-16T08:00:00Z' },
+  { id: 'OF-2026-004', customer: { name: 'Ana Santos', email: 'ana@email.com', phone: '+55 21 91234 5678' }, items: [{ name: 'Cumarú de Cheiro Rapé 10g', quantity: 2, price: 45 }], total: 90, currency: 'BRL', status: 'delivered', channel: 'web', location: 'BR-ACRE', createdAt: '2026-06-13T16:45:00Z', updatedAt: '2026-06-15T12:00:00Z' },
+  { id: 'OF-2026-005', customer: { name: 'Lucas Fernandes', email: 'lucas@email.com', phone: '+55 21 91234 5679' }, items: [{ name: 'Vena de Pajé Rapé 20g', quantity: 2, price: 89 }], total: 178, currency: 'BRL', status: 'pending', channel: 'manual', location: 'BR-ACRE', createdAt: '2026-06-12T11:00:00Z', updatedAt: '2026-06-12T11:00:00Z' },
 ];
 
 function generarMockOrdenes(): Orden[] {
@@ -427,11 +427,11 @@ export async function getPagoById(id: string): Promise<Pago | undefined> {
 
 function generarMockNotificaciones(): Notificacion[] {
   return [
-    { id: '1', usuario_id: 'admin-uuid-1', tipo: 'nueva_orden', titulo: 'Nueva orden recibida', mensaje: 'OF-2026-001 — María García', link: '/admin/ordenes/OF-2026-001', leida: false, creado_en: '2026-06-16T10:30:00Z' },
+    { id: '1', usuario_id: 'admin-uuid-1', tipo: 'nueva_orden', titulo: 'Nueva orden recibida', mensaje: 'OF-2026-001 — María García', link: '/admin/ordenes/OF-2026-001/page', leida: false, creado_en: '2026-06-16T10:30:00Z' },
     { id: '2', usuario_id: 'admin-uuid-1', tipo: 'solicitud_b2b', titulo: 'Solicitud B2B pendiente', mensaje: 'Tienda Natural Bogotá quiere ser mayorista', link: '/admin/clientes/b2b', leida: false, creado_en: '2026-06-16T09:00:00Z' },
-    { id: '3', usuario_id: 'admin-uuid-1', tipo: 'stock_bajo', titulo: 'Stock bajo en BR-ACRE', mensaje: 'Nukini Rapé tiene solo 15g en BR-ACRE', link: '/admin/inventario/stock', leida: false, creado_en: '2026-06-16T08:00:00Z' },
-    { id: '4', usuario_id: 'admin-uuid-1', tipo: 'pago_recibido', titulo: 'Pago confirmado', mensaje: 'OF-2026-002 — João Silva pagó R$ 267', link: '/admin/ordenes/OF-2026-002', leida: true, creado_en: '2026-06-15T15:00:00Z' },
-    { id: '5', usuario_id: 'admin-uuid-1', tipo: 'nueva_orden', titulo: 'Orden enviada', mensaje: 'OF-2026-003 — Andrés López enviado', link: '/admin/ordenes/OF-2026-003', leida: true, creado_en: '2026-06-14T12:00:00Z' },
+    { id: '3', usuario_id: 'admin-uuid-1', tipo: 'stock_bajo', titulo: 'Stock bajo en BR-ACRE', mensaje: 'Pariká Rapé tiene solo 15g en BR-ACRE', link: '/admin/inventario/stock', leida: false, creado_en: '2026-06-16T08:00:00Z' },
+    { id: '4', usuario_id: 'admin-uuid-1', tipo: 'pago_recibido', titulo: 'Pago confirmado', mensaje: 'OF-2026-002 — João Silva pagó R$ 267', link: '/admin/ordenes/OF-2026-002/page', leida: true, creado_en: '2026-06-15T15:00:00Z' },
+    { id: '5', usuario_id: 'admin-uuid-1', tipo: 'nueva_orden', titulo: 'Orden enviada', mensaje: 'OF-2026-003 — Andrés López enviado', link: '/admin/ordenes/OF-2026-003/page', leida: true, creado_en: '2026-06-14T12:00:00Z' },
   ];
 }
 

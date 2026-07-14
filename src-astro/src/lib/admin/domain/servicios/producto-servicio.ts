@@ -216,11 +216,11 @@ export class MockProductoServicio implements IProductoServicio {
 
   private static _generarMock(): Producto[] {
     const rapes = [
-      { slug: 'bobinsana', nombre: 'Bobinsana', desc: 'Rapé sagrado de la selva amazónica, preparado con las hojas de la planta Bobinsana.' },
-      { slug: 'kaxinawa', nombre: 'Kaxinawá', desc: 'Rapé tradicional del pueblo Huni Kuin, elaborado con tabaco sagrado y cenizas de árboles.' },
-      { slug: 'nukini', nombre: 'Nukini', desc: 'Rapé preparado por el pueblo Nukini, con tabaco nativo y especies amazónicas.' },
-      { slug: 'shawandawa', nombre: 'Shawandawa', desc: 'Rapé de la tradición Shawandawa, suave y aromático, ideal para meditación.' },
-      { slug: 'katukina', nombre: 'Katukina', desc: 'Rapé del pueblo Katukina, con la fuerza del tabaco sagrado del Acre.' },
+      { slug: 'tsunu', nombre: 'Tsunú', desc: 'Rapé sagrado con aroma herbal y terroso, ideal para claridad mental y conexión espiritual.' },
+      { slug: 'pixuri', nombre: 'Pixurí', desc: 'Rapé tradicional de aroma dulce y ahumado, preparado con cenizas de árboles amazónicos.' },
+      { slug: 'parika', nombre: 'Pariká', desc: 'Rapé equilibrado con notas suaves, recomendado para meditación y prácticas ceremoniales.' },
+      { slug: 'cumaru-de-cheiro', nombre: 'Cumarú de Cheiro', desc: 'Rapé aromático con esencia de cumarú, reconocido por su perfil olfativo único y envolvente.' },
+      { slug: 'vena-de-paje', nombre: 'Vena de Pajé', desc: 'Rapé del chamán, de acción profunda y transformadora, usado en ceremonias de sanación.' },
     ]
 
     const pesos = [10, 20, 30] as const

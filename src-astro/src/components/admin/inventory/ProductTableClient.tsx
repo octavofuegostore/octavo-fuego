@@ -169,10 +169,7 @@ export default function ProductTableClient({ products }: ProductTableClientProps
               className="px-3 py-2 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco"
             >
               <option value="">Todas</option>
-              <option value="Cera de Ducha">Cera de Ducha</option>
-              <option value="Sabonete">Sabonete</option>
-              <option value="Packs">Packs</option>
-              <option value="Accesorios">Accesorios</option>
+              <option value="rapé">Rapé</option>
             </select>
 
             {/* Status Filter */}

@@ -15,6 +15,7 @@ import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
 import ReviewJsonLd from '@/components/seo/ReviewJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
+import SeoContentBlocks from '@/components/seo/SeoContentBlocks.astro';
 import RelatedProducts from '@/components/product/RelatedProducts.astro';
 import WhatsAppButton from '@/components/whatsapp/WhatsAppButton.astro';
 import { Icon } from 'astro-icon/components';
@@ -213,6 +214,9 @@ const priceText = locale_ === 'en'
           <p class="text-[var(--near-black)] text-base md:text-lg leading-[1.8]">
             {product.overview[locale_]}
           </p>
+
+          <!-- SEO Content Blocks — summary, facts, bad-fit -->
+          <SeoContentBlocks locale={locale_} product={product} />
 
           <!-- Tags as compact badges (like homepage trust badges) -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">

@@ -28,6 +28,15 @@ export default config({
           defaultValue: 'ancestral',
         }),
         featured: fields.boolean({ label: 'Featured', defaultValue: false }),
+        locale: fields.select({
+          label: 'Locale',
+          options: [
+            { label: 'Español', value: 'es' },
+            { label: 'English', value: 'en' },
+            { label: 'Português', value: 'pt' },
+          ],
+          defaultValue: 'es',
+        }),
       },
     }),
   },

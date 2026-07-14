@@ -3,6 +3,7 @@ import { ProductoService } from '@/lib/admin/services/productos'
 import { OrdenService } from '@/lib/admin/services/ordenes'
 import { ClienteService } from '@/lib/admin/services/clientes'
 import { PagoService } from '@/lib/admin/services/pagos'
+import { BoldAdapter, MockBoldAdapter, type BoldConfig } from '@/lib/admin/domain/gateways'
 import { crearContabilidadServicio } from '@/lib/admin/domain/servicios/contabilidad-servicio'
 import { eventBus } from '@/lib/admin/eventos'
 import { setAdminUser, clearAdminUser } from '@/stores/admin'
@@ -17,6 +18,60 @@ export { crearPagoServicio } from '@/lib/admin/domain/servicios/pago-servicio'
 export type { IPagoServicio } from '@/lib/admin/domain/servicios/pago-servicio'
 export { crearContabilidadServicio } from '@/lib/admin/domain/servicios/contabilidad-servicio'
 export type { IContabilidadServicio } from '@/lib/admin/domain/servicios/contabilidad-servicio'
+
+// ── Gateway Provider ────────────────────────────────────────────────────────
+
+export const GATEWAY_CONFIGURED =
+  typeof import.meta.env.PUBLIC_PAYMENT_PROVIDER === 'string' &&
+  import.meta.env.PUBLIC_PAYMENT_PROVIDER.length > 0
+
+/**
+ * Returns whether Bold is configured (PUBLIC_PAYMENT_PROVIDER=bold).
+ * Falls back to false — MockBoldAdapter will be used in development.
+ */
+export function boldConfigurado(): boolean {
+  return import.meta.env.PUBLIC_PAYMENT_PROVIDER === 'bold'
+}
+
+let _gatewayBoldConfig: BoldConfig | null = null
+
+/** Lazy-loaded Bold config from environment variables */
+export function getBoldConfig(): BoldConfig {
+  if (_gatewayBoldConfig) return _gatewayBoldConfig
+  _gatewayBoldConfig = {
+    apiKey: import.meta.env.BOLD_API_KEY ?? '',
+    publicKey: import.meta.env.PUBLIC_BOLD_PUBLIC_KEY ?? '',
+    secretKey: import.meta.env.BOLD_SECRET_KEY ?? '',
+    sandbox: import.meta.env.BOLD_SANDBOX !== 'false',
+  }
+  return _gatewayBoldConfig
+}
+
+let _gatewayInstance: ReturnType<typeof crearGateway> | null = null
+
+/**
+ * Creates the payment gateway instance based on PUBLIC_PAYMENT_PROVIDER env var.
+ *
+ * - `bold` → BoldAdapter (real API calls)
+ * - anything else → MockBoldAdapter (returns fake success, no API calls)
+ *
+ * Cached as singleton — resolves once at first call.
+ */
+export function crearGateway() {
+  if (_gatewayInstance) return _gatewayInstance
+
+  const provider = import.meta.env.PUBLIC_PAYMENT_PROVIDER || 'mock'
+
+  switch (provider) {
+    case 'bold':
+      _gatewayInstance = new BoldAdapter(getBoldConfig())
+      break
+    default:
+      _gatewayInstance = new MockBoldAdapter()
+  }
+
+  return _gatewayInstance
+}
 
 
 // ── SSR Cache ──────────────────────────────────────────────────────────────

@@ -139,9 +139,9 @@ export const products: Product[] = [
     imagenes: [IMAGE_TISUNU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Tsunú del Acre, Brasil. Ideal para meditación y enfoque profundo. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
-      en: 'Tsunú rapé from Acre, Brazil. Ideal for meditation and deep focus. 20g for $19 USD ($0.95/g). Vacuum sealed.',
-      pt: 'Rapé Tsunú do Acre, Brasil. Ideal para meditação e foco profundo. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+      es: 'Rapé Tsunú del Acre, Brasil. Ideal para meditación y enfoque profundo. Elaborado con tabaco de moho y orgánico. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Tsunú rapé from Acre, Brazil. Ideal for meditation and deep focus. Made with mold tobacco and organic tobacco from the Amazon. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Tsunú do Acre, Brasil. Ideal para meditação e foco profundo. Elaborado com cinza da árvore mais poderosa da floresta. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
     },
     pageTitle: {
       es: 'Comprar Rapé Tsunú — Enfoque y Claridad Mental',
@@ -217,8 +217,8 @@ export const products: Product[] = [
     imagenes: [IMAGE_PIXURI],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Pixurí del Acre, Brasil. Propiedades respiratorias y claridad mental. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
-      en: 'Pixurí rapé from Acre, Brazil. Respiratory properties and mental clarity. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      es: 'Rapé Pixurí del Acre, Brasil. Propiedades respiratorias y claridad mental. Eucaliptol natural para aliviar sinusitis y asma. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
+      en: 'Pixurí rapé from Acre, Brazil. Respiratory properties and mental clarity. Natural eucalyptol for sinusitis and asthma relief. 20g for $19 USD ($0.95/g). Vacuum sealed.',
       pt: 'Rapé Pixurí do Acre, Brasil. Propriedades respiratórias e clareza mental. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
     },
     pageTitle: {
@@ -295,9 +295,9 @@ export const products: Product[] = [
     imagenes: [IMAGE_PARIKA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Pariká del Acre, Brasil. Alta intensidad para ceremonias. 20g por $70.000 COP ($3.500/g). Empaque al vacío.',
-      en: 'Pariká rapé from Acre, Brazil. High intensity for ceremonies. 20g for $19 USD ($0.95/g). Vacuum sealed.',
-      pt: 'Rapé Pariká do Acre, Brasil. Alta intensidade para cerimônias. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
+      es: 'Rapé Pariká del Acre, Brasil. Ceremonial de alta intensidad con ceniza de Pariká y tabaco de cuerda para limpieza energética profunda. 20g por $70.000 COP ($3.500/g).',
+      en: 'Pariká rapé from Acre, Brazil. High intensity ceremonial rapé for deep energetic cleansing and spiritual connection. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Pariká do Acre, Brasil. Cerimonial de alta intensidade para limpeza energética. Feito com cinza de Pariká. 20g por R$95 BRL (R$4,75/g). Embalagem a vácuo.',
     },
     pageTitle: {
       es: 'Comprar Rapé Pariká — Limpieza Energética Profunda',
@@ -373,9 +373,9 @@ export const products: Product[] = [
     imagenes: [IMAGE_CUMARU],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Cumarú de Cheiro del Acre, Brasil. Escudo energético y aroma balsámico. 20g por $70.000 COP ($3.500/g).',
-      en: 'Cumarú de Cheiro rapé from Acre, Brazil. Energetic shield and balsamic aroma. 20g for $19 USD ($0.95/g).',
-      pt: 'Rapé Cumarú de Cheiro do Acre, Brasil. Escudo energético e aroma balsâmico. 20g por R$95 BRL (R$4,75/g).',
+      es: 'Rapé Cumarú de Cheiro del Acre, Brasil. Escudo energético con aroma balsámico. Ceniza de Cumarú, tabaco de cuerda e imburana. 20g por $70.000 COP ($3.500/g).',
+      en: 'Cumarú de Cheiro rapé from Acre, Brazil. Energetic shield with balsamic aroma. Made with Cumarú ash, rope tobacco and imburana. 20g for $19 USD ($0.95/g). Vacuum sealed.',
+      pt: 'Rapé Cumarú de Cheiro do Acre, Brasil. Escudo energético com aroma balsâmico. Cinza de Cumarú, tabaco de corda e imburana. 20g por R$95 BRL (R$4,75/g).',
     },
     pageTitle: {
       es: 'Comprar Rapé Cumarú de Cheiro — Protección y Aroma',
@@ -451,9 +451,9 @@ export const products: Product[] = [
     imagenes: [IMAGE_VENA],
     /** @source ESP.html header subtitle + intro-text | ENG.html same | PT.html same */
     metaDescription: {
-      es: 'Rapé Vena de Pajé del Acre, Brasil. Mezcla equilibrada para integración emocional. 20g por $70.000 COP ($3.500/g).',
-      en: 'Vena de Pajé rapé from Acre, Brazil. Balanced blend for emotional integration. 20g for $19 USD ($0.95/g).',
-      pt: 'Rapé Veia de Pajé do Acre, Brasil. Mistura equilibrada para integração emocional. 20g por R$95 BRL (R$4,75/g).',
+      es: 'Rapé Vena de Pajé del Acre, Brasil. Mezcla única de tres tabacos para meditación profunda, descalcificación pineal y limpieza energética. 20g por $70.000 COP ($3.500/g).',
+      en: 'Vena de Pajé rapé from Acre, Brazil. Unique three-tobacco blend for meditation and pineal decalcification. Energetic channel cleansing. 20g for $19 USD ($0.95/g).',
+      pt: 'Rapé Veia de Pajé do Acre, Brasil. Três tabacos para meditação profunda e descalcificação da pineal. Limpeza de canais energéticos. 20g por R$95 BRL (R$4,75/g).',
     },
     pageTitle: {
       es: 'Comprar Rapé Vena de Pajé — Intuición y Balance',

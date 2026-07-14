@@ -125,7 +125,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
         tipo: 'orden:creada',
         titulo: 'Nueva orden creada',
         mensaje: null,
-        link: `/admin/ordenes/${payload.ordenId}`,
+        link: `/admin/ordenes/${payload.ordenId}/page`,
         leida: false,
         creado_en: new Date().toISOString(),
       }, ...prev])

@@ -31,7 +31,7 @@ export interface Producto {
   id: string;
   name: string;
   sku: string;
-  category: 'rapé' | 'sananga' | 'kuripe' | 'b2b';
+  category: 'rapé' | 'producto';
   priceCOP: number;
   priceBRL: number;
   priceUSD: number;

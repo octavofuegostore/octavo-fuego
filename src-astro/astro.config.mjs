@@ -66,7 +66,7 @@ export default defineConfig({
       },
     }),
     sitemap({
-      filter: (page) => !page.includes('/checkout/'),
+      filter: (page) => !page.includes('/checkout/') && !page.includes('/admin/'),
       changefreq: 'weekly',
       priority: 0.7,
     })

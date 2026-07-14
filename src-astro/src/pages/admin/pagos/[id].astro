@@ -238,7 +238,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
             <div class="space-y-3">
               <div>
                 <p class="text-sm text-ceniza">ID Orden</p>
-                <a href={`/admin/ordenes/${orden.id}`} class="text-sm font-medium text-tabaco hover:text-tabaco/80 transition-colors">
+                <a href={`/admin/ordenes/${orden.id}/page`} class="text-sm font-medium text-tabaco hover:text-tabaco/80 transition-colors">
                   {orden.id}
                 </a>
               </div>
@@ -256,7 +256,7 @@ const isReembolsado = pago?.estado === 'reembolsado';
               </div>
             </div>
             <div class="mt-4 pt-4 border-t border-papel">
-              <a href={`/admin/ordenes/${orden.id}`} class="text-sm text-tabaco hover:text-tabaco/80 font-medium transition-colors">
+              <a href={`/admin/ordenes/${orden.id}/page`} class="text-sm text-tabaco hover:text-tabaco/80 font-medium transition-colors">
                 Ver detalle de orden →
               </a>
             </div>

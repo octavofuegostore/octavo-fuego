@@ -113,6 +113,19 @@
     "pagoMovil": "Mobile payment",
     "pagoConBanco": "Pay from your bank",
     "seguridadBold": "By continuing, you'll be redirected to Bold's secure payment gateway to complete your transaction.",
+    "pagarBold": "Pay with Bold",
+    "boldRedirecting": "Redirecting to Bold...",
+    "boldProcesando": "Processing payment...",
+    "boldError": "Payment processing error",
+    "boldErrorMsg": "There was a problem processing your payment. You can try again or pay via WhatsApp.",
+    "boldIntentaDeNuevo": "Try again",
+    "boldSuccess": "Payment approved",
+    "boldFailed": "Payment rejected",
+    "boldStatus": "Payment status:",
+    "boldReference": "Bold reference:",
+    "whatsappFallback": "I prefer to pay via WhatsApp",
+    "whatsappFallbackDesc": "We'll contact you to coordinate payment directly.",
+    "pedidoWhatsAppMsg": "Your order is pending. Confirm it via WhatsApp to process it.",
     "pedidoConfirmado": "Order confirmed!",
     "pedidoRecibido": "Your order has been received. We sent an email to",
     "conDetalles": "with the details.",
@@ -184,7 +197,7 @@
   },
   "tienda": {
     "title": "Rapé Catalog",
-    "subtitle": "Amazonian Ancestral Medicine",
+    "subtitle": "Rapé do Acre from Brazil: Tsunú, Pixurí, Pariká, Cumarú de Cheiro and Vena de Pajé. Prices from $35,000 COP. Vacuum sealed. Ships from Colombia.",
     "quickRef": "Quick Reference Table",
     "varieties": "Sacred Medicine Varieties",
     "intentMap": "Intent Map",
@@ -253,6 +266,13 @@
     "bienestarFisico": "Physical and Respiratory Well-being",
     "proteccion": "Protection and Shield",
     "conexionEspiritual": "Deep Spiritual Connection"
+  },
+  "llms": {
+    "title": "Octavo Fuego — Rapé do Acre, Sananga y Kuripes",
+    "sectionProducts": "Products",
+    "labelName": "Name",
+    "labelPrices": "Prices",
+    "labelDescription": "Description"
   },
   "mayoristas": {
     "hero_title": "Institutional Distribution of Rapé do Acre for Facilitators and Distributors in Colombia",

@@ -1196,3 +1196,56 @@ Incluye: checkout 404 fix, blog i18n completo, PaymentBanner i18n, FloatingWhats
 | **Render-blocking** | **0** |
 
 *9 PRs (#50→#58), 30+ commits, 48+ archivos*
+
+---
+
+## 🏁 Sprint Julio 12-13, 2026 — SDD + JD + SEO Content Enhancement (Fase A)
+
+> **Build:** ✅ 0 errores | **JD:** 5 cambios revisados, todos APPROVED
+> **Engram:** `sdd/cannibalization-of/*`, `sdd/seo-content-enhancement/*`, `seo/bigschool-vs-skill-analysis` (#2549)
+
+### Judgment Day Round 1-2 (3 cambios)
+
+| Cambio | JD R1 | JD R2 |
+|--------|-------|-------|
+| **admin-routing-bug** — 8 links con `/page` | Issues fixeados → APPROVED ✅ | — |
+| **og-image-jpg** — Dead code eliminado + default revertido a .svg | Ambos: "JPG no existe" → revertido ✅ | APPROVED ✅ |
+| **vitest-setup** — 33 tests, 4 suites | Ambos: "fallback test no prueba nada" → fixeado ✅ | APPROVED ✅ |
+
+### Full Auto — 9 items aplicados
+
+| # | Item | Archivos |
+|---|------|----------|
+| 1 | **CR-03 Mock Data Cleanup** — Pipod → productos reales (Tsunú, Pixurí, etc.) | 5 files |
+| 2 | **Cannibalización PR1** — Security headers (CSP/HSTS) + Performance (content-visibility) | 5 files |
+| 3 | **SEO Phase 1** — PersonJsonLd + onpage-validator + OrgJsonLd sameAs | 4 files |
+| 4 | **W-04 Dashboard Dinámico** — API endpoint + date filters + client fetch | 4 files |
+| 5 | **Cannibalización PR2** — llms.txt + llms-full.txt × 3 locales (30 tests) | 7 files |
+| 6 | **SEO Phase 2** — Blog EN/PT (12 rutas) + meta descriptions 120-155 chars | 4 files |
+| 7 | **Cannibalización PR3** — BoldAdapter + MockBoldAdapter + factory | 4 files |
+| 8 | **Cannibalización PR4** — Webhook Bold HMAC + eventBus (12 tests) | 5 files |
+| 9 | **Cannibalización PR5** — Checkout Bold + WhatsApp fallback + 15 i18n keys × 3 | 7 files |
+
+### SDD Completo: SEO Content Enhancement (Fase A)
+
+Pipeline: proposal → spec → design → tasks → apply (4 PRs) → verify → JD → ✅
+
+| PR | Qué implementó |
+|----|---------------|
+| **PR1** | FAQPageHomeJsonLd + FAQPageTiendaJsonLd (5+4 Q&A × 3 locales) |
+| **PR2** | SeoContentBlocks (AI Nugget, Prove-It, Not For You) en 15 PDPs + tabla HTML 5×7 |
+| **PR3** | llmsLoggerHandler middleware + OAI-SearchBot en robots.txt |
+| **PR4** | 5 blog drafts ES (beneficios, ceremonia, guía, sananga, guía completa 8k+ palabras) |
+
+### Schema Person — Cofundadores actualizados
+
+- **Josué Calderón** → `Cofundador & Growth Developer` (con LinkedIn)
+- **Edison Ramírez** → `Cofundador & Rapé Maker`
+- Ambos como coautores en cada artículo del blog
+
+### Documentación
+
+- PENDIENTES.md actualizado con completados + nuevos items priorizados (Fases A-D)
+- Análisis de 3 documentos SEO guardado en engram (#2549) — BigSchool vs seobuild-onpage
+- 112 URLs en sitemap (antes 103)
+- Build: 0 errores, tests: 76 pasando

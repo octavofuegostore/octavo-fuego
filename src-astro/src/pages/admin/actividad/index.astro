@@ -167,7 +167,7 @@ const tipos = [...new Set(eventos.map(e => e.tipo))];
                     <p class="text-sm text-ceniza truncate">{payloadSummary(ev.payload)}</p>
                   )}
                   {ev.orden_id && (
-                    <a href={`/admin/ordenes/${ev.orden_id}`} class="text-xs text-tabaco hover:underline mt-1 inline-block">
+                    <a href={`/admin/ordenes/${ev.orden_id}/page`} class="text-xs text-tabaco hover:underline mt-1 inline-block">
                       {ev.orden_id}
                     </a>
                   )}
