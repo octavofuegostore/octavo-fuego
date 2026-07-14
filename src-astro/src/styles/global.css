@@ -93,7 +93,7 @@
 
   /* Functional Text Tokens */
   --color-text-primary: #1C1410;     /* Headings, texto importante */
-  --color-text-secondary: #8C8680;   /* Meta, subtítulos */
+  --color-text-secondary: #6B6F73;   /* = --ceniza oficial. Meta, subtítulos */
   --color-text-on-action: #F2EFE8;   /* Texto sobre action-primary */
   --color-text-on-dark: #F2EFE8;     /* Texto sobre superficies oscuras */
 }
