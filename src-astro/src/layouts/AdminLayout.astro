@@ -482,8 +482,8 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
       $sidebarOpen.subscribe((open) => {
         const el = document.getElementById('admin-sidebar')
         if (!el) return
-        if (window.innerWidth < 1024) return
         el.classList.toggle('-translate-x-full', !open)
+        el.inert = !open && window.innerWidth < 1024
       })
 
       // ── PATH DETECTION + SUBMENU RESET (runs on every navigation) ──
@@ -565,18 +565,42 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         })
 
         // ── Quick-create dropdown toggle (header button) ──
-        document.getElementById('admin-quick-create-btn')?.addEventListener('click', (e) => {
+        const qcBtn = document.getElementById('admin-quick-create-btn')
+        const qcDd = document.getElementById('quick-create-dropdown')
+        const qcItems = qcDd?.querySelectorAll('button, a') ?? []
+
+        function toggleQuickCreate(open?: boolean) {
+          if (!qcDd) return
+          const isOpen = open ?? qcDd.classList.contains('hidden')
+          qcDd.classList.toggle('hidden', !isOpen)
+          if (isOpen && qcItems[0]) (qcItems[0] as HTMLElement).focus()
+        }
+
+        qcBtn?.addEventListener('click', (e) => {
           e.stopPropagation()
-          document.getElementById('quick-create-dropdown')?.classList.toggle('hidden')
+          toggleQuickCreate(qcDd?.classList.contains('hidden'))
+        })
+
+        qcBtn?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            toggleQuickCreate(qcDd?.classList.contains('hidden'))
+          }
+        })
+
+        qcDd?.addEventListener('keydown', (e) => {
+          const items = Array.from(qcDd.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'))
+          const current = items.findIndex(el => el === document.activeElement)
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[(current + 1) % items.length]?.focus() }
+          if (e.key === 'ArrowUp') { e.preventDefault(); items[(current - 1 + items.length) % items.length]?.focus() }
+          if (e.key === 'Escape') { e.preventDefault(); toggleQuickCreate(false); qcBtn?.focus() }
         })
 
         // Close quick-create dropdown on outside click
         document.addEventListener('click', (e) => {
-          const btn = document.getElementById('admin-quick-create-btn')
-          const dd = document.getElementById('quick-create-dropdown')
-          if (!btn || !dd || dd.classList.contains('hidden')) return
-          if (!btn.contains(e.target as Node) && !dd.contains(e.target as Node)) {
-            dd.classList.add('hidden')
+          if (!qcBtn || !qcDd || qcDd.classList.contains('hidden')) return
+          if (!qcBtn.contains(e.target as Node) && !qcDd.contains(e.target as Node)) {
+            qcDd.classList.add('hidden')
           }
         })
 
@@ -588,7 +612,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           } else {
             window.location.href = '/admin/clientes'
           }
-          document.getElementById('quick-create-dropdown')?.classList.add('hidden')
+          qcDd?.classList.add('hidden')
         })
 
         // ── Global search (Enter key navigates to most likely page) ──

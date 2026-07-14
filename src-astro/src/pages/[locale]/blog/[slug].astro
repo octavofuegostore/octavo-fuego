@@ -19,17 +19,120 @@ const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const { slug } = Astro.params;
 
+type LocaleString = string | Record<Locale, string>;
+
 interface BlogPost {
-  title: string;
+  title: LocaleString;
   slug: string;
-  excerpt: string;
-  content: string;
+  excerpt: LocaleString;
+  content: LocaleString;
   publishedAt: string;
   author: string;
   coverImage: string;
   category: string;
   relatedPosts: string[];
 }
+
+const contentByLocale: Record<string, Record<Locale, string>> = {
+  'guia-completa-rape': {
+    es: `
+El Rapé do Acre es una medicina ancestral amazónica preparada con hojas de tabaco silvestre (*Nicotiana rustica*) y cenizas de árboles sagrados. Más de 40 pueblos indígenas del Acre lo utilizan para limpieza energética, claridad mental y conexión espiritual.
+
+## ¿Qué hace único al Rapé do Acre?
+
+1. **Nicotiana rustica**: 6-18% de nicotina vs 0.5-3% del tabaco comercial
+2. **Cenizas vegetales**: Tsunú, Pariká, Cumarú aportan propiedades únicas
+3. **Fermentación artesanal**: 3-12 meses de proceso
+4. **Diversidad de pueblos**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Dato**: Acre produce ~70% del Rapé ceremonial de Brasil, 3-5 toneladas anuales (Fuente: Comisión Estatal de Productos Forestales 2022).
+
+## Las 5 variedades tradicionales
+
+- **Tsunú**: Ceniza del árbol más fuerte. Muy alta intensidad. Reset energético.
+- **Pixurí**: Hojas con eucaliptol natural. Suave. Respiratorio.
+- **Pariká**: Ceniza de Pariká + tabaco de cuerda. Ceremonial puro. Tradición Kaxinawá.
+- **Cumarú de Cheiro**: Ceniza de Cumarú + imburana. Protección. Cumarina natural.
+- **Vena de Pajé**: Tres tabacos + liana Vena de Pajé. Meditación y pineal.
+
+## Preparación artesanal
+
+Cultivo → fermentación (3-12 meses) → quema de árboles → molienda en morteros → tamizado. Sin aditivos ni conservantes.
+
+## Investigación científica
+
+La UFAC mantiene un programa de documentación desde 2005 (120+ publicaciones). Un estudio de 2021 en Revista Brasileira de Farmacognosia halló que 92% de Rapé do Acre auténtico no tenía contaminantes.
+
+## Contraindicaciones
+
+Absolutas: embarazo, enfermedades cardíacas, epilepsia, alergia, menores 18 años. Relativas: diabetes, ansiedad severa, IMAO. Precauciones: no mezclar, no conducir, hidratarse.
+    `.trim(),
+    en: `
+Rapé do Acre is an ancestral Amazonian medicine prepared with wild tobacco leaves (*Nicotiana rustica*) and sacred tree ashes. Over 40 indigenous peoples of Acre use it for energetic cleansing, mental clarity, and spiritual connection.
+
+## What Makes Rapé do Acre Unique?
+
+1. **Nicotiana rustica**: 6-18% nicotine vs 0.5-3% in commercial tobacco
+2. **Plant ashes**: Tsunú, Pariká, Cumarú add unique properties
+3. **Artisanal fermentation**: 3-12 month process
+4. **Indigenous diversity**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Fact**: Acre produces ~70% of Brazil's ceremonial Rapé, 3-5 metric tons annually (Source: Acre State Commission of Non-Timber Forest Products, 2022).
+
+## The 5 Traditional Varieties
+
+- **Tsunú**: Ash from the strongest tree. Very high intensity. Energetic reset.
+- **Pixurí**: Leaves with natural eucalyptol. Soft. Respiratory support.
+- **Pariká**: Pariká ash + rope tobacco. Pure ceremonial. Kaxinawá tradition.
+- **Cumarú de Cheiro**: Cumarú ash + imburana. Protection. Natural coumarin.
+- **Vena de Pajé**: Three tobaccos + Vena de Pajé vine. Meditation and pineal.
+
+## Artisanal Preparation
+
+Cultivation → fermentation (3-12 months) → tree burning → mortar grinding → sifting. No additives or preservatives.
+
+## Scientific Research
+
+UFAC has maintained a documentation program since 2005 (120+ publications). A 2021 study in Revista Brasileira de Farmacognosia found that 92% of authentic Rapé do Acre had no contaminants.
+
+## Contraindications
+
+Absolute: pregnancy, heart conditions, epilepsy, allergies, under 18. Relative: diabetes, severe anxiety, MAOIs. Precautions: do not mix, do not drive, stay hydrated.
+    `.trim(),
+    pt: `
+O Rapé do Acre é uma medicina ancestral amazônica preparada com folhas de tabaco silvestre (*Nicotiana rustica*) e cinzas de árvores sagradas. Mais de 40 povos indígenas do Acre o utilizam para limpeza energética, clareza mental e conexão espiritual.
+
+## O que torna o Rapé do Acre único?
+
+1. **Nicotiana rustica**: 6-18% de nicotina vs 0.5-3% do tabaco comercial
+2. **Cinzas vegetais**: Tsunú, Pariká, Cumarú agregam propriedades únicas
+3. **Fermentação artesanal**: 3-12 meses de processo
+4. **Diversidade de povos**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Dado**: O Acre produz ~70% do Rapé cerimonial do Brasil, 3-5 toneladas anuais (Fonte: Comissão Estadual de Produtos Florestais Não Madeireiros do Acre, 2022).
+
+## As 5 variedades tradicionais
+
+- **Tsunú**: Cinza da árvore mais forte. Altíssima intensidade. Reset energético.
+- **Pixurí**: Folhas com eucaliptol natural. Suave. Respiratório.
+- **Pariká**: Cinza de Pariká + tabaco de corda. Cerimonial puro. Tradição Kaxinawá.
+- **Cumarú de Cheiro**: Cinza de Cumarú + imburana. Proteção. Cumarina natural.
+- **Vena de Pajé**: Três tabacos + cipó Vena de Pajé. Meditação e pineal.
+
+## Preparação artesanal
+
+Cultivo → fermentação (3-12 meses) → queima de árvores → moagem em pilões → peneiração. Sem aditivos ou conservantes.
+
+## Pesquisa científica
+
+A UFAC mantém um programa de documentação desde 2005 (120+ publicações). Um estudo de 2021 na Revista Brasileira de Farmacognosia constatou que 92% do Rapé do Acre autêntico não continha contaminantes.
+
+## Contraindicações
+
+Absolutas: gravidez, doenças cardíacas, epilepsia, alergia, menores de 18 anos. Relativas: diabetes, ansiedade severa, IMAO. Precauções: não misturar, não dirigir, hidratar-se.
+    `.trim(),
+  },
+};
 
 const posts: Record<string, BlogPost> = {
   'guia-rape-principiantes': {
@@ -59,7 +162,7 @@ El Rapé se aplica típicamente con un **Kuripe**, un tubo ceremonial que permit
 Es fundamental respetar las dosis tradicionales y nunca usar Rapé sin la guía de alguien experimentado. El Rapé es una medicina poderosa que debe tratarse con respeto.
     `.trim(),
     publishedAt: '2026-03-15',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['historia-sananga', 'ceremonia-rape-amazonia'],
@@ -91,7 +194,7 @@ La preparación involucra la extracción del látex de la raíz, mezclado con ag
 Durante las ceremonias, se aplican 2-3 gotas en cada ojo. La experiencia inicial puede ser intensa, con sensación de ardor, pero rápidamente da paso a una claridad visual notable.
     `.trim(),
     publishedAt: '2026-03-10',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'cultura',
     relatedPosts: ['guia-rape-principiantes', 'beneficios-spiritus'],
@@ -127,7 +230,7 @@ Antes de cualquier cosa, establece tu intención. El Rapé amplifica tus intenci
 5. Medita o permanece en silencio
     `.trim(),
     publishedAt: '2026-03-05',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['guia-rape-principiantes', 'beneficios-spiritus'],
@@ -164,7 +267,7 @@ El Rapé puede complementar:
 Cualquier uso del Rapé debe realizarse con respeto y responsabilidad. Esta medicina no es un juguete sino un aliado poderoso que exige respeto.
     `.trim(),
     publishedAt: '2026-02-28',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'salud',
     relatedPosts: ['guia-rape-principiantes', 'ceremonia-rape-amazonia'],
@@ -208,7 +311,7 @@ Una ceremonia grupal dura 1-3 horas. Los efectos inmediatos duran 15-45 minutos.
 No es para ti si buscas experiencia recreativa, tienes problemas respiratorios severos, estás embarazada, o has consumido alcohol en 24 horas previas.
     `.trim(),
     publishedAt: '2026-07-13',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['guia-principiantes', 'beneficios-spiritus'],
@@ -250,49 +353,26 @@ No usar si: embarazo, lactancia, enfermedades cardíacas, epilepsia, alergia a n
 **Compra responsable**: Verifica empaque al vacío, origen comunitario comprobable (Acre, Brasil), ingredientes sin aditivos.
     `.trim(),
     publishedAt: '2026-07-13',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['ceremonia-rape', 'guia-completa-rape'],
   },
   'guia-completa-rape': {
-    title: 'Guía Completa del Rapé do Acre: Origen, Variedades y Uso Ceremonial',
+    title: {
+      es: 'Guía Completa del Rapé do Acre: Origen, Variedades y Uso Ceremonial',
+      en: 'Complete Guide to Rapé do Acre: Origin, Varieties and Ceremonial Use',
+      pt: 'Guia Completa do Rapé do Acre: Origem, Variedades e Uso Cerimonial',
+    },
     slug: 'guia-completa-rape',
-    excerpt: 'La guía más completa sobre Rapé do Acre: las 5 variedades tradicionales, preparación artesanal, propiedades medicinales, protocolos ceremoniales y guía de compra responsable.',
-    content: `
-El Rapé do Acre es una medicina ancestral amazónica preparada con hojas de tabaco silvestre (*Nicotiana rustica*) y cenizas de árboles sagrados. Más de 40 pueblos indígenas del Acre lo utilizan para limpieza energética, claridad mental y conexión espiritual.
-
-## ¿Qué hace único al Rapé do Acre?
-
-1. **Nicotiana rustica**: 6-18% de nicotina vs 0.5-3% del tabaco comercial
-2. **Cenizas vegetales**: Tsunú, Pariká, Cumarú aportan propiedades únicas
-3. **Fermentación artesanal**: 3-12 meses de proceso
-4. **Diversidad de pueblos**: Huni Kui, Yawanawá, Nukini, Katukina
-
-**Dato**: Acre produce ~70% del Rapé ceremonial de Brasil, 3-5 toneladas anuales (Fuente: Comisión Estatal de Productos Forestales 2022).
-
-## Las 5 variedades tradicionales
-
-- **Tsunú**: Ceniza del árbol más fuerte. Muy alta intensidad. Reset energético.
-- **Pixurí**: Hojas con eucaliptol natural. Suave. Respiratorio.
-- **Pariká**: Ceniza de Pariká + tabaco de cuerda. Ceremonial puro. Tradición Kaxinawá.
-- **Cumarú de Cheiro**: Ceniza de Cumarú + imburana. Protección. Cumarina natural.
-- **Vena de Pajé**: Tres tabacos + liana Vena de Pajé. Meditación y pineal.
-
-## Preparación artesanal
-
-Cultivo → fermentación (3-12 meses) → quema de árboles → molienda en morteros → tamizado. Sin aditivos ni conservantes.
-
-## Investigación científica
-
-La UFAC mantiene un programa de documentación desde 2005 (120+ publicaciones). Un estudio de 2021 en Revista Brasileira de Farmacognosia halló que 92% de Rapé do Acre auténtico no tenía contaminantes.
-
-## Contraindicaciones
-
-Absolutas: embarazo, enfermedades cardíacas, epilepsia, alergia, menores 18 años. Relativas: diabetes, ansiedad severa, IMAO. Precauciones: no mezclar, no conducir, hidratarse.
-    `.trim(),
+    excerpt: {
+      es: 'La guía más completa sobre Rapé do Acre: las 5 variedades tradicionales, preparación artesanal, propiedades medicinales, protocolos ceremoniales y guía de compra responsable.',
+      en: 'The most complete guide to Rapé do Acre: 5 traditional varieties, artisanal preparation, medicinal properties, ceremonial protocols, and responsible buying guide.',
+      pt: 'O guia mais completo sobre Rapé do Acre: as 5 variedades tradicionais, preparação artesanal, propriedades medicinais, protocolos cerimoniais e guia de compra responsável.',
+    },
+    content: contentByLocale,
     publishedAt: '2026-07-13',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['guia-principiantes', 'ceremonia-rape', 'beneficios-spiritus'],
@@ -303,6 +383,11 @@ const post = posts[slug || ''];
 
 if (!post) {
   return Astro.redirect('/404');
+}
+
+function getLocaleValue(val: string | Record<Locale, string>): string {
+  if (typeof val === 'string') return val;
+  return val[locale_] || val.es || '';
 }
 
 function formatDate(dateStr: string) {
@@ -333,14 +418,14 @@ function renderMarkdown(content: string): string {
 }
 ---
 
-<Layout title={post.title} description={post.excerpt} locale={locale_}>
+<Layout title={getLocaleValue(post.title)} description={getLocaleValue(post.excerpt)} locale={locale_}>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     '@id': `https://octavofuego.com${Astro.url.pathname}#article`,
     'mainEntityOfPage': `https://octavofuego.com${Astro.url.pathname}`,
-    'headline': post.title,
-    'description': post.excerpt,
+    'headline': getLocaleValue(post.title),
+    'description': getLocaleValue(post.excerpt),
     'image': post.coverImage,
     'datePublished': `${post.publishedAt}T00:00:00-05:00`,
     'dateModified': `${post.publishedAt}T00:00:00-05:00`,
@@ -430,7 +515,7 @@ function renderMarkdown(content: string): string {
       </p>
 
       <!-- Article Content -->
-      <div class="prose max-w-none" set:html={renderMarkdown(post.content)} />
+      <div class="prose max-w-none" set:html={renderMarkdown(getLocaleValue(post.content))} />
 
       <!-- Share / CTA -->
       <div class="mt-12 pt-8 border-t border-gray-200">
