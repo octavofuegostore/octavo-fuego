@@ -1249,3 +1249,12 @@ Pipeline: proposal → spec → design → tasks → apply (4 PRs) → verify �
 - Análisis de 3 documentos SEO guardado en engram (#2549) — BigSchool vs seobuild-onpage
 - 112 URLs en sitemap (antes 103)
 - Build: 0 errores, tests: 76 pasando
+
+### Post-auditoría — Fixes aplicados (Jul 13)
+- E9: Sitemap filter (0 admin URLs), meta desc 120-155 chars, titles EN/PT recortados, llms.txt locales expandidos
+- E3: CSP enforce (Report-Only → enforced)
+- E10: Blog con locale-aware EN/PT, author fix (28 occs)
+- E2: Admin search label, quick-create keyboard, sidebar inert mobile
+- E1: Card radius default, --color-text-secondary alineado a --ceniza
+- E6: text-tabaco → var(--color-action-primary) (95 occs, 32 files), --color-footer-bg removido (footer claro decisión final)
+- Build: 0 errores

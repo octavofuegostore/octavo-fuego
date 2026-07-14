@@ -82,44 +82,58 @@
 
 ---
 
+## ✅ COMPLETADO 13 Julio 2026 (Fixes post-auditorías)
+
+### ✅ SEO Fase A — Foundation (completo)
+- [x] **AI Nugget + Prove-It + Not For You** en 15 PDPs
+- [x] **Fast-scan comparison table** en tienda (HTML 5×7)
+- [x] **FAQPage schema** en home + tienda
+- [x] **Pillar page** 8k+ palabras (guia-completa-rape) con EN/PT locale-aware
+- [x] **Blog drafts** 5 artículos ES + calidad seobuild
+- [x] **llms.txt × 3 locales** expandidos (Products, Docs, Key Facts, Contact)
+- [x] **Middleware logging** para llms.txt
+- [x] **OAI-SearchBot** en robots.txt
+- [x] **Schema Person** (Josué + Edison como coautores)
+- [x] **Meta descriptions** 120-155 chars (tienda: 26→137, EN: 28→144, PT: 27→154)
+
+### ✅ Security & Performance
+- [x] **CSP enforce** (Report-Only → enforced, dedup _headers)
+- [x] **Sitemap filter** (0 admin URLs, 97 públicas)
+- [x] **OAI-SearchBot Disallow** /admin, /checkout, /carrito
+
+### ✅ Admin Accesibilidad (3 fixes)
+- [x] Search label con `<label class="sr-only">`
+- [x] Quick-create dropdown: keyboard Enter/Space/Escape/Arrow
+- [x] Sidebar inert en mobile (< 1024px, cerrada)
+
+### ✅ Token Cleanup (0 cambio visual)
+- [x] **Card.tsx** radius default agregado (rounded-[var(--radius-card)])
+- [x] **--color-text-secondary** alineado a --ceniza (#6B6F73)
+- [x] **text-tabaco** → text-[var(--color-action-primary)] (95 occs, 32 files)
+
 ## 🟡 SEO + Assets — Pendientes
 
-> **Engram**: `seo/bigschool-vs-skill-analysis` (#2549) — Comparativa SEO-BigSchool-AI.md vs seobuild-onpage skill. Recomendación: seobuild como primary methodology, BigSchool como PM layer.
+> **Engram**: `seo/bigschool-vs-skill-analysis` (#2549)
 
-### Fase A — Foundation (este mes) 🔴 Alta prioridad
-- [ ] **GSC setup** — verificar propiedad en search.google.com para los 3 locales
-- [ ] **3 páginas informativas** con estructura seobuild (500-token chunks, AI Nugget, Prove-It, Not For You):
-  - `[locale]/que-es-el-rape` (Article schema listo)
-  - `[locale]/como-usar-el-rape` (HowTo schema listo)
-  - `[locale]/rape-do-acre-origen` (Article schema listo)
-- [ ] **AI Nugget + Prove-It + Not For You** en 15 PDPs existentes
-- [ ] **Fast-scan comparison table** en páginas de categoría/tienda
+### Código (puedo hacer ya)
+- [ ] **5 islands admin** `client:load` → `client:idle` (ToasterClient, NotificationDropdown, 3 tables)
+- [ ] **3 React componentes huérfanos** (CartDrawer.tsx, AddToCartButton.tsx, WhatsAppButton.tsx)
+- [ ] **StatusBadge** raw Tailwind colors → functional tokens
+- [ ] **12 páginas informativas** con ES hardcodeado para todos los locales (privacidad, terminos, nosotros, faq, envios, etc.)
+- [ ] **Route conflicts** root vs `[locale]/` (16 páginas duplicadas)
+- [ ] **`/en/carrito` y `/en/checkout`** dan 404
 
-### Fase B — Content Engine (mes que viene) 🔴 Alta prioridad
-- [ ] **Pillar page** (8k+ palabras, 500-token chunks, Original Research block)
-- [ ] **4 blog posts** con metodología seobuild (quality gates)
-- [ ] **Keyword research CSV** con seasonality (Google Ads — necesita tarjeta)
-- [ ] **Content calendar** con 20% RAG targeting (zero-volume long-tail queries)
-- [ ] **FAQPage schema** en home + tienda
-
-### Fase C — Off-Page & Trust (mes 2-3) 🔴 Alta prioridad
-- [ ] **Tributary Trust Protocol** — 4+ Tier 1 assets (Medium, LinkedIn, Reddit, Google Site)
-- [ ] **GBP + Wikidata** — reclamar perfil + crear entrada Wikidata
-- [ ] **Cloudflare Free delante de Vercel** — monitoreo de bots + Clarity AI Bot Activity ($0/mes)
-- [ ] **Bing Webmaster Tools** — someter sitemap-index.xml para reforzar Copilot
-- [ ] **Rich Results Test** por page type (Product, BlogPosting, BreadcrumbList, Organization, Person)
-
-### Fase D — Expansión (mes 3-4) 🟡 Media prioridad
+### Procesos (requieren acción humana)
+- [ ] **GSC setup** — verificar propiedad en search.google.com
+- [ ] **Imágenes reales de productos** — E5: lo más crítico del sitio hoy
+- [ ] **Google Ads + Keyword Planner** — necesita tarjeta de crédito
+- [ ] **Cloudflare Free delante de Vercel** — monitoreo de bots
+- [ ] **Bing Webmaster Tools** — someter sitemap
+- [ ] **Content roadmap** — 15-20 artículos, ≥5 por locale
+- [ ] **GBP + Wikidata** — reclamar perfil
+- [ ] **Tributary Trust** — 4+ Tier 1 assets (Medium, LinkedIn, Reddit)
 - [ ] **Hub EN** (portal mayorista B2B)
 - [ ] **Hub BR** (contenido portugués)
-- [ ] **Cross-check Google vs LLM** — checklist final
-- [ ] **CrUX field data** — revisar cuando haya tráfico real (~28 días)
-
-### 🟡 Monitoreo continuo
-- [x] **Middleware logging para llms.txt** — ✅ Implementado (llmsLoggerHandler en auth.ts)
-- [x] **OAI-SearchBot** en robots.txt — ✅ Implementado (Allow explícito antes de User-agent: *)
-- [ ] **Prueba manual mensual** en ChatGPT/Perplexity/Claude — preguntar por Octavo Fuego
-- [ ] **Reviews Schema UGC** — conectar a sistema de reseñas real cuando exista
 
 ---
 
