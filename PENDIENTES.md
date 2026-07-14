@@ -84,10 +84,10 @@
 
 ## ✅ COMPLETADO 13 Julio 2026 (Fixes post-auditorías)
 
-### ✅ SEO Fase A — Foundation (completo)
-- [x] **AI Nugget + Prove-It + Not For You** en 15 PDPs
-- [x] **Fast-scan comparison table** en tienda (HTML 5×7)
-- [x] **FAQPage schema** en home + tienda
+### ✅ SEO Fase A — Foundation
+- [x] **AI Nugget + Prove-It + Not For You** → código creado pero **REVERTido** (no gustó visual). Código guardado en SeoContentBlocks.astro para futuro tabs UI
+- [x] **Fast-scan comparison table** → **REVERTIDO** a cards (se prefirió diseño anterior)
+- [x] **FAQPage schema** en home + tienda (invisible, solo schema)
 - [x] **Pillar page** 8k+ palabras (guia-completa-rape) con EN/PT locale-aware
 - [x] **Blog drafts** 5 artículos ES + calidad seobuild
 - [x] **llms.txt × 3 locales** expandidos (Products, Docs, Key Facts, Contact)
@@ -116,6 +116,7 @@
 > **Engram**: `seo/bigschool-vs-skill-analysis` (#2549)
 
 ### Código (puedo hacer ya)
+- [ ] **Not For You en PDP** — pendiente decisión: ¿en tab FAQ o tab Uso? (el AI Nugget ya lo cubre la descripción del producto, Prove-It ya está en badges/texto)
 - [ ] **5 islands admin** `client:load` → `client:idle` (ToasterClient, NotificationDropdown, 3 tables)
 - [ ] **3 React componentes huérfanos** (CartDrawer.tsx, AddToCartButton.tsx, WhatsAppButton.tsx)
 - [ ] **StatusBadge** raw Tailwind colors → functional tokens
