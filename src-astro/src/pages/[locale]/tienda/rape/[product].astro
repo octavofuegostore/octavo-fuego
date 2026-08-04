@@ -50,9 +50,9 @@ const priceAnchor = locale_ === 'es' ? `Desde $${formatCOP(minPrice)} COP`
 const intentLabel = (t.intentions as Record<string, string>)[product.intentMap] ?? product.intentMap;
 
 const shippingText: Record<Locale, string> = {
-  es: 'Ofrecemos envío a todo Colombia. Los pedidos se procesan en 1-2 días hábiles y se entregan en 3-7 días hábiles según la ubicación. Envío gratuito en pedidos superiores a $100.000 COP.',
-  en: 'We ship to all Colombia. Orders are processed within 1-2 business days and delivered within 3-7 business days depending on location. Free shipping on orders over $100,000 COP.',
-  pt: 'Enviamos para toda a Colômbia. Os pedidos são processados em 1-2 dias úteis e entregues em 3-7 dias úteis dependendo da localização. Frete grátis em pedidos acima de $100.000 COP.',
+  es: 'Ofrecemos envíos a Colombia y Brasil. Los pedidos se procesan en 1-2 días hábiles y la entrega toma de 3 a 7 días hábiles según tu ubicación. El costo de envío se coordina por WhatsApp según tu ciudad y el peso del pedido.',
+  en: 'We ship to Colombia and Brazil. Orders are processed within 1-2 business days and delivered within 3-7 business days depending on your location. Shipping costs are arranged via WhatsApp based on your city and the weight of your order.',
+  pt: 'Enviamos para a Colômbia e o Brasil. Os pedidos são processados em 1-2 dias úteis e a entrega leva de 3 a 7 dias úteis dependendo da sua localização. O custo do frete é combinado via WhatsApp conforme sua cidade e o peso do pedido.',
 };
 
 const returnsText: Record<Locale, string> = {
