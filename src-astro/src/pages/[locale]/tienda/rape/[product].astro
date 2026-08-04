@@ -13,7 +13,6 @@ import ReviewModal from '@/components/tienda/ReviewModal.astro';
 import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
-import ReviewJsonLd from '@/components/seo/ReviewJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
 // SeoContentBlocks reserved for future tabs UI (Jul 2026)
 import RelatedProducts from '@/components/product/RelatedProducts.astro';
@@ -109,12 +108,6 @@ const priceText = locale_ === 'en'
       locale={locale_}
       productName={product.nombre[locale_]}
       priceText={priceText}
-    />
-    <ReviewJsonLd
-      locale={locale_}
-      productName={product.nombre[locale_]}
-      productUrl={`https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`}
-      productId={product.slug}
     />
   </Fragment>
   <section class="pt-8 pb-16 md:pb-24 bg-white">
