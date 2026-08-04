@@ -66,7 +66,17 @@ export default defineConfig({
       },
     }),
     sitemap({
-      filter: (page) => !page.includes('/checkout/') && !page.includes('/admin/'),
+      filter: (page) => {
+        const url = new URL(page);
+        const path = url.pathname;
+        // Only list URLs that actually build as static files:
+        // root home, cart, and locale-prefixed pages (/es|en|pt/*).
+        // Root-level duplicates of [locale] pages (e.g. /faq, /tienda) are
+        // SSR-only dead routes and must not be indexed.
+        if (path === '/') return true;
+        if (path === '/carrito' || path === '/carrito/') return true;
+        return /^\/(es|en|pt)\//.test(path);
+      },
       changefreq: 'weekly',
       priority: 0.7,
     })

@@ -1,7 +1,6 @@
 ---
 import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
-import { localeUrl } from '@/i18n/links';
 import { Icon } from 'astro-icon/components';
 import PaymentBanner from '@/components/PaymentBanner.astro';
 
@@ -11,6 +10,11 @@ interface Props {
 
 const { locale = 'es' } = Astro.props;
 const t = useTranslations(locale);
+
+// Internal links always point to the real built [locale] pages.
+// localeUrl() strips the prefix for ES, which would hit dead root SSR
+// duplicates (e.g. /faq) instead of the canonical built /es/faq page.
+const href = (path: string) => `/${locale}${path}`;
 ---
 
 <footer class="bg-[var(--color-surface-warm)]">
@@ -18,7 +22,7 @@ const t = useTranslations(locale);
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12">
       <!-- Col 1: Identidad + Métodos de pago -->
       <div>
-        <a href={localeUrl('/', locale)} class="font-display text-2xl font-bold mb-4 block text-[var(--color-action-primary)]">
+        <a href={href('/')} class="font-display text-2xl font-bold mb-4 block text-[var(--color-action-primary)]">
           {t.common.brand}
         </a>
         <p class="text-[var(--near-black)] text-sm mb-6 opacity-80">
@@ -39,12 +43,12 @@ const t = useTranslations(locale);
         </h2>
         <ul class="space-y-3">
           <li>
-            <a href={localeUrl('/tienda', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/tienda')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.tienda}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/profecia', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/profecia')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.profecia}
             </a>
           </li>
@@ -58,27 +62,27 @@ const t = useTranslations(locale);
         </h2>
         <ul class="space-y-3">
           <li>
-            <a href={localeUrl('/nosotros', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/nosotros')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.nosotros}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/blog', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/blog')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.blog}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/contacto', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/contacto')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.nav.contacto}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/faq', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/faq')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.footer.faq}
             </a>
           </li>
           <li>
-            <a href={localeUrl('/envios', locale)} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
+            <a href={href('/envios')} class="text-[var(--near-black)] text-sm hover:text-[var(--color-action-primary)] transition-colors">
               {t.footer.envios}
             </a>
           </li>
@@ -154,10 +158,10 @@ const t = useTranslations(locale);
           {t.footer.copyright}
         </p>
         <div class="flex gap-6">
-          <a href={localeUrl('/terminos', locale)} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
+          <a href={href('/terminos')} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
             {t.footer.terminos}
           </a>
-          <a href={localeUrl('/privacidad', locale)} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
+          <a href={href('/privacidad')} class="text-[#5C6063] text-xs hover:text-[var(--color-action-primary)] transition-colors">
             {t.footer.privacidad}
           </a>
         </div>
