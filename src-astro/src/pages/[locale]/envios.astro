@@ -2,19 +2,165 @@
 /**
  * Shipping policy page — renders at /envios, /en/envios, /pt/envios
  * Trust Foundation SEO page with WebPage schema.
+ * Honest copy (no placeholders): coverage (Colombia + Brasil, aligned with
+ * FAQ/footer), processing 1-2 days + delivery 3-7 business days (same range
+ * used on the PDP), costs coordinated via WhatsApp, vacuum-sealed packaging.
  */
 import Layout from '@/layouts/Layout.astro';
 import { type Locale } from '@/i18n';
-
-
-import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+import { getLocaleStaticPaths } from '@/i18n/staticPaths';
 
 export async function getStaticPaths() { return getLocaleStaticPaths(); }
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 
-const title = 'Política de Envíos — Octavo Fuego';
-const description = 'Conoce las zonas de cobertura, tiempos de entrega, costos y empaque de Octavo Fuego. Enviamos rapé do Acre a todo Colombia.';
+type LegalItem = { title?: string; text: string };
+type LegalSection = { id: string; label: string; items: LegalItem[] };
+
+interface PageContent {
+  title: string;
+  description: string;
+  updated: string;
+  intro: string;
+  sections: LegalSection[];
+}
+
+const content: Record<Locale, PageContent> = {
+  es: {
+    title: 'Política de Envíos — Octavo Fuego',
+    description: 'Cobertura, tiempos y costos de envío de Octavo Fuego. Enviamos rapé do Acre a Colombia y Brasil, con empaque al vacío y coordinación por WhatsApp.',
+    updated: 'Última actualización: agosto 2026',
+    intro: 'Empacamos cada pedido con cuidado y lo enviamos de manera segura para que la medicina llegue en perfectas condiciones. Todos los envíos se coordinan por WhatsApp.',
+    sections: [
+      {
+        id: 'cobertura',
+        label: 'Cobertura',
+        items: [
+          {
+            text: 'Realizamos envíos a Colombia (cobertura nacional) y Brasil. Para otros países, escríbenos por WhatsApp y evaluamos cada caso.',
+          },
+        ],
+      },
+      {
+        id: 'tiempos',
+        label: 'Procesamiento y tiempos de entrega',
+        items: [
+          {
+            text: 'Los pedidos se procesan en 1-2 días hábiles y la entrega toma de 3 a 7 días hábiles según tu ubicación. Los tiempos pueden variar en zonas remotas; siempre te informamos el tiempo estimado al confirmar tu pedido.',
+          },
+        ],
+      },
+      {
+        id: 'costos',
+        label: 'Costos de envío',
+        items: [
+          {
+            text: 'El costo de envío se coordina por WhatsApp según tu ciudad y el peso del pedido. Confirmamos el costo total antes de enviar, sin cargos ocultos.',
+          },
+        ],
+      },
+      {
+        id: 'empaque',
+        label: 'Empaque',
+        items: [
+          {
+            text: 'Todos los rapés se empacan al vacío para preservar aroma y frescura durante el transporte. El empaque es discreto, resistente y pensado para proteger la medicina.',
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    title: 'Shipping Policy — Octavo Fuego',
+    description: 'Octavo Fuego shipping coverage, times and costs. We ship rapé do Acre to Colombia and Brazil, vacuum-sealed and coordinated via WhatsApp.',
+    updated: 'Last updated: August 2026',
+    intro: 'We pack every order with care and ship it safely so the medicine arrives in perfect condition. All shipments are coordinated via WhatsApp.',
+    sections: [
+      {
+        id: 'cobertura',
+        label: 'Coverage',
+        items: [
+          {
+            text: 'We ship to Colombia (nationwide coverage) and Brazil. For other countries, write to us on WhatsApp and we will evaluate each case.',
+          },
+        ],
+      },
+      {
+        id: 'tiempos',
+        label: 'Processing and delivery times',
+        items: [
+          {
+            text: 'Orders are processed within 1-2 business days and delivery takes 3 to 7 business days depending on your location. Times may vary in remote areas; we always inform you of the estimated time when confirming your order.',
+          },
+        ],
+      },
+      {
+        id: 'costos',
+        label: 'Shipping costs',
+        items: [
+          {
+            text: 'Shipping costs are coordinated via WhatsApp based on your city and the weight of the order. We confirm the total cost before shipping, with no hidden charges.',
+          },
+        ],
+      },
+      {
+        id: 'empaque',
+        label: 'Packaging',
+        items: [
+          {
+            text: 'All rapés are vacuum-sealed to preserve aroma and freshness during transport. The packaging is discreet, sturdy and designed to protect the medicine.',
+          },
+        ],
+      },
+    ],
+  },
+  pt: {
+    title: 'Política de Envio — Octavo Fuego',
+    description: 'Cobertura, prazos e custos de envio da Octavo Fuego. Enviamos rapé do Acre para a Colômbia e o Brasil, com embalagem a vácuo e coordenação via WhatsApp.',
+    updated: 'Última atualização: agosto de 2026',
+    intro: 'Empacotamos cada pedido com cuidado e o enviamos com segurança para que a medicina chegue em perfeitas condições. Todos os envios são combinados via WhatsApp.',
+    sections: [
+      {
+        id: 'cobertura',
+        label: 'Cobertura',
+        items: [
+          {
+            text: 'Enviamos para a Colômbia (cobertura nacional) e o Brasil. Para outros países, escreva para nós no WhatsApp e avaliaremos cada caso.',
+          },
+        ],
+      },
+      {
+        id: 'tiempos',
+        label: 'Processamento e prazos de entrega',
+        items: [
+          {
+            text: 'Os pedidos são processados em 1-2 dias úteis e a entrega leva de 3 a 7 dias úteis dependendo da sua localização. Os prazos podem variar em áreas remotas; sempre informamos o prazo estimado ao confirmar seu pedido.',
+          },
+        ],
+      },
+      {
+        id: 'costos',
+        label: 'Custos de envio',
+        items: [
+          {
+            text: 'O custo do frete é combinado via WhatsApp conforme sua cidade e o peso do pedido. Confirmamos o custo total antes de enviar, sem cobranças ocultas.',
+          },
+        ],
+      },
+      {
+        id: 'empaque',
+        label: 'Embalagem',
+        items: [
+          {
+            text: 'Todos os rapés são embalados a vácuo para preservar aroma e frescor durante o transporte. A embalagem é discreta, resistente e pensada para proteger a medicina.',
+          },
+        ],
+      },
+    ],
+  },
+};
+
+const page = content[locale_] ?? content.es;
 const canonicalUrl = `https://octavofuego.com${Astro.url.pathname}`;
 
 const webpageSchema = {
@@ -22,8 +168,9 @@ const webpageSchema = {
   '@type': 'WebPage',
   '@id': `${canonicalUrl}#webpage`,
   url: canonicalUrl,
-  name: title,
-  description,
+  name: page.title,
+  description: page.description,
+  dateModified: '2026-08-04',
   isPartOf: {
     '@id': 'https://octavofuego.com/#website',
   },
@@ -33,67 +180,28 @@ const webpageSchema = {
 };
 ---
 
-<Layout title={title} description={description} locale={locale_} ogImage="/images/og-default.svg">
+<Layout title={page.title} description={page.description} locale={locale_} ogImage="/images/og-default.svg">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
 
   <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
     <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-6">
-      Política de Envíos — Octavo Fuego
+      {page.title}
     </h1>
+    <p class="text-sm text-[var(--ceniza)] mb-12">{page.updated}</p>
 
     <section class="mb-12">
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
       <p class="text-lg text-[var(--ceniza)] leading-relaxed">
-        Empacamos cada pedido con cuidado ceremonial y lo enviamos de manera segura para que la medicina llegue en perfectas condiciones. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        {page.intro}
       </p>
     </section>
 
-    <!-- Zonas de Cobertura -->
-    <section class="mb-16" id="cobertura">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Zonas de Cobertura</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Realizamos envíos a todo Colombia: Bogotá, Medellín, Cali, Barranquilla, Cartagena, Bucaramanga y demás ciudades principales. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </section>
-
-    <!-- Tiempos de Entrega -->
-    <section class="mb-16" id="tiempos">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Tiempos de Entrega</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los tiempos de entrega estándar son de 2 a 5 días hábiles para ciudades principales. Zonas remotas pueden requerir hasta 8 días hábiles. Lorem ipsum dolor sit amet.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-      </p>
-    </section>
-
-    <!-- Costos de Envío -->
-    <section class="mb-16" id="costos">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Costos de Envío</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        El costo de envío se calcula en el checkout según la ciudad de destino y el peso del paquete. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </section>
-
-    <!-- Empaque -->
-    <section class="mb-16" id="empaque">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">Empaque</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Todos nuestros rapés se empacan al vacío para preservar aroma, frescura y propiedades durante el transporte. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. El empaque es discreto, resistente y pensado para proteger la medicina.
-      </p>
-    </section>
+    {page.sections.map((section) => (
+      <section class="mb-16" id={section.id}>
+        <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{section.label}</h2>
+        {section.items.map((item) => (
+          <p class="text-[var(--ceniza)] leading-relaxed mb-4">{item.text}</p>
+        ))}
+      </section>
+    ))}
   </div>
 </Layout>

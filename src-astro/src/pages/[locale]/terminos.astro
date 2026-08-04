@@ -2,40 +2,328 @@
 /**
  * Terms and conditions page — /terminos, /en/terminos, /pt/terminos
  * Trust Foundation SEO page with WebPage schema.
- * Adapted legal structure for Octavo Fuego (plant medicine ecommerce).
- * Schema stays ES-only (Colombian law — Ley 1480 de 2011, Ley 1581 de 2012).
+ * Honest legal copy (no placeholders) adapted to Octavo Fuego's
+ * WhatsApp-first sales model. Colombian law: Ley 1480 de 2011 (retracto),
+ * Ley 1581 de 2012 (datos personales).
  */
 import Layout from '@/layouts/Layout.astro';
 import { type Locale } from '@/i18n';
-import { localeUrl } from '@/i18n/links';
-
-
-import { getLocaleStaticPaths } from "@/i18n/staticPaths";
+import { getLocaleStaticPaths } from '@/i18n/staticPaths';
 
 export async function getStaticPaths() { return getLocaleStaticPaths(); }
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
 
-const title = 'Términos y Condiciones — Octavo Fuego';
-const description = 'Términos y condiciones de uso, compra y privacidad de Octavo Fuego. Regulado bajo la Ley 1480 de 2011 y la Ley 1581 de 2012 de Colombia.';
-const canonicalUrl = `https://octavofuego.com${Astro.url.pathname}`;
+// Internal links always point to the real built [locale] pages.
+const href = (path: string) => `/${locale_}${path}`;
 
-const sections = [
-  { id: 'disposiciones-generales', label: '1. Disposiciones Generales' },
-  { id: 'privacidad', label: '2. Privacidad y Tratamiento de Datos' },
-  { id: 'condiciones-compra', label: '3. Condiciones de Compra' },
-  { id: 'politica-envios', label: '4. Política de Envíos' },
-  { id: 'retracto', label: '5. Derecho de Retracto' },
-  { id: 'limitacion', label: '6. Limitación de Responsabilidad' },
-];
+type LegalItem = { title?: string; text: string; link?: { href: string; label: string } };
+type LegalSection = { id: string; label: string; items: LegalItem[] };
+
+interface PageContent {
+  title: string;
+  description: string;
+  updated: string;
+  toc: string;
+  sections: LegalSection[];
+}
+
+const content: Record<Locale, PageContent> = {
+  es: {
+    title: 'Términos y Condiciones — Octavo Fuego',
+    description: 'Términos y condiciones de uso y compra de Octavo Fuego. Venta de rapé como incienso ceremonial, derecho de retracto (Ley 1480 de 2011) y pagos coordinados por WhatsApp.',
+    updated: 'Última actualización: agosto 2026',
+    toc: 'Contenido',
+    sections: [
+      {
+        id: 'disposiciones-generales',
+        label: '1. Disposiciones Generales',
+        items: [
+          {
+            text: 'Los presentes Términos y Condiciones regulan el acceso y uso del sitio web octavofuego.com y la compra de productos a través del mismo. Al navegar el sitio o realizar un pedido, aceptas estos términos.',
+          },
+          {
+            title: '1.1 Aceptación de los términos',
+            text: 'Al realizar un pedido confirmas que eres mayor de edad y que aceptas estos Términos y Condiciones, así como nuestra',
+            link: { href: href('/privacidad'), label: 'Política de Privacidad.' },
+          },
+          {
+            title: '1.2 Uso permitido del sitio',
+            text: 'El sitio tiene fines informativos y de venta de rapé do Acre como incienso ceremonial. No debe usarse para fines ilegales o que pongan en riesgo a terceros.',
+          },
+        ],
+      },
+      {
+        id: 'privacidad',
+        label: '2. Privacidad y Tratamiento de Datos',
+        items: [
+          {
+            text: 'Tratamos tus datos personales conforme a la Ley 1581 de 2012 de Colombia. Para conocer qué datos recolectamos y cómo los usamos, consulta nuestra',
+            link: { href: href('/privacidad'), label: 'Política de Privacidad.' },
+          },
+        ],
+      },
+      {
+        id: 'condiciones-compra',
+        label: '3. Condiciones de Compra',
+        items: [
+          {
+            text: 'Los productos se venden como inciensos ceremoniales de uso tradicional. No son medicamentos y no sustituyen la atención médica profesional.',
+          },
+          {
+            title: '3.1 Precios y pagos',
+            text: 'Los precios están publicados en pesos colombianos (COP). Los pagos se coordinan directamente por WhatsApp mediante transferencia, PSE o tarjeta, mientras habilitamos una pasarela de pagos en línea.',
+          },
+          {
+            title: '3.2 Confirmación del pedido',
+            text: 'Una vez coordinado el pago por WhatsApp, confirmamos tu pedido por el mismo medio. Te informamos los datos de envío y el tiempo estimado de entrega.',
+          },
+        ],
+      },
+      {
+        id: 'politica-envios',
+        label: '4. Política de Envíos',
+        items: [
+          {
+            text: 'Realizamos envíos a Colombia y Brasil. Los costos y tiempos se coordinan por WhatsApp según tu ciudad y el peso del pedido. Conoce los detalles en nuestra',
+            link: { href: href('/envios'), label: 'Política de Envíos.' },
+          },
+        ],
+      },
+      {
+        id: 'retracto',
+        label: '5. Derecho de Retracto',
+        items: [
+          {
+            text: 'De acuerdo con el artículo 47 de la Ley 1480 de 2011, puedes retractarte de tu compra dentro de los cinco (5) días hábiles siguientes a la recepción del producto. Para ejercer este derecho, escríbenos por WhatsApp indicando tu intención de retracto.',
+          },
+          {
+            title: '5.1 Excepciones',
+            text: 'El derecho de retracto no aplica cuando el producto ha sido abierto o alterado, por tratarse de un artículo de higiene personal.',
+          },
+        ],
+      },
+      {
+        id: 'responsabilidad-uso',
+        label: '6. Responsabilidad de Uso',
+        items: [
+          {
+            text: 'El rapé se ofrece como incienso ceremonial y herramienta de uso tradicional. No es un medicamento: no diagnostica, trata ni cura enfermedades. El uso responsable de la medicina es decisión de quien la adquiere, quien debe informarse y consultar a un profesional de la salud cuando lo considere necesario.',
+          },
+        ],
+      },
+      {
+        id: 'propiedad-intelectual',
+        label: '7. Propiedad Intelectual',
+        items: [
+          {
+            text: 'Los contenidos del sitio —textos, imágenes, gráficas y la marca Octavo Fuego— son propiedad de Octavo Fuego y no pueden reproducirse, distribuirse ni usarse comercialmente sin autorización previa por escrito.',
+          },
+        ],
+      },
+    ],
+  },
+  en: {
+    title: 'Terms and Conditions — Octavo Fuego',
+    description: 'Terms and conditions of use and purchase for Octavo Fuego. Rapé sold as ceremonial incense, withdrawal rights (Ley 1480 of 2011) and payments coordinated via WhatsApp.',
+    updated: 'Last updated: August 2026',
+    toc: 'Contents',
+    sections: [
+      {
+        id: 'disposiciones-generales',
+        label: '1. General Provisions',
+        items: [
+          {
+            text: 'These Terms and Conditions govern access to and use of the octavofuego.com website and the purchase of products through it. By browsing the site or placing an order, you accept these terms.',
+          },
+          {
+            title: '1.1 Acceptance of terms',
+            text: 'By placing an order you confirm that you are of legal age and that you accept these Terms and Conditions, as well as our',
+            link: { href: href('/privacidad'), label: 'Privacy Policy.' },
+          },
+          {
+            title: '1.2 Permitted use of the site',
+            text: 'The site is for informational purposes and for selling rapé do Acre as ceremonial incense. It must not be used for illegal purposes or in ways that put third parties at risk.',
+          },
+        ],
+      },
+      {
+        id: 'privacidad',
+        label: '2. Privacy and Data Processing',
+        items: [
+          {
+            text: 'We process your personal data in accordance with Ley 1581 of 2012 of Colombia. To learn what data we collect and how we use it, please read our',
+            link: { href: href('/privacidad'), label: 'Privacy Policy.' },
+          },
+        ],
+      },
+      {
+        id: 'condiciones-compra',
+        label: '3. Purchase Conditions',
+        items: [
+          {
+            text: 'Our products are sold as ceremonial incense for traditional use. They are not medicines and do not replace professional medical care.',
+          },
+          {
+            title: '3.1 Prices and payments',
+            text: 'Prices are published in Colombian pesos (COP). Payments are coordinated directly via WhatsApp by bank transfer, PSE or card, while we enable an online payment gateway.',
+          },
+          {
+            title: '3.2 Order confirmation',
+            text: 'Once payment is coordinated via WhatsApp, we confirm your order through the same channel. We provide shipping details and the estimated delivery time.',
+          },
+        ],
+      },
+      {
+        id: 'politica-envios',
+        label: '4. Shipping Policy',
+        items: [
+          {
+            text: 'We ship to Colombia and Brazil. Costs and times are coordinated via WhatsApp based on your city and the weight of the order. See details in our',
+            link: { href: href('/envios'), label: 'Shipping Policy.' },
+          },
+        ],
+      },
+      {
+        id: 'retracto',
+        label: '5. Withdrawal Right',
+        items: [
+          {
+            text: 'Under Article 47 of Ley 1480 of 2011, you may withdraw from your purchase within five (5) business days following receipt of the product. To exercise this right, write to us on WhatsApp stating your intention to withdraw.',
+          },
+          {
+            title: '5.1 Exceptions',
+            text: 'The withdrawal right does not apply when the product has been opened or altered, as it is a personal hygiene item.',
+          },
+        ],
+      },
+      {
+        id: 'responsabilidad-uso',
+        label: '6. Responsibility of Use',
+        items: [
+          {
+            text: 'Rapé is offered as ceremonial incense and a tool of traditional use. It is not a medicine: it does not diagnose, treat or cure diseases. Responsible use of the medicine is the decision of the person who acquires it, who should stay informed and consult a health professional when they consider it necessary.',
+          },
+        ],
+      },
+      {
+        id: 'propiedad-intelectual',
+        label: '7. Intellectual Property',
+        items: [
+          {
+            text: 'The contents of the site —texts, images, graphics and the Octavo Fuego brand— are the property of Octavo Fuego and may not be reproduced, distributed or used commercially without prior written authorization.',
+          },
+        ],
+      },
+    ],
+  },
+  pt: {
+    title: 'Termos e Condições — Octavo Fuego',
+    description: 'Termos e condições de uso e compra da Octavo Fuego. Rapé vendido como incenso cerimonial, direito de arrependimento (Lei 1480 de 2011) e pagamentos combinados via WhatsApp.',
+    updated: 'Última atualização: agosto de 2026',
+    toc: 'Conteúdo',
+    sections: [
+      {
+        id: 'disposiciones-generales',
+        label: '1. Disposições Gerais',
+        items: [
+          {
+            text: 'Estes Termos e Condições regulam o acesso e o uso do site octavofuego.com e a compra de produtos por meio dele. Ao navegar no site ou fazer um pedido, você aceita estes termos.',
+          },
+          {
+            title: '1.1 Aceitação dos termos',
+            text: 'Ao fazer um pedido, você confirma que é maior de idade e que aceita estes Termos e Condições, bem como a nossa',
+            link: { href: href('/privacidad'), label: 'Política de Privacidade.' },
+          },
+          {
+            title: '1.2 Uso permitido do site',
+            text: 'O site tem fins informativos e de venda de rapé do Acre como incenso cerimonial. Não deve ser usado para fins ilegais ou que coloquem terceiros em risco.',
+          },
+        ],
+      },
+      {
+        id: 'privacidad',
+        label: '2. Privacidade e Tratamento de Dados',
+        items: [
+          {
+            text: 'Tratamos seus dados pessoais de acordo com a Lei 1581 de 2012 da Colômbia. Para saber quais dados coletamos e como os usamos, consulte a nossa',
+            link: { href: href('/privacidad'), label: 'Política de Privacidade.' },
+          },
+        ],
+      },
+      {
+        id: 'condiciones-compra',
+        label: '3. Condições de Compra',
+        items: [
+          {
+            text: 'Os produtos são vendidos como incenso cerimonial de uso tradicional. Não são medicamentos e não substituem o atendimento médico profissional.',
+          },
+          {
+            title: '3.1 Preços e pagamentos',
+            text: 'Os preços são publicados em pesos colombianos (COP). Os pagamentos são combinados diretamente via WhatsApp por transferência, PSE ou cartão, enquanto habilitamos um gateway de pagamento online.',
+          },
+          {
+            title: '3.2 Confirmação do pedido',
+            text: 'Depois de combinar o pagamento via WhatsApp, confirmamos seu pedido pelo mesmo canal. Informamos os dados de envio e o prazo estimado de entrega.',
+          },
+        ],
+      },
+      {
+        id: 'politica-envios',
+        label: '4. Política de Envio',
+        items: [
+          {
+            text: 'Enviamos para a Colômbia e o Brasil. Custos e prazos são combinados via WhatsApp conforme sua cidade e o peso do pedido. Veja os detalhes na nossa',
+            link: { href: href('/envios'), label: 'Política de Envio.' },
+          },
+        ],
+      },
+      {
+        id: 'retracto',
+        label: '5. Direito de Arrependimento',
+        items: [
+          {
+            text: 'De acordo com o artigo 47 da Lei 1480 de 2011, você pode se arrepender da compra em até cinco (5) dias úteis após o recebimento do produto. Para exercer esse direito, escreva para nós no WhatsApp informando sua intenção de desistir.',
+          },
+          {
+            title: '5.1 Exceções',
+            text: 'O direito de arrependimento não se aplica quando o produto foi aberto ou alterado, por se tratar de um artigo de higiene pessoal.',
+          },
+        ],
+      },
+      {
+        id: 'responsabilidad-uso',
+        label: '6. Responsabilidade de Uso',
+        items: [
+          {
+            text: 'O rapé é oferecido como incenso cerimonial e ferramenta de uso tradicional. Não é um medicamento: não diagnostica, trata nem cura doenças. O uso responsável da medicina é decisão de quem a adquire, que deve se informar e consultar um profissional de saúde quando considerar necessário.',
+          },
+        ],
+      },
+      {
+        id: 'propiedad-intelectual',
+        label: '7. Propriedade Intelectual',
+        items: [
+          {
+            text: 'Os conteúdos do site —textos, imagens, gráficos e a marca Octavo Fuego— são de propriedade da Octavo Fuego e não podem ser reproduzidos, distribuídos ou usados comercialmente sem autorização prévia por escrito.',
+          },
+        ],
+      },
+    ],
+  },
+};
+
+const page = content[locale_] ?? content.es;
+const canonicalUrl = `https://octavofuego.com${Astro.url.pathname}`;
 
 const webpageSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
   '@id': `${canonicalUrl}#webpage`,
   url: canonicalUrl,
-  name: title,
-  description,
+  name: page.title,
+  description: page.description,
+  dateModified: '2026-08-04',
   isPartOf: {
     '@id': 'https://octavofuego.com/#website',
   },
@@ -45,20 +333,20 @@ const webpageSchema = {
 };
 ---
 
-<Layout title={title} description={description} locale={locale_} ogImage="/images/og-default.svg">
+<Layout title={page.title} description={page.description} locale={locale_} ogImage="/images/og-default.svg">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(webpageSchema)} />
 
   <div class="max-w-4xl mx-auto px-6 py-16 md:py-24">
     <h1 class="font-display heading-xl font-bold text-[var(--near-black)] mb-4">
-      Términos y Condiciones — Octavo Fuego
+      {page.title}
     </h1>
-    <p class="text-sm text-[var(--ceniza)] mb-12">Última actualización: julio 2026</p>
+    <p class="text-sm text-[var(--ceniza)] mb-12">{page.updated}</p>
 
     <!-- Table of Contents -->
     <nav aria-labelledby="toc-heading" class="mb-16 p-6 bg-[var(--color-surface-warm)] rounded-[var(--radius-card)]">
-      <h2 id="toc-heading" class="font-display heading-md font-bold text-[var(--near-black)] mb-4">Contenido</h2>
+      <h2 id="toc-heading" class="font-display heading-md font-bold text-[var(--near-black)] mb-4">{page.toc}</h2>
       <ol class="space-y-2">
-        {sections.map((section) => (
+        {page.sections.map((section) => (
           <li>
             <a href={`#${section.id}`} class="text-[var(--color-action-primary)] hover:underline">
               {section.label}
@@ -68,92 +356,25 @@ const webpageSchema = {
       </ol>
     </nav>
 
-    <!-- 1. Disposiciones Generales -->
-    <section class="mb-16" id="disposiciones-generales">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">1. Disposiciones Generales</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los presentes Términos y Condiciones regulan el acceso y uso del sitio web octavofuego.com y las compras realizadas a través del mismo. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">1.1 Aceptación de los términos</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Al navegar o realizar una compra en Octavo Fuego, declaras conocer y aceptar estos términos. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">1.2 Uso permitido del sitio</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        El sitio está destinado a personas mayores de edad que buscan información y productos de medicina ancestral. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.
-      </p>
-    </section>
-
-    <!-- 2. Privacidad y Tratamiento de Datos -->
-    <section class="mb-16" id="privacidad">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">2. Privacidad y Tratamiento de Datos</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Octavo Fuego cumple con la Ley 1581 de 2012 y el Decreto 1377 de 2013 de Colombia para el tratamiento responsable de datos personales. Lorem ipsum dolor sit amet.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">2.1 Datos recolectados</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Recolectamos únicamente los datos necesarios para procesar tu pedido: nombre, dirección, teléfono y correo electrónico. Duis aute irure dolor in reprehenderit.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">2.2 Finalidad del tratamiento</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Los datos se utilizan para gestionar compras, envíos, comunicaciones sobre pedidos y, de forma opcional, envío de novedades si autorizas el newsletter. Excepteur sint occaecat cupidatat non proident.
-      </p>
-    </section>
-
-    <!-- 3. Condiciones de Compra -->
-    <section class="mb-16" id="condiciones-compra">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">3. Condiciones de Compra</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los productos ofrecidos en Octavo Fuego son medicinas ancestrales destinadas a uso ceremonial. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">3.1 Precios y pagos</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los precios están publicados en pesos colombianos (COP) e incluyen impuestos cuando aplique. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">3.2 Confirmación de pedido</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Una vez confirmado el pago, enviaremos la confirmación del pedido al correo registrado. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
-      </p>
-    </section>
-
-    <!-- 4. Política de Envíos -->
-    <section class="mb-16" id="politica-envios">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">4. Política de Envíos</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Los envíos se gestionan a través de transportadoras confiables. Para conocer cobertura, tiempos y costos, consulta nuestra <a href={localeUrl('/envios', locale_)} class="text-[var(--color-action-primary)] hover:underline">Política de Envíos</a>.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-      </p>
-    </section>
-
-    <!-- 5. Derecho de Retracto -->
-    <section class="mb-16" id="retracto">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">5. Derecho de Retracto</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        De acuerdo con la Ley 1480 de 2011, los consumidores tienen derecho a retractarse de su compra dentro de los cinco (5) días hábiles siguientes a la recepción del producto. Lorem ipsum dolor sit amet.
-      </p>
-      <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">5.1 Excepciones</h3>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        No aplican retracto en productos perecederos o de higiene personal que hayan sido abiertos. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </p>
-    </section>
-
-    <!-- 6. Limitación de Responsabilidad -->
-    <section class="mb-16" id="limitacion">
-      <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">6. Limitación de Responsabilidad</h2>
-      <!-- 🖊️ USUARIO: reemplazar este texto -->
-      <p class="text-[var(--ceniza)] leading-relaxed mb-4">
-        Octavo Fuego vende sus productos como inciensos ceremoniales. El uso responsable de la medicina es decisión de quien la adquiere. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-      </p>
-      <p class="text-[var(--ceniza)] leading-relaxed">
-        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </section>
+    {page.sections.map((section) => (
+      <section class="mb-16" id={section.id}>
+        <h2 class="font-display heading-lg font-bold text-[var(--near-black)] mb-4">{section.label}</h2>
+        {section.items.map((item) => (
+          <div class="mb-4">
+            {item.title && (
+              <h3 class="font-display heading-md font-bold text-[var(--near-black)] mb-2 mt-6">{item.title}</h3>
+            )}
+            <p class="text-[var(--ceniza)] leading-relaxed">
+              {item.text}
+              {item.link && (
+                <a href={item.link.href} class="text-[var(--color-action-primary)] hover:underline">
+                  {' '}{item.link.label}
+                </a>
+              )}
+            </p>
+          </div>
+        ))}
+      </section>
+    ))}
   </div>
 </Layout>
