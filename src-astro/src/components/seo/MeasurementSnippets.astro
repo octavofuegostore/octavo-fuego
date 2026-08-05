@@ -1,0 +1,74 @@
+---
+// Env-gated measurement snippets (publish-superpowers, design D5).
+//
+// - `variant="head"`  → Google Search Console verification meta tag.
+// - `variant="body"`  → Microsoft Clarity + Meta Pixel snippets, deferred via
+//   requestIdleCallback (window.onload fallback, Pipod lesson #2361) so
+//   third-party scripts never block rendering (protects Lighthouse 100/100).
+//
+// Zero bytes are shipped for any snippet whose PUBLIC_* env var is unset.
+// Script strings are built in frontmatter (official snippet structures,
+// IDs JSON-encoded) and injected with set:html + is:inline so Astro leaves
+// them verbatim where placed.
+import { resolveMeasurementConfig } from './measurement-config';
+
+interface Props {
+  /** Which document section this instance renders into. */
+  variant: 'head' | 'body';
+}
+
+const { variant } = Astro.props;
+
+const config = resolveMeasurementConfig({
+  PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
+  PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
+  PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
+});
+
+const { gscVerification, clarityId, metaPixelId } = config;
+
+// Runs `fn` after the browser is idle, falling back to window.onload.
+const DEFER_HELPER = `function __ofDefer(fn){if('requestIdleCallback' in window){window.requestIdleCallback(fn,{timeout:3000});}else if(document.readyState==='complete'){fn();}else{window.addEventListener('load',fn,{once:true});}}`;
+
+// Official Microsoft Clarity snippet (https://learn.microsoft.com/clarity/setup-and-installation/install-the-script)
+const clarityScript = clarityId
+  ? `(function(){${DEFER_HELPER}__ofDefer(function(){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",${JSON.stringify(clarityId)});});})();`
+  : null;
+
+// Official Meta Pixel base code (https://developers.facebook.com/docs/meta-pixel/get-started)
+const metaPixelScript = metaPixelId
+  ? `(function(){${DEFER_HELPER}__ofDefer(function(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(metaPixelId)});fbq('track','PageView');});})();`
+  : null;
+---
+
+{
+  variant === 'head' && gscVerification && (
+    <meta name="google-site-verification" content={gscVerification} />
+  )
+}
+
+{
+  variant === 'body' && clarityScript && (
+    <script is:inline set:html={clarityScript} />
+  )
+}
+
+{
+  variant === 'body' && metaPixelScript && (
+    <script is:inline set:html={metaPixelScript} />
+  )
+}
+
+{
+  variant === 'body' && metaPixelId && (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        alt=""
+        src={`https://www.facebook.com/tr?id=${encodeURIComponent(metaPixelId)}&ev=PageView&noscript=1`}
+      />
+    </noscript>
+  )
+}

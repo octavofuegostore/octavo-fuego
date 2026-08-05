@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import OrganizationJsonLd from '@/components/seo/OrganizationJsonLd.astro';
+import MeasurementSnippets from '@/components/seo/MeasurementSnippets.astro';
 import { useTranslations } from '@/i18n';
 
 interface Props {
@@ -88,6 +89,9 @@ const hreflangLocales = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
     
+    <!-- Measurement: GSC verification (env-gated, zero bytes when unset) -->
+    <MeasurementSnippets variant="head" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -124,5 +128,8 @@ const hreflangLocales = [
     </main>
     <Footer locale={locale} />
     <FloatingWhatsApp locale={locale} />
+
+    <!-- Measurement: Clarity + Meta Pixel (env-gated, deferred, zero bytes when unset) -->
+    <MeasurementSnippets variant="body" />
   </body>
 </html>
