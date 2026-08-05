@@ -77,6 +77,15 @@ const priceText = locale_ === 'en'
 
 // GA4 view_item — script renders ONLY when PUBLIC_GTM_ID is set at build time
 // (zero bytes otherwise; the dataLayer string never reaches the HTML).
+// Guarded with __ofViewItemWired: this is an is:inline script, which re-executes
+// on every View Transition soft navigation while document persists — without the
+// guard the astro:page-load listener would accumulate and push view_item N times
+// per nav. The guard prevents duplicate REGISTRATION only; the single listener
+// still fires on every load and soft nav (that is the event's purpose).
+// The listener reads the CURRENT page's product from [data-of-product-*] data
+// attributes on every fire (never captured at registration): across soft
+// navigations the persistent listener must report the product being viewed now,
+// and must not fire at all on non-product pages (no element -> return).
 const measurementConfig = resolveMeasurementConfig({
   PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
   PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
@@ -86,7 +95,7 @@ const measurementConfig = resolveMeasurementConfig({
 });
 const { gtmId } = measurementConfig;
 const viewItemScript = gtmId
-  ? `document.addEventListener('astro:page-load',function(){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'view_item',ecommerce:{currency:'COP',value:${minPrice},items:[{item_id:${JSON.stringify(product.slug)},item_name:${JSON.stringify(product.nombre[locale_])},price:${minPrice},currency:'COP',quantity:1}]}});});`
+  ? `if(!window.__ofViewItemWired){window.__ofViewItemWired=true;document.addEventListener('astro:page-load',function(){var el=document.querySelector('[data-of-product]');if(!el)return;var id=el.getAttribute('data-of-product-id');var name=el.getAttribute('data-of-product-name');var price=parseFloat(el.getAttribute('data-of-product-price'));if(!id||!name||isNaN(price))return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'view_item',ecommerce:{currency:'COP',value:price,items:[{item_id:id,item_name:name,price:price,currency:'COP',quantity:1}]}});});}`
   : null;
 ---
 
@@ -125,7 +134,16 @@ const viewItemScript = gtmId
       priceText={priceText}
     />
   </Fragment>
-  <section class="pt-8 pb-16 md:pb-24 bg-white">
+  <!-- data-of-product-*: current product identity for the env-gated view_item
+       listener (see viewItemScript above). Ship on every build — plain site
+       content, not measurement strings; zero-bytes contract unaffected. -->
+  <section
+    class="pt-8 pb-16 md:pb-24 bg-white"
+    data-of-product
+    data-of-product-id={product.slug}
+    data-of-product-name={product.nombre[locale_]}
+    data-of-product-price={minPrice}
+  >
     <div class="max-w-6xl mx-auto px-6 md:px-12">
 
       <!-- Breadcrumb (full-width, above grid) -->

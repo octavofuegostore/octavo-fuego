@@ -52,6 +52,12 @@ const hreflangLocales = [
 
 // Measurement config — gtmId gates the whatsapp_click delegation script
 // (zero bytes in the HTML when PUBLIC_GTM_ID is unset).
+//
+// The delegation below is an is:inline script: Astro re-executes inline
+// scripts on every View Transition soft navigation, while document/window
+// persist across navigations. Without a window-scoped registration guard
+// (__ofWhatsAppClickWired, same style as __ofMeasurementLoaded) the click
+// listener would accumulate and push duplicate whatsapp_click events.
 const measurementConfig = resolveMeasurementConfig({
   PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
   PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
@@ -148,22 +154,25 @@ const { gtmId } = measurementConfig;
     {
       gtmId && (
         <script is:inline>
-          document.addEventListener('click', function (event) {
-            const target = event.target;
-            if (!target || typeof target.closest !== 'function') return;
-            const link = target.closest('a[href^="https://wa.me/"]');
-            if (!link) return;
-            const phone = (link.getAttribute('href') || '')
-              .replace('https://wa.me/', '')
-              .split('?')[0];
-            const source = link.getAttribute('data-wa-source') || 'general';
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-              event: 'whatsapp_click',
-              whatsapp_phone: phone,
-              source: source,
+          if (!window.__ofWhatsAppClickWired) {
+            window.__ofWhatsAppClickWired = true;
+            document.addEventListener('click', function (event) {
+              const target = event.target;
+              if (!target || typeof target.closest !== 'function') return;
+              const link = target.closest('a[href^="https://wa.me/"]');
+              if (!link) return;
+              const phone = (link.getAttribute('href') || '')
+                .replace('https://wa.me/', '')
+                .split('?')[0];
+              const source = link.getAttribute('data-wa-source') || 'general';
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                event: 'whatsapp_click',
+                whatsapp_phone: phone,
+                source: source,
+              });
             });
-          });
+          }
         </script>
       )
     }
