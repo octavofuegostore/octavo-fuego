@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useId, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { cartItems, cartTotal, formatCOP, clearCart } from '@/stores/cartStore';
+import { EVENT_NAMES, pushEvent, toEcommerceItem } from '@/components/seo/measurement-events';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useT, setLocale, type Locale } from '@/stores/localeStore';
@@ -62,6 +63,23 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
   useEffect(() => {
     if (locale) setLocale(locale);
   }, [locale]);
+
+  // GA4 begin_checkout — fires once when the checkout island mounts
+  // (no-op unless PUBLIC_GTM_ID is set at build time). No purchase event:
+  // deferred to the R1.4 order-persistence slice.
+  useEffect(() => {
+    if (items.length === 0) return;
+    pushEvent(EVENT_NAMES.begin_checkout, {
+      ecommerce: {
+        currency: 'COP',
+        value: total,
+        // @__PURE__ lets Rollup drop this whole push (and its payload) from
+        // client bundles when PUBLIC_GTM_ID is unset — zero bytes contract.
+        items: /* @__PURE__ */ items.map(toEcommerceItem),
+      },
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [currentStep, setCurrentStep] = useState<Step>(1);
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -262,6 +280,14 @@ export function CheckoutForm({ locale }: { locale?: Locale }) {
     setSavedOrder(order);
     setPaymentMethod('whatsapp');
     setCurrentStep(4);
+
+    // GA4 generate_lead — WhatsApp checkout submitted (no purchase event;
+    // payment is confirmed off-platform and belongs to the R1.4 slice).
+    pushEvent(EVENT_NAMES.generate_lead, {
+      value: total,
+      currency: 'COP',
+      lead_source: 'whatsapp',
+    });
   };
 
   // ── Empty cart guard ───────────────────────────────────────────────────────

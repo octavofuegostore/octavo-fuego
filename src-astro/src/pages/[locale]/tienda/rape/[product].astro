@@ -21,6 +21,7 @@ import { Icon } from 'astro-icon/components';
 import { products } from '@/data/products';
 import { useTranslations, type Locale } from '@/i18n';
 import { locales } from '@/i18n';
+import { resolveMeasurementConfig } from '@/components/seo/measurement-config';
 
 export async function getStaticPaths() {
   return locales.flatMap((locale) =>
@@ -73,6 +74,20 @@ const pricePerGram = Math.round(midPricing.precio / midPricing.cantidad).toLocal
 const priceText = locale_ === 'en'
   ? `${midPricing.label} for $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`
   : `${midPricing.label} por $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`;
+
+// GA4 view_item — script renders ONLY when PUBLIC_GTM_ID is set at build time
+// (zero bytes otherwise; the dataLayer string never reaches the HTML).
+const measurementConfig = resolveMeasurementConfig({
+  PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
+  PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
+  PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
+  PUBLIC_GTM_ID: import.meta.env.PUBLIC_GTM_ID,
+  PUBLIC_GA4_ID: import.meta.env.PUBLIC_GA4_ID,
+});
+const { gtmId } = measurementConfig;
+const viewItemScript = gtmId
+  ? `document.addEventListener('astro:page-load',function(){window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'view_item',ecommerce:{currency:'COP',value:${minPrice},items:[{item_id:${JSON.stringify(product.slug)},item_name:${JSON.stringify(product.nombre[locale_])},price:${minPrice},currency:'COP',quantity:1}]}});});`
+  : null;
 ---
 
 <Layout
@@ -411,4 +426,11 @@ const priceText = locale_ === 'en'
       });
     });
   </script>
+
+  <!-- Measurement: product view tracking (env-gated, zero bytes when unset) -->
+  {
+    viewItemScript && (
+      <script is:inline set:html={viewItemScript} />
+    )
+  }
 </Layout>
