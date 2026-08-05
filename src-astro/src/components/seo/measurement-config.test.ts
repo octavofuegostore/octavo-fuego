@@ -37,4 +37,27 @@ describe('resolveMeasurementConfig', () => {
     expect(config).toEqual({ clarityId: 'clarity-only' });
     expect(hasAnyMeasurement(config)).toBe(true);
   });
+
+  it('reads gtmId and ga4Id when present and trims surrounding whitespace', () => {
+    const config = resolveMeasurementConfig({
+      PUBLIC_GTM_ID: ' GTM-ABC123 ',
+      PUBLIC_GA4_ID: 'G-ABC123',
+    });
+    expect(config).toEqual({ gtmId: 'GTM-ABC123', ga4Id: 'G-ABC123' });
+    expect(hasAnyMeasurement(config)).toBe(true);
+  });
+
+  it('treats blank GTM/GA4 values as unset', () => {
+    const config = resolveMeasurementConfig({
+      PUBLIC_GTM_ID: '   ',
+      PUBLIC_GA4_ID: '',
+    });
+    expect(config).toEqual({});
+    expect(hasAnyMeasurement(config)).toBe(false);
+  });
+
+  it('hasAnyMeasurement is true with only gtmId and false with only ga4Id', () => {
+    expect(hasAnyMeasurement(resolveMeasurementConfig({ PUBLIC_GTM_ID: 'GTM-1' }))).toBe(true);
+    expect(hasAnyMeasurement(resolveMeasurementConfig({ PUBLIC_GA4_ID: 'G-1' }))).toBe(false);
+  });
 });

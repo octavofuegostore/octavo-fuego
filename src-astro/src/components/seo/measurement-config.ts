@@ -18,6 +18,18 @@ export interface MeasurementConfig {
   clarityId?: string;
   /** Meta (Facebook) Pixel ID. */
   metaPixelId?: string;
+  /**
+   * Google Tag Manager container ID (GTM-XXXXXXX). Runtime driver for the
+   * GA4 + GTM slice: when set, the GTM loader, dataLayer init, noscript
+   * iframe and event wiring are emitted. Empty/absent = zero bytes shipped.
+   */
+  gtmId?: string;
+  /**
+   * GA4 measurement ID (G-XXXXXXX). Metadata for the manual GTM web-config
+   * checklist only — drives no runtime script in this slice (GA4 lives
+   * inside the GTM container). Empty/absent = ignored.
+   */
+  ga4Id?: string;
 }
 
 export type MeasurementEnv = Record<string, unknown>;
@@ -38,11 +50,24 @@ export function resolveMeasurementConfig(env: MeasurementEnv): MeasurementConfig
   if (nonEmpty(env.PUBLIC_META_PIXEL_ID)) {
     config.metaPixelId = env.PUBLIC_META_PIXEL_ID.trim();
   }
+  if (nonEmpty(env.PUBLIC_GTM_ID)) {
+    config.gtmId = env.PUBLIC_GTM_ID.trim();
+  }
+  if (nonEmpty(env.PUBLIC_GA4_ID)) {
+    config.ga4Id = env.PUBLIC_GA4_ID.trim();
+  }
 
   return config;
 }
 
-/** True when at least one measurement snippet should be rendered. */
+/**
+ * True when at least one measurement snippet should be rendered.
+ *
+ * Includes `gtmId` (it renders the loader) but NOT `ga4Id` — GA4 metadata
+ * alone must not claim the site is configured (it drives no script).
+ */
 export function hasAnyMeasurement(config: MeasurementConfig): boolean {
-  return Boolean(config.gscVerification || config.clarityId || config.metaPixelId);
+  return Boolean(
+    config.gscVerification || config.clarityId || config.metaPixelId || config.gtmId
+  );
 }
