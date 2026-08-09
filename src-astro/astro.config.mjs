@@ -7,7 +7,7 @@ import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   adapter: vercel(),
-  site: 'https://octavofuego.com',
+  site: 'https://www.octavofuego.com',
   integrations: [
     react(),
     icon({
