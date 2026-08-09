@@ -1,5 +1,6 @@
 import { atom } from 'nanostores';
 import type { CartItem } from '@/lib/cart/types';
+import { EVENT_NAMES, pushEvent, toEcommerceItem } from '@/components/seo/measurement-events';
 
 export type { CartItem } from '@/lib/cart/types';
 
@@ -86,6 +87,15 @@ export function addToCart(item: CartItem) {
   } else {
     cartItems.set([...currentItems, item]);
   }
+
+  // GA4 add_to_cart (no-op unless PUBLIC_GTM_ID is set at build time).
+  pushEvent(EVENT_NAMES.add_to_cart, {
+    ecommerce: {
+      currency: 'COP',
+      value: item.precio * item.cantidad,
+      items: [toEcommerceItem(item)],
+    },
+  });
 }
 
 export function removeFromCart(variantId: string) {

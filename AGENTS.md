@@ -182,7 +182,7 @@ npm run preview  # preview production build
 --color-surface-dark: #2A2A2A;
 
 /* Section backgrounds */
---color-footer-bg: #3D2E22;           /* Footer + secciones oscuras */
+/* Footer usa --color-surface-warm: #F2EFE8 (Jul 2026). Ver .atl/footer-design-decision.md */
 
 /* Text tokens */
 --color-text-primary: #1C1410;

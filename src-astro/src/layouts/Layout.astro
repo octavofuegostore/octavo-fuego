@@ -5,7 +5,8 @@ import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/Footer.astro';
 import FloatingWhatsApp from '@/components/ui/FloatingWhatsApp.astro';
 import OrganizationJsonLd from '@/components/seo/OrganizationJsonLd.astro';
-import OgImage from '@/components/seo/OgImage.astro';
+import MeasurementSnippets from '@/components/seo/MeasurementSnippets.astro';
+import { resolveMeasurementConfig } from '@/components/seo/measurement-config';
 import { useTranslations } from '@/i18n';
 
 interface Props {
@@ -48,6 +49,23 @@ const hreflangLocales = [
   { tag: 'en', urlPrefix: '/en' },
   { tag: 'pt', urlPrefix: '/pt' },
 ];
+
+// Measurement config — gtmId gates the whatsapp_click delegation script
+// (zero bytes in the HTML when PUBLIC_GTM_ID is unset).
+//
+// The delegation below is an is:inline script: Astro re-executes inline
+// scripts on every View Transition soft navigation, while document/window
+// persist across navigations. Without a window-scoped registration guard
+// (__ofWhatsAppClickWired, same style as __ofMeasurementLoaded) the click
+// listener would accumulate and push duplicate whatsapp_click events.
+const measurementConfig = resolveMeasurementConfig({
+  PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
+  PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
+  PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
+  PUBLIC_GTM_ID: import.meta.env.PUBLIC_GTM_ID,
+  PUBLIC_GA4_ID: import.meta.env.PUBLIC_GA4_ID,
+});
+const { gtmId } = measurementConfig;
 ---
 
 <!DOCTYPE html>
@@ -89,6 +107,9 @@ const hreflangLocales = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOgImage} />
     
+    <!-- Measurement: GSC verification (env-gated, zero bytes when unset) -->
+    <MeasurementSnippets variant="head" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -125,5 +146,35 @@ const hreflangLocales = [
     </main>
     <Footer locale={locale} />
     <FloatingWhatsApp locale={locale} />
+
+    <!-- Measurement: Clarity + Meta Pixel (env-gated, deferred, zero bytes when unset) -->
+    <MeasurementSnippets variant="body" />
+
+    <!-- Measurement: delegated WhatsApp link tracking (env-gated, zero bytes when unset) -->
+    {
+      gtmId && (
+        <script is:inline>
+          if (!window.__ofWhatsAppClickWired) {
+            window.__ofWhatsAppClickWired = true;
+            document.addEventListener('click', function (event) {
+              const target = event.target;
+              if (!target || typeof target.closest !== 'function') return;
+              const link = target.closest('a[href^="https://wa.me/"]');
+              if (!link) return;
+              const phone = (link.getAttribute('href') || '')
+                .replace('https://wa.me/', '')
+                .split('?')[0];
+              const source = link.getAttribute('data-wa-source') || 'general';
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                event: 'whatsapp_click',
+                whatsapp_phone: phone,
+                source: source,
+              });
+            });
+          }
+        </script>
+      )
+    }
   </body>
 </html>

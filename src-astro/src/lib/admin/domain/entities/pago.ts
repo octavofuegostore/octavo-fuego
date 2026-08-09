@@ -2,7 +2,7 @@
 import type { CodigoDivisa } from '../value-objects/divisa'
 
 export type EstadoPago = 'pendiente' | 'procesando' | 'confirmado' | 'fallido' | 'reembolsado'
-export type MetodoPago = 'wompi_link' | 'pix_qr' | 'pix_copia_cola' | 'stripe' | 'transferencia'
+export type MetodoPago = 'wompi_link' | 'pix_qr' | 'pix_copia_cola' | 'stripe' | 'transferencia' | 'bold'
 
 export interface Pago {
   id: string

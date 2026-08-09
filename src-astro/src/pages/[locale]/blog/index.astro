@@ -14,11 +14,38 @@ const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const allPosts = [
   {
+    slug: 'guia-completa-rape',
+    title: 'Guía Completa del Rapé do Acre: Origen, Variedades y Uso Ceremonial',
+    excerpt: 'La guía más completa sobre Rapé do Acre: las 5 variedades tradicionales, preparación artesanal, propiedades medicinales, protocolos ceremoniales y guía de compra responsable.',
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
+    coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
+    category: 'ancestral',
+  },
+  {
     slug: 'guia-rape-principiantes',
     title: 'Guía Completa del Rapé para Principiantes',
     excerpt: 'Descubre los fundamentos del Rapé, su uso ceremonial y cómo incorporar esta medicina ancestral en tu práctica espiritual de manera respetuosa.',
     publishedAt: '2026-03-15',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
+    coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
+    category: 'ancestral',
+  },
+  {
+    slug: 'guia-principiantes',
+    title: 'Guía para Principiantes: Cómo Empezar con el Rapé do Acre',
+    excerpt: 'Todo lo que necesitas saber para iniciarte: qué es el Rapé, cómo elegir tu primera variedad, cómo usar el kuripe, dosis recomendadas y protocolos de seguridad.',
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
+    coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
+    category: 'ancestral',
+  },
+  {
+    slug: 'ceremonia-rape',
+    title: 'Cómo es una Ceremonia de Rapé: Guía de Ritual Amazónico',
+    excerpt: 'Descubre paso a paso cómo se realiza una ceremonia de Rapé do Acre: preparación del espacio, uso del kuripe, protocolos tradicionales, integración posterior.',
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
     coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
     category: 'ancestral',
   },
@@ -27,7 +54,7 @@ const allPosts = [
     title: 'La Historia milenaria de la Sananga',
     excerpt: 'Conoce el origen de las gotas Sananga, su preparación tradicional por las tribus amazónicas y sus beneficios para la visión física y espiritual.',
     publishedAt: '2026-03-10',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
     category: 'cultura',
   },
@@ -36,7 +63,7 @@ const allPosts = [
     title: 'Cómo preparar una Ceremonia de Rapé',
     excerpt: 'Pasos fundamentales para organizar una ceremonia de Rapé con respeto, intención y siguiendo las tradiciones amazónicas.',
     publishedAt: '2026-03-05',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
     category: 'ancestral',
   },
@@ -45,7 +72,7 @@ const allPosts = [
     title: 'Beneficios Espirituales del Rapé',
     excerpt: 'Explora cómo el Rapé puede ayudarte a limpiar energías negativas, mejorar tu meditación y conectar con tus ancestros.',
     publishedAt: '2026-02-28',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: '/images/productos/rape/bobinsana-rape-2.webp',
     category: 'salud',
   },
@@ -79,7 +106,7 @@ function getCategoryLabel(category: string) {
           Blog
         </h1>
         <p class="text-ceniza text-lg max-w-2xl mx-auto">
-          Artículos sobre medicina ancestral amazónica, ceremonias, tradiciones y bienestar espiritual.
+          {t.blog.pageDescription}
         </p>
       </div>
 
@@ -100,7 +127,7 @@ function getCategoryLabel(category: string) {
               <Badge variant="secondary" className="w-fit mb-4">
                 {getCategoryLabel(allPosts[0].category)}
               </Badge>
-              <h2 class="font-display heading-md font-bold mb-4 group-hover:text-tabaco transition-colors">
+              <h2 class="font-display heading-md font-bold mb-4 group-hover:text-[var(--color-action-primary)] transition-colors">
                 {allPosts[0].title}
               </h2>
               <p class="text-ceniza mb-4 line-clamp-3">
@@ -132,7 +159,7 @@ function getCategoryLabel(category: string) {
                 <Badge variant="secondary" className="w-fit mb-3">
                   {getCategoryLabel(post.category)}
                 </Badge>
-                <h3 class="font-display text-xl font-bold mb-2 group-hover:text-tabaco transition-colors">
+                <h3 class="font-display text-xl font-bold mb-2 group-hover:text-[var(--color-action-primary)] transition-colors">
                   {post.title}
                 </h3>
                 <p class="text-ceniza text-sm mb-4 line-clamp-2">

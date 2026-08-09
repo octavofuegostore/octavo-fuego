@@ -45,7 +45,7 @@ const isCancelled = currentState === 'cancelada'
                     "w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all",
                     isPast ? "bg-success text-white" : "",
                     isCurrent ? "bg-tabaco text-white ring-4 ring-tabaco/20" : "",
-                    isFuture && canTransition ? "bg-tabaco/10 text-tabaco hover:bg-tabaco/20 cursor-pointer" : "",
+                    isFuture && canTransition ? "bg-tabaco/10 text-[var(--color-action-primary)] hover:bg-tabaco/20 cursor-pointer" : "",
                     isFuture && !canTransition ? "bg-papel text-ceniza cursor-not-allowed" : "",
                     !isPast && !isCurrent && canTransition ? "cursor-pointer" : "",
                   ]}
@@ -55,7 +55,7 @@ const isCancelled = currentState === 'cancelada'
                 <span class:list={[
                   "text-xs mt-1 text-center block whitespace-nowrap",
                   isPast ? "text-success font-medium" : "",
-                  isCurrent ? "text-tabaco font-bold" : "",
+                  isCurrent ? "text-[var(--color-action-primary)] font-bold" : "",
                   isFuture ? "text-ceniza" : "",
                 ]}>
                   {getStatusLabel(step, 'es')}

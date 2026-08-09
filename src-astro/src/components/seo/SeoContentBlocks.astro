@@ -1,0 +1,261 @@
+---
+/**
+ * SeoContentBlocks — In-page SEO content sections for Product Detail Pages
+ *
+ * Three blocks rendered between the overview paragraph and the PricingTable:
+ *   1. AI Summary Nugget — max 200 chars, pure factual summary
+ *   2. Prove-It — 2+ hard facts (origin, tradition, format, preparation)
+ *   3. Not For You — honest bad-fit scenarios
+ *
+ * All content is locale-aware via product data + curated copy.
+ */
+
+import type { Locale } from '@/i18n';
+import type { Product } from '@/data/products';
+
+interface Props {
+  locale: Locale;
+  product: Product;
+}
+
+const { locale, product } = Astro.props;
+
+// ─── Locale-aware section labels ─────────────────────────────────────────
+
+const labels = {
+  aiSummary: {
+    es: 'En síntesis',
+    en: 'In a Nutshell',
+    pt: 'Em síntese',
+  },
+  proveIt: {
+    es: 'Datos clave',
+    en: 'Facts & Figures',
+    pt: 'Dados importantes',
+  },
+  notForYou: {
+    es: 'Este rapé no es para ti si…',
+    en: 'This rapé is not for you if…',
+    pt: 'Este rapé não é para você se…',
+  },
+} as const;
+
+// ─── AI Summary Nugget — max 200 chars per locale ────────────────────────
+
+const summaries: Record<string, Record<Locale, string>> = {
+  tsunu: {
+    es: 'Rapé amazónico con ceniza del árbol Tsunú (tabaco de moho + orgánico). Alta intensidad energética. 10g ($35.000), 20g ($70.000), 30g ($100.000). Origen: Acre, Brasil.',
+    en: 'Amazonian rapé made with Tsunú tree ash (mold + organic tobacco). Very high energetic intensity. 10g ($35K), 20g ($70K), 30g ($100K) COP. From Acre, Brazil.',
+    pt: 'Rapé amazônico com cinza da árvore Tsunú (tabaco de molde + orgânico). Altíssima intensidade energética. 10g ($35.000), 20g ($70.000), 30g ($100.000) COP. Origem: Acre, Brasil.',
+  },
+  pixuri: {
+    es: 'Rapé medicinal con hojas de Pixurí ricas en eucaliptol natural. Aroma mentolado, intensidad media-suave. Ideal para afecciones respiratorias. 10g ($35.000), 20g ($70.000), 30g ($100.000).',
+    en: 'Medicinal rapé with Pixurí leaves rich in natural eucalyptol. Fresh menthol aroma, medium-soft intensity. For respiratory support. 10g to 30g available.',
+    pt: 'Rapé medicinal com folhas de Pixurí ricas em eucaliptol natural. Aroma mentolado, intensidade média-suave. Ideal para o sistema respiratório. 10g ($35.000), 20g ($70.000), 30g ($100.000) COP.',
+  },
+  parika: {
+    es: 'Rapé ceremonial Kaxinawá con ceniza de Pariká y tabaco de cuerda. Alta intensidad espiritual. Dos ingredientes, tradición pura. 10g ($35.000), 20g ($70.000), 30g ($100.000). Acre, Brasil.',
+    en: 'Kaxinawá ceremonial rapé with Pariká ash and rope tobacco. High spiritual intensity. Two pure ingredients. 10g ($35K), 20g ($70K), 30g ($100K) COP. Acre, Brazil.',
+    pt: 'Rapé cerimonial Kaxinawá com cinza de Pariká e tabaco de corda. Alta intensidade espiritual. Apenas dois ingredientes. 10g ($35.000), 20g ($70.000), 30g ($100.000) COP. Acre, Brasil.',
+  },
+  'cumaru-de-cheiro': {
+    es: 'Rapé con ceniza de Cumarú (árbol que no se pudre), tabaco de cuerda y semillas de imburana. Intensidad media-alta, aroma dulce y amaderado. Propiedades anticoagulantes y broncodilatadoras.',
+    en: 'Rapé with Cumarú ash (the "tree that does not rot"), rope tobacco, and imburana seeds. Medium-high intensity, sweet woody aroma. Contains coumarin for bronchodilation.',
+    pt: 'Rapé com cinza de Cumarú (árvore que não apodrece), tabaco de corda e sementes de imburana. Doce e amadeirado. Contém cumarina broncodilatadora.',
+  },
+  'vena-de-paje': {
+    es: 'Rapé único con tres tabacos (orgánico, moho, cuerda), ceniza de Tsunú y liana Vena de Pajé. Intensidad media, aroma herbal. Buscado para descalcificación pineal y meditación profunda.',
+    en: 'Unique rapé with three tobaccos (organic, mold, rope), Tsunú ash, and Vena de Pajé vine. Medium intensity, herbal aroma. Sought after for pineal decalcification and deep meditation.',
+    pt: 'Rapé único com três tabacos (orgânico, molde, corda), cinza de Tsunú e cipó Veia de Pajé. Intensidade média. Procurado para descalcificação da pineal.',
+  },
+};
+
+// ─── Prove-It — 2+ hard facts ────────────────────────────────────────────
+
+type FactSet = { fact: string; source: string }[];
+
+const proveItData: Record<string, Record<Locale, FactSet>> = {
+  tsunu: {
+    es: [
+      { fact: 'Elaborado con ceniza del árbol Tsunú, considerado el más fuerte de la selva amazónica', source: 'descripcion' },
+      { fact: 'Combina tabaco de moho y tabaco orgánico en una preparación ancestral', source: 'descripcion' },
+      { fact: 'Intensidad muy alta — nivel avanzado, ideal para ceremonias profundas', source: 'intensidad' },
+      { fact: 'Una de las medicinas más antiguas usadas por pueblos indígenas amazónicos', source: 'descripcion' },
+    ],
+    en: [
+      { fact: 'Made with ash of the Tsunú tree, considered the strongest tree in the Amazon rainforest', source: 'descripcion' },
+      { fact: 'Blends mold tobacco and organic tobacco in an ancestral preparation', source: 'descripcion' },
+      { fact: 'Very high intensity — advanced level, ideal for deep ceremonies', source: 'intensidad' },
+      { fact: 'One of the oldest medicines used by Amazonian indigenous peoples', source: 'descripcion' },
+    ],
+    pt: [
+      { fact: 'Elaborado com cinza da árvore Tsunú, considerada a mais forte da Amazônia', source: 'descripcion' },
+      { fact: 'Combina tabaco de molde e tabaco orgânico em preparação ancestral', source: 'descripcion' },
+      { fact: 'Altíssima intensidade — nível avançado, ideal para cerimônias profundas', source: 'intensidad' },
+      { fact: 'Um dos medicamentos mais antigos usados por povos indígenas amazônicos', source: 'descripcion' },
+    ],
+  },
+  pixuri: {
+    es: [
+      { fact: 'Contiene eucaliptol natural en sus hojas, con propiedades antisépticas y expectorantes', source: 'descripcion' },
+      { fact: 'Aroma fresco y mentolado — intensidad media-suave para uso diario', source: 'intensidad' },
+      { fact: 'Usa solo hojas deshidratadas del árbol Pixurí (crecimiento muy lento)', source: 'descripcion' },
+      { fact: 'Eficaz para sinusitis, asma y dolores de cabeza según la tradición', source: 'descripcion' },
+    ],
+    en: [
+      { fact: 'Natural eucalyptol in its leaves provides antiseptic and expectorant properties', source: 'descripcion' },
+      { fact: 'Fresh menthol aroma — medium-soft intensity for daily use', source: 'intensidad' },
+      { fact: 'Uses only dehydrated Pixurí tree leaves (very slow-growing tree)', source: 'descripcion' },
+      { fact: 'Traditionally effective for sinusitis, asthma, and headaches', source: 'descripcion' },
+    ],
+    pt: [
+      { fact: 'Eucaliptol natural nas folhas proporciona propriedades antissépticas e expectorantes', source: 'descripcion' },
+      { fact: 'Aroma fresco e mentolado — intensidade média para uso diário', source: 'intensidad' },
+      { fact: 'Usa apenas folhas desidratadas do Pixurí, árvore de crescimento muito lento', source: 'descripcion' },
+      { fact: 'Eficaz para sinusite, asma e dores de cabeça segundo a tradição', source: 'descripcion' },
+    ],
+  },
+  parika: {
+    es: [
+      { fact: 'Solo dos ingredientes: ceniza de Pariká y tabaco de cuerda — pureza absoluta', source: 'descripcion' },
+      { fact: 'Arraigado en la tradición del pueblo Kaxinawá de la Amazonía brasileña', source: 'descripcion' },
+      { fact: 'Intensidad alta — nivel ceremonial, actúa sobre el plano espiritual', source: 'intensidad' },
+      { fact: 'Conocido también como "Pereira" en las selvas de Brasil', source: 'descripcion' },
+    ],
+    en: [
+      { fact: 'Only two ingredients: Pariká ash and rope tobacco — absolute purity', source: 'descripcion' },
+      { fact: 'Deeply rooted in the Kaxinawá people tradition of the Brazilian Amazon', source: 'descripcion' },
+      { fact: 'High intensity — ceremonial level, acts on the spiritual plane', source: 'intensidad' },
+      { fact: 'Also known as "Pereira" in the Brazilian rainforests', source: 'descripcion' },
+    ],
+    pt: [
+      { fact: 'Apenas dois ingredientes: cinza de Pariká e tabaco de corda', source: 'descripcion' },
+      { fact: 'Tradição do povo Kaxinawá da Amazônia brasileira', source: 'descripcion' },
+      { fact: 'Alta intensidade — nível cerimonial, atua no plano espiritual', source: 'intensidad' },
+      { fact: 'Conhecido também como "Pereira" nas selvas do Brasil', source: 'descripcion' },
+    ],
+  },
+  'cumaru-de-cheiro': {
+    es: [
+      { fact: 'Ceniza del "árbol que no se pudre" — usado el árbol completo, no solo la corteza', source: 'descripcion' },
+      { fact: 'Contiene cumarina, con propiedades anticoagulantes, antiespasmódicas y broncodilatadoras', source: 'descripcion' },
+      { fact: 'Incorpora semillas de imburana (Cumarú de olor) en su fórmula', source: 'descripcion' },
+      { fact: 'Intensidad media-alta, aroma dulce y amaderado — nivel intermedio', source: 'intensidad' },
+    ],
+    en: [
+      { fact: 'Ash from the "tree that does not rot" — uses the entire tree, not just the bark', source: 'descripcion' },
+      { fact: 'Contains coumarin with anticoagulant, antispasmodic, and bronchodilator properties', source: 'descripcion' },
+      { fact: 'Incorporates imburana seeds into its formula', source: 'descripcion' },
+      { fact: 'Medium-high intensity, sweet and woody aroma — intermediate level', source: 'intensidad' },
+    ],
+    pt: [
+      { fact: 'Cinza da "árvore que não apodrece" — usada a árvore completa', source: 'descripcion' },
+      { fact: 'Contém cumarina com propriedades anticoagulantes e broncodilatadoras', source: 'descripcion' },
+      { fact: 'Incorpora sementes de imburana em sua fórmula', source: 'descripcion' },
+      { fact: 'Intensidade média-alta, aroma doce e amadeirado', source: 'intensidad' },
+    ],
+  },
+  'vena-de-paje': {
+    es: [
+      { fact: 'Único rapé que emplea tres tabacos: orgánico, de moho y de cuerda', source: 'descripcion' },
+      { fact: 'Incluye cipó (liana) Vena de Pajé de aroma intenso en su alquimia', source: 'descripcion' },
+      { fact: 'Buscado para descalcificación de la glándula pineal y meditación profunda', source: 'descripcion' },
+      { fact: 'Actúa sobre los planos espiritual y físico simultáneamente', source: 'descripcion' },
+    ],
+    en: [
+      { fact: 'Only rapé that uses three tobaccos: organic, mold, and rope', source: 'descripcion' },
+      { fact: 'Includes Vena de Pajé vine (liana) with intense aroma in its alchemy', source: 'descripcion' },
+      { fact: 'Sought after for pineal gland decalcification and deep meditation', source: 'descripcion' },
+      { fact: 'Works on both spiritual and physical planes simultaneously', source: 'descripcion' },
+    ],
+    pt: [
+      { fact: 'Único rapé que usa três tabacos: orgânico, molde e corda', source: 'descripcion' },
+      { fact: 'Inclui cipó Veia de Pajé de aroma intenso em sua alquimia', source: 'descripcion' },
+      { fact: 'Procurado para descalcificação da glândula pineal', source: 'descripcion' },
+      { fact: 'Atua nos planos espiritual e físico simultaneamente', source: 'descripcion' },
+    ],
+  },
+};
+
+// ─── Not For You — honest bad-fit scenarios per product ──────────────────
+
+const notForYouData: Record<string, Record<Locale, string[]>> = {
+  tsunu: {
+    es: ['Buscas un rapé suave para uso diario', 'recién comienzas con rapés ceremoniales', 'prefieres experiencias sutiles y livianas'],
+    en: ['you are looking for a mild rapé for daily use', 'you are just starting with ceremonial rapés', 'you prefer subtle, light experiences'],
+    pt: ['você busca um rapé suave para uso diário', 'você está começando com rapés cerimoniais', 'prefere experiências sutis e leves'],
+  },
+  pixuri: {
+    es: ['Tu enfoque principal es espiritual/ceremonial intenso', 'buscas una experiencia energética fuerte', 'prefieres rapés de nivel avanzado'],
+    en: ['your main focus is intense spiritual/ceremonial work', 'you are looking for a strong energetic experience', 'you prefer advanced-level rapés'],
+    pt: ['seu foco principal é trabalho espiritual/cerimonial intenso', 'você busca uma experiência energética forte', 'prefere rapés de nível avançado'],
+  },
+  parika: {
+    es: ['Buscas un rapé con enfoque medicinal o físico', 'prefieres propiedades respiratorias o analgésicas', 'no trabajas con ceremonias espirituales profundas'],
+    en: ['you are looking for a medicinal or physical rapé', 'you prefer respiratory or analgesic properties', 'you do not work with deep spiritual ceremonies'],
+    pt: ['você busca um rapé com foco medicinal ou físico', 'prefere propriedades respiratórias ou analgésicas', 'não trabalha com cerimônias espirituais profundas'],
+  },
+  'cumaru-de-cheiro': {
+    es: ['Tomas anticoagulantes (consultar con profesional de salud por la cumarina)', 'buscas un rapé exclusivamente espiritual o exclusivamente físico', 'prefieres intensidad suave'],
+    en: ['you take anticoagulant medication (consult a health professional for coumarin content)', 'you are looking for an exclusively spiritual or exclusively physical rapé', 'you prefer soft intensity'],
+    pt: ['você toma anticoagulantes (consultar profissional de saúde pela cumarina)', 'busca um rapé exclusivamente espiritual ou exclusivamente físico', 'prefere intensidade suave'],
+  },
+  'vena-de-paje': {
+    es: ['Buscas un rapé de una sola tradición tabacalera', 'prefieres perfiles de aroma suaves o dulces', 'tu práctica no incluye meditación o trabajo con la glándula pineal'],
+    en: ['you are looking for a single-tobacco rapé', 'you prefer mild or sweet aroma profiles', 'your practice does not include meditation or pineal gland work'],
+    pt: ['você busca um rapé de uma única tradição tabaqueira', 'prefere perfis de aroma suaves ou doces', 'sua prática não inclui meditação ou trabalho com a pineal'],
+  },
+};
+
+const summary = summaries[product.slug]?.[locale] ?? '';
+const facts = proveItData[product.slug]?.[locale] ?? [];
+const notForYouItems = notForYouData[product.slug]?.[locale] ?? [];
+---
+
+<section class="seo-content-blocks space-y-8 my-8">
+  <!-- Block 1: AI Summary Nugget -->
+  {summary && (
+    <div class="ai-summary rounded-xl bg-[var(--color-action-primary)]/5 border border-[var(--color-action-primary)]/10 p-5">
+      <p class="text-[0.65rem] uppercase tracking-[0.15em] font-bold text-[var(--color-action-primary)] mb-2">
+        {labels.aiSummary[locale]}
+      </p>
+      <p class="text-sm text-[var(--near-black)] leading-relaxed">
+        {summary}
+      </p>
+    </div>
+  )}
+
+  <!-- Block 2: Prove-It — hard facts -->
+  {facts.length > 0 && (
+    <div class="prove-it">
+      <p class="text-[0.65rem] uppercase tracking-[0.15em] font-bold text-[var(--color-action-primary)] mb-3">
+        {labels.proveIt[locale]}
+      </p>
+      <ul class="space-y-2">
+        {facts.slice(0, 3).map(({ fact }) => (
+          <li class="flex items-start gap-2 text-sm text-[var(--near-black)] leading-relaxed">
+            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-action-primary)] shrink-0" aria-hidden="true" />
+            <span>{fact}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+
+  <!-- Block 3: Not For You — honest bad-fit -->
+  {notForYouItems.length > 0 && (
+    <div class="not-for-you rounded-xl bg-[var(--humo)] p-5">
+      <p class="text-[0.65rem] uppercase tracking-[0.15em] font-bold text-[var(--papel)] mb-2">
+        {labels.notForYou[locale]}
+      </p>
+      <ul class="space-y-1.5">
+        {notForYouItems.map((item) => (
+          <li class="flex items-start gap-2 text-sm text-[var(--papel)] leading-relaxed">
+            <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--color-action-primary)] shrink-0" aria-hidden="true" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</section>

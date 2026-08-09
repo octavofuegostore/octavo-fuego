@@ -13,14 +13,15 @@ import ReviewModal from '@/components/tienda/ReviewModal.astro';
 import ProductJsonLd from '@/components/seo/ProductJsonLd.astro';
 import BreadcrumbJsonLd from '@/components/seo/BreadcrumbJsonLd.astro';
 import FAQPageJsonLd from '@/components/seo/FAQPageJsonLd.astro';
-import ReviewJsonLd from '@/components/seo/ReviewJsonLd.astro';
 import FAQSection from '@/components/seo/FAQSection.astro';
+// SeoContentBlocks reserved for future tabs UI (Jul 2026)
 import RelatedProducts from '@/components/product/RelatedProducts.astro';
 import WhatsAppButton from '@/components/whatsapp/WhatsAppButton.astro';
 import { Icon } from 'astro-icon/components';
 import { products } from '@/data/products';
 import { useTranslations, type Locale } from '@/i18n';
 import { locales } from '@/i18n';
+import { resolveMeasurementConfig } from '@/components/seo/measurement-config';
 
 export async function getStaticPaths() {
   return locales.flatMap((locale) =>
@@ -50,9 +51,9 @@ const priceAnchor = locale_ === 'es' ? `Desde $${formatCOP(minPrice)} COP`
 const intentLabel = (t.intentions as Record<string, string>)[product.intentMap] ?? product.intentMap;
 
 const shippingText: Record<Locale, string> = {
-  es: 'Ofrecemos envío a todo Colombia. Los pedidos se procesan en 1-2 días hábiles y se entregan en 3-7 días hábiles según la ubicación. Envío gratuito en pedidos superiores a $100.000 COP.',
-  en: 'We ship to all Colombia. Orders are processed within 1-2 business days and delivered within 3-7 business days depending on location. Free shipping on orders over $100,000 COP.',
-  pt: 'Enviamos para toda a Colômbia. Os pedidos são processados em 1-2 dias úteis e entregues em 3-7 dias úteis dependendo da localização. Frete grátis em pedidos acima de $100.000 COP.',
+  es: 'Ofrecemos envíos a Colombia y Brasil. Los pedidos se procesan en 1-2 días hábiles y la entrega toma de 3 a 7 días hábiles según tu ubicación. El costo de envío se coordina por WhatsApp según tu ciudad y el peso del pedido.',
+  en: 'We ship to Colombia and Brazil. Orders are processed within 1-2 business days and delivered within 3-7 business days depending on your location. Shipping costs are arranged via WhatsApp based on your city and the weight of your order.',
+  pt: 'Enviamos para a Colômbia e o Brasil. Os pedidos são processados em 1-2 dias úteis e a entrega leva de 3 a 7 dias úteis dependendo da sua localização. O custo do frete é combinado via WhatsApp conforme sua cidade e o peso do pedido.',
 };
 
 const returnsText: Record<Locale, string> = {
@@ -73,6 +74,29 @@ const pricePerGram = Math.round(midPricing.precio / midPricing.cantidad).toLocal
 const priceText = locale_ === 'en'
   ? `${midPricing.label} for $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`
   : `${midPricing.label} por $${midPricing.precio.toLocaleString('es-CO')} COP ($${pricePerGram}/g)`;
+
+// GA4 view_item — script renders ONLY when PUBLIC_GTM_ID is set at build time
+// (zero bytes otherwise; the dataLayer string never reaches the HTML).
+// Guarded with __ofViewItemWired: this is an is:inline script, which re-executes
+// on every View Transition soft navigation while document persists — without the
+// guard the astro:page-load listener would accumulate and push view_item N times
+// per nav. The guard prevents duplicate REGISTRATION only; the single listener
+// still fires on every load and soft nav (that is the event's purpose).
+// The listener reads the CURRENT page's product from [data-of-product-*] data
+// attributes on every fire (never captured at registration): across soft
+// navigations the persistent listener must report the product being viewed now,
+// and must not fire at all on non-product pages (no element -> return).
+const measurementConfig = resolveMeasurementConfig({
+  PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
+  PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
+  PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
+  PUBLIC_GTM_ID: import.meta.env.PUBLIC_GTM_ID,
+  PUBLIC_GA4_ID: import.meta.env.PUBLIC_GA4_ID,
+});
+const { gtmId } = measurementConfig;
+const viewItemScript = gtmId
+  ? `if(!window.__ofViewItemWired){window.__ofViewItemWired=true;document.addEventListener('astro:page-load',function(){var el=document.querySelector('[data-of-product]');if(!el)return;var id=el.getAttribute('data-of-product-id');var name=el.getAttribute('data-of-product-name');var price=parseFloat(el.getAttribute('data-of-product-price'));if(!id||!name||isNaN(price))return;window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'view_item',ecommerce:{currency:'COP',value:price,items:[{item_id:id,item_name:name,price:price,currency:'COP',quantity:1}]}});});}`
+  : null;
 ---
 
 <Layout
@@ -109,14 +133,17 @@ const priceText = locale_ === 'en'
       productName={product.nombre[locale_]}
       priceText={priceText}
     />
-    <ReviewJsonLd
-      locale={locale_}
-      productName={product.nombre[locale_]}
-      productUrl={`https://octavofuego.com/${locale_ === 'es' ? '' : locale_ + '/'}tienda/rape/${product.slug}`}
-      productId={product.slug}
-    />
   </Fragment>
-  <section class="pt-8 pb-16 md:pb-24 bg-white">
+  <!-- data-of-product-*: current product identity for the env-gated view_item
+       listener (see viewItemScript above). Ship on every build — plain site
+       content, not measurement strings; zero-bytes contract unaffected. -->
+  <section
+    class="pt-8 pb-16 md:pb-24 bg-white"
+    data-of-product
+    data-of-product-id={product.slug}
+    data-of-product-name={product.nombre[locale_]}
+    data-of-product-price={minPrice}
+  >
     <div class="max-w-6xl mx-auto px-6 md:px-12">
 
       <!-- Breadcrumb (full-width, above grid) -->
@@ -213,6 +240,9 @@ const priceText = locale_ === 'en'
           <p class="text-[var(--near-black)] text-base md:text-lg leading-[1.8]">
             {product.overview[locale_]}
           </p>
+
+          <!-- SEO Content Blocks — summary, facts, bad-fit -->
+          <!-- SeoContentBlocks reserved for future tabs UI -->
 
           <!-- Tags as compact badges (like homepage trust badges) -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -414,4 +444,11 @@ const priceText = locale_ === 'en'
       });
     });
   </script>
+
+  <!-- Measurement: product view tracking (env-gated, zero bytes when unset) -->
+  {
+    viewItemScript && (
+      <script is:inline set:html={viewItemScript} />
+    )
+  }
 </Layout>

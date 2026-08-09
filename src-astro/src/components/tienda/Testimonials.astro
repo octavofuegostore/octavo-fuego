@@ -1,5 +1,4 @@
 ---
-import { useTranslations } from '@/i18n';
 import type { Locale } from '@/i18n';
 import { Icon } from 'astro-icon/components';
 
@@ -9,105 +8,39 @@ interface Props {
 }
 
 const { locale } = Astro.props;
-const t = useTranslations(locale);
 
-interface Testimonial {
-  quote: Record<string, string>;
-  author: string;
-  avatar?: string;
-  location: Record<string, string>;
-  date: string;
-  rating: number;
-}
+// No published reviews yet — show an honest empty state instead of fabricated
+// testimonials. Reviews arrive via the ReviewModal → WhatsApp flow and will be
+// published here once real customers share them.
+const emptyState: Record<Locale, { title: string; text: string }> = {
+  es: {
+    title: 'Aún no hay reseñas',
+    text: 'Sé el primero en escribir una reseña y comparte tu experiencia con este rapé.',
+  },
+  en: {
+    title: 'No reviews yet',
+    text: 'Be the first to write a review and share your experience with this rapé.',
+  },
+  pt: {
+    title: 'Ainda não há avaliações',
+    text: 'Seja o primeiro a escrever uma avaliação e compartilhe sua experiência com este rapé.',
+  },
+};
 
-const testimonials: Testimonial[] = [
-  {
-    quote: {
-      es: "Un rapé excepcional. La pureza se siente desde el primer momento. Llegó rápido y bien empacado.",
-      en: "An exceptional rapé. You can feel the purity from the first moment. It arrived fast and well packed.",
-      pt: "Um rapé excepcional. A pureza se sente desde o primeiro momento. Chegou rápido e bem embalado."
-    },
-    author: "Mateo R.",
-    location: { es: "Bogotá, Colombia", en: "Bogotá, Colombia", pt: "Bogotá, Colômbia" },
-    date: "2026-06-15",
-    rating: 5
-  },
-  {
-    quote: {
-      es: "Llegó rápido a Brasil. La calidad es incomparable con lo que encontraba antes. Recomendado.",
-      en: "It arrived fast in Brazil. The quality is incomparable to what I found before. Recommended.",
-      pt: "Chegou rápido no Brasil. A qualidade é incomparável com o que eu encontrava antes. Recomendado."
-    },
-    author: "Ana L.",
-    location: { es: "São Paulo, Brasil", en: "São Paulo, Brazil", pt: "São Paulo, Brasil" },
-    date: "2026-06-20",
-    rating: 5
-  },
-  {
-    quote: {
-      es: "La conexión espiritual que buscaba. Ideal para meditación profunda y ceremonias.",
-      en: "The spiritual connection I was looking for. Ideal for deep meditation and ceremonies.",
-      pt: "A conexão espiritual que buscava. Ideal para meditação profunda e cerimônias."
-    },
-    author: "Carlos M.",
-    location: { es: "Medellín, Colombia", en: "Medellín, Colombia", pt: "Medellín, Colômbia" },
-    date: "2026-06-10",
-    rating: 5
-  }
-];
+const l = emptyState[locale];
 ---
 
-<section>
+<section class="content-visibility-auto">
   <div class="flex flex-col gap-6">
-    {testimonials.map((testimonial) => (
-      <div class="flex gap-4">
-        <!-- Avatar -->
-        <div class="flex-none">
-          {testimonial.avatar ? (
-            <img
-              src={testimonial.avatar}
-              alt={testimonial.author}
-              class="w-10 h-10 rounded-full object-cover"
-              loading="lazy"
-            />
-          ) : (
-            <div class="w-10 h-10 rounded-full bg-[var(--color-action-primary)] flex items-center justify-center">
-              <span class="text-sm font-bold text-white">
-                {testimonial.author.charAt(0)}
-              </span>
-            </div>
-          )}
-        </div>
-        <!-- Content -->
-        <div class="flex-1 min-w-0">
-          <!-- Stars -->
-          <div class="flex gap-0.5 mb-1">
-            {Array.from({ length: testimonial.rating }, (_, i) => (
-              <Icon key={i} name="solar:star-bold-duotone" class="w-5 h-5 text-[var(--color-action-primary)]" />
-            ))}
-          </div>
-          <!-- Name + Location + Date -->
-          <div class="flex items-baseline gap-2 flex-wrap">
-            <h3 class="text-sm font-semibold text-[var(--near-black)]">
-              {testimonial.author}
-            </h3>
-            <span class="text-xs text-[var(--ceniza)]">
-              {testimonial.location[locale]}
-            </span>
-            <time datetime={testimonial.date} class="text-xs text-[var(--ceniza)]/60">
-              {testimonial.date}
-            </time>
-          </div>
-          <!-- Quote -->
-          <p class="text-sm text-[var(--near-black)] leading-relaxed mt-1">
-            &ldquo;{testimonial.quote[locale]}&rdquo;
-          </p>
-        </div>
-      </div>
-    ))}
+    <!-- Empty state: honest placeholder until real reviews exist -->
+    <div class="flex flex-col items-center text-center py-8 px-4 bg-[var(--color-surface-warm)] rounded-[var(--radius-card)]">
+      <Icon name="solar:star-bold-duotone" class="w-8 h-8 text-[var(--color-action-primary)]/40 mb-3" />
+      <p class="font-display font-semibold text-[var(--near-black)]">{l.title}</p>
+      <p class="text-sm text-[var(--ceniza)] leading-relaxed max-w-sm mt-1">{l.text}</p>
+    </div>
   </div>
 
-  <!-- Write a Review button — opens modal -->
+  <!-- Write a Review button — opens ReviewModal (id="modalButton" is the modal trigger) -->
   <div class="flex mt-8 pt-6 border-t border-gray-100">
     <button
       id="modalButton"

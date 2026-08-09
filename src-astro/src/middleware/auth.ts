@@ -2,8 +2,9 @@
  * Auth middleware for admin routes.
  *
  * Composed via sequence():
- * 1. localeHandler — strips /es|en|pt/ prefix from admin/api routes
- * 2. authHandler — verifies of_admin_token cookie, gates actions
+ * 1. llmsLoggerHandler — logs /llms.txt requests (pass-through)
+ * 2. localeHandler — strips /es|en|pt/ prefix from admin/api routes
+ * 3. authHandler — verifies of_admin_token cookie, gates actions
  */
 
 import { defineMiddleware, sequence } from 'astro:middleware'
@@ -48,6 +49,22 @@ function checkRouteAccess(pathname: string, role: UserRole): boolean {
   // If the route isn't explicitly listed, default to admin-only
   return role === 'admin'
 }
+
+/**
+ * Pass-through logger for /llms.txt requests.
+ * Logs bot traffic information without blocking the request.
+ */
+const llmsLoggerHandler = defineMiddleware(async (context, next) => {
+  const url = new URL(context.request.url)
+  if (url.pathname === '/llms.txt') {
+    console.log('[llms-bot]', {
+      url: context.request.url,
+      ua: context.request.headers.get('user-agent'),
+      ts: new Date().toISOString(),
+    })
+  }
+  return next()
+})
 
 const localeHandler = defineMiddleware(async (context, next) => {
   const { redirect } = context
@@ -110,4 +127,4 @@ const authHandler = defineMiddleware(async (context, next) => {
   return next()
 })
 
-export const onRequest = sequence(localeHandler, authHandler)
+export const onRequest = sequence(llmsLoggerHandler, localeHandler, authHandler)

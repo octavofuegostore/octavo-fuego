@@ -55,7 +55,7 @@ function notificationIcon(tipo: string): string {
 }
 
 function notificationColor(tipo: string): string {
-  if (tipo.includes('orden')) return 'text-tabaco';
+  if (tipo.includes('orden')) return 'text-[var(--color-action-primary)]';
   if (tipo.includes('b2b')) return 'text-blue-500';
   if (tipo.includes('stock')) return 'text-amber-500';
   if (tipo.includes('pago')) return 'text-green-500';
@@ -125,7 +125,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
         tipo: 'orden:creada',
         titulo: 'Nueva orden creada',
         mensaje: null,
-        link: `/admin/ordenes/${payload.ordenId}`,
+        link: `/admin/ordenes/${payload.ordenId}/page`,
         leida: false,
         creado_en: new Date().toISOString(),
       }, ...prev])
@@ -157,7 +157,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
       <button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative text-humo hover:text-tabaco transition-colors"
+        className="relative text-humo hover:text-[var(--color-action-primary)] transition-colors"
         title="Notificaciones"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -188,7 +188,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
             {unreadCount > 0 && (
               <button
                 onClick={markAllAsRead}
-                className="text-xs text-tabaco hover:underline"
+                className="text-xs text-[var(--color-action-primary)] hover:underline"
               >
                 Marcar todo leído
               </button>
@@ -247,7 +247,7 @@ export default function NotificationDropdown({ notificaciones: initial, noLeidas
           {/* Footer */}
           {notificaciones.length > 0 && (
             <div className="px-4 py-2.5 border-t border-papel text-center">
-              <a href="/admin/actividad" className="text-xs text-tabaco hover:underline">
+              <a href="/admin/actividad" className="text-xs text-[var(--color-action-primary)] hover:underline">
                 Ver todo el registro de actividad
               </a>
             </div>

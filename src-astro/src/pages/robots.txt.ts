@@ -2,6 +2,12 @@ import type { APIRoute } from 'astro';
 
 export const GET: APIRoute = () => {
   const robotsTxt = `
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+Disallow: /checkout
+Disallow: /carrito
+
 User-agent: *
 Allow: /
 

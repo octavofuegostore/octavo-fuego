@@ -170,7 +170,7 @@ export default function OrderTableClient({ orders }: OrderTableClientProps) {
   };
 
   const handleViewOrder = (orderId: string) => {
-    window.location.href = `/admin/ordenes/${orderId}`;
+    window.location.href = `/admin/ordenes/${orderId}/page`;
   };
 
   const handlePageChange = (page: number) => {

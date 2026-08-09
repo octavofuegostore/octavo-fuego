@@ -78,8 +78,7 @@
   /* Design Tokens - Airbnb Style */
   /* Base color: Tabaco (renamed from --color-action-primary - semantically incorrect) */
   --tabaco-base: #6d5e4d;
-  --color-footer-bg: #1A1A1A;
-  --near-black: #222222;
+  /* --color-footer-bg removido: footer usa --color-surface-warm (Jul 2026) */  --near-black: #222222;
   --ceniza: var(--color-ceniza);
 
   /* Functional Action Tokens (híbrido - preserva identidad + escala) */
@@ -94,9 +93,15 @@
 
   /* Functional Text Tokens */
   --color-text-primary: #1C1410;     /* Headings, texto importante */
-  --color-text-secondary: #8C8680;   /* Meta, subtítulos */
+  --color-text-secondary: #6B6F73;   /* = --ceniza oficial. Meta, subtítulos */
   --color-text-on-action: #F2EFE8;   /* Texto sobre action-primary */
   --color-text-on-dark: #F2EFE8;     /* Texto sobre superficies oscuras */
+}
+
+/* Content-visibility — defer paint/render of below-fold sections */
+.content-visibility-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
 }
 
 /* Selection */

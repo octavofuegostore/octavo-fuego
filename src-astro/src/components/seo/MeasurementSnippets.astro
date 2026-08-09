@@ -1,0 +1,151 @@
+---
+// Env-gated measurement snippets (publish-superpowers, design D5 + spec R-G2/R-G3/R-G5).
+//
+// - `variant="head"`  → Google Search Console verification meta tag + GTM
+//   dataLayer init (non-deferred, ~50B) + gtag config push when a GA4 ID is
+//   also present + GTM preconnect + GTM noscript iframe.
+// - `variant="body"`  → Clarity + Meta Pixel + GTM loaders, all wrapped in a
+//   single bootstrap guard (`window.__ofMeasurementLoaded` — init exactly
+//   once, so soft navigations never re-initialize them) and deferred via
+//   requestIdleCallback (window.onload fallback, Pipod lesson #2361).
+//   Meta PageView + GA4 soft-nav page_view fire from an astro:page-load
+//   listener (skip-first for of_page_view — the GTM config tag already
+//   covers the initial load; no History Change trigger).
+//
+// Zero bytes are shipped for any snippet whose PUBLIC_* env var is unset —
+// with PUBLIC_GTM_ID unset, dist contains NO gtm.js, NO GTM-, NO dataLayer
+// and NO gtag (grep-verifiable). PUBLIC_GA4_ID is metadata only: it drives
+// no script unless PUBLIC_GTM_ID is also set.
+//
+// Script strings are built in frontmatter (official snippet structures,
+// IDs JSON-encoded) and injected with set:html + is:inline so Astro leaves
+// them verbatim where placed.
+import { resolveMeasurementConfig } from './measurement-config';
+
+interface Props {
+  /** Which document section this instance renders into. */
+  variant: 'head' | 'body';
+}
+
+const { variant } = Astro.props;
+
+const config = resolveMeasurementConfig({
+  PUBLIC_GSC_VERIFICATION: import.meta.env.PUBLIC_GSC_VERIFICATION,
+  PUBLIC_CLARITY_ID: import.meta.env.PUBLIC_CLARITY_ID,
+  PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
+  PUBLIC_GTM_ID: import.meta.env.PUBLIC_GTM_ID,
+  PUBLIC_GA4_ID: import.meta.env.PUBLIC_GA4_ID,
+});
+
+const { gscVerification, clarityId, metaPixelId, gtmId, ga4Id } = config;
+
+// Runs `fn` after the browser is idle, falling back to window.onload.
+const DEFER_HELPER = `function __ofDefer(fn){if('requestIdleCallback' in window){window.requestIdleCallback(fn,{timeout:3000});}else if(document.readyState==='complete'){fn();}else{window.addEventListener('load',fn,{once:true});}}`;
+
+// Head: dataLayer init (must exist before any deferred loader or event push;
+// consent-mode v2 `gtag('consent','default',...)` push is reserved here —
+// see .env.example). When a GA4 ID is present, the gtag stub + config push
+// pre-seed gtag.js with the measurement ID (processed once GTM loads gtag.js).
+const dataLayerInitScript =
+  gtmId && ga4Id
+    ? `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config',${JSON.stringify(ga4Id)});`
+    : gtmId
+      ? 'window.dataLayer=window.dataLayer||[];'
+      : null;
+
+// Official Microsoft Clarity snippet (https://learn.microsoft.com/clarity/setup-and-installation/install-the-script)
+const clarityLoader = clarityId
+  ? `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",${JSON.stringify(clarityId)});`
+  : null;
+
+// Official Meta Pixel base code (https://developers.facebook.com/docs/meta-pixel/get-started)
+// PageView is NOT tracked inline — it fires from the astro:page-load listener
+// (every load, including soft navigations; dedup with of_page_view below).
+const metaPixelLoader = metaPixelId
+  ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',${JSON.stringify(metaPixelId)});`
+  : null;
+
+// Official Google Tag Manager loader (https://developers.google.com/tag-manager/quickstart)
+const gtmLoader = gtmId
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${JSON.stringify(gtmId)});`
+  : null;
+
+// Body: bootstrap guard wraps Clarity + Meta + GTM so they initialize exactly
+// once (end-of-body is:inline scripts re-execute on soft navigations). The
+// astro:page-load listener fires Meta PageView on EVERY load and pushes
+// of_page_view (GA4 soft-nav page_view) only on soft navigations (skip-first).
+const bodyMeasurementScript =
+  clarityId || metaPixelId || gtmId
+    ? [
+        '(function(){',
+        'if(window.__ofMeasurementLoaded)return;',
+        'window.__ofMeasurementLoaded=true;',
+        'var __ofMetaFirstPending=false;var __ofFirstNav=true;',
+        DEFER_HELPER,
+        clarityId ? `__ofDefer(function(){${clarityLoader}});` : null,
+        metaPixelId
+          ? `__ofDefer(function(){${metaPixelLoader}if(__ofMetaFirstPending){fbq('track','PageView');__ofMetaFirstPending=false;}});`
+          : null,
+        gtmId ? `__ofDefer(function(){${gtmLoader}});` : null,
+        "document.addEventListener('astro:page-load',function(){",
+        "if(window.fbq){window.fbq('track','PageView');}else{__ofMetaFirstPending=true;}",
+        "if(!__ofFirstNav&&window.dataLayer){window.dataLayer.push({event:'of_page_view'});}",
+        '__ofFirstNav=false;',
+        '});',
+        '})();',
+      ]
+        .filter(Boolean)
+        .join('')
+    : null;
+---
+
+{
+  variant === 'head' && gscVerification && (
+    <meta name="google-site-verification" content={gscVerification} />
+  )
+}
+
+{
+  variant === 'head' && dataLayerInitScript && (
+    <script is:inline set:html={dataLayerInitScript} />
+  )
+}
+
+{
+  variant === 'head' && gtmId && (
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+  )
+}
+
+{
+  variant === 'head' && gtmId && (
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${encodeURIComponent(gtmId)}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe>
+    </noscript>
+  )
+}
+
+{
+  variant === 'body' && bodyMeasurementScript && (
+    <script is:inline set:html={bodyMeasurementScript} />
+  )
+}
+
+{
+  variant === 'body' && metaPixelId && (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        alt=""
+        src={`https://www.facebook.com/tr?id=${encodeURIComponent(metaPixelId)}&ev=PageView&noscript=1`}
+      />
+    </noscript>
+  )
+}

@@ -26,12 +26,12 @@ const t = useTranslations(locale);
       <div class="grid lg:grid-cols-3 gap-12">
         <!-- Form -->
         <div class="lg:col-span-2">
-          <CheckoutForm locale={locale} client:load />
+          <CheckoutForm locale={locale} client:visible />
         </div>
 
         <!-- Order Summary -->
         <div class="lg:col-span-1">
-          <OrderSummary locale={locale} client:load />
+          <OrderSummary locale={locale} client:visible />
         </div>
       </div>
 

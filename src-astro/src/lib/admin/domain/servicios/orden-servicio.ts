@@ -21,7 +21,7 @@ import { transicionValida } from '@/lib/admin/domain/entities/orden'
 // ═══════════════════════════════════════════════════════════════════════════════
 
 export interface IOrdenServicio {
-  listar(opts?: { bodegaId?: string; limit?: number }): Promise<Orden[]>
+  listar(opts?: { bodegaId?: string; limit?: number; desde?: Date; hasta?: Date }): Promise<Orden[]>
   obtenerPorId(id: string): Promise<Orden>
   crear(data: Partial<Orden>): Promise<Orden>
   actualizarEstado(id: string, nuevoEstado: EstadoOrden): Promise<Orden>
@@ -58,13 +58,15 @@ interface LMOrdenItemRow {
 }
 
 export class SupabaseOrdenServicio implements IOrdenServicio {
-  async listar(opts?: { bodegaId?: string; limit?: number }): Promise<Orden[]> {
+  async listar(opts?: { bodegaId?: string; limit?: number; desde?: Date; hasta?: Date }): Promise<Orden[]> {
     let query = supabase
       .from('ordenes')
       .select('*')
       .order('creado_en', { ascending: false })
 
     if (opts?.bodegaId) query = query.eq('bodega_id', opts.bodegaId)
+    if (opts?.desde) query = query.gte('creado_en', opts.desde.toISOString())
+    if (opts?.hasta) query = query.lte('creado_en', opts.hasta.toISOString())
     if (opts?.limit) query = query.limit(opts.limit)
 
     const { data, error } = await query
@@ -175,8 +177,10 @@ export class SupabaseOrdenServicio implements IOrdenServicio {
 export class MockOrdenServicio implements IOrdenServicio {
   private ordenes: Orden[] = [...MockOrdenServicio._generarMock()]
 
-  async listar(_opts?: { bodegaId?: string; limit?: number }): Promise<Orden[]> {
+  async listar(_opts?: { bodegaId?: string; limit?: number; desde?: Date; hasta?: Date }): Promise<Orden[]> {
     let result = [...this.ordenes]
+    if (_opts?.desde) result = result.filter((o) => new Date(o.creadoEn) >= _opts.desde!)
+    if (_opts?.hasta) result = result.filter((o) => new Date(o.creadoEn) <= _opts.hasta!)
     if (_opts?.limit) result = result.slice(0, _opts.limit)
     return result
   }
@@ -235,61 +239,42 @@ export class MockOrdenServicio implements IOrdenServicio {
   // ── Mock data ──────────────────────────────────────────────────────────────
 
   private static _generarMock(): Orden[] {
-    const now = new Date().toISOString()
-    const yesterday = new Date(Date.now() - 86400000).toISOString()
-    const twoDaysAgo = new Date(Date.now() - 172800000).toISOString()
+    const now = Date.now()
+    const NOMBRES = ['Bobinsana', 'Kaxinawá', 'Nukini', 'Shawandawa', 'Katukina', 'Yawanawá', 'Ashaninka', 'Kuntanawa']
+    const DIVISAS = ['COP', 'BRL'] as const
+    const ESTADOS: EstadoOrden[] = ['pendiente', 'confirmada', 'pagada', 'preparando', 'enviada', 'entregada']
+    const CANALES: CanalOrden[] = ['whatsapp', 'web', 'manual']
+    const BODEGAS = ['CO-BOGOTA', 'BR-ACRE']
 
-    return [
-      {
-        id: 'MOCK-ORD-001',
-        displayId: 1001,
+    return Array.from({ length: 48 }, (_, i) => {
+      const daysAgo = Math.floor(Math.random() * 365)
+      const createdDate = new Date(now - daysAgo * 86400000 - Math.floor(Math.random() * 86400000))
+      const qty = (i % 3) + 1
+      const precio = [35000, 70000, 100000][i % 3]
+      const divisa = DIVISAS[i % 2]
+      return {
+        id: `MOCK-ORD-${String(i + 1).padStart(3, '0')}`,
+        displayId: 1001 + i,
         clienteId: null,
         items: [
-          { varianteId: 'MOCK-VAR-0-0', nombre: 'Bobinsana 10g', gramos: 10, precioUnit: 35000, cantidad: 1 },
+          {
+            varianteId: `MOCK-VAR-${i % 8}-${i % 3}`,
+            nombre: `${NOMBRES[i % 8]} ${[10, 20, 30][i % 3]}g`,
+            gramos: [10, 20, 30][i % 3],
+            precioUnit: precio,
+            cantidad: qty,
+          },
         ],
-        total: 35000,
-        divisa: 'COP',
-        estado: 'entregada',
-        canal: 'whatsapp',
-        bodegaId: 'CO-BOGOTA',
+        total: precio * qty + Math.floor(Math.random() * 5000),
+        divisa,
+        estado: ESTADOS[i % ESTADOS.length],
+        canal: CANALES[i % CANALES.length],
+        bodegaId: BODEGAS[i % BODEGAS.length],
         notas: null,
-        creadoEn: twoDaysAgo,
-        actualizadoEn: yesterday,
-      },
-      {
-        id: 'MOCK-ORD-002',
-        displayId: 1002,
-        clienteId: null,
-        items: [
-          { varianteId: 'MOCK-VAR-1-0', nombre: 'Kaxinawá 10g', gramos: 10, precioUnit: 35000, cantidad: 2 },
-          { varianteId: 'MOCK-VAR-2-1', nombre: 'Nukini 20g', gramos: 20, precioUnit: 70000, cantidad: 1 },
-        ],
-        total: 140000,
-        divisa: 'COP',
-        estado: 'confirmada',
-        canal: 'web',
-        bodegaId: 'CO-BOGOTA',
-        notas: 'Envío express',
-        creadoEn: yesterday,
-        actualizadoEn: yesterday,
-      },
-      {
-        id: 'MOCK-ORD-003',
-        displayId: 1003,
-        clienteId: null,
-        items: [
-          { varianteId: 'MOCK-VAR-3-2', nombre: 'Shawandawa 30g', gramos: 30, precioUnit: 100000, cantidad: 1 },
-        ],
-        total: 100000,
-        divisa: 'COP',
-        estado: 'pendiente',
-        canal: 'whatsapp',
-        bodegaId: 'BR-ACRE',
-        notas: null,
-        creadoEn: now,
-        actualizadoEn: now,
-      },
-    ]
+        creadoEn: createdDate.toISOString(),
+        actualizadoEn: createdDate.toISOString(),
+      }
+    })
   }
 }
 

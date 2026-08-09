@@ -66,6 +66,7 @@ export function WhatsAppButton({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      data-wa-source="product"
       className={[
         "inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-200",
         "bg-whatsapp text-white hover:opacity-90 hover:shadow-lg active:scale-[0.98]",

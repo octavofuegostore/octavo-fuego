@@ -70,7 +70,7 @@ const isEdit = mode === 'edit';
           value={product?.name || ''}
           required
           class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
-          placeholder="Ej: Cera de Ducha - Cacao"
+          placeholder="Ej: Tsunú Rapé"
         />
       </div>
       
@@ -82,7 +82,7 @@ const isEdit = mode === 'edit';
           value={product?.sku || ''}
           required
           class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
-          placeholder="Ej: CD-CA-100"
+          placeholder="Ej: TSU-10"
         />
       </div>
       
@@ -104,9 +104,7 @@ const isEdit = mode === 'edit';
           class="w-full px-4 py-2.5 border border-papel rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-tabaco/20 focus:border-tabaco transition-colors"
         >
           <option value="">Seleccionar categoría</option>
-          <option value="cera" selected={product?.category === 'cera'}>Cera de Ducha</option>
-          <option value="sabonete" selected={product?.category === 'sabonete'}>Sabonete</option>
-          <option value="pack" selected={product?.category === 'pack'}>Pack</option>
+          <option value="rapé" selected={product?.category === 'rapé'}>Rapé</option>
         </select>
       </div>
       

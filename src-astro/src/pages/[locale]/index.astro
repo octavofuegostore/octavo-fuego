@@ -8,6 +8,7 @@
 import Layout from '@/layouts/Layout.astro';
 import HomeContent from '@/components/home/HomeContent.astro';
 import GraphSchema from '@/components/seo/GraphSchema.astro';
+import FAQPageHomeJsonLd from '@/components/seo/FAQPageHomeJsonLd.astro';
 import { useTranslations, type Locale } from '@/i18n';
 
 
@@ -21,8 +22,8 @@ const t = useTranslations(locale_);
 // F2.1: Homepage title + meta descriptions per locale
 const homeTitles: Record<Locale, string> = {
   es: 'Rapé do Acre Colombia — Medicina Ancestral',
-  en: 'Rapé do Acre Colombia — Amazonian Sacred Snuff',
-  pt: 'Rapé do Acre Colômbia — Medicina Ancestral',
+  en: 'Rapé do Acre — Amazonian Sacred Snuff',
+  pt: 'Rapé do Acre — Medicina Ancestral',
 };
 
 const homeDescriptions: Record<Locale, string> = {
@@ -34,5 +35,6 @@ const homeDescriptions: Record<Locale, string> = {
 
 <Layout title={homeTitles[locale_]} description={homeDescriptions[locale_]} locale={locale_} ogImage="/images/og-default.svg">
   <GraphSchema slot="head" locale={locale_} />
+  <FAQPageHomeJsonLd slot="head" locale={locale_} />
   <HomeContent locale={locale_} />
 </Layout>

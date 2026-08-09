@@ -53,7 +53,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
   </head>
   <body class="bg-papel min-h-screen">
     <!-- Skip-to-content link -->
-    <a href="#admin-main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-tabaco focus:rounded-xl focus:shadow-lg">
+    <a href="#admin-main" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-white focus:text-[var(--color-action-primary)] focus:rounded-xl focus:shadow-lg">
       Saltar al contenido principal
     </a>
     <div class="flex h-screen overflow-hidden">
@@ -126,7 +126,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -139,7 +139,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/stock"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -152,7 +152,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/inventario/transferencias"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -224,7 +224,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/clientes"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -237,7 +237,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath.startsWith("/admin/clientes/b2b")
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >
@@ -277,7 +277,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Dashboard</a>
@@ -288,7 +288,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/transacciones"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Transacciones</a>
@@ -299,7 +299,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
                     class:list={[
                       "block px-3 py-2 rounded-lg text-sm transition-colors",
                       currentPath === "/admin/contabilidad/informes"
-                        ? "bg-tabaco/20 text-tabaco"
+                        ? "bg-tabaco/20 text-[var(--color-action-primary)]"
                         : "text-papel/60 hover:bg-humo/60 hover:text-papel"
                     ]}
                   >Informes</a>
@@ -345,7 +345,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         <div class="p-4 border-t border-humo/50">
           <div class="flex items-center gap-3">
             <div class="w-9 h-9 bg-tabaco/20 rounded-full flex items-center justify-center">
-              <span class="text-tabaco font-medium text-sm">{userInitials}</span>
+              <span class="text-[var(--color-action-primary)] font-medium text-sm">{userInitials}</span>
             </div>
             <div class="flex-1 min-w-0">
               <p class="text-sm font-medium text-papel truncate">{userName}</p>
@@ -372,7 +372,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           <!-- Mobile menu button -->
           <button
             id="mobile-menu-toggle"
-            class="lg:hidden text-humo hover:text-tabaco transition-colors"
+            class="lg:hidden text-humo hover:text-[var(--color-action-primary)] transition-colors"
           >
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -382,6 +382,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           <!-- Search -->
           <div class="flex-1 max-w-md mx-4">
             <div class="relative">
+              <label for="admin-global-search" class="sr-only">Buscar en el panel</label>
               <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ceniza" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -481,8 +482,8 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
       $sidebarOpen.subscribe((open) => {
         const el = document.getElementById('admin-sidebar')
         if (!el) return
-        if (window.innerWidth < 1024) return
         el.classList.toggle('-translate-x-full', !open)
+        el.inert = !open && window.innerWidth < 1024
       })
 
       // ── PATH DETECTION + SUBMENU RESET (runs on every navigation) ──
@@ -564,18 +565,42 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
         })
 
         // ── Quick-create dropdown toggle (header button) ──
-        document.getElementById('admin-quick-create-btn')?.addEventListener('click', (e) => {
+        const qcBtn = document.getElementById('admin-quick-create-btn')
+        const qcDd = document.getElementById('quick-create-dropdown')
+        const qcItems = qcDd?.querySelectorAll('button, a') ?? []
+
+        function toggleQuickCreate(open?: boolean) {
+          if (!qcDd) return
+          const isOpen = open ?? qcDd.classList.contains('hidden')
+          qcDd.classList.toggle('hidden', !isOpen)
+          if (isOpen && qcItems[0]) (qcItems[0] as HTMLElement).focus()
+        }
+
+        qcBtn?.addEventListener('click', (e) => {
           e.stopPropagation()
-          document.getElementById('quick-create-dropdown')?.classList.toggle('hidden')
+          toggleQuickCreate(qcDd?.classList.contains('hidden'))
+        })
+
+        qcBtn?.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            toggleQuickCreate(qcDd?.classList.contains('hidden'))
+          }
+        })
+
+        qcDd?.addEventListener('keydown', (e) => {
+          const items = Array.from(qcDd.querySelectorAll('button, a, [tabindex]:not([tabindex="-1"])'))
+          const current = items.findIndex(el => el === document.activeElement)
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[(current + 1) % items.length]?.focus() }
+          if (e.key === 'ArrowUp') { e.preventDefault(); items[(current - 1 + items.length) % items.length]?.focus() }
+          if (e.key === 'Escape') { e.preventDefault(); toggleQuickCreate(false); qcBtn?.focus() }
         })
 
         // Close quick-create dropdown on outside click
         document.addEventListener('click', (e) => {
-          const btn = document.getElementById('admin-quick-create-btn')
-          const dd = document.getElementById('quick-create-dropdown')
-          if (!btn || !dd || dd.classList.contains('hidden')) return
-          if (!btn.contains(e.target as Node) && !dd.contains(e.target as Node)) {
-            dd.classList.add('hidden')
+          if (!qcBtn || !qcDd || qcDd.classList.contains('hidden')) return
+          if (!qcBtn.contains(e.target as Node) && !qcDd.contains(e.target as Node)) {
+            qcDd.classList.add('hidden')
           }
         })
 
@@ -587,7 +612,7 @@ const userInitials = getInitials(user?.nombre || user?.email || undefined);
           } else {
             window.location.href = '/admin/clientes'
           }
-          document.getElementById('quick-create-dropdown')?.classList.add('hidden')
+          qcDd?.classList.add('hidden')
         })
 
         // ── Global search (Enter key navigates to most likely page) ──

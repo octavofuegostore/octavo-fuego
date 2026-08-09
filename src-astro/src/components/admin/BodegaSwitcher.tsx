@@ -74,7 +74,7 @@ export default function BodegaSwitcher() {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="flex items-center gap-2 px-3 py-1.5 border border-papel rounded-lg text-sm text-humo hover:border-tabaco/30 hover:text-tabaco transition-colors"
+        className="flex items-center gap-2 px-3 py-1.5 border border-papel rounded-lg text-sm text-humo hover:border-tabaco/30 hover:text-[var(--color-action-primary)] transition-colors"
         title="Seleccionar bodega"
       >
         {/* Location icon */}
@@ -104,7 +104,7 @@ export default function BodegaSwitcher() {
               onClick={() => handleSelect(option)}
               className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors text-left ${
                 option.id === selected.id
-                  ? 'bg-tabaco/10 text-tabaco font-medium'
+                  ? 'bg-tabaco/10 text-[var(--color-action-primary)] font-medium'
                   : 'text-humo hover:bg-papel/50'
               }`}
             >
@@ -128,7 +128,7 @@ export default function BodegaSwitcher() {
                 )}
               </div>
               {option.id === selected.id && (
-                <svg className="w-4 h-4 text-tabaco flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 text-[var(--color-action-primary)] flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
               )}

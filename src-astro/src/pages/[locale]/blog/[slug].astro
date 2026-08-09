@@ -1,12 +1,16 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { Badge } from '@/components/ui/badge';
+import PersonJsonLd from '@/components/seo/PersonJsonLd.astro';
 import { useTranslations, type Locale } from '@/i18n';
 export async function getStaticPaths() {
-  const slugs = ['guia-rape-principiantes', 'historia-sananga', 'ceremonia-rape-amazonia', 'beneficios-spiritus'];
-  return slugs.map((slug) => ({
-    params: { locale: 'es', slug },
-  }));
+  const slugs = ['guia-rape-principiantes', 'historia-sananga', 'ceremonia-rape-amazonia', 'beneficios-spiritus', 'ceremonia-rape', 'guia-principiantes', 'guia-completa-rape'];
+  const locales = ['es', 'en', 'pt'] as const;
+  return slugs.flatMap((slug) =>
+    locales.map((locale) => ({
+      params: { locale, slug },
+    }))
+  );
 }
 
 const locale_ = (Astro.currentLocale || 'es') as Locale;
@@ -15,17 +19,120 @@ const baseUrl = locale_ === 'es' ? '' : `/${locale_}`;
 
 const { slug } = Astro.params;
 
+type LocaleString = string | Record<Locale, string>;
+
 interface BlogPost {
-  title: string;
+  title: LocaleString;
   slug: string;
-  excerpt: string;
-  content: string;
+  excerpt: LocaleString;
+  content: LocaleString;
   publishedAt: string;
   author: string;
   coverImage: string;
   category: string;
   relatedPosts: string[];
 }
+
+const contentByLocale: Record<string, Record<Locale, string>> = {
+  'guia-completa-rape': {
+    es: `
+El Rapé do Acre es una medicina ancestral amazónica preparada con hojas de tabaco silvestre (*Nicotiana rustica*) y cenizas de árboles sagrados. Más de 40 pueblos indígenas del Acre lo utilizan para limpieza energética, claridad mental y conexión espiritual.
+
+## ¿Qué hace único al Rapé do Acre?
+
+1. **Nicotiana rustica**: 6-18% de nicotina vs 0.5-3% del tabaco comercial
+2. **Cenizas vegetales**: Tsunú, Pariká, Cumarú aportan propiedades únicas
+3. **Fermentación artesanal**: 3-12 meses de proceso
+4. **Diversidad de pueblos**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Dato**: Acre produce ~70% del Rapé ceremonial de Brasil, 3-5 toneladas anuales (Fuente: Comisión Estatal de Productos Forestales 2022).
+
+## Las 5 variedades tradicionales
+
+- **Tsunú**: Ceniza del árbol más fuerte. Muy alta intensidad. Reset energético.
+- **Pixurí**: Hojas con eucaliptol natural. Suave. Respiratorio.
+- **Pariká**: Ceniza de Pariká + tabaco de cuerda. Ceremonial puro. Tradición Kaxinawá.
+- **Cumarú de Cheiro**: Ceniza de Cumarú + imburana. Protección. Cumarina natural.
+- **Vena de Pajé**: Tres tabacos + liana Vena de Pajé. Meditación y pineal.
+
+## Preparación artesanal
+
+Cultivo → fermentación (3-12 meses) → quema de árboles → molienda en morteros → tamizado. Sin aditivos ni conservantes.
+
+## Investigación científica
+
+La UFAC mantiene un programa de documentación desde 2005 (120+ publicaciones). Un estudio de 2021 en Revista Brasileira de Farmacognosia halló que 92% de Rapé do Acre auténtico no tenía contaminantes.
+
+## Contraindicaciones
+
+Absolutas: embarazo, enfermedades cardíacas, epilepsia, alergia, menores 18 años. Relativas: diabetes, ansiedad severa, IMAO. Precauciones: no mezclar, no conducir, hidratarse.
+    `.trim(),
+    en: `
+Rapé do Acre is an ancestral Amazonian medicine prepared with wild tobacco leaves (*Nicotiana rustica*) and sacred tree ashes. Over 40 indigenous peoples of Acre use it for energetic cleansing, mental clarity, and spiritual connection.
+
+## What Makes Rapé do Acre Unique?
+
+1. **Nicotiana rustica**: 6-18% nicotine vs 0.5-3% in commercial tobacco
+2. **Plant ashes**: Tsunú, Pariká, Cumarú add unique properties
+3. **Artisanal fermentation**: 3-12 month process
+4. **Indigenous diversity**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Fact**: Acre produces ~70% of Brazil's ceremonial Rapé, 3-5 metric tons annually (Source: Acre State Commission of Non-Timber Forest Products, 2022).
+
+## The 5 Traditional Varieties
+
+- **Tsunú**: Ash from the strongest tree. Very high intensity. Energetic reset.
+- **Pixurí**: Leaves with natural eucalyptol. Soft. Respiratory support.
+- **Pariká**: Pariká ash + rope tobacco. Pure ceremonial. Kaxinawá tradition.
+- **Cumarú de Cheiro**: Cumarú ash + imburana. Protection. Natural coumarin.
+- **Vena de Pajé**: Three tobaccos + Vena de Pajé vine. Meditation and pineal.
+
+## Artisanal Preparation
+
+Cultivation → fermentation (3-12 months) → tree burning → mortar grinding → sifting. No additives or preservatives.
+
+## Scientific Research
+
+UFAC has maintained a documentation program since 2005 (120+ publications). A 2021 study in Revista Brasileira de Farmacognosia found that 92% of authentic Rapé do Acre had no contaminants.
+
+## Contraindications
+
+Absolute: pregnancy, heart conditions, epilepsy, allergies, under 18. Relative: diabetes, severe anxiety, MAOIs. Precautions: do not mix, do not drive, stay hydrated.
+    `.trim(),
+    pt: `
+O Rapé do Acre é uma medicina ancestral amazônica preparada com folhas de tabaco silvestre (*Nicotiana rustica*) e cinzas de árvores sagradas. Mais de 40 povos indígenas do Acre o utilizam para limpeza energética, clareza mental e conexão espiritual.
+
+## O que torna o Rapé do Acre único?
+
+1. **Nicotiana rustica**: 6-18% de nicotina vs 0.5-3% do tabaco comercial
+2. **Cinzas vegetais**: Tsunú, Pariká, Cumarú agregam propriedades únicas
+3. **Fermentação artesanal**: 3-12 meses de processo
+4. **Diversidade de povos**: Huni Kui, Yawanawá, Nukini, Katukina
+
+**Dado**: O Acre produz ~70% do Rapé cerimonial do Brasil, 3-5 toneladas anuais (Fonte: Comissão Estadual de Produtos Florestais Não Madeireiros do Acre, 2022).
+
+## As 5 variedades tradicionais
+
+- **Tsunú**: Cinza da árvore mais forte. Altíssima intensidade. Reset energético.
+- **Pixurí**: Folhas com eucaliptol natural. Suave. Respiratório.
+- **Pariká**: Cinza de Pariká + tabaco de corda. Cerimonial puro. Tradição Kaxinawá.
+- **Cumarú de Cheiro**: Cinza de Cumarú + imburana. Proteção. Cumarina natural.
+- **Vena de Pajé**: Três tabacos + cipó Vena de Pajé. Meditação e pineal.
+
+## Preparação artesanal
+
+Cultivo → fermentação (3-12 meses) → queima de árvores → moagem em pilões → peneiração. Sem aditivos ou conservantes.
+
+## Pesquisa científica
+
+A UFAC mantém um programa de documentação desde 2005 (120+ publicações). Um estudo de 2021 na Revista Brasileira de Farmacognosia constatou que 92% do Rapé do Acre autêntico não continha contaminantes.
+
+## Contraindicações
+
+Absolutas: gravidez, doenças cardíacas, epilepsia, alergia, menores de 18 anos. Relativas: diabetes, ansiedade severa, IMAO. Precauções: não misturar, não dirigir, hidratar-se.
+    `.trim(),
+  },
+};
 
 const posts: Record<string, BlogPost> = {
   'guia-rape-principiantes': {
@@ -55,7 +162,7 @@ El Rapé se aplica típicamente con un **Kuripe**, un tubo ceremonial que permit
 Es fundamental respetar las dosis tradicionales y nunca usar Rapé sin la guía de alguien experimentado. El Rapé es una medicina poderosa que debe tratarse con respeto.
     `.trim(),
     publishedAt: '2026-03-15',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['historia-sananga', 'ceremonia-rape-amazonia'],
@@ -87,7 +194,7 @@ La preparación involucra la extracción del látex de la raíz, mezclado con ag
 Durante las ceremonias, se aplican 2-3 gotas en cada ojo. La experiencia inicial puede ser intensa, con sensación de ardor, pero rápidamente da paso a una claridad visual notable.
     `.trim(),
     publishedAt: '2026-03-10',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'cultura',
     relatedPosts: ['guia-rape-principiantes', 'beneficios-spiritus'],
@@ -123,7 +230,7 @@ Antes de cualquier cosa, establece tu intención. El Rapé amplifica tus intenci
 5. Medita o permanece en silencio
     `.trim(),
     publishedAt: '2026-03-05',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'ancestral',
     relatedPosts: ['guia-rape-principiantes', 'beneficios-spiritus'],
@@ -160,10 +267,115 @@ El Rapé puede complementar:
 Cualquier uso del Rapé debe realizarse con respeto y responsabilidad. Esta medicina no es un juguete sino un aliado poderoso que exige respeto.
     `.trim(),
     publishedAt: '2026-02-28',
-    author: 'Octavo Fuego',
+    author: 'Josué Calderón',
     coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
     category: 'salud',
     relatedPosts: ['guia-rape-principiantes', 'ceremonia-rape-amazonia'],
+  },
+  'ceremonia-rape': {
+    title: 'Cómo es una Ceremonia de Rapé: Guía de Ritual Amazónico',
+    slug: 'ceremonia-rape',
+    excerpt: 'Descubre paso a paso cómo se realiza una ceremonia de Rapé do Acre: preparación del espacio, uso del kuripe, protocolos tradicionales Yawanawá, integración posterior.',
+    content: `
+La ceremonia de Rapé es un ritual de medicina ancestral amazónica donde un facilitador administra Rapé a través de las fosas nasales usando un aplicador ceremonial llamado kuripe o tepi. La ceremonia involucra preparación energética, establecimiento de intención y un período de integración.
+
+## ¿Cómo se prepara el espacio?
+
+El área debe estar limpia física y energéticamente. Se purifica con humo de palo santo o copal. Los participantes se sientan en círculo mirando al centro, con un altar que contiene el kuripe, la medicina, una pluma y agua.
+
+**Dato**: Los Yawanawá realizan ceremonias al amanecer y atardecer, considerados portales energéticos por más de 500 años.
+
+## Los implementos necesarios
+
+- **Kuripe**: Aplicador personal de 8-15 cm
+- **Tepi**: Aplicador para otro de 40-60 cm
+- **Plato de Rapé**: Para contener la medicina
+- **Pluma**: Para dispersar y bendecir
+
+## Protocolo paso a paso
+
+1. Purificación inicial con humo de palo santo
+2. Establecimiento de intención por cada participante
+3. Soplido ceremonial: lado derecho primero, luego izquierdo
+4. Tiempo de integración en silencio (15-30 min)
+5. Cierre: sellado de energía y agua
+
+## ¿Cuánto dura?
+
+Una ceremonia grupal dura 1-3 horas. Los efectos inmediatos duran 15-45 minutos. La claridad persiste horas o días.
+
+**Recomendado para principiantes**: El Rapé Pixurí tiene el perfil más suave para primeras experiencias ceremoniales.
+
+## Contraindicaciones
+
+No es para ti si buscas experiencia recreativa, tienes problemas respiratorios severos, estás embarazada, o has consumido alcohol en 24 horas previas.
+    `.trim(),
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
+    coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
+    category: 'ancestral',
+    relatedPosts: ['guia-principiantes', 'beneficios-spiritus'],
+  },
+  'guia-principiantes': {
+    title: 'Guía para Principiantes: Cómo Empezar con el Rapé do Acre',
+    slug: 'guia-principiantes',
+    excerpt: 'Todo lo que necesitas saber para iniciarte: qué es el Rapé, cómo elegir tu primera variedad, cómo usar el kuripe, dosis recomendadas y protocolos de seguridad.',
+    content: `
+El Rapé do Acre se produce exclusivamente en el estado de Acre, Amazonía brasileña. Se caracteriza por tabaco silvestre (*Nicotiana rustica*) con 6-18% de nicotina, cenizas de árboles sagrados y preparación artesanal con fermentación de 3-12 meses.
+
+## ¿Cómo elegir tu primer Rapé?
+
+- **Pixurí**: Suave, aroma mentolado — ideal para empezar
+- **Tsunú**: Muy alta intensidad — solo para avanzados
+- **Pariká**: Ceremonial puro, alta intensidad
+- **Cumarú**: Medio, protección energética
+- **Vena de Pajé**: Medio, meditación profunda
+
+## ¿Cómo usar el kuripe?
+
+1. Coloca 30-50 mg de Rapé en la abertura ancha
+2. Punta angosta en la fosa nasal, cabeza ligeramente atrás
+3. Sopla firme pero suave (no inhales)
+4. Respira por la boca 1-2 minutos
+5. Alterna lados: derecho (yang) primero
+
+## Dosis para empezar
+
+- Inicial: 20-30 mg (punta de palillo)
+- Estándar: 50-100 mg (grano de arroz)
+- Ceremonial: 100-150 mg
+- Frecuencia: 1-2 aplicaciones por sesión, 2-3 veces/semana máximo
+
+## Precauciones
+
+No usar si: embarazo, lactancia, enfermedades cardíacas, epilepsia, alergia a nicotina, menores de 18 años. No mezclar con alcohol u otras sustancias. No conducir después.
+
+**Compra responsable**: Verifica empaque al vacío, origen comunitario comprobable (Acre, Brasil), ingredientes sin aditivos.
+    `.trim(),
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
+    coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
+    category: 'ancestral',
+    relatedPosts: ['ceremonia-rape', 'guia-completa-rape'],
+  },
+  'guia-completa-rape': {
+    title: {
+      es: 'Guía Completa del Rapé do Acre: Origen, Variedades y Uso Ceremonial',
+      en: 'Complete Guide to Rapé do Acre: Origin, Varieties and Ceremonial Use',
+      pt: 'Guia Completa do Rapé do Acre: Origem, Variedades e Uso Cerimonial',
+    },
+    slug: 'guia-completa-rape',
+    excerpt: {
+      es: 'La guía más completa sobre Rapé do Acre: las 5 variedades tradicionales, preparación artesanal, propiedades medicinales, protocolos ceremoniales y guía de compra responsable.',
+      en: 'The most complete guide to Rapé do Acre: 5 traditional varieties, artisanal preparation, medicinal properties, ceremonial protocols, and responsible buying guide.',
+      pt: 'O guia mais completo sobre Rapé do Acre: as 5 variedades tradicionais, preparação artesanal, propriedades medicinais, protocolos cerimoniais e guia de compra responsável.',
+    },
+    content: contentByLocale,
+    publishedAt: '2026-07-13',
+    author: 'Josué Calderón',
+    coverImage: 'https://images.unsplash.com/photo-1607006344380-b6775a0824a7?w=1200&h=600&fit=crop',
+    category: 'ancestral',
+    relatedPosts: ['guia-principiantes', 'ceremonia-rape', 'beneficios-spiritus'],
   },
 };
 
@@ -171,6 +383,11 @@ const post = posts[slug || ''];
 
 if (!post) {
   return Astro.redirect('/404');
+}
+
+function getLocaleValue(val: string | Record<Locale, string>): string {
+  if (typeof val === 'string') return val;
+  return val[locale_] || val.es || '';
 }
 
 function formatDate(dateStr: string) {
@@ -201,30 +418,55 @@ function renderMarkdown(content: string): string {
 }
 ---
 
-<Layout title={post.title} description={post.excerpt} locale={locale_}>
+<Layout title={getLocaleValue(post.title)} description={getLocaleValue(post.excerpt)} locale={locale_}>
   <script type="application/ld+json" set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     '@id': `https://octavofuego.com${Astro.url.pathname}#article`,
     'mainEntityOfPage': `https://octavofuego.com${Astro.url.pathname}`,
-    'headline': post.title,
-    'description': post.excerpt,
+    'headline': getLocaleValue(post.title),
+    'description': getLocaleValue(post.excerpt),
     'image': post.coverImage,
     'datePublished': `${post.publishedAt}T00:00:00-05:00`,
     'dateModified': `${post.publishedAt}T00:00:00-05:00`,
     'articleSection': post.category,
-    'author': {
-      '@type': 'Organization',
-      '@id': 'https://octavofuego.com/#organization',
-      'name': post.author,
-      'url': 'https://octavofuego.com'
-    },
+    'author': [
+      {
+        '@type': 'Person',
+        '@id': 'https://octavofuego.com/#person',
+      },
+      {
+        '@type': 'Person',
+        '@id': 'https://octavofuego.com/#person-edison',
+      },
+    ],
     'publisher': {
       '@type': 'Organization',
       '@id': 'https://octavofuego.com/#organization',
       'name': 'Octavo Fuego',
       'url': 'https://octavofuego.com'
     }
+  })} />
+  <PersonJsonLd
+    name={post.author}
+    jobTitle="Cofundador & Growth Developer"
+    url="https://www.linkedin.com/in/calderon-josue-qa-ia-automation/"
+    sameAs={[
+      'https://www.linkedin.com/in/calderon-josue-qa-ia-automation/',
+      'https://www.instagram.com/octavofuego',
+      'https://www.youtube.com/@octavofuego',
+    ]}
+  />
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': 'https://octavofuego.com/#person-edison',
+    name: 'Edison Ramírez',
+    jobTitle: 'Cofundador & Maestro Rapé Maker',
+    affiliation: {
+      '@type': 'Organization',
+      '@id': 'https://octavofuego.com/#organization',
+    },
   })} />
   <article>
     <!-- Hero Image -->
@@ -273,7 +515,7 @@ function renderMarkdown(content: string): string {
       </p>
 
       <!-- Article Content -->
-      <div class="prose max-w-none" set:html={renderMarkdown(post.content)} />
+      <div class="prose max-w-none" set:html={renderMarkdown(getLocaleValue(post.content))} />
 
       <!-- Share / CTA -->
       <div class="mt-12 pt-8 border-t border-gray-200">
@@ -310,7 +552,7 @@ function renderMarkdown(content: string): string {
                       />
                     </div>
                     <div>
-                      <h3 class="font-display text-lg font-bold group-hover:text-tabaco transition-colors">
+                      <h3 class="font-display text-lg font-bold group-hover:text-[var(--color-action-primary)] transition-colors">
                         {related.title}
                       </h3>
                       <p class="text-ceniza text-sm line-clamp-2 mt-1">
