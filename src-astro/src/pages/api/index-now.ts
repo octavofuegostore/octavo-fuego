@@ -2,7 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
-const INDEXNOW_KEY = import.meta.env.INDEXNOW_KEY || '0c9593e6ac8242ea9af3d7ad18b2f2a6';
+const INDEXNOW_KEY = import.meta.env.INDEXNOW_KEY || '5b38d0f017514b989d8df65fd2803c0b';
 const ALLOWED_DOMAIN = 'octavofuego.com';
 
 export const POST: APIRoute = async ({ request }) => {

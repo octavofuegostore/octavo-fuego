@@ -178,3 +178,53 @@
 
 - [ ] **Redefinir locale EN como B2B/Wholesale**: Actualmente `/en/` replica la tienda B2C en inglés. Convertirlo en portal mayorista (precios bulk, registro B2B, sin carrito B2C). Implica replantear contenido, navegación y checkout para EN.
 - [ ] **Rutas localizadas por idioma** (ej. `/en/shop/`, `/pt/loja/`): SEO benefit menor vs esfuerzo (~40+ archivos). Aplazar hasta que haya tráfico real o reestructuración B2B.
+
+---
+
+## ✅ Completado — Sprint Lanzamiento Web (Agosto 8-9, 2026)
+
+### Publicación e Indexación
+- [x] Hotfix claims engañosos: reseñas falsas eliminadas, superlativos fuera, envío honesto, legales ×3
+- [x] Stack de medición env-gated: GSC + Clarity + Meta + GA4 + GTM (PR #63)
+- [x] Fix schema GSC: OrganizationJsonLd hasOfferCatalog eliminado (5 errores corregidos)
+- [x] Dominio canónico www alineado en sitemap y código
+- [x] GSC verificado + sitemap 95 páginas
+- [x] Bing Webmaster verificado + sitemap + IndexNow activo (key 0c9593e6...)
+- [x] Pipod analytics adaptation: preconnects + TikTok Pixel env-gated (PR #68)
+- [x] JD measurement stack: APPROVED (2 jueces ciegos, 0 CRITICAL)
+- [x] Blog migration separada a rama feature/content-collections-migration (22 archivos, locale fallback)
+
+### 🔴 Pendiente Post-Lanzamiento
+
+### Medición (IDs reales — código listo, espera cuentas)
+- [ ] Setear PUBLIC_CLARITY_ID=xziwkncxt5 en Vercel + redeploy
+- [ ] Crear/Obtener IDs GA4 (G-XXXX) y GTM (GTM-XXXX) — Pipeline Pipod usa GTM-KT7MTVGS
+- [ ] Setear PUBLIC_GA4_ID, PUBLIC_GTM_ID en Vercel
+- [ ] Checklist GTM web-config manual (9 pasos — lección Pipod #2986: sin esto, GA4 muestra CERO datos)
+- [ ] Crear/Obtener Meta Pixel ID y TikTok Pixel ID
+- [ ] Checklist GTM: mandatar UNO de pre-seed gtag vs tag GA4 nativo (JD WARNING — doble page_view)
+
+### Contenido y Legal
+- [ ] Rellenar 11 rutas root SSR con copy honesto (/faq, /terminos, /envios, /privacidad, /nosotros, /contacto, /que-es-el-rape, /rape-do-acre-origen, /como-usar-el-rape, /profecia, /mayoristas)
+- [ ] Fotos reales de los 5 rapés (hoy placeholder bobinsana)
+- [ ] Decidir claims médicos fuera de products.ts: OrganizationJsonLd.astro:64 "descalcificación pineal" (todas las páginas), WholesaleStoreJsonLd.astro:84
+
+### Infraestructura
+- [ ] Rotar GitHub PAT (ghp_... rotado Ago 9, verificar limpieza)
+- [ ] SSH multi-cuenta (ninguna llave asociada a octavofuegostore — push usa workaround token)
+- [ ] Estrechar gitignore glob: .env + .env.*.local (hoy .env* force-trackea .env.example)
+- [ ] Términos/privacy/envios: pipod-code adaptado (copiado de ~/Astro-Ecommerce, copy propio OF). Legend todavía sugiere un review final.
+
+### Blog
+- [ ] Decidir integración de feature/content-collections-migration (22 archivos, locale fallback)
+- [ ] Si se integra: asegurar conveniencia de contenido EN/PT para el blog
+
+### Growth / Plan Completo (SDD publish-superpowers #3163)
+- [ ] PR ① checkout core: persistir orden en Supabase (pendiente-whatsapp) ANTES de redirect (el de mayor valor)
+- [ ] PR ② migration 011: FK reservas repoint + CHECK estados canónicos + pendiente-whatsapp admin
+- [ ] PR ③a routing + contenido: [locale]/carrito + [locale]/checkout + placeholders + Nosotros
+- [ ] PR ③b hardening + email/PDF confirmación (react-pdf → Brevo)
+- [ ] PR ④ medición completa: GA4 + GTM + consent-mode v2 + event catalog server-side
+- [ ] PR ⑤a 11 páginas SEO (6 trust + 5 landings)
+- [ ] PR ⑤b Hub EN B2B + wholesale price groups
+- [ ] PR ⑥ automatización admin: CI, deploy hook, notificaciones, stock alerts

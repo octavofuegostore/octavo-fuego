@@ -1258,3 +1258,54 @@ Pipeline: proposal → spec → design → tasks → apply (4 PRs) → verify �
 - E1: Card radius default, --color-text-secondary alineado a --ceniza
 - E6: text-tabaco → var(--color-action-primary) (95 occs, 32 files), --color-footer-bg removido (footer claro decisión final)
 - Build: 0 errores
+
+---
+
+## 🚀 Sprint Lanzamiento Web — Agosto 8-9, 2026
+
+> **PRs:** #63 → #68 (develop → main, merge normal)
+> **Build:** ✅ 0 errores | **Tests:** 93/93 passing
+> **JD:** APPROVED ✅ (2 jueces ciegos, 0 CRITICAL)
+> **GSC:** ✅ Verificado + sitemap 95 páginas | **Bing:** ✅ Verificado + sitemap + IndexNow
+
+### ✅ Hotfix de claims engañosos (PR #63, 5 commits)
+- **Reseñas falsas**: ReviewJsonLd.astro eliminado (AggregateRating 5.0 + 3 reseñas hardcodeadas: Mateo R., Ana L., Carlos M.) — regresión de Jul 12-13
+- **Envío gratuito falso**: "Envío gratuito > $100.000 COP" → reemplazado por texto honesto (coordinación por WhatsApp)
+- **Superlativos**: "46% más barato" + "mejor precio de Colombia" removidos ×3 locales + schemas
+- **Sitemap**: corregido — 83 URLs, 0 rotas, 0 URLs admin; footer links a [locale]
+- **Legales**: términos/privacidad/envios reescritos con copy honesto ×3 locales (ES/EN/PT) + WebPage schema
+
+### ✅ Stack de medición env-gated (PR #63, 4 commits)
+- GSC verification meta tag (PUBLIC_GSC_VERIFICATION) + Microsoft Clarity (PUBLIC_CLARITY_ID) + Meta Pixel (PUBLIC_META_PIXEL_ID)
+- GA4 + GTM (Option A: GTM hosts GA4): dataLayer init, gtag config, noscript, event catalog WhatsApp-first (view_item, add_to_cart, begin_checkout, whatsapp_click, generate_lead; sin purchase)
+- Deferral vía requestIdleCallback → onload (Pipod pattern #2361)
+- View-transition dedup: __ofMeasurementLoaded guard + astro:page-load skip-first; view_item DOM-data-driven
+- 90/90 tests, JD APPROVED (2 jueces ciegos)
+
+### ✅ Indexación Google + Bing
+- **GSC**: dominio verificado (DNS TXT), sitemap enviado (95 páginas descubiertas), home indexado
+- **Bing Webmaster**: verificado (XML file), sitemap enviado, IndexNow activo (key 0c9593e6...)
+- **IndexNow**: key file hosteado en public/, endpoint api/index-now actualizado, 7 URLs enviadas (HTTP 202)
+- **Dominio canónico**: www.octavofuego.com alineado en sitemap (astro.config.mjs)
+
+### ✅ Fix schema GSC (PR #64)
+- OrganizationJsonLd.astro: eliminado hasOfferCatalog (Product sin offers → 5 errores GSC)
+- WholesaleStoreJsonLd.astro: itemOffered.Product → Offer con availability (catálogo B2B válido)
+
+### ✅ Pipod analytics architecture adaptation (PR #68)
+- Preconnects condicionales: Clarity (preconnect+dns-prefetch), Meta, TikTok — per-field guards, Pipod Layout.astro:26-30 pattern
+- TikTok Pixel: ttq base snippet env-gated (PUBLIC_TIKTOK_PIXEL_ID), __ofMeasurementLoaded guard, __ofDefer deferral, ttq.page()
+- 93/93 tests
+
+### 📁 Archivos clave modificados/creados
+- src-astro/astro.config.mjs — site: https://www.octavofuego.com (canonical)
+- src-astro/src/components/seo/ReviewJsonLd.astro — DELETED (reseñas falsas)
+- src-astro/src/components/seo/OrganizationJsonLd.astro — hasOfferCatalog eliminado
+- src-astro/src/components/seo/MeasurementSnippets.astro — GSC/Clarity/Meta/GA4/GTM/TikTok env-gated + preconnects
+- src-astro/src/components/seo/measurement-config.ts + events.ts (+tests)
+- src-astro/src/pages/[locale]/{terminos,privacidad,envios}.astro — copy honesto ×3 locales
+- src-astro/public/BingSiteAuth.xml + 0c9593e6...txt — Bing + IndexNow
+- src-astro/src/i18n/claims-compliance.test.ts — 5 tests anti-regresión claims
+- .env.example — 6 PUBLIC_* vars de medición
+
+*Última actualización: Agosto 9, 2026 — Sprint Lanzamiento Web*
