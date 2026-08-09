@@ -60,4 +60,20 @@ describe('resolveMeasurementConfig', () => {
     expect(hasAnyMeasurement(resolveMeasurementConfig({ PUBLIC_GTM_ID: 'GTM-1' }))).toBe(true);
     expect(hasAnyMeasurement(resolveMeasurementConfig({ PUBLIC_GA4_ID: 'G-1' }))).toBe(false);
   });
+
+  it('reads tiktokId when present and trims surrounding whitespace', () => {
+    const config = resolveMeasurementConfig({ PUBLIC_TIKTOK_PIXEL_ID: '  TIKTOK-PIXEL-123  ' });
+    expect(config).toEqual({ tiktokId: 'TIKTOK-PIXEL-123' });
+    expect(hasAnyMeasurement(config)).toBe(true);
+  });
+
+  it('treats blank and whitespace-only TikTok values as unset', () => {
+    const config = resolveMeasurementConfig({ PUBLIC_TIKTOK_PIXEL_ID: ' \n ' });
+    expect(config).toEqual({});
+    expect(hasAnyMeasurement(config)).toBe(false);
+  });
+
+  it('hasAnyMeasurement is true with only tiktokId', () => {
+    expect(hasAnyMeasurement(resolveMeasurementConfig({ PUBLIC_TIKTOK_PIXEL_ID: 'TIKTOK-1' }))).toBe(true);
+  });
 });

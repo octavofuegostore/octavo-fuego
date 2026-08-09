@@ -4,13 +4,13 @@
 // - `variant="head"`  → Google Search Console verification meta tag + GTM
 //   dataLayer init (non-deferred, ~50B) + gtag config push when a GA4 ID is
 //   also present + GTM preconnect + GTM noscript iframe.
-// - `variant="body"`  → Clarity + Meta Pixel + GTM loaders, all wrapped in a
-//   single bootstrap guard (`window.__ofMeasurementLoaded` — init exactly
-//   once, so soft navigations never re-initialize them) and deferred via
-//   requestIdleCallback (window.onload fallback, Pipod lesson #2361).
-//   Meta PageView + GA4 soft-nav page_view fire from an astro:page-load
-//   listener (skip-first for of_page_view — the GTM config tag already
-//   covers the initial load; no History Change trigger).
+// - `variant="body"`  → Clarity + Meta Pixel + GTM + TikTok loaders, all
+//   wrapped in a single bootstrap guard (`window.__ofMeasurementLoaded` — init
+//   exactly once, so soft navigations never re-initialize them) and deferred
+//   via requestIdleCallback (window.onload fallback, Pipod lesson #2361).
+//   Meta PageView + TikTok page + GA4 soft-nav page_view fire from an
+//   astro:page-load listener (skip-first for of_page_view — the GTM config
+//   tag already covers the initial load; no History Change trigger).
 //
 // Zero bytes are shipped for any snippet whose PUBLIC_* env var is unset —
 // with PUBLIC_GTM_ID unset, dist contains NO gtm.js, NO GTM-, NO dataLayer
@@ -35,9 +35,10 @@ const config = resolveMeasurementConfig({
   PUBLIC_META_PIXEL_ID: import.meta.env.PUBLIC_META_PIXEL_ID,
   PUBLIC_GTM_ID: import.meta.env.PUBLIC_GTM_ID,
   PUBLIC_GA4_ID: import.meta.env.PUBLIC_GA4_ID,
+  PUBLIC_TIKTOK_PIXEL_ID: import.meta.env.PUBLIC_TIKTOK_PIXEL_ID,
 });
 
-const { gscVerification, clarityId, metaPixelId, gtmId, ga4Id } = config;
+const { gscVerification, clarityId, metaPixelId, gtmId, ga4Id, tiktokId } = config;
 
 // Runs `fn` after the browser is idle, falling back to window.onload.
 const DEFER_HELPER = `function __ofDefer(fn){if('requestIdleCallback' in window){window.requestIdleCallback(fn,{timeout:3000});}else if(document.readyState==='complete'){fn();}else{window.addEventListener('load',fn,{once:true});}}`;
@@ -70,12 +71,21 @@ const gtmLoader = gtmId
   ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',${JSON.stringify(gtmId)});`
   : null;
 
-// Body: bootstrap guard wraps Clarity + Meta + GTM so they initialize exactly
-// once (end-of-body is:inline scripts re-execute on soft navigations). The
-// astro:page-load listener fires Meta PageView on EVERY load and pushes
-// of_page_view (GA4 soft-nav page_view) only on soft navigations (skip-first).
+// Official TikTok Pixel base code (https://ads.tiktok.com/help/article/get-started-pixel)
+// Defines `ttq` as a queue + `ttq.load(id)` so events.js initializes with the
+// sdkid; page() fires from the astro:page-load listener (every load, fbq
+// parity). No event catalog in this slice.
+const tiktokPixelLoader = tiktokId
+  ? `!function(w,d,t){w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"];ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{};ttq._i[e]=[];ttq._i[e]._u=r;ttq._t=ttq._t||{};ttq._t[e]=+new Date;ttq._o=ttq._o||{};ttq._o[e]=n||{};n=document.createElement("script");n.type="text/javascript";n.async=!0;n.src=r+"?sdkid="+e+"&lib="+t;e=document.getElementsByTagName("script")[0];e.parentNode.insertBefore(n,e)};ttq.load(${JSON.stringify(tiktokId)});}(window,document,'ttq');`
+  : null;
+
+// Body: bootstrap guard wraps Clarity + Meta + GTM + TikTok so they
+// initialize exactly once (end-of-body is:inline scripts re-execute on soft
+// navigations). The astro:page-load listener fires Meta PageView + TikTok
+// page on EVERY load and pushes of_page_view (GA4 soft-nav page_view) only
+// on soft navigations (skip-first).
 const bodyMeasurementScript =
-  clarityId || metaPixelId || gtmId
+  clarityId || metaPixelId || gtmId || tiktokId
     ? [
         '(function(){',
         'if(window.__ofMeasurementLoaded)return;',
@@ -87,8 +97,10 @@ const bodyMeasurementScript =
           ? `__ofDefer(function(){${metaPixelLoader}if(__ofMetaFirstPending){fbq('track','PageView');__ofMetaFirstPending=false;}});`
           : null,
         gtmId ? `__ofDefer(function(){${gtmLoader}});` : null,
+        tiktokId ? `__ofDefer(function(){${tiktokPixelLoader}});` : null,
         "document.addEventListener('astro:page-load',function(){",
         "if(window.fbq){window.fbq('track','PageView');}else{__ofMetaFirstPending=true;}",
+        'if(window.ttq){window.ttq.page();}',
         "if(!__ofFirstNav&&window.dataLayer){window.dataLayer.push({event:'of_page_view'});}",
         '__ofFirstNav=false;',
         '});',
@@ -114,6 +126,27 @@ const bodyMeasurementScript =
 {
   variant === 'head' && gtmId && (
     <link rel="preconnect" href="https://www.googletagmanager.com" />
+  )
+}
+
+{
+  variant === 'head' && clarityId && (
+    <>
+      <link rel="preconnect" href="https://www.clarity.ms" />
+      <link rel="dns-prefetch" href="https://b.clarity.ms" />
+    </>
+  )
+}
+
+{
+  variant === 'head' && metaPixelId && (
+    <link rel="preconnect" href="https://connect.facebook.net" />
+  )
+}
+
+{
+  variant === 'head' && tiktokId && (
+    <link rel="preconnect" href="https://analytics.tiktok.com" />
   )
 }
 
