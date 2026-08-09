@@ -30,6 +30,11 @@ export interface MeasurementConfig {
    * inside the GTM container). Empty/absent = ignored.
    */
   ga4Id?: string;
+  /**
+   * TikTok Pixel ID. Runtime driver for the TikTok slice: when set, the ttq
+   * base snippet + preconnect are emitted. Empty/absent = zero bytes shipped.
+   */
+  tiktokId?: string;
 }
 
 export type MeasurementEnv = Record<string, unknown>;
@@ -56,6 +61,9 @@ export function resolveMeasurementConfig(env: MeasurementEnv): MeasurementConfig
   if (nonEmpty(env.PUBLIC_GA4_ID)) {
     config.ga4Id = env.PUBLIC_GA4_ID.trim();
   }
+  if (nonEmpty(env.PUBLIC_TIKTOK_PIXEL_ID)) {
+    config.tiktokId = env.PUBLIC_TIKTOK_PIXEL_ID.trim();
+  }
 
   return config;
 }
@@ -63,11 +71,16 @@ export function resolveMeasurementConfig(env: MeasurementEnv): MeasurementConfig
 /**
  * True when at least one measurement snippet should be rendered.
  *
- * Includes `gtmId` (it renders the loader) but NOT `ga4Id` — GA4 metadata
- * alone must not claim the site is configured (it drives no script).
+ * Includes `gtmId` and `tiktokId` (they render loaders) but NOT `ga4Id` —
+ * GA4 metadata alone must not claim the site is configured (it drives no
+ * script).
  */
 export function hasAnyMeasurement(config: MeasurementConfig): boolean {
   return Boolean(
-    config.gscVerification || config.clarityId || config.metaPixelId || config.gtmId
+    config.gscVerification ||
+      config.clarityId ||
+      config.metaPixelId ||
+      config.gtmId ||
+      config.tiktokId
   );
 }

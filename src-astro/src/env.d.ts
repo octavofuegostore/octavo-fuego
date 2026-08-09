@@ -27,4 +27,9 @@ interface ImportMetaEnv {
    * container). Empty/absent = ignored.
    */
   readonly PUBLIC_GA4_ID?: string;
+  /**
+   * TikTok Pixel ID. Drives the ttq base snippet + preconnect when set.
+   * Empty/absent = snippet disabled (zero bytes shipped).
+   */
+  readonly PUBLIC_TIKTOK_PIXEL_ID?: string;
 }
